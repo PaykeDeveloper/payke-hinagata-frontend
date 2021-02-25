@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
 
-const Root: FC = () => <div>Not found</div>;
+const NotFound: FC = () => <div>Not found</div>;
 
-export default Root;
+export default NotFound;

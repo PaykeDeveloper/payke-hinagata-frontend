@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import i18next from 'i18next';
-import { MenuBookIcon } from 'src/views/base/material-ui/Icon';
-import { booksPath } from 'src/views/routes/paths';
+import { HomeIcon, MenuBookIcon } from 'src/views/base/material-ui/Icon';
+import { booksPath, rootPath } from 'src/views/routes/paths';
 
 interface Menu {
   to: string;
@@ -12,6 +12,11 @@ interface Menu {
 
 const privateMenus: Menu[] = [
   // FIXME: サンプルコードです。
+  {
+    to: rootPath,
+    primaryText: i18next.t('Home'),
+    icon: <HomeIcon />,
+  },
   {
     to: booksPath,
     primaryText: i18next.t('Books'),
