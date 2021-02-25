@@ -1,12 +1,14 @@
 import React, { FC, MouseEvent, useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import { Trans } from 'react-i18next';
-import { PowerSettingsNewIcon } from 'src/views/base/material-ui/Icon';
+import {
+  MoreVertIcon,
+  PowerSettingsNewIcon,
+} from 'src/views/base/material-ui/Icon';
 
 interface Props {
   onLogout: () => void;
@@ -24,7 +26,7 @@ const Component: FC<Props> = (props) => {
   return (
     <>
       <IconButton color="inherit" onClick={handleMenu}>
-        <Avatar />
+        <MoreVertIcon />
       </IconButton>
       <Menu
         anchorEl={anchorEl}

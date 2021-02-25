@@ -10,6 +10,7 @@ const createIcon = (icon: string): FC<IconProps> => (props) => (
 );
 
 export const MenuIcon = createIcon('menu');
+export const MoreVertIcon = createIcon('more_vert');
 export const SaveIcon = createIcon('save');
 export const PowerSettingsNewIcon = createIcon('power_settings_new');
 
