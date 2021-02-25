@@ -6,7 +6,6 @@ import SwipeDrawer from '@material-ui/core/SwipeableDrawer';
 import SideMenu from 'src/views/components/SideMenu';
 
 export const drawerWidth = 240;
-export const breakPoint = 'md';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
