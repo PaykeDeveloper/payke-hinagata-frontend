@@ -1,6 +1,9 @@
 import React, { useCallback } from 'react';
 
 import { Form, Formik, FormikConfig } from 'formik';
+import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
+import { isUnprocessableEntityError } from 'src/state/ducks/utils';
 
 type Props<T> = Omit<FormikConfig<T>, 'initialValues'> & {
   initialValues: T | undefined;
@@ -26,6 +29,8 @@ const shouldCheckEmpty = (key: string) => {
 
 export const BaseForm = <T extends object>(props: Props<T>) => {
   const { children, initialValues, onSubmit, ...otherProps } = props;
+  const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslation();
 
   const handleSubmit: Props<T>['onSubmit'] = useCallback(
     async (values, helpers) => {
@@ -38,11 +43,19 @@ export const BaseForm = <T extends object>(props: Props<T>) => {
 
       const action = await onSubmit(submitValues, helpers);
       if (action?.error) {
-        helpers.setErrors(action?.payload?.data);
+        const payload = action?.payload;
+        let message = 'Some error occurred.';
+        if (isUnprocessableEntityError(payload)) {
+          message = payload.data?.message || message;
+          helpers.setErrors(payload.data?.errors as T);
+        }
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
       }
       return action;
     },
-    [onSubmit]
+    [onSubmit, enqueueSnackbar, t]
   );
 
   return (

@@ -11,7 +11,7 @@ import { StoreStatus } from 'src/state/ducks/types';
 import { BaseForm } from 'src/views/base/formik/Form';
 import SubmitButton from 'src/views/base/formik/SubmitButton';
 import {
-  BaseTextField,
+  EmailTextField,
   PasswordTextField,
 } from 'src/views/base/formik/TextField';
 import { OnSubmit } from 'src/views/base/formik/types';
@@ -20,7 +20,7 @@ import Loader from 'src/views/components/Loader';
 import * as yup from 'yup';
 
 interface LoginInput {
-  id?: string;
+  email?: string;
   password?: string;
 }
 
@@ -50,23 +50,18 @@ const Login: FC<LoginProps> = (props) => {
         </Box>
         <Paper>
           <Loader status={status}>
-            <Box p={[2, 5]} pt={[1, 1]}>
+            <Box p={[2, 5]}>
               <BaseForm
                 initialValues={object}
                 onSubmit={onSubmit}
                 validationSchema={yup.object({
-                  id: yup.string().required(),
+                  email: yup.string().required(),
                   password: yup.string().required(),
-                  captcha: yup.string().required(),
                 })}
               >
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
-                    <BaseTextField
-                      name="id"
-                      label="Username or email address"
-                      required
-                    />
+                    <EmailTextField name="email" label="Email" required />
                   </Grid>
                   <Grid item xs={12}>
                     <PasswordTextField

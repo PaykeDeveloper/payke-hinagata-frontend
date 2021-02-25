@@ -2,7 +2,6 @@ import { createPostAsyncThunk } from 'src/state/ducks/utils';
 import { getLoginApiUrl, getLogoutApiUrl } from 'src/state/urls';
 
 interface LoginInput {
-  username?: string;
   email?: string;
   password?: string;
 }

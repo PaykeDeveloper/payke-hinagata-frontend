@@ -1,5 +1,6 @@
 import React from 'react';
 import { CssBaseline } from '@material-ui/core';
+import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
 import store from 'src/state/store';
@@ -11,13 +12,15 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider>
-        <>
-          <CssBaseline />
-          <SetLocale />
-          <BrowserRouter>
-            <Route component={RootRoutes} />
-          </BrowserRouter>
-        </>
+        <SnackbarProvider>
+          <>
+            <CssBaseline />
+            <SetLocale />
+            <BrowserRouter>
+              <Route component={RootRoutes} />
+            </BrowserRouter>
+          </>
+        </SnackbarProvider>
       </ThemeProvider>
     </Provider>
   );

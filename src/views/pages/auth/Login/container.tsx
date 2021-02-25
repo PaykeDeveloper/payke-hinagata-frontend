@@ -9,7 +9,6 @@ import {
 } from 'src/state/ducks/app/status/selectors';
 import { useReduxDispatch, useReduxSelector } from 'src/state/store';
 import { rootPath } from 'src/views/routes/constants';
-import * as yup from 'yup';
 import Component, { LoginProps } from './component';
 
 type Props = RouteComponentProps;
@@ -42,10 +41,7 @@ const Login: FC<Props> = (props) => {
   }, [push, replace, search]);
 
   const onSubmit: LoginProps['onSubmit'] = useCallback(
-    async ({ id, ...otherParams }) => {
-      const bodyParams = yup.string().email().isValidSync(id)
-        ? { email: id, ...otherParams }
-        : { username: id, ...otherParams };
+    async (bodyParams) => {
       const action = await dispatch(login({ pathParams: {}, bodyParams }));
       if (login.fulfilled.match(action)) {
         onLoggedIn();
