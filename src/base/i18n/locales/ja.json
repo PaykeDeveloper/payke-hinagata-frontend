@@ -1,2 +1,7 @@
 {
+  "The given data was invalid.": "不正なデータが送信されました。",
+  "Some error occurred.": "不明なエラーが発生しました。",
+  "Email": "メールアドレス",
+  "Password": "パスワード",
+  "Log in": "ログイン"
 }

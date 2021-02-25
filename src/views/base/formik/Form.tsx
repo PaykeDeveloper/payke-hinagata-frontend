@@ -49,7 +49,7 @@ export const BaseForm = <T extends object>(props: Props<T>) => {
           message = payload.data?.message || message;
           helpers.setErrors(payload.data?.errors as T);
         }
-        enqueueSnackbar(message, {
+        enqueueSnackbar(t(message), {
           variant: 'error',
         });
       }
