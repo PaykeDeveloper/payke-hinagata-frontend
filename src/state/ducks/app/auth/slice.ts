@@ -1,3 +1,5 @@
+import { createAction } from '@reduxjs/toolkit';
+import { siteName } from 'src/base/constants';
 import { createPostAsyncThunk } from 'src/state/ducks/utils';
 import { getLoginApiUrl, getLogoutApiUrl } from 'src/state/urls';
 
@@ -17,7 +19,10 @@ const logout = createPostAsyncThunk<unknown, unknown, unknown>(
   getLogoutApiUrl
 );
 
+const resetAll = createAction(`${siteName}/resetAll`);
+
 export const authActions = {
   login,
   logout,
+  resetAll,
 };

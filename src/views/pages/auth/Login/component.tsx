@@ -1,12 +1,13 @@
 import React, { FC, useEffect } from 'react';
 
+import { makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { StoreStatus } from 'src/state/ducks/types';
 import { BaseForm } from 'src/views/base/formik/Form';
 import SubmitButton from 'src/views/base/formik/SubmitButton';
@@ -17,7 +18,17 @@ import {
 import { OnSubmit } from 'src/views/base/formik/types';
 import { PowerSettingsNewIcon } from 'src/views/base/material-ui/Icon';
 import Loader from 'src/views/components/Loader';
+import Logo from 'src/views/components/Logo';
 import * as yup from 'yup';
+
+const useStyles = makeStyles({
+  logoBox: {
+    textAlign: 'center',
+  },
+  logo: {
+    maxWidth: 200,
+  },
+});
 
 interface LoginInput {
   email?: string;
@@ -40,17 +51,21 @@ const Login: FC<LoginProps> = (props) => {
       onLoggedIn();
     }
   }, [onLoggedIn, isAuthenticated]);
+  const classes = useStyles();
   return (
     <Fade in timeout={1000}>
       <Container maxWidth="xs">
-        <Box mt={6} mb={2} m="auto">
-          <Typography component="h1" variant="h5" align="center">
-            Log in
-          </Typography>
+        <Box mt={2} mb={6} className={classes.logoBox}>
+          <Logo className={classes.logo} />
         </Box>
         <Paper>
           <Loader status={status}>
             <Box p={[2, 5]}>
+              <Box mb={4}>
+                <Typography component="h1" variant="h5" align="center">
+                  <Trans>Log in</Trans>
+                </Typography>
+              </Box>
               <BaseForm
                 initialValues={object}
                 onSubmit={onSubmit}

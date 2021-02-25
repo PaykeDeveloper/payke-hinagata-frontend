@@ -8,7 +8,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import clsx from 'clsx';
 import { MenuIcon } from 'src/views/base/material-ui/Icon';
+import Logo from 'src/views/components/Logo';
 import { drawerWidth } from 'src/views/components/Sidebar';
+import SettingButton from './SettingButton';
 
 const useStyles = makeStyles((theme) => ({
   toolBar: {
@@ -29,6 +31,16 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(1),
+  },
+  grow: {
+    flexGrow: 1,
+    display: 'flex',
+    alignItems: 'center',
+    // overflowX: 'auto',
+    // whiteSpace: 'nowrap',
+  },
+  logo: {
+    maxWidth: theme.spacing(20),
   },
 }));
 
@@ -61,6 +73,10 @@ const Header: FC<Props> = (props) => {
             >
               <MenuIcon />
             </IconButton>
+            <div className={classes.grow}>
+              <Logo className={classes.logo} />
+            </div>
+            <SettingButton />
           </Toolbar>
         </AppBar>
       </Slide>
