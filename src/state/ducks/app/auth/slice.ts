@@ -1,4 +1,4 @@
-import { createPostAsyncThunk } from 'src/state/ducks/utils/createAsyncThunks';
+import { createPostAsyncThunk } from 'src/state/ducks/utils';
 import { getLoginApiUrl, getLogoutApiUrl } from 'src/state/urls';
 
 interface LoginInput {

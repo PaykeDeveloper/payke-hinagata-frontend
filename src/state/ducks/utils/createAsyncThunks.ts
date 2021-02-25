@@ -1,9 +1,41 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import api, { CancelToken } from 'src/base/api';
-import { ApiError } from 'src/base/api/types';
-import { getRejectValue } from 'src/base/api/utils';
+import api, { CancelToken, isAxiosError } from 'src/base/api';
 import { siteName } from 'src/base/constants';
-import { RootState } from 'src/state/ducks/types';
+import {
+  ErrorStatus,
+  NotFoundError,
+  RootState,
+  StoreError,
+  UnprocessableEntityError,
+} from 'src/state/ducks/types';
+
+const getError = (status: number, data: unknown) => {
+  switch (status) {
+    case 404: {
+      return { status: ErrorStatus.NotFound } as NotFoundError;
+    }
+    case 422: {
+      return {
+        status: ErrorStatus.UnprocessableEntity,
+        data,
+      } as UnprocessableEntityError;
+    }
+    default: {
+      return { status: ErrorStatus.Unknown } as StoreError;
+    }
+  }
+};
+
+const getRejectValue = (error: Error) => {
+  if (isAxiosError(error)) {
+    if (error.response) {
+      const { status, data } = error.response;
+      return getError(status, data);
+    }
+    return { status: ErrorStatus.Unknown } as StoreError;
+  }
+  throw error;
+};
 
 const createCancelToken = (signal: AbortSignal) => {
   const source = CancelToken.source();
@@ -15,7 +47,7 @@ const createCancelToken = (signal: AbortSignal) => {
 
 type ThunkApiConfig = {
   state: RootState;
-  rejectValue: ApiError;
+  rejectValue: StoreError;
 };
 
 export const createGetAsyncThunk = <Returned, PathParams, SearchParams>(

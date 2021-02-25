@@ -1,4 +1,23 @@
-import { ApiError } from 'src/base/api/types';
+export enum ErrorStatus {
+  Unknown,
+  NotFound = 404,
+  UnprocessableEntity = 422,
+}
+
+export interface StoreError<Status = ErrorStatus, Data = unknown> {
+  status: Status;
+  data?: Data;
+}
+
+export type NotFoundError = StoreError<ErrorStatus.NotFound>;
+
+export type UnprocessableEntityError = StoreError<
+  ErrorStatus.UnprocessableEntity,
+  {
+    message: string;
+    errors: Record<string, string[]>;
+  }
+>;
 
 export enum StoreStatus {
   Initial,
@@ -9,7 +28,7 @@ export enum StoreStatus {
 
 interface StoreMeta<Arg> {
   status: StoreStatus;
-  error: ApiError | undefined;
+  error: StoreError | undefined;
   arg: Arg | undefined;
   timestamp: number | undefined;
   requestId: string | undefined;
