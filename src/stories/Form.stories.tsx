@@ -15,7 +15,7 @@ type Input = { name?: string };
 interface Props {
   object?: Input;
   disabled?: boolean;
-  onSubmit?: OnSubmit<Input>;
+  onSubmit: OnSubmit<Input>;
 }
 
 const Form: FC<Props> = (props) => {

@@ -1,25 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { CssBaseline } from '@material-ui/core';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Route } from 'react-router-dom';
+import store from 'src/state/store';
+import ThemeProvider from 'src/views/base/material-ui/ThemeProvider';
+import SetLocale from 'src/views/base/yup/SetLocale';
+import RootRoutes from 'src/views/routes/RootRoutes';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <ThemeProvider>
+        <>
+          <CssBaseline />
+          <SetLocale />
+          <BrowserRouter>
+            <Route component={RootRoutes} />
+          </BrowserRouter>
+        </>
+      </ThemeProvider>
+    </Provider>
   );
 }
 
