@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import { makeStyles } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { StoreStatus } from 'src/state/ducks/types';
+import { StoreStatus } from 'src/state/types/base';
 
 const useStyles = makeStyles((theme) => {
   const backgroundColor =

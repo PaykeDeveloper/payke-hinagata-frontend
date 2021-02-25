@@ -9,9 +9,9 @@ const createIcon = (icon: string): FC<IconProps> => (props) => (
   <Icon {...props}>{icon}</Icon>
 );
 
-export const CancelIcon = createIcon('cancel');
 export const MenuIcon = createIcon('menu');
-export const BusinessIcon = createIcon('business');
-export const InfoIcon = createIcon('info');
 export const SaveIcon = createIcon('save');
 export const PowerSettingsNewIcon = createIcon('power_settings_new');
+
+// FIXME: サンプルコードです。
+export const MenuBookIcon = createIcon('menu_book');

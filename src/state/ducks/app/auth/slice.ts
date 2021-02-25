@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { siteName } from 'src/base/constants';
-import { createPostAsyncThunk } from 'src/state/ducks/utils';
 import { getLoginApiUrl, getLogoutApiUrl } from 'src/state/urls';
+import { createPostAsyncThunk } from 'src/state/utils';
 
 interface LoginInput {
   email?: string;

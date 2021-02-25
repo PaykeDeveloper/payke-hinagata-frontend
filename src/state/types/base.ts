@@ -58,21 +58,3 @@ export interface EntitiesState<Entity, EntityArg, EntitiesArg>
     fetchEntities: StoreMeta<FetchEntitiesArg<EntitiesArg>>;
   };
 }
-
-export interface DomainState {}
-
-export interface UiState {}
-
-export interface Status {
-  isAuthenticated: boolean;
-}
-
-export interface AppState {
-  status: EntityState<Status, unknown>;
-}
-
-export interface RootState {
-  // domain: DomainState;
-  // ui: UiState;
-  app: AppState;
-}

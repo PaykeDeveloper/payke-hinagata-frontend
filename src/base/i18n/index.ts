@@ -2,6 +2,7 @@ import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import { isDevelopment } from 'src/base/constants';
+// FIXME: サンプルコードです。
 import ja from './locales/ja.json';
 
 const resources = {

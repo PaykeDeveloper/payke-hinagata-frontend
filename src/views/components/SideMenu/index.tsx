@@ -8,7 +8,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { Link, useLocation } from 'react-router-dom';
-import { InfoIcon } from 'src/views/base/material-ui/Icon';
 import menus from 'src/views/routes/menus';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +29,7 @@ const SideMenu: FC<Props> = (props) => {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {menus.map(({ to, primaryText, paths }) => (
+        {menus.map(({ to, primaryText, icon, paths }) => (
           <ListItem
             button
             component={Link}
@@ -38,9 +37,7 @@ const SideMenu: FC<Props> = (props) => {
             onClick={onClickMenu}
             selected={pathname === to || paths?.includes(pathname)}
           >
-            <ListItemIcon>
-              <InfoIcon />
-            </ListItemIcon>
+            {icon && <ListItemIcon>{icon}</ListItemIcon>}
             <ListItemText primary={primaryText} />
           </ListItem>
         ))}
