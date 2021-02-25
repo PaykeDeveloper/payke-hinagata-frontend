@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
-import { loginPath } from 'src/views/routes/PublicRoutes/constants';
+import { loginPath } from 'src/views/routes/paths';
 
 interface Props extends RouteProps {
   isAuthenticated: boolean;

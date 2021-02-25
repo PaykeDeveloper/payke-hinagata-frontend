@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { authActions } from 'src/state/ducks/app/auth/slice';
 import { useReduxDispatch } from 'src/state/store';
-import { loginPath } from 'src/views/routes/PublicRoutes/constants';
+import { loginPath } from 'src/views/routes/paths';
 import Component from './component';
 
 const { logout, resetAll } = authActions;

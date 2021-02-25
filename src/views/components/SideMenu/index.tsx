@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { Link, useLocation } from 'react-router-dom';
 import { InfoIcon } from 'src/views/base/material-ui/Icon';
-import { menus } from './constants';
+import menus from 'src/views/routes/menus';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {

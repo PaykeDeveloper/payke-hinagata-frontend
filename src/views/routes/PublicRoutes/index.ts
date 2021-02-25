@@ -1,4 +1,7 @@
 import Component from './component';
-export { publicRoutes, publicPaths } from './utils';
+export {
+  default as publicRoutes,
+  publicPaths,
+} from 'src/views/routes/PublicRoutes/routes';
 
 export default Component;

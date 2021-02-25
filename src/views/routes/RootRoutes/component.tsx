@@ -5,7 +5,7 @@ import CSS from 'csstype';
 import { Route, Switch } from 'react-router-dom';
 import { StoreStatus } from 'src/state/ducks/types';
 import PrivateRoute from 'src/views/components/PrivateRoute';
-import { otherPath } from 'src/views/routes/constants';
+import { otherPath } from 'src/views/routes/paths';
 import PrivateRoutes from 'src/views/routes/PrivateRoutes';
 import PublicRoutes, { publicPaths } from 'src/views/routes/PublicRoutes';
 

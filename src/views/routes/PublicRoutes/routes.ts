@@ -1,11 +1,11 @@
 import { RouteProps } from 'react-router-dom';
 import { notUndefined } from 'src/base/utils';
 import Login from 'src/views/pages/auth/Login';
-import { loginPath } from './constants';
+import { loginPath } from 'src/views/routes/paths';
 
-export const publicRoutes: RouteProps[] = [
-  { path: loginPath, component: Login },
-];
+const publicRoutes: RouteProps[] = [{ path: loginPath, component: Login }];
+
+export default publicRoutes;
 
 export const publicPaths = publicRoutes
   .map((r) => r.path)

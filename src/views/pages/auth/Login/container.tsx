@@ -8,7 +8,7 @@ import {
   statusStatusSelector,
 } from 'src/state/ducks/app/status/selectors';
 import { useReduxDispatch, useReduxSelector } from 'src/state/store';
-import { rootPath } from 'src/views/routes/constants';
+import { rootPath } from 'src/views/routes/paths';
 import Component, { LoginProps } from './component';
 
 type Props = RouteComponentProps;
