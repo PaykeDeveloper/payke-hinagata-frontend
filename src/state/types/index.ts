@@ -1,11 +1,9 @@
 import { AppState } from './app';
-
-export interface DomainState {}
-
-export interface UiState {}
+import { DomainState } from './domain';
+// import { UiState } from './ui';
 
 export interface RootState {
-  // domain: DomainState;
-  // ui: UiState;
   app: AppState;
+  domain: DomainState;
+  // ui: UiState;
 }

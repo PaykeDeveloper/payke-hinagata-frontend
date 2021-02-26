@@ -22,11 +22,6 @@ import {
   defaultActiveMilliSeconds,
 } from './createEntitySlice';
 
-interface KeyMapping<DomainObject, PathParams> {
-  objectKey: keyof DomainObject;
-  pathKey?: keyof PathParams;
-}
-
 export const getEntitiesInitialState = () => ({
   entity: undefined,
   entities: [],
@@ -37,21 +32,22 @@ export const getEntitiesInitialState = () => ({
 });
 
 const createEntitiesSlice = <
+  EntitiesEntity,
+  EntitiesPath,
   Entity,
   EntityPath,
-  EntitiesPath,
   DomainState extends EntitiesState<
+    EntitiesEntity,
+    EntitiesPath,
     Entity,
-    EntityPath,
-    EntitiesPath
-  > = EntitiesState<Entity, EntityPath, EntitiesPath>
+    EntityPath
+  > = EntitiesState<EntitiesEntity, EntitiesPath, Entity, EntityPath>
 >(
   domainName: string,
   initialState: DomainState,
   entitiesUrl: (e: EntitiesPath) => string,
   entityUrl: (e: EntityPath) => string,
   domainSelector: (state: RootState) => DomainState,
-  keyMapping: KeyMapping<Entity, EntityPath>,
   reducers?: ValidateSliceCaseReducers<
     DomainState,
     SliceCaseReducers<DomainState>
@@ -69,10 +65,11 @@ const createEntitiesSlice = <
   >;
   type GetState = () => RootState;
 
-  const fetchEntities = createGetAsyncThunk<Entity[], EntitiesPath, unknown>(
-    `${domainName}/fetchEntities`,
-    entitiesUrl
-  );
+  const fetchEntities = createGetAsyncThunk<
+    EntitiesEntity[],
+    EntitiesPath,
+    unknown
+  >(`${domainName}/fetchEntities`, entitiesUrl);
 
   const fetchEntity = createGetAsyncThunk<Entity, EntityPath, never>(
     `${domainName}/fetchEntity`,
@@ -171,41 +168,26 @@ const createEntitiesSlice = <
         })
         .addCase(addEntity.fulfilled, (state, action) => {
           if (state.meta.fetchEntities.status === StoreStatus.Done) {
-            state.entities = [...state.entities, castDraft(action.payload)];
+            state.entities = [];
+            state.meta.fetchEntities = getMetaInitialState();
           }
         })
         .addCase(mergeEntity.fulfilled, (state, action) => {
           if (state.meta.fetchEntity.status === StoreStatus.Done) {
             state.entity = castDraft(action.payload);
             state.meta.fetchEntity.timestamp = Date.now();
-          }
 
-          if (state.meta.fetchEntities.status === StoreStatus.Done) {
-            const objectKeyValue = action.payload[keyMapping.objectKey];
-            state.entities = state.entities.map((entity) => {
-              if ((entity as Entity)[keyMapping.objectKey] === objectKeyValue) {
-                return castDraft(action.payload);
-              }
-              return entity;
-            });
+            state.entities = [];
+            state.meta.fetchEntities = getMetaInitialState();
           }
         })
         .addCase(removeEntity.fulfilled, (state, action) => {
           if (state.meta.fetchEntity.status === StoreStatus.Done) {
             state.entity = undefined;
             state.meta.fetchEntity = getMetaInitialState();
-          }
 
-          if (
-            state.meta.fetchEntities.status === StoreStatus.Done &&
-            keyMapping.pathKey
-          ) {
-            const urlKeyValue: unknown =
-              action.meta.arg.pathParams[keyMapping.pathKey];
-            state.entities = state.entities.filter(
-              (entity) =>
-                (entity as Entity)[keyMapping.objectKey] !== urlKeyValue
-            );
+            state.entities = [];
+            state.meta.fetchEntities = getMetaInitialState();
           }
         });
       return extraReducers ? extraReducers(extraBuilder) : extraBuilder;

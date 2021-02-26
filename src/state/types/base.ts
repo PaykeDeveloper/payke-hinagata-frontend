@@ -50,9 +50,9 @@ interface FetchEntitiesArg<EntitiesUrl> {
   searchParams?: unknown;
 }
 
-export interface EntitiesState<Entity, EntityArg, EntitiesArg>
+export interface EntitiesState<EntitiesEntity, EntitiesArg, Entity, EntityArg>
   extends EntityState<Entity, EntityArg> {
-  entities: Entity[];
+  entities: EntitiesEntity[];
   meta: {
     fetchEntity: StoreMeta<FetchEntityArg<EntityArg>>;
     fetchEntities: StoreMeta<FetchEntitiesArg<EntitiesArg>>;
