@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Box, Button } from '@material-ui/core';
 import { Columns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
@@ -8,6 +9,7 @@ import BaseDataGrid, {
   dateColDef,
   timestampColDef,
 } from 'src/views/base/material-ui/DataGrid';
+import { AddIcon } from 'src/views/base/material-ui/Icon';
 import ContentBody from 'src/views/components/ContentBody';
 import ContentHeader from 'src/views/components/ContentHeader';
 import ContentWrapper from 'src/views/components/ContentWrapper';
@@ -18,10 +20,12 @@ import { getBookEditPath, rootPath } from 'src/views/routes/paths';
 interface Props {
   books: Book[];
   status: StoreStatus;
+
+  onClickAdd: () => void;
 }
 
 const Component: FC<Props> = (props) => {
-  const { books, status } = props;
+  const { books, status, onClickAdd } = props;
   const { t } = useTranslation();
   console.log(books);
 
@@ -35,8 +39,8 @@ const Component: FC<Props> = (props) => {
         </RouterLink>
       ),
     },
-    { field: 'title', headerName: t('Title') },
-    { field: 'author', headerName: t('Author') },
+    { field: 'title', headerName: t('Title'), width: 200 },
+    { field: 'author', headerName: t('Author'), width: 150 },
     {
       field: 'releaseDate',
       headerName: t('Release date'),
@@ -60,6 +64,16 @@ const Component: FC<Props> = (props) => {
         <Trans>Books</Trans>
       </ContentHeader>
       <ContentBody>
+        <Box mb={1}>
+          <Button
+            color="primary"
+            variant="outlined"
+            startIcon={<AddIcon />}
+            onClick={onClickAdd}
+          >
+            <Trans>Add</Trans>
+          </Button>
+        </Box>
         <Loader status={status}>
           <BaseDataGrid columns={columns} rows={books} />
         </Loader>
