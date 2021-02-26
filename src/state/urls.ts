@@ -10,8 +10,8 @@ export const getStatusApiUrl = () => `${getRootApiUrl()}status/`;
 
 export const getBooksApiUrl = () => `${getRootApiUrl()}books/`;
 
-export interface BookPath {
+export interface BookUrl {
   bookId: string;
 }
-export const getBookApiUrl = ({ bookId }: BookPath) =>
-  `${getBooksApiUrl()}/${bookId}/`;
+export const getBookApiUrl = ({ bookId }: BookUrl) =>
+  `${getBooksApiUrl()}${bookId}/`;

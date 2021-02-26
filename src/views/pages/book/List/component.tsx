@@ -4,13 +4,16 @@ import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { StoreStatus } from 'src/state/types/base';
 import { Book } from 'src/state/types/domain';
-import BaseDataGrid from 'src/views/base/material-ui/DataGrid';
+import BaseDataGrid, {
+  dateColDef,
+  timestampColDef,
+} from 'src/views/base/material-ui/DataGrid';
 import ContentBody from 'src/views/components/ContentBody';
 import ContentHeader from 'src/views/components/ContentHeader';
 import ContentWrapper from 'src/views/components/ContentWrapper';
-// import RouterLink from 'src/views/components/RouterLink';
 import Loader from 'src/views/components/Loader';
-import { rootPath } from 'src/views/routes/paths';
+import RouterLink from 'src/views/components/RouterLink';
+import { getBookEditPath, rootPath } from 'src/views/routes/paths';
 
 interface Props {
   books: Book[];
@@ -26,9 +29,29 @@ const Component: FC<Props> = (props) => {
     {
       field: 'id',
       headerName: t('ID'),
-      // renderCell: ({ value }) => <RouterLink to={getBookPath(value)}>{value}</RouterLink>,
+      renderCell: ({ value }) => (
+        <RouterLink to={getBookEditPath({ bookId: value as Book['id'] })}>
+          {value}
+        </RouterLink>
+      ),
     },
     { field: 'title', headerName: t('Title') },
+    { field: 'author', headerName: t('Author') },
+    {
+      field: 'releaseDate',
+      headerName: t('Release date'),
+      ...dateColDef,
+    },
+    {
+      field: 'createdAt',
+      headerName: t('Created at'),
+      ...timestampColDef,
+    },
+    {
+      field: 'updatedAt',
+      headerName: t('Updated at'),
+      ...timestampColDef,
+    },
   ];
 
   return (

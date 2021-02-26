@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core';
-import { DataGrid, DataGridProps } from '@material-ui/data-grid';
+import { ColDef, DataGrid, DataGridProps } from '@material-ui/data-grid';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
+import { formatDate, formatTimestampString } from 'src/base/dateFormat';
 
 type BaseDataGridProps = Omit<DataGridProps, 'localeText'>;
 
@@ -11,6 +12,16 @@ const useStyles = makeStyles((theme) => ({
     minHeight: theme.spacing(50),
   },
 }));
+
+export const dateColDef: Omit<ColDef, 'field'> = {
+  width: 120,
+  valueFormatter: ({ value }) => formatDate(value as string | null),
+};
+
+export const timestampColDef: Omit<ColDef, 'field'> = {
+  width: 180,
+  valueFormatter: ({ value }) => formatTimestampString(value as string | null),
+};
 
 const BaseDataGrid: FC<BaseDataGridProps> = (props) => {
   const { className, ...otherProps } = props;
