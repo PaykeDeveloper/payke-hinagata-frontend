@@ -4,25 +4,19 @@ import i18next from 'i18next';
 
 const locales: { [key: string]: Locale } = { enUS, ja };
 
-const getLocale = (): Locale | undefined => locales[i18next.language];
+type Value = Date | string | null | undefined;
 
-const formatWithLocale = (date: Date, formatStr: string) =>
-  format(date, formatStr, { locale: getLocale() });
+const formatWithLocale = (date: Value, formatStr: string) => {
+  if (!date) {
+    return date;
+  }
 
-export const formatTimestampString = (
-  timestamp: string | null | undefined,
-  formatStr = 'Ppp'
-) => timestamp && formatWithLocale(parseISO(timestamp), formatStr);
+  const d = typeof date === 'string' ? parseISO(date) : date;
+  return format(d, formatStr, { locale: locales[i18next.language] });
+};
 
-export const formatDateString = (
-  date: string | null | undefined,
-  formatStr = 'P'
-) => date && formatWithLocale(parseISO(date), formatStr);
+export const formatTimestamp = (value: Value) => formatWithLocale(value, 'Ppp');
 
-export const formatDate = (date: string | null | undefined, formatStr = 'P') =>
-  date && formatWithLocale(parseISO(date), formatStr);
+export const formatDate = (value: Value) => formatWithLocale(value, 'P');
 
-export const formatDateTime = (
-  date: string | null | undefined,
-  formatStr = 'Pp'
-) => date && formatWithLocale(parseISO(date), formatStr);
+export const formatDateTime = (value: Value) => formatWithLocale(value, 'Pp');
