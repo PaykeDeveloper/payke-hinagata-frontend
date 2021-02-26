@@ -19,3 +19,4 @@ export const ExpandMoreIcon = createIcon('expand_more');
 // FIXME: サンプルコードです。
 export const HomeIcon = createIcon('home');
 export const MenuBookIcon = createIcon('menu_book');
+export const ListIcon = createIcon('list');
