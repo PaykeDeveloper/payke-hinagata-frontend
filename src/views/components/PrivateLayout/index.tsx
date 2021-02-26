@@ -1,12 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
-
 import { makeStyles, Theme } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import clsx from 'clsx';
+import { useLocation } from 'react-router-dom';
 import Footer from 'src/views/components/Footer';
 import Header from 'src/views/components/Header';
 import ScrollToTop from 'src/views/components/ScrollToTop';
 import Sidebar, { drawerWidth } from 'src/views/components/Sidebar';
+import { privateMenuLists } from 'src/views/routes/menus';
 
 export const footerSpace = 8;
 
@@ -41,6 +42,7 @@ export const useStyles = makeStyles((theme) => ({
 const PrivateLayout: FC = (props) => {
   const { children } = props;
   const upMd = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const { pathname } = useLocation();
   const [open, setOpen] = useState(upMd);
   useEffect(() => {
     setOpen(upMd);
@@ -52,7 +54,13 @@ const PrivateLayout: FC = (props) => {
       <ScrollToTop />
       <div className={classes.wrapper}>
         <Header upMd={upMd} open={open} setOpen={setOpen} />
-        <Sidebar upMd={upMd} open={open} setOpen={setOpen} />
+        <Sidebar
+          upMd={upMd}
+          open={open}
+          setOpen={setOpen}
+          pathname={pathname}
+          menuLists={privateMenuLists}
+        />
         <main
           className={clsx(classes.content, {
             [classes.contentShift]: upMd && open,

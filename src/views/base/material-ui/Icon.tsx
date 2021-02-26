@@ -13,6 +13,8 @@ export const MenuIcon = createIcon('menu');
 export const MoreVertIcon = createIcon('more_vert');
 export const SaveIcon = createIcon('save');
 export const PowerSettingsNewIcon = createIcon('power_settings_new');
+export const ExpandLessIcon = createIcon('expand_less');
+export const ExpandMoreIcon = createIcon('expand_more');
 
 // FIXME: サンプルコードです。
 export const HomeIcon = createIcon('home');

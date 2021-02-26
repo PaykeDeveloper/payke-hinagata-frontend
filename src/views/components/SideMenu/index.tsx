@@ -1,14 +1,9 @@
-import React, { FC } from 'react';
-import {
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  makeStyles,
-} from '@material-ui/core';
-import { Link, useLocation } from 'react-router-dom';
-import menus from 'src/views/routes/menus';
+import React, { FC, Fragment, ReactElement } from 'react';
+
+import { makeStyles } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import List from '@material-ui/core/List';
+import MenuLink, { Menu } from './MenuLink';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -16,33 +11,51 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+export type MenuList = {
+  subheader?: ReactElement;
+  menus: Menu[];
+};
+
 interface Props {
+  pathname: string;
   onClickMenu?: (event: unknown) => void;
+  menuLists: MenuList[];
 }
 
+const getPaths = (menu: Menu): string[] => {
+  if ('menus' in menu) {
+    return menu.menus.map((m) => getPaths(m)).flat();
+  }
+  return menu.paths;
+};
+
 const SideMenu: FC<Props> = (props) => {
-  const { onClickMenu } = props;
+  const { pathname, menuLists, onClickMenu } = props;
+  const paths = menuLists
+    .map((menuList) => menuList.menus.map((m) => getPaths(m)).flat())
+    .flat()
+    .reverse();
   const classes = useStyles();
-  const { pathname } = useLocation();
   return (
-    <div>
+    <>
       <div className={classes.toolbar} />
-      <Divider />
-      <List>
-        {menus.map(({ to, primaryText, icon, paths }) => (
-          <ListItem
-            button
-            component={Link}
-            to={to}
-            onClick={onClickMenu}
-            selected={pathname === to || paths?.includes(pathname)}
-          >
-            {icon && <ListItemIcon>{icon}</ListItemIcon>}
-            <ListItemText primary={primaryText} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
+      {menuLists.map(({ subheader, menus }, listIndex) => (
+        <Fragment key={listIndex}>
+          <Divider />
+          <List subheader={subheader}>
+            {menus.map((menu, index) => (
+              <MenuLink
+                key={index}
+                menu={menu}
+                pathname={pathname}
+                paths={paths}
+                onClickMenu={onClickMenu}
+              />
+            ))}
+          </List>
+        </Fragment>
+      ))}
+    </>
   );
 };
 

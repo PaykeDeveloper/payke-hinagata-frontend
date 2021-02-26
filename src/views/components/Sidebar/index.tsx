@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import SwipeDrawer from '@material-ui/core/SwipeableDrawer';
-import SideMenu from 'src/views/components/SideMenu';
+import SideMenu, { MenuList } from 'src/views/components/SideMenu';
 
 export const drawerWidth = 240;
 
@@ -21,10 +21,13 @@ interface Props {
   upMd: boolean;
   open: boolean;
   setOpen: (open: boolean) => void;
+
+  pathname: string;
+  menuLists: MenuList[];
 }
 
 const Sidebar: FC<Props> = (props) => {
-  const { upMd, open, setOpen } = props;
+  const { upMd, open, setOpen, pathname, menuLists } = props;
   const classes = useStyles();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -34,7 +37,7 @@ const Sidebar: FC<Props> = (props) => {
       variant="persistent"
       open={open}
     >
-      <SideMenu />
+      <SideMenu pathname={pathname} menuLists={menuLists} />
     </Drawer>
   ) : (
     <SwipeDrawer
@@ -43,7 +46,11 @@ const Sidebar: FC<Props> = (props) => {
       onClose={handleClose}
       classes={{ paper: classes.drawerPaper }}
     >
-      <SideMenu onClickMenu={handleClose} />
+      <SideMenu
+        pathname={pathname}
+        menuLists={menuLists}
+        onClickMenu={handleClose}
+      />
     </SwipeDrawer>
   );
 };
