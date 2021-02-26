@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Card, Grid } from '@material-ui/core';
+import { Box, Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { Trans } from 'react-i18next';
@@ -9,6 +9,7 @@ import { BaseForm } from 'src/views/base/formik/Form';
 import SubmitButton from 'src/views/base/formik/SubmitButton';
 import { BaseTextField, DateTextField } from 'src/views/base/formik/TextField';
 import { OnSubmit } from 'src/views/base/formik/types';
+import { AddIcon } from 'src/views/base/material-ui/Icon';
 import ContentBody from 'src/views/components/ContentBody';
 import ContentHeader from 'src/views/components/ContentHeader';
 import ContentWrapper from 'src/views/components/ContentWrapper';
@@ -24,10 +25,11 @@ export interface FormProps {
   status: StoreStatus;
 
   onSubmit: OnSubmit<BookInput>;
+  onDelete?: () => void;
 }
 
 const Form: FC<FormProps> = (props) => {
-  const { title, object, status, onSubmit } = props;
+  const { title, object, status, onSubmit, onDelete } = props;
   return (
     <ContentWrapper>
       <ContentHeader
@@ -39,6 +41,13 @@ const Form: FC<FormProps> = (props) => {
         <Trans>{title}</Trans>
       </ContentHeader>
       <ContentBody>
+        {onDelete && (
+          <Box mb={1}>
+            <Button color="secondary" variant="outlined" onClick={onDelete}>
+              <Trans>Delete</Trans>
+            </Button>
+          </Box>
+        )}
         <BaseForm
           initialValues={object}
           onSubmit={onSubmit}

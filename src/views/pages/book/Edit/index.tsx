@@ -20,6 +20,7 @@ type Props = RouteComponentProps<BookPath>;
 const Container: FC<Props> = (props) => {
   const {
     match: { params: pathParams },
+    history: { goBack },
   } = props;
 
   const dispatch = useReduxDispatch();
@@ -36,7 +37,22 @@ const Container: FC<Props> = (props) => {
 
   const state = useReduxSelector(selector);
 
-  return <Form {...state} title="Edit book" onSubmit={onSubmit} />;
+  const onDelete = useCallback(async () => {
+    const action = await dispatch(booksActions.removeEntity({ pathParams }));
+    if (booksActions.removeEntity.fulfilled.match(action)) {
+      goBack();
+    }
+    return action;
+  }, [dispatch, pathParams, goBack]);
+
+  return (
+    <Form
+      {...state}
+      title="Edit book"
+      onSubmit={onSubmit}
+      onDelete={onDelete}
+    />
+  );
 };
 
 export default Container;
