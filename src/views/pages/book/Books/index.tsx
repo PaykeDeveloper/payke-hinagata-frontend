@@ -1,7 +1,3 @@
-import React, { FC } from 'react';
+import Container from './container';
 
-const Books: FC = () => {
-  return <div>Books</div>;
-};
-
-export default Books;
+export default Container;
