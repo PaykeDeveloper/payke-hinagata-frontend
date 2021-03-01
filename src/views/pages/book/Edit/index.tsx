@@ -1,13 +1,16 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
+import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
+import { joinString } from 'src/base/utils';
 import {
   bookSelector,
   bookStatusSelector,
 } from 'src/state/ducks/domain/books/selectors';
 import { booksActions } from 'src/state/ducks/domain/books/slice';
 import { useReduxDispatch, useReduxSelector } from 'src/state/store';
-import { BookPath } from 'src/views/routes/paths';
+import { BookPath, booksPath } from 'src/views/routes/paths';
+import { RouterLocationState } from 'src/views/routes/types';
 import Form from '../components/Form';
 
 const selector = createSelector(
@@ -15,13 +18,15 @@ const selector = createSelector(
   (object, status) => ({ object, status })
 );
 
-type Props = RouteComponentProps<BookPath>;
+type Props = RouteComponentProps<BookPath, StaticContext, RouterLocationState>;
 
 const Container: FC<Props> = (props) => {
   const {
     match: { params: pathParams },
-    history: { goBack },
+    history: { push },
+    location,
   } = props;
+  const search = location.state?.search;
 
   const dispatch = useReduxDispatch();
 
@@ -30,9 +35,16 @@ const Container: FC<Props> = (props) => {
   }, [dispatch, pathParams]);
 
   const onSubmit = useCallback(
-    (bodyParams) =>
-      dispatch(booksActions.mergeEntity({ pathParams, bodyParams })),
-    [dispatch, pathParams]
+    async (bodyParams) => {
+      const action = await dispatch(
+        booksActions.mergeEntity({ pathParams, bodyParams })
+      );
+      if (booksActions.mergeEntity.fulfilled.match(action)) {
+        push(joinString(booksPath, search));
+      }
+      return action;
+    },
+    [dispatch, pathParams, push, search]
   );
 
   const state = useReduxSelector(selector);
@@ -40,10 +52,10 @@ const Container: FC<Props> = (props) => {
   const onDelete = useCallback(async () => {
     const action = await dispatch(booksActions.removeEntity({ pathParams }));
     if (booksActions.removeEntity.fulfilled.match(action)) {
-      goBack();
+      push(joinString(booksPath, search));
     }
     return action;
-  }, [dispatch, pathParams, goBack]);
+  }, [dispatch, pathParams, push, search]);
 
   return (
     <Form

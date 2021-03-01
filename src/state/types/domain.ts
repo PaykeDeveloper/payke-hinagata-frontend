@@ -2,7 +2,7 @@ import { EntitiesState } from 'src/state/types/base';
 import { BookUrl } from 'src/state/urls';
 
 export interface Book {
-  id: string;
+  id: number;
   title: string;
   author: string | null;
   releaseDate: string | null;

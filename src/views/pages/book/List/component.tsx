@@ -11,22 +11,23 @@ import {
   timestampColDef,
 } from 'src/views/base/material-ui/DataGrid';
 import { AddIcon } from 'src/views/base/material-ui/Icon';
+import Link from 'src/views/base/material-ui/Link';
 import ContentBody from 'src/views/components/ContentBody';
 import ContentHeader from 'src/views/components/ContentHeader';
 import ContentWrapper from 'src/views/components/ContentWrapper';
 import Loader from 'src/views/components/Loader';
-import RouterLink from 'src/views/components/RouterLink';
-import { getBookEditPath, rootPath } from 'src/views/routes/paths';
+import { rootPath } from 'src/views/routes/paths';
 
 interface Props {
   books: Book[];
   status: StoreStatus;
 
   onClickAdd: () => void;
+  onClickLink: (bookId: number) => void;
 }
 
 const Component: FC<Props> = (props) => {
-  const { books, status, onClickAdd } = props;
+  const { books, status, onClickAdd, onClickLink } = props;
   const { t } = useTranslation();
 
   const columns: Columns = [
@@ -34,9 +35,7 @@ const Component: FC<Props> = (props) => {
       field: 'id',
       headerName: t('ID'),
       renderCell: ({ value }) => (
-        <RouterLink to={getBookEditPath({ bookId: value as Book['id'] })}>
-          {value}
-        </RouterLink>
+        <Link onClick={() => onClickLink(value as Book['id'])}>{value}</Link>
       ),
     },
     { field: 'title', headerName: t('Title'), width: 200 },
