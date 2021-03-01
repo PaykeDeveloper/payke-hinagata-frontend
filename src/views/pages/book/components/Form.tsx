@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Card, Grid } from '@material-ui/core';
+import { Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { Trans } from 'react-i18next';
@@ -49,12 +49,13 @@ const Form: FC<FormProps> = (props) => {
       <ContentBody>
         <Buttons
           leftButtons={[
-            {
-              onClick: onBack,
-              children: <Trans>Back</Trans>,
-              startIcon: <NavigateBeforeIcon />,
-              color: 'default',
-            },
+            <Button
+              onClick={onBack}
+              startIcon={<NavigateBeforeIcon />}
+              variant="outlined"
+            >
+              <Trans>Back</Trans>
+            </Button>,
           ]}
           rightButtons={
             onDelete && [
