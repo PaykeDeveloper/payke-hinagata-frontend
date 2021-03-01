@@ -27,34 +27,35 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const FabProgress = () => {
+const FabProgress: FC<{ side: number }> = ({ side }) => {
   const classes = useStyles();
   return (
     <div className={classes.fabProgress}>
-      <CircularProgress size={68} />
+      <CircularProgress size={side} />
     </div>
   );
 };
 
-export type LoaderProps =
+export type LoaderProps = { size?: number } & (
   | {
       status: StoreStatus;
     }
   | {
       loading: boolean;
-    };
+    }
+);
 
 const checkLoading = (status: StoreStatus) => status === StoreStatus.Started;
 
 const Loader: FC<LoaderProps> = (props) => {
-  const { children } = props;
+  const { children, size } = props;
   const classes = useStyles();
   const loading =
     'status' in props ? checkLoading(props.status) : props.loading;
   return (
     <div className={classes.wrapper}>
       {children}
-      {loading && <FabProgress />}
+      {loading && <FabProgress side={size || 68} />}
     </div>
   );
 };

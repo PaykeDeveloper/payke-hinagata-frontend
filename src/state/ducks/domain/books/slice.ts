@@ -1,8 +1,8 @@
 import { Book } from 'src/state/types/domain';
-import { BookPath, getBookApiUrl, getBooksApiUrl } from 'src/state/urls';
+import { BookUrl, getBookApiUrl, getBooksApiUrl } from 'src/state/urls';
 import { createEntitiesSlice, getEntitiesInitialState } from 'src/state/utils';
 
-const booksSlice = createEntitiesSlice<Book, {}, Book, BookPath>(
+const booksSlice = createEntitiesSlice<Book, {}, Book, BookUrl>(
   'books',
   getEntitiesInitialState(),
   getBooksApiUrl,

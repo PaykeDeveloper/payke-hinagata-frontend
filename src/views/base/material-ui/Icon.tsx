@@ -15,6 +15,9 @@ export const SaveIcon = createIcon('save');
 export const PowerSettingsNewIcon = createIcon('power_settings_new');
 export const ExpandLessIcon = createIcon('expand_less');
 export const ExpandMoreIcon = createIcon('expand_more');
+export const NavigateBeforeIcon = createIcon('navigate_before');
+export const AddIcon = createIcon('add');
+export const DeleteIcon = createIcon('delete');
 
 // FIXME: サンプルコードです。
 export const HomeIcon = createIcon('home');
