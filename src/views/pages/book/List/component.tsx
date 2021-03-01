@@ -5,8 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { StoreStatus } from 'src/state/types/base';
 import { Book } from 'src/state/types/domain';
-import BaseDataGrid, {
+import {
   dateColDef,
+  RouterDataGrid,
   timestampColDef,
 } from 'src/views/base/material-ui/DataGrid';
 import { AddIcon } from 'src/views/base/material-ui/Icon';
@@ -74,7 +75,7 @@ const Component: FC<Props> = (props) => {
           </Button>
         </Box>
         <Loader status={status}>
-          <BaseDataGrid columns={columns} rows={books} />
+          <RouterDataGrid columns={columns} rows={books} />
         </Loader>
       </ContentBody>
     </ContentWrapper>

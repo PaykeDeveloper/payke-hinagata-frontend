@@ -11,7 +11,7 @@ type BaseDataGridProps = Omit<DataGridProps, 'localeText'>;
 
 const useStyles = makeStyles((theme) => ({
   grid: {
-    minHeight: theme.spacing(50),
+    minHeight: theme.spacing(60),
   },
 }));
 
@@ -31,6 +31,32 @@ export const timestampColDef: Omit<ColDef, 'field'> = {
       : value,
 };
 
+const BaseDataGrid: FC<BaseDataGridProps> = (props) => {
+  const { className, ...otherProps } = props;
+
+  const { t } = useTranslation();
+  const localeText = {
+    // https://github.com/mui-org/material-ui-x/blob/HEAD/packages/grid/_modules_/grid/constants/localeTextConstants.ts
+    rootGridLabel: t('grid'),
+    noRowsLabel: t('No rows'),
+    errorOverlayDefaultLabel: t('An error occurred.'),
+  };
+  const classes = useStyles();
+  return (
+    <DataGrid
+      {...otherProps}
+      localeText={localeText}
+      className={clsx(classes.grid, className)}
+    />
+  );
+};
+
+BaseDataGrid.defaultProps = {
+  autoPageSize: true,
+};
+
+export default BaseDataGrid;
+
 const parsePage = (page: unknown) => {
   if (page !== undefined && typeof page === 'string') {
     return parseInt(page);
@@ -48,7 +74,7 @@ function mergeSearch<Params>(
   return qs.stringify(p);
 }
 
-const BaseDataGrid: FC<BaseDataGridProps> = (props) => {
+export const RouterDataGrid: FC<BaseDataGridProps> = (props) => {
   const {
     onPageChange,
     onSortModelChange,
@@ -56,7 +82,6 @@ const BaseDataGrid: FC<BaseDataGridProps> = (props) => {
     page,
     sortModel,
     filterModel,
-    className,
     ...otherProps
   } = props;
   const {
@@ -93,16 +118,8 @@ const BaseDataGrid: FC<BaseDataGridProps> = (props) => {
   const thisFilterModel =
     filterModel || (params['filterModel'] as DataGridProps['filterModel']);
 
-  const { t } = useTranslation();
-  const localeText = {
-    // https://github.com/mui-org/material-ui-x/blob/HEAD/packages/grid/_modules_/grid/constants/localeTextConstants.ts
-    rootGridLabel: t('grid'),
-    noRowsLabel: t('No rows'),
-    errorOverlayDefaultLabel: t('An error occurred.'),
-  };
-  const classes = useStyles();
   return (
-    <DataGrid
+    <BaseDataGrid
       {...otherProps}
       onPageChange={handlePageChange}
       onSortModelChange={handleSortModelChange}
@@ -110,14 +127,6 @@ const BaseDataGrid: FC<BaseDataGridProps> = (props) => {
       page={thisPage}
       sortModel={thisSortModel}
       filterModel={thisFilterModel}
-      localeText={localeText}
-      className={clsx(classes.grid, className)}
     />
   );
 };
-
-BaseDataGrid.defaultProps = {
-  autoPageSize: true,
-};
-
-export default BaseDataGrid;
