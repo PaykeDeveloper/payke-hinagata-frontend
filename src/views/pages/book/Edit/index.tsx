@@ -28,6 +28,11 @@ const Container: FC<Props> = (props) => {
   } = props;
   const search = location.state?.search;
 
+  const onBack = useCallback(() => push(joinString(booksPath, search)), [
+    push,
+    search,
+  ]);
+
   const dispatch = useReduxDispatch();
 
   useEffect(() => {
@@ -40,11 +45,11 @@ const Container: FC<Props> = (props) => {
         booksActions.mergeEntity({ pathParams, bodyParams })
       );
       if (booksActions.mergeEntity.fulfilled.match(action)) {
-        push(joinString(booksPath, search));
+        onBack();
       }
       return action;
     },
-    [dispatch, pathParams, push, search]
+    [dispatch, pathParams, onBack]
   );
 
   const state = useReduxSelector(selector);
@@ -52,16 +57,17 @@ const Container: FC<Props> = (props) => {
   const onDelete = useCallback(async () => {
     const action = await dispatch(booksActions.removeEntity({ pathParams }));
     if (booksActions.removeEntity.fulfilled.match(action)) {
-      push(joinString(booksPath, search));
+      onBack();
     }
     return action;
-  }, [dispatch, pathParams, push, search]);
+  }, [dispatch, pathParams, onBack]);
 
   return (
     <Form
       {...state}
       title="Edit book"
       onSubmit={onSubmit}
+      onBack={onBack}
       onDelete={onDelete}
     />
   );

@@ -24,6 +24,11 @@ const Container: FC<Props> = (props) => {
   } = props;
   const search = location.state?.search;
 
+  const onBack = useCallback(() => push(joinString(booksPath, search)), [
+    push,
+    search,
+  ]);
+
   const dispatch = useReduxDispatch();
 
   const onSubmit = useCallback(
@@ -32,16 +37,18 @@ const Container: FC<Props> = (props) => {
         booksActions.addEntity({ pathParams, bodyParams })
       );
       if (booksActions.addEntity.fulfilled.match(action)) {
-        push(joinString(booksPath, search));
+        onBack();
       }
       return action;
     },
-    [dispatch, pathParams, push, search]
+    [dispatch, pathParams, onBack]
   );
 
   const state = useReduxSelector(selector);
 
-  return <Form {...state} title="Add book" onSubmit={onSubmit} />;
+  return (
+    <Form {...state} title="Add book" onSubmit={onSubmit} onBack={onBack} />
+  );
 };
 
 export default Container;

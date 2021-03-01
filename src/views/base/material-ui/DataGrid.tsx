@@ -1,10 +1,10 @@
 import React, { FC, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core';
 import {
-  ColDef,
   DataGrid,
   DataGridProps,
-  FilterItem,
+  GridColDef,
+  GridFilterItem,
 } from '@material-ui/data-grid';
 import clsx from 'clsx';
 import isEqual from 'lodash/isEqual';
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const dateColDef: Omit<ColDef, 'field'> = {
+export const dateColDef: Omit<GridColDef, 'field'> = {
   width: 120,
   valueFormatter: ({ value }) =>
     typeof value === 'string' || value instanceof Date
@@ -29,7 +29,7 @@ export const dateColDef: Omit<ColDef, 'field'> = {
       : value,
 };
 
-export const timestampColDef: Omit<ColDef, 'field'> = {
+export const timestampColDef: Omit<GridColDef, 'field'> = {
   width: 180,
   valueFormatter: ({ value }) =>
     typeof value === 'string' || value instanceof Date
@@ -115,7 +115,7 @@ export const RouterDataGrid: FC<BaseDataGridProps> = (props) => {
 
       // onFilterModelChangeが何度も呼び出されるのでその対応
       const thisParams =
-        params.filterModel.items.filter((item: FilterItem) => item.value)
+        params.filterModel.items.filter((item: GridFilterItem) => item.value)
           .length > 0
           ? params
           : { filterModel: undefined };
