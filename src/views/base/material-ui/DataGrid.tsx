@@ -1,8 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { ColDef, DataGrid, DataGridProps } from '@material-ui/data-grid';
 import clsx from 'clsx';
+import qs from 'qs';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { formatDate, formatTimestamp } from 'src/base/dateFormat';
 
 type BaseDataGridProps = Omit<DataGridProps, 'localeText'>;
@@ -29,8 +31,68 @@ export const timestampColDef: Omit<ColDef, 'field'> = {
       : value,
 };
 
+const parsePage = (page: unknown) => {
+  if (page !== undefined && typeof page === 'string') {
+    return parseInt(page);
+  }
+  return undefined;
+};
+
+function mergeSearch<Params>(
+  search: string,
+  params: Params,
+  key: keyof Params
+) {
+  const p = qs.parse(search, { ignoreQueryPrefix: true });
+  p[key as string] = params[key] as any;
+  return qs.stringify(p);
+}
+
 const BaseDataGrid: FC<BaseDataGridProps> = (props) => {
-  const { className, ...otherProps } = props;
+  const {
+    onPageChange,
+    onSortModelChange,
+    onFilterModelChange,
+    page,
+    sortModel,
+    filterModel,
+    className,
+    ...otherProps
+  } = props;
+  const {
+    push,
+    location: { search },
+  } = useHistory();
+
+  const handlePageChange: DataGridProps['onPageChange'] = useCallback(
+    (params) => {
+      onPageChange && onPageChange(params);
+      push({ search: mergeSearch(search, params, 'page') });
+    },
+    [onPageChange, push, search]
+  );
+  const handleSortModelChange: DataGridProps['onSortModelChange'] = useCallback(
+    (params) => {
+      onSortModelChange && onSortModelChange(params);
+      push({ search: mergeSearch(search, params, 'sortModel') });
+    },
+    [onSortModelChange, push, search]
+  );
+  const handleFilterModelChange: DataGridProps['onFilterModelChange'] = useCallback(
+    (params) => {
+      onFilterModelChange && onFilterModelChange(params);
+      push({ search: mergeSearch(search, params, 'filterModel') });
+    },
+    [onFilterModelChange, push, search]
+  );
+
+  const params = qs.parse(search, { ignoreQueryPrefix: true });
+  const thisPage = page !== undefined ? page : parsePage(params['page']);
+  const thisSortModel =
+    sortModel || (params['sortModel'] as DataGridProps['sortModel']);
+  const thisFilterModel =
+    filterModel || (params['filterModel'] as DataGridProps['filterModel']);
+
   const { t } = useTranslation();
   const localeText = {
     // https://github.com/mui-org/material-ui-x/blob/HEAD/packages/grid/_modules_/grid/constants/localeTextConstants.ts
@@ -42,10 +104,20 @@ const BaseDataGrid: FC<BaseDataGridProps> = (props) => {
   return (
     <DataGrid
       {...otherProps}
+      onPageChange={handlePageChange}
+      onSortModelChange={handleSortModelChange}
+      onFilterModelChange={handleFilterModelChange}
+      page={thisPage}
+      sortModel={thisSortModel}
+      filterModel={thisFilterModel}
       localeText={localeText}
       className={clsx(classes.grid, className)}
     />
   );
+};
+
+BaseDataGrid.defaultProps = {
+  autoPageSize: true,
 };
 
 export default BaseDataGrid;

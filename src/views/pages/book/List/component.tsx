@@ -27,7 +27,6 @@ interface Props {
 const Component: FC<Props> = (props) => {
   const { books, status, onClickAdd } = props;
   const { t } = useTranslation();
-  console.log(books);
 
   const columns: Columns = [
     {

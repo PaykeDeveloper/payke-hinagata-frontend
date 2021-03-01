@@ -9,7 +9,6 @@ import { BaseForm } from 'src/views/base/formik/Form';
 import SubmitButton from 'src/views/base/formik/SubmitButton';
 import { BaseTextField, DateTextField } from 'src/views/base/formik/TextField';
 import { OnSubmit } from 'src/views/base/formik/types';
-import { AddIcon } from 'src/views/base/material-ui/Icon';
 import ContentBody from 'src/views/components/ContentBody';
 import ContentHeader from 'src/views/components/ContentHeader';
 import ContentWrapper from 'src/views/components/ContentWrapper';
