@@ -9,6 +9,7 @@ import {
   RouterDataGrid,
   timestampColDef,
 } from 'src/views/base/material-ui/DataGrid';
+import { AddIcon } from 'src/views/base/material-ui/Icon';
 import Link from 'src/views/base/material-ui/Link';
 import Buttons from 'src/views/components/Buttons';
 import ContentBody from 'src/views/components/ContentBody';
@@ -16,7 +17,6 @@ import ContentHeader from 'src/views/components/ContentHeader';
 import ContentWrapper from 'src/views/components/ContentWrapper';
 import Loader from 'src/views/components/Loader';
 import { rootPath } from 'src/views/routes/paths';
-import { AddIcon } from 'src/views/base/material-ui/Icon';
 
 interface Props {
   books: Book[];

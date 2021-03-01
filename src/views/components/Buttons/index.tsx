@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, isValidElement, ReactElement, ReactNode } from 'react';
 import { Box, BoxProps, Button, makeStyles } from '@material-ui/core';
 import { ButtonProps } from '@material-ui/core/Button';
 import clsx from 'clsx';
@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
 
 type Props = {
   boxProps?: BoxProps;
-  leftButtons?: ButtonProps[];
-  rightButtons?: ButtonProps[];
+  leftButtons?: (ButtonProps | ReactElement)[];
+  rightButtons?: (ButtonProps | ReactElement)[];
 };
 
 const Buttons: FC<Props> = (props) => {
@@ -27,32 +27,56 @@ const Buttons: FC<Props> = (props) => {
   const classes = useStyles();
   return (
     <Box {...boxProps}>
-      {leftButtons?.map(({ className, ...otherProps }, index) => (
-        <Button
-          key={index}
-          color="primary"
-          variant="outlined"
-          className={clsx(
-            classes.leftButton,
-            { [classes.leftMargin]: index > 0 },
-            className
-          )}
-          {...otherProps}
-        />
-      ))}
-      {rightButtons?.map(({ className, ...otherProps }, index) => (
-        <Button
-          key={index}
-          color="primary"
-          variant="outlined"
-          className={clsx(
-            classes.rightButton,
-            { [classes.rightMargin]: index > 0 },
-            className
-          )}
-          {...otherProps}
-        />
-      ))}
+      {leftButtons?.map((button, index) => {
+        let children: ReactNode;
+        if (isValidElement(button)) {
+          children = button;
+        } else {
+          children = (
+            <Button
+              key={index}
+              color="primary"
+              variant="outlined"
+              {...button}
+            />
+          );
+        }
+        return (
+          <Box
+            display="inline-block"
+            className={clsx(classes.leftButton, {
+              [classes.leftMargin]: index > 0,
+            })}
+          >
+            {children}
+          </Box>
+        );
+      })}
+      {rightButtons?.map((button, index) => {
+        let children: ReactNode;
+        if (isValidElement(button)) {
+          children = button;
+        } else {
+          children = (
+            <Button
+              key={index}
+              color="primary"
+              variant="outlined"
+              {...button}
+            />
+          );
+        }
+        return (
+          <Box
+            display="inline-block"
+            className={clsx(classes.rightButton, {
+              [classes.rightMargin]: index > 0,
+            })}
+          >
+            {children}
+          </Box>
+        );
+      })}
     </Box>
   );
 };

@@ -18,6 +18,7 @@ import ContentBody from 'src/views/components/ContentBody';
 import ContentHeader from 'src/views/components/ContentHeader';
 import ContentWrapper from 'src/views/components/ContentWrapper';
 import Loader from 'src/views/components/Loader';
+import LoaderButton from 'src/views/components/LoaderButton';
 import { booksPath, rootPath } from 'src/views/routes/paths';
 import * as yup from 'yup';
 
@@ -30,7 +31,7 @@ export interface FormProps {
 
   onSubmit: OnSubmit<BookInput>;
   onBack: () => void;
-  onDelete?: () => void;
+  onDelete?: () => Promise<unknown>;
 }
 
 const Form: FC<FormProps> = (props) => {
@@ -57,12 +58,14 @@ const Form: FC<FormProps> = (props) => {
           ]}
           rightButtons={
             onDelete && [
-              {
-                onClick: onDelete,
-                children: <Trans>Delete</Trans>,
-                startIcon: <DeleteIcon />,
-                color: 'secondary',
-              },
+              <LoaderButton
+                onClick={onDelete}
+                startIcon={<DeleteIcon />}
+                color="secondary"
+                variant="outlined"
+              >
+                <Trans>Delete</Trans>
+              </LoaderButton>,
             ]
           }
         />
