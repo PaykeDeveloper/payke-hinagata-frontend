@@ -1,7 +1,13 @@
 import React, { FC, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core';
-import { ColDef, DataGrid, DataGridProps } from '@material-ui/data-grid';
+import {
+  ColDef,
+  DataGrid,
+  DataGridProps,
+  FilterItem,
+} from '@material-ui/data-grid';
 import clsx from 'clsx';
+import isEqual from 'lodash/isEqual';
 import qs from 'qs';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -85,30 +91,44 @@ export const RouterDataGrid: FC<BaseDataGridProps> = (props) => {
     ...otherProps
   } = props;
   const {
-    push,
+    replace,
     location: { search },
   } = useHistory();
 
   const handlePageChange: DataGridProps['onPageChange'] = useCallback(
     (params) => {
       onPageChange && onPageChange(params);
-      push({ search: mergeSearch(search, params, 'page') });
+      replace({ search: mergeSearch(search, params, 'page') });
     },
-    [onPageChange, push, search]
+    [onPageChange, replace, search]
   );
   const handleSortModelChange: DataGridProps['onSortModelChange'] = useCallback(
     (params) => {
       onSortModelChange && onSortModelChange(params);
-      push({ search: mergeSearch(search, params, 'sortModel') });
+      replace({ search: mergeSearch(search, params, 'sortModel') });
     },
-    [onSortModelChange, push, search]
+    [onSortModelChange, replace, search]
   );
   const handleFilterModelChange: DataGridProps['onFilterModelChange'] = useCallback(
     (params) => {
       onFilterModelChange && onFilterModelChange(params);
-      push({ search: mergeSearch(search, params, 'filterModel') });
+
+      // onFilterModelChangeが何度も呼び出されるのでその対応
+      const thisParams =
+        params.filterModel.items.filter((item: FilterItem) => item.value)
+          .length > 0
+          ? params
+          : { filterModel: undefined };
+      const filterModel = qs.parse(search, { ignoreQueryPrefix: true })[
+        'filterModel'
+      ];
+      if (isEqual(thisParams.filterModel, filterModel)) {
+        return;
+      }
+
+      replace({ search: mergeSearch(search, thisParams, 'filterModel') });
     },
-    [onFilterModelChange, push, search]
+    [onFilterModelChange, replace, search]
   );
 
   const params = qs.parse(search, { ignoreQueryPrefix: true });
