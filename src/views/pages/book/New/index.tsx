@@ -34,7 +34,7 @@ const Container: FC<Props> = (props) => {
   const onSubmit = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        booksActions.addEntity({ pathParams, bodyParams })
+        booksActions.addEntity({ pathParams, bodyParams, useFormData: true })
       );
       if (booksActions.addEntity.fulfilled.match(action)) {
         onBack();

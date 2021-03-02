@@ -42,7 +42,7 @@ const Container: FC<Props> = (props) => {
   const onSubmit = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        booksActions.mergeEntity({ pathParams, bodyParams })
+        booksActions.mergeEntity({ pathParams, bodyParams, useFormData: true })
       );
       if (booksActions.mergeEntity.fulfilled.match(action)) {
         onBack();
