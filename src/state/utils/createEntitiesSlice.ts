@@ -36,6 +36,8 @@ const createEntitiesSlice = <
   EntitiesPath,
   Entity,
   EntityPath,
+  CreateInput extends Partial<Entity> = Partial<Entity>,
+  UpdateInput extends Partial<Entity> = Partial<Entity>,
   DomainState extends EntitiesState<
     EntitiesEntity,
     EntitiesPath,
@@ -76,16 +78,15 @@ const createEntitiesSlice = <
     entityUrl
   );
 
-  const addEntity = createPostAsyncThunk<Entity, EntitiesPath, Partial<Entity>>(
+  const addEntity = createPostAsyncThunk<Entity, EntitiesPath, CreateInput>(
     `${domainName}/addEntity`,
     entitiesUrl
   );
 
-  const mergeEntity = createPatchAsyncThunk<
-    Entity,
-    EntityPath,
-    Partial<Entity>
-  >(`${domainName}/mergeEntity`, entityUrl);
+  const mergeEntity = createPatchAsyncThunk<Entity, EntityPath, UpdateInput>(
+    `${domainName}/mergeEntity`,
+    entityUrl
+  );
 
   const removeEntity = createDeleteAsyncThunk<null, EntityPath>(
     `${domainName}/removeEntity`,

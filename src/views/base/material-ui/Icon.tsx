@@ -18,6 +18,7 @@ export const ExpandMoreIcon = createIcon('expand_more');
 export const NavigateBeforeIcon = createIcon('navigate_before');
 export const AddIcon = createIcon('add');
 export const DeleteIcon = createIcon('delete');
+export const CloseIcon = createIcon('close');
 
 // FIXME: サンプルコードです。
 export const HomeIcon = createIcon('home');
