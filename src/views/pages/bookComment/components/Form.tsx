@@ -3,7 +3,10 @@ import { Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { Trans } from 'react-i18next';
-import { BookCommentInput } from 'src/state/ducks/domain/bookComments/types';
+import {
+  BookCommentDetail,
+  BookCommentInput,
+} from 'src/state/ducks/domain/bookComments/types';
 import { Book } from 'src/state/ducks/domain/books/types';
 import { StoreStatus } from 'src/state/types/base';
 import { BaseCheckField } from 'src/views/base/formik/CheckField';
@@ -35,9 +38,9 @@ import * as yup from 'yup';
 
 export interface FormProps {
   title: string;
-  object: BookCommentInput | undefined;
   status: StoreStatus;
   book: Book | undefined;
+  bookComment: BookCommentDetail | undefined;
 
   onSubmit: OnSubmit<BookCommentInput>;
   onBack: () => void;
@@ -45,7 +48,16 @@ export interface FormProps {
 }
 
 const Form: FC<FormProps> = (props) => {
-  const { title, object, status, book, onSubmit, onBack, onDelete } = props;
+  const {
+    title,
+    status,
+    book,
+    bookComment,
+    onSubmit,
+    onBack,
+    onDelete,
+  } = props;
+  const object: BookCommentInput | undefined = bookComment;
   return (
     <ContentWrapper>
       <ContentHeader
@@ -129,6 +141,7 @@ const Form: FC<FormProps> = (props) => {
                     <BaseImageField
                       name="cover"
                       label="Cover"
+                      defaultImage={bookComment?.coverUrl}
                       maxWidth={150}
                       height={150}
                     />

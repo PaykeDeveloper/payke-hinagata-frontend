@@ -62,16 +62,10 @@ const Container: FC<Props> = (props) => {
     [dispatch, pathParams, onBack]
   );
 
-  const { bookComment, ...otherState } = useStoreSelector(selector);
+  const State = useStoreSelector(selector);
 
   return (
-    <Form
-      {...otherState}
-      title="Edit comment"
-      object={bookComment}
-      onSubmit={onSubmit}
-      onBack={onBack}
-    />
+    <Form {...State} title="Edit comment" onSubmit={onSubmit} onBack={onBack} />
   );
 };
 

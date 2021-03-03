@@ -16,16 +16,19 @@ const useStyles = makeStyles((theme) => ({
 
 type Props = ImageFieldProps & {
   name: string;
+  defaultImage?: string | null;
 };
 
 const ImageField: FC<Props> = (props) => {
-  const { name, helperText, disabled, ...otherProps } = props;
+  const { name, defaultImage, helperText, disabled, ...otherProps } = props;
   const { isSubmitting, submitCount } = useFormikContext();
   const [field, meta, helpers] = useField({ name });
   const { value } = field;
   const hasError = !!((meta.touched || submitCount) && meta.error);
   let image: string | undefined;
-  if (typeof value === 'string') {
+  if (value === undefined && defaultImage) {
+    image = defaultImage;
+  } else if (typeof value === 'string') {
     image = value;
   } else if (value instanceof File) {
     image = URL.createObjectURL(value);
