@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
-import { formatISO } from 'date-fns';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { bookCommentsStatusSelector } from 'src/state/ducks/domain/bookComments/selectors';
@@ -42,10 +41,7 @@ const Container: FC<Props> = (props) => {
       const action = await dispatch(
         bookCommentsActions.addEntity({
           pathParams,
-          bodyParams: {
-            ...bodyParams,
-            approvedAt: formatISO(new Date(bodyParams.approvedAt)),
-          },
+          bodyParams,
           useFormData: true,
         })
       );

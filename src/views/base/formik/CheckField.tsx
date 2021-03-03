@@ -23,6 +23,7 @@ const CheckField: FC<Props> = (props) => {
   const [field, meta] = useField({ name });
   const { value, ...otherField } = field;
   const hasError = !!((meta.touched || submitCount) && meta.error);
+  console.log({ ...checkboxProps, ...otherField, checked: value });
   return (
     <MuiCheckField
       error={hasError}
@@ -30,7 +31,7 @@ const CheckField: FC<Props> = (props) => {
         ...formControlProps,
         disabled: formControlProps?.disabled || isSubmitting,
       }}
-      checkboxProps={{ value: value ?? '', ...checkboxProps, ...otherField }}
+      checkboxProps={{ ...checkboxProps, ...otherField, checked: !!value }}
       helperText={hasError ? meta.error : helperText}
       {...otherProps}
     />
