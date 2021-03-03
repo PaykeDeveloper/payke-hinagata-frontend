@@ -23,7 +23,6 @@ const CheckField: FC<Props> = (props) => {
   const [field, meta] = useField({ name });
   const { value, ...otherField } = field;
   const hasError = !!((meta.touched || submitCount) && meta.error);
-  console.log({ ...checkboxProps, ...otherField, checked: value });
   return (
     <MuiCheckField
       error={hasError}
