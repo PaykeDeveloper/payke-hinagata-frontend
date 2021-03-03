@@ -37,8 +37,8 @@ export const getEntityInitialState = () => ({
 const createEntitySlice = <
   Entity,
   EntityPath,
-  CreateInput extends Partial<Entity> = Partial<Entity>,
-  UpdateInput extends Partial<Entity> = Partial<Entity>,
+  CreateInput = Partial<Entity>,
+  UpdateInput = CreateInput,
   DomainState extends EntityState<Entity, EntityPath> = EntityState<
     Entity,
     EntityPath
