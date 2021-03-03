@@ -8,17 +8,19 @@ export const getRootApiUrl = () => `${backendOriginUrl}api/v1/`;
 
 export const getStatusApiUrl = () => `${getRootApiUrl()}status/`;
 
-export interface BookUrl {
+export interface BookApiUrl {
   bookId: string;
 }
 export const getBooksApiUrl = () => `${getRootApiUrl()}books/`;
-export const getBookApiUrl = ({ bookId }: BookUrl) =>
+export const getBookApiUrl = ({ bookId }: BookApiUrl) =>
   `${getBooksApiUrl()}${bookId}/`;
 
-export interface BookCommentUrl extends BookUrl {
+export interface BookCommentApiUrl extends BookApiUrl {
   commentId: string;
 }
-export const getBookCommentsApiUrl = ({ bookId }: BookUrl) =>
+export const getBookCommentsApiUrl = ({ bookId }: BookApiUrl) =>
   `${getBooksApiUrl()}${bookId}/comments/`;
-export const getBookCommentApiUrl = ({ bookId, commentId }: BookCommentUrl) =>
-  `${getBookCommentsApiUrl({ bookId })}${commentId}/`;
+export const getBookCommentApiUrl = ({
+  bookId,
+  commentId,
+}: BookCommentApiUrl) => `${getBookCommentsApiUrl({ bookId })}${commentId}/`;

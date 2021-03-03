@@ -3,7 +3,7 @@ import {
   BookCommentDetail,
 } from 'src/state/ducks/domain/bookComments/types';
 import { EntitiesState } from 'src/state/types/base';
-import { BookCommentUrl, BookUrl } from 'src/state/urls';
+import { BookCommentApiUrl, BookApiUrl } from 'src/state/urls';
 
 export interface Book {
   id: number;
@@ -15,11 +15,11 @@ export interface Book {
 }
 
 export interface DomainState {
-  books: EntitiesState<Book, {}, Book, BookUrl>;
+  books: EntitiesState<Book, {}, Book, BookApiUrl>;
   bookComments: EntitiesState<
     BookComment,
-    BookUrl,
+    BookApiUrl,
     BookCommentDetail,
-    BookCommentUrl
+    BookCommentApiUrl
   >;
 }

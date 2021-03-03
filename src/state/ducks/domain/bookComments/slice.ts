@@ -4,8 +4,8 @@ import {
   BookCommentInput,
 } from 'src/state/ducks/domain/bookComments/types';
 import {
-  BookCommentUrl,
-  BookUrl,
+  BookCommentApiUrl,
+  BookApiUrl,
   getBookCommentApiUrl,
   getBookCommentsApiUrl,
 } from 'src/state/urls';
@@ -13,9 +13,9 @@ import { createEntitiesSlice, getEntitiesInitialState } from 'src/state/utils';
 
 const bookCommentsSlice = createEntitiesSlice<
   BookComment,
-  BookUrl,
+  BookApiUrl,
   BookCommentDetail,
-  BookCommentUrl,
+  BookCommentApiUrl,
   BookCommentInput
 >(
   'bookComments',
