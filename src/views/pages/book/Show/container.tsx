@@ -18,7 +18,7 @@ import {
   BookPath,
   booksPath,
   getBookCommentEditPath,
-  getBookCommentsNewPath,
+  getBookCommentNewPath,
   getBookEditPath,
 } from 'src/views/routes/paths';
 import { RouterLocationState } from 'src/views/routes/types';
@@ -68,7 +68,7 @@ const Container: FC<Props> = (props) => {
 
   const onClickAddBookComment = useCallback(
     () =>
-      push(getBookCommentsNewPath(pathParams), {
+      push(getBookCommentNewPath(pathParams), {
         path,
       } as RouterLocationState),
     [push, pathParams, path]

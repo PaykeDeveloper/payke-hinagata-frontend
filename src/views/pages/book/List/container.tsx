@@ -8,7 +8,7 @@ import {
 } from 'src/state/ducks/domain/books/selectors';
 import { booksActions } from 'src/state/ducks/domain/books/slice';
 import { useStoreDispatch, useStoreSelector } from 'src/state/store';
-import { booksNewPath, getBookPath } from 'src/views/routes/paths';
+import { bookNewPath, getBookPath } from 'src/views/routes/paths';
 import { RouterLocationState } from 'src/views/routes/types';
 import Component from './component';
 
@@ -34,7 +34,7 @@ const Container: FC<Props> = (props) => {
   const path = joinString(pathname, search);
 
   const onClickAdd = useCallback(
-    () => push(booksNewPath, { path } as RouterLocationState),
+    () => push(bookNewPath, { path } as RouterLocationState),
     [push, path]
   );
 

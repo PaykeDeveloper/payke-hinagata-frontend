@@ -10,9 +10,11 @@ import { MenuList } from 'src/views/components/SideMenu';
 import {
   bookEditPath,
   bookPath,
-  booksNewPath,
+  bookNewPath,
   booksPath,
   rootPath,
+  bookCommentNewPath,
+  bookCommentEditPath,
 } from 'src/views/routes/paths';
 
 export const privateMenuLists: MenuList[] = [
@@ -42,13 +44,19 @@ export const privateMenuLists: MenuList[] = [
             text: <Trans>List</Trans>,
             icon: <ListIcon />,
             to: booksPath,
-            paths: [booksPath, bookPath, bookEditPath],
+            paths: [
+              booksPath,
+              bookPath,
+              bookEditPath,
+              bookCommentNewPath,
+              bookCommentEditPath,
+            ],
           },
           {
             text: <Trans>Add</Trans>,
             icon: <AddIcon />,
-            to: booksNewPath,
-            paths: [booksNewPath],
+            to: bookNewPath,
+            paths: [bookNewPath],
           },
         ],
       },
