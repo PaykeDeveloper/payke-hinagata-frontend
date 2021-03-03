@@ -10,7 +10,7 @@ import {
   bookSelector,
   bookStatusSelector,
 } from 'src/state/ducks/domain/books/selectors';
-import { useReduxDispatch, useReduxSelector } from 'src/state/store';
+import { useStoreDispatch, useStoreSelector } from 'src/state/store';
 import { BookPath, getBookEditPath } from 'src/views/routes/paths';
 import Component from './component';
 
@@ -37,12 +37,12 @@ const Container: FC<Props> = (props) => {
     match: { params: pathParams },
   } = props;
 
-  const dispatch = useReduxDispatch();
+  const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(bookCommentsActions.fetchEntitiesIfNeeded({ pathParams }));
   }, [dispatch, pathParams]);
 
-  const state = useReduxSelector(selector);
+  const state = useStoreSelector(selector);
 
   const onClickEditBook = useCallback(() => push(getBookEditPath(pathParams)), [
     push,

@@ -3,7 +3,7 @@ import React, { FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { statusStatusSelector } from 'src/state/ducks/app/status/selectors';
 import { statusActions } from 'src/state/ducks/app/status/slice';
-import { useReduxDispatch, useReduxSelector } from 'src/state/store';
+import { useStoreDispatch, useStoreSelector } from 'src/state/store';
 import Component from './component';
 
 const selector = createSelector([statusStatusSelector], (status) => ({
@@ -11,9 +11,9 @@ const selector = createSelector([statusStatusSelector], (status) => ({
 }));
 
 const Container: FC = () => {
-  const state = useReduxSelector(selector);
+  const state = useStoreSelector(selector);
 
-  const dispatch = useReduxDispatch();
+  const dispatch = useStoreDispatch();
   const onMounted = useCallback(
     () => dispatch(statusActions.fetchEntityIfNeeded({ pathParams: {} })),
     [dispatch]

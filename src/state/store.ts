@@ -14,11 +14,11 @@ const store = configureStore({ reducer });
 export type RootState = ReturnType<typeof store.getState>;
 export type Dispatch = typeof store.dispatch;
 
-export const useReduxSelector: TypedUseSelectorHook<RootState> = (
+export const useStoreSelector: TypedUseSelectorHook<RootState> = (
   selector,
   equalityFn = shallowEqual
 ) => useSelector(selector, equalityFn);
 
-export const useReduxDispatch = () => useDispatch<Dispatch>();
+export const useStoreDispatch = () => useDispatch<Dispatch>();
 
 export default store;

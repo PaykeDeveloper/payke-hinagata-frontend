@@ -7,7 +7,7 @@ import {
   statusSelector,
   statusStatusSelector,
 } from 'src/state/ducks/app/status/selectors';
-import { useReduxDispatch, useReduxSelector } from 'src/state/store';
+import { useStoreDispatch, useStoreSelector } from 'src/state/store';
 import { rootPath } from 'src/views/routes/paths';
 import Component, { LoginProps } from './component';
 
@@ -28,9 +28,9 @@ const Login: FC<Props> = (props) => {
     location: { search },
     history: { push, replace },
   } = props;
-  const state = useReduxSelector(selector);
+  const state = useStoreSelector(selector);
 
-  const dispatch = useReduxDispatch();
+  const dispatch = useStoreDispatch();
   const onLoggedIn = useCallback(() => {
     const searchParams = new URLSearchParams(search);
     const next = searchParams.get('next');

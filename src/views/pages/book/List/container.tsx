@@ -6,7 +6,7 @@ import {
   booksStatusSelector,
 } from 'src/state/ducks/domain/books/selectors';
 import { booksActions } from 'src/state/ducks/domain/books/slice';
-import { useReduxDispatch, useReduxSelector } from 'src/state/store';
+import { useStoreDispatch, useStoreSelector } from 'src/state/store';
 import { booksNewPath, getBookEditPath } from 'src/views/routes/paths';
 import { RouterLocationState } from 'src/views/routes/types';
 import Component from './component';
@@ -23,11 +23,11 @@ const Container: FC<Props> = (props) => {
     history: { push },
     location: { search },
   } = props;
-  const dispatch = useReduxDispatch();
+  const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(booksActions.fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
-  const state = useReduxSelector(selector);
+  const state = useStoreSelector(selector);
 
   const onClickAdd = useCallback(
     () => push(booksNewPath, { search } as RouterLocationState),

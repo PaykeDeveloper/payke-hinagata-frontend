@@ -8,7 +8,7 @@ import {
   bookStatusSelector,
 } from 'src/state/ducks/domain/books/selectors';
 import { booksActions } from 'src/state/ducks/domain/books/slice';
-import { useReduxDispatch, useReduxSelector } from 'src/state/store';
+import { useStoreDispatch, useStoreSelector } from 'src/state/store';
 import { BookPath, booksPath } from 'src/views/routes/paths';
 import { RouterLocationState } from 'src/views/routes/types';
 import Form from '../components/Form';
@@ -33,7 +33,7 @@ const Container: FC<Props> = (props) => {
     search,
   ]);
 
-  const dispatch = useReduxDispatch();
+  const dispatch = useStoreDispatch();
 
   useEffect(() => {
     dispatch(booksActions.fetchEntityIfNeeded({ pathParams }));
@@ -52,7 +52,7 @@ const Container: FC<Props> = (props) => {
     [dispatch, pathParams, onBack]
   );
 
-  const state = useReduxSelector(selector);
+  const state = useStoreSelector(selector);
 
   const onDelete = useCallback(async () => {
     const action = await dispatch(booksActions.removeEntity({ pathParams }));
