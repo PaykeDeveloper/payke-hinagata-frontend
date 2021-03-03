@@ -2,7 +2,6 @@ import React, { FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
-import { joinString } from 'src/base/utils';
 import {
   bookSelector,
   bookStatusSelector,
@@ -26,12 +25,9 @@ const Container: FC<Props> = (props) => {
     history: { push },
     location,
   } = props;
-  const search = location.state?.search;
+  const backPath = location.state?.path || booksPath;
 
-  const onBack = useCallback(() => push(joinString(booksPath, search)), [
-    push,
-    search,
-  ]);
+  const onBack = useCallback(() => push(backPath), [push, backPath]);
 
   const dispatch = useStoreDispatch();
 

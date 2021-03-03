@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
+import { joinString } from 'src/base/utils';
 import {
   booksSelector,
   booksStatusSelector,
@@ -21,25 +22,28 @@ const selector = createSelector(
 const Container: FC<Props> = (props) => {
   const {
     history: { push },
-    location: { search },
+    location: { pathname, search },
   } = props;
+  console.log(props);
   const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(booksActions.fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
   const state = useStoreSelector(selector);
 
+  const path = joinString(pathname, search);
+
   const onClickAdd = useCallback(
-    () => push(booksNewPath, { search } as RouterLocationState),
-    [push, search]
+    () => push(booksNewPath, { path } as RouterLocationState),
+    [push, path]
   );
 
   const onClickLink = useCallback(
     (bookId: number) =>
       push(getBookEditPath({ bookId: `${bookId}` }), {
-        search,
+        path,
       } as RouterLocationState),
-    [push, search]
+    [push, path]
   );
 
   return (

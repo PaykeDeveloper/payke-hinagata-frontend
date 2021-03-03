@@ -1,5 +1,5 @@
 export type RouterLocationState =
   | {
-      search: string;
+      path: string;
     }
   | undefined;
