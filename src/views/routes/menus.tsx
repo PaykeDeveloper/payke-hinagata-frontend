@@ -9,6 +9,7 @@ import {
 import { MenuList } from 'src/views/components/SideMenu';
 import {
   bookEditPath,
+  bookPath,
   booksNewPath,
   booksPath,
   rootPath,
@@ -41,7 +42,7 @@ export const privateMenuLists: MenuList[] = [
             text: <Trans>List</Trans>,
             icon: <ListIcon />,
             to: booksPath,
-            paths: [booksPath, bookEditPath],
+            paths: [booksPath, bookPath, bookEditPath],
           },
           {
             text: <Trans>Add</Trans>,

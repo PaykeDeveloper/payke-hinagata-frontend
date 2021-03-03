@@ -8,7 +8,7 @@ import {
 } from 'src/state/ducks/domain/books/selectors';
 import { booksActions } from 'src/state/ducks/domain/books/slice';
 import { useStoreDispatch, useStoreSelector } from 'src/state/store';
-import { booksNewPath, getBookEditPath } from 'src/views/routes/paths';
+import { booksNewPath, getBookPath } from 'src/views/routes/paths';
 import { RouterLocationState } from 'src/views/routes/types';
 import Component from './component';
 
@@ -24,7 +24,7 @@ const Container: FC<Props> = (props) => {
     history: { push },
     location: { pathname, search },
   } = props;
-  console.log(props);
+
   const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(booksActions.fetchEntitiesIfNeeded({ pathParams: {} }));
@@ -38,16 +38,16 @@ const Container: FC<Props> = (props) => {
     [push, path]
   );
 
-  const onClickLink = useCallback(
+  const onClickShow = useCallback(
     (bookId: number) =>
-      push(getBookEditPath({ bookId: `${bookId}` }), {
+      push(getBookPath({ bookId: `${bookId}` }), {
         path,
       } as RouterLocationState),
     [push, path]
   );
 
   return (
-    <Component {...state} onClickAdd={onClickAdd} onClickLink={onClickLink} />
+    <Component {...state} onClickAdd={onClickAdd} onClickShow={onClickShow} />
   );
 };
 

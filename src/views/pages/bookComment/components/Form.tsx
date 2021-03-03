@@ -3,7 +3,8 @@ import { Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { Trans } from 'react-i18next';
-import { BookInput } from 'src/state/ducks/domain/books/types';
+import { BookCommentInput } from 'src/state/ducks/domain/bookComments/types';
+import { Book } from 'src/state/ducks/domain/books/types';
 import { StoreStatus } from 'src/state/types/base';
 import { BaseForm } from 'src/views/base/formik/Form';
 import SubmitButton from 'src/views/base/formik/SubmitButton';
@@ -19,27 +20,32 @@ import ContentHeader from 'src/views/components/ContentHeader';
 import ContentWrapper from 'src/views/components/ContentWrapper';
 import Loader from 'src/views/components/Loader';
 import LoaderButton from 'src/views/components/LoaderButton';
-import { booksPath, rootPath } from 'src/views/routes/paths';
+import { booksPath, getBookPath, rootPath } from 'src/views/routes/paths';
 import * as yup from 'yup';
 
 export interface FormProps {
   title: string;
-  object?: BookInput;
+  object?: BookCommentInput;
   status: StoreStatus;
+  book: Book | undefined;
 
-  onSubmit: OnSubmit<BookInput>;
+  onSubmit: OnSubmit<BookCommentInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }
 
 const Form: FC<FormProps> = (props) => {
-  const { title, object, status, onSubmit, onBack, onDelete } = props;
+  const { title, object, status, book, onSubmit, onBack, onDelete } = props;
   return (
     <ContentWrapper>
       <ContentHeader
         links={[
           { children: <Trans>Home</Trans>, to: rootPath },
           { children: <Trans>Books</Trans>, to: booksPath },
+          {
+            children: <Trans>{book?.title}</Trans>,
+            to: getBookPath({ bookId: `${book?.id}` }),
+          },
         ]}
       >
         <Trans>{title}</Trans>
@@ -71,11 +77,7 @@ const Form: FC<FormProps> = (props) => {
         <BaseForm
           initialValues={object}
           onSubmit={onSubmit}
-          validationSchema={yup.object({
-            title: yup.string().required().max(30),
-            author: yup.string().nullable(),
-            releaseDate: yup.date().nullable(),
-          })}
+          validationSchema={yup.object({})}
         >
           <Loader status={status}>
             <Card>

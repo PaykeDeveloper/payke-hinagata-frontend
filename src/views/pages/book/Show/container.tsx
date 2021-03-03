@@ -1,6 +1,8 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
+import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
+import { joinString } from 'src/base/utils';
 import {
   bookCommentsSelector,
   bookCommentsStatusSelector,
@@ -10,11 +12,19 @@ import {
   bookSelector,
   bookStatusSelector,
 } from 'src/state/ducks/domain/books/selectors';
+import { booksActions } from 'src/state/ducks/domain/books/slice';
 import { useStoreDispatch, useStoreSelector } from 'src/state/store';
-import { BookPath, getBookEditPath } from 'src/views/routes/paths';
+import {
+  BookPath,
+  booksPath,
+  getBookCommentEditPath,
+  getBookCommentsNewPath,
+  getBookEditPath,
+} from 'src/views/routes/paths';
+import { RouterLocationState } from 'src/views/routes/types';
 import Component from './component';
 
-type Props = RouteComponentProps<BookPath>;
+type Props = RouteComponentProps<BookPath, StaticContext, RouterLocationState>;
 
 const selector = createSelector(
   [
@@ -35,31 +45,47 @@ const Container: FC<Props> = (props) => {
   const {
     history: { push },
     match: { params: pathParams },
+    location,
   } = props;
+
+  const backPath = location.state?.path || booksPath;
+  const onBack = useCallback(() => push(backPath), [push, backPath]);
 
   const dispatch = useStoreDispatch();
   useEffect(() => {
+    dispatch(booksActions.fetchEntityIfNeeded({ pathParams }));
     dispatch(bookCommentsActions.fetchEntitiesIfNeeded({ pathParams }));
   }, [dispatch, pathParams]);
 
-  const state = useStoreSelector(selector);
+  const path = joinString(location.pathname, location.search);
 
-  const onClickEditBook = useCallback(() => push(getBookEditPath(pathParams)), [
-    push,
-    pathParams,
-  ]);
-
-  const bookId = state.book?.id;
-  const onClickAddBookComment = useCallback(
-    () => push(getBookEditPath({ bookId: `${bookId}` })),
-    [push, bookId]
+  const onClickEditBook = useCallback(
+    () => push(getBookEditPath(pathParams), { path } as RouterLocationState),
+    [push, pathParams, path]
   );
 
-  const onClickEditBookComment = useCallback(() => {}, []);
+  const state = useStoreSelector(selector);
+
+  const onClickAddBookComment = useCallback(
+    () =>
+      push(getBookCommentsNewPath(pathParams), {
+        path,
+      } as RouterLocationState),
+    [push, pathParams, path]
+  );
+
+  const onClickEditBookComment = useCallback(
+    (commentId: string) => () =>
+      push(getBookCommentEditPath({ ...pathParams, commentId }), {
+        path,
+      } as RouterLocationState),
+    [push, pathParams, path]
+  );
 
   return (
     <Component
       {...state}
+      onBack={onBack}
       onClickEditBook={onClickEditBook}
       onClickAddBookComment={onClickAddBookComment}
       onClickEditBookComment={onClickEditBookComment}

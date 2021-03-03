@@ -36,7 +36,7 @@ const createEntitiesSlice = <
   EntitiesPath,
   EntityDetail,
   EntityPath,
-  CreateInput = Partial<Entity>,
+  CreateInput,
   UpdateInput = CreateInput,
   DomainState extends EntitiesState<
     Entity,

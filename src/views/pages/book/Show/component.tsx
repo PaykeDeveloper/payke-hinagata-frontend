@@ -1,17 +1,23 @@
 import React, { FC } from 'react';
-import { Button } from '@material-ui/core';
+import { Box, Button, Card, CardContent, Typography } from '@material-ui/core';
 import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
+import { formatDate } from 'src/base/dateFormat';
 import { BookComment } from 'src/state/ducks/domain/bookComments/types';
+import { Book } from 'src/state/ducks/domain/books/types';
 import { StoreStatus } from 'src/state/types/base';
-import { Book } from 'src/state/types/domain';
 import {
   dateColDef,
   RouterDataGrid,
   timestampColDef,
 } from 'src/views/base/material-ui/DataGrid';
-import { AddIcon } from 'src/views/base/material-ui/Icon';
+import DefinitionList from 'src/views/base/material-ui/DefinitionList';
+import {
+  AddIcon,
+  EditIcon,
+  NavigateBeforeIcon,
+} from 'src/views/base/material-ui/Icon';
 import Link from 'src/views/base/material-ui/Link';
 import Buttons from 'src/views/components/Buttons';
 import ContentBody from 'src/views/components/ContentBody';
@@ -26,6 +32,7 @@ interface Props {
   bookComments: BookComment[];
   bookCommentsStatus: StoreStatus;
 
+  onBack: () => void;
   onClickEditBook: () => void;
   onClickAddBookComment: () => void;
   onClickEditBookComment: (commentId: string) => void;
@@ -34,9 +41,10 @@ interface Props {
 const Component: FC<Props> = (props) => {
   const {
     book,
-    bookStatus,
+    // bookStatus,
     bookComments,
     bookCommentsStatus,
+    onBack,
     onClickEditBook,
     onClickAddBookComment,
     onClickEditBookComment,
@@ -85,21 +93,67 @@ const Component: FC<Props> = (props) => {
         {book?.title}
       </ContentHeader>
       <ContentBody>
-        <Buttons
-          leftButtons={[
-            <Button
-              onClick={onClickAddBookComment}
-              startIcon={<AddIcon />}
-              color="primary"
-              variant="outlined"
-            >
-              <Trans>Add</Trans>
-            </Button>,
-          ]}
-        />
-        <Loader status={bookCommentsStatus}>
-          <RouterDataGrid columns={columns} rows={bookComments} />
-        </Loader>
+        <Box>
+          <Buttons
+            leftButtons={[
+              <Button
+                onClick={onBack}
+                startIcon={<NavigateBeforeIcon />}
+                variant="outlined"
+              >
+                <Trans>Back</Trans>
+              </Button>,
+              <Button
+                onClick={onClickEditBook}
+                startIcon={<EditIcon />}
+                variant="outlined"
+                color="primary"
+              >
+                <Trans>Edit</Trans>
+              </Button>,
+            ]}
+          />
+          <Card>
+            <CardContent>
+              <DefinitionList
+                list={[
+                  {
+                    key: <Trans>Author</Trans>,
+                    value: <Typography>{book?.author}</Typography>,
+                  },
+                  {
+                    key: <Trans>Release date</Trans>,
+                    value: (
+                      <Typography>{formatDate(book?.releaseDate)}</Typography>
+                    ),
+                  },
+                ]}
+              />
+            </CardContent>
+          </Card>
+        </Box>
+        <Box mt={3}>
+          <Typography variant="h5">
+            <Trans>Comments</Trans>
+          </Typography>
+          <Box mt={1}>
+            <Buttons
+              leftButtons={[
+                <Button
+                  onClick={onClickAddBookComment}
+                  startIcon={<AddIcon />}
+                  color="primary"
+                  variant="outlined"
+                >
+                  <Trans>Add</Trans>
+                </Button>,
+              ]}
+            />
+            <Loader status={bookCommentsStatus}>
+              <RouterDataGrid columns={columns} rows={bookComments} />
+            </Loader>
+          </Box>
+        </Box>
       </ContentBody>
     </ContentWrapper>
   );

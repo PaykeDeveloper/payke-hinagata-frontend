@@ -25,8 +25,8 @@ const Container: FC<Props> = (props) => {
     history: { push },
     location,
   } = props;
-  const backPath = location.state?.path || booksPath;
 
+  const backPath = location.state?.path || booksPath;
   const onBack = useCallback(() => push(backPath), [push, backPath]);
 
   const dispatch = useStoreDispatch();
@@ -38,7 +38,7 @@ const Container: FC<Props> = (props) => {
   const onSubmit = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        booksActions.mergeEntity({ pathParams, bodyParams, useFormData: true })
+        booksActions.mergeEntity({ pathParams, bodyParams })
       );
       if (booksActions.mergeEntity.fulfilled.match(action)) {
         onBack();
