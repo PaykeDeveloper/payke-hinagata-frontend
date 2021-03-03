@@ -81,6 +81,14 @@ DateTextField.defaultProps = {
   InputLabelProps: { shrink: true },
 };
 
+export const DateTimeTextField: FC<BaseTextFieldProps> = (props) => (
+  <BaseTextField {...props} />
+);
+DateTimeTextField.defaultProps = {
+  type: 'datetime-local',
+  InputLabelProps: { shrink: true },
+};
+
 export const EmailTextField: FC<BaseTextFieldProps> = (props) => (
   <BaseTextField {...props} />
 );

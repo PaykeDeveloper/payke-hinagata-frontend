@@ -6,9 +6,18 @@ import { Trans } from 'react-i18next';
 import { BookCommentInput } from 'src/state/ducks/domain/bookComments/types';
 import { Book } from 'src/state/ducks/domain/books/types';
 import { StoreStatus } from 'src/state/types/base';
+import { BaseCheckField } from 'src/views/base/formik/CheckField';
 import { BaseForm } from 'src/views/base/formik/Form';
+import { BaseImageField } from 'src/views/base/formik/ImageField';
+import { BaseSelectField } from 'src/views/base/formik/SelectField';
 import SubmitButton from 'src/views/base/formik/SubmitButton';
-import { BaseTextField, DateTextField } from 'src/views/base/formik/TextField';
+import {
+  BaseTextField,
+  DateTextField,
+  DateTimeTextField,
+  MultiLineTextField,
+  NumberTextField,
+} from 'src/views/base/formik/TextField';
 import { OnSubmit } from 'src/views/base/formik/types';
 import {
   DeleteIcon,
@@ -20,12 +29,13 @@ import ContentHeader from 'src/views/components/ContentHeader';
 import ContentWrapper from 'src/views/components/ContentWrapper';
 import Loader from 'src/views/components/Loader';
 import LoaderButton from 'src/views/components/LoaderButton';
+import FooBarOptions from 'src/views/pages/bookComment/components/FooBarOptions';
 import { booksPath, getBookPath, rootPath } from 'src/views/routes/paths';
 import * as yup from 'yup';
 
 export interface FormProps {
   title: string;
-  object?: BookCommentInput;
+  object: BookCommentInput | undefined;
   status: StoreStatus;
   book: Book | undefined;
 
@@ -84,13 +94,44 @@ const Form: FC<FormProps> = (props) => {
               <CardContent>
                 <Grid container spacing={1}>
                   <Grid item xs={12} sm={6}>
-                    <BaseTextField name="title" label="Title" required />
+                    <DateTextField name="publishDate" label="Publish date" />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <DateTextField name="releaseDate" label="Release date" />
+                    <DateTimeTextField name="approvedAt" label="Approved at" />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <NumberTextField name="amount" label="Amount" />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <NumberTextField name="column" label="column" />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <BaseSelectField name="choices" label="Choices" nullable>
+                      <FooBarOptions />
+                    </BaseSelectField>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <NumberTextField name="votes" label="Votes" />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <BaseTextField name="slug" label="Slug" />
                   </Grid>
                   <Grid item xs={12}>
-                    <BaseTextField name="author" label="Author" />
+                    <MultiLineTextField
+                      name="description"
+                      label="Description"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <BaseCheckField name="confirmed" label="Confirmed" />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <BaseImageField
+                      name="cover"
+                      label="Cover"
+                      maxWidth={150}
+                      height={150}
+                    />
                   </Grid>
                 </Grid>
               </CardContent>

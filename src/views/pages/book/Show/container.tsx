@@ -75,7 +75,7 @@ const Container: FC<Props> = (props) => {
   );
 
   const onClickEditBookComment = useCallback(
-    (commentId: string) => () =>
+    (commentId: string) =>
       push(getBookCommentEditPath({ ...pathParams, commentId }), {
         path,
       } as RouterLocationState),

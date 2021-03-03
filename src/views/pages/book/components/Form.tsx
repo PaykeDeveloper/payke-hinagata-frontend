@@ -24,7 +24,7 @@ import * as yup from 'yup';
 
 export interface FormProps {
   title: string;
-  object?: BookInput;
+  object: BookInput | undefined;
   status: StoreStatus;
 
   onSubmit: OnSubmit<BookInput>;

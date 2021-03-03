@@ -42,7 +42,13 @@ const Container: FC<Props> = (props) => {
   const state = useStoreSelector(selector);
 
   return (
-    <Form {...state} title="Add book" onSubmit={onSubmit} onBack={onBack} />
+    <Form
+      {...state}
+      title="Add book"
+      object={undefined}
+      onSubmit={onSubmit}
+      onBack={onBack}
+    />
   );
 };
 

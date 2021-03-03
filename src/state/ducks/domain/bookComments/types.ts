@@ -1,3 +1,8 @@
+export enum FooBarType {
+  Foo = 'foo',
+  Bar = 'bar',
+}
+
 export interface BookComment {
   id: string;
   bookId: number;
@@ -16,12 +21,12 @@ export interface BookComment {
 export interface BookCommentDetail {
   id: string;
   bookId: number;
-  confirmed: 0 | 1;
+  confirmed: boolean;
   publishDate: string;
   approvedAt: string;
   amount: number;
   column: number;
-  choices: 'foo' | 'bar';
+  choices: FooBarType;
   description: string;
   votes: number;
   slug: string;
@@ -31,14 +36,14 @@ export interface BookCommentDetail {
 export interface BookCommentInput {
   id: string;
   bookId: number;
-  confirmed: 0 | 1;
+  confirmed: boolean;
   publishDate: string;
   approvedAt: string;
   amount: number;
   column: number;
-  choices: 'foo' | 'bar';
+  choices: FooBarType;
   description: string;
   votes: number;
   slug: string;
-  cover: string | null;
+  cover?: unknown;
 }
