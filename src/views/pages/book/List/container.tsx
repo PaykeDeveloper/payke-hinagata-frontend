@@ -1,13 +1,14 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
+import { joinString } from 'src/base/utils';
 import {
   booksSelector,
   booksStatusSelector,
 } from 'src/state/ducks/domain/books/selectors';
 import { booksActions } from 'src/state/ducks/domain/books/slice';
-import { useReduxDispatch, useReduxSelector } from 'src/state/store';
-import { booksNewPath, getBookEditPath } from 'src/views/routes/paths';
+import { useStoreDispatch, useStoreSelector } from 'src/state/store';
+import { bookNewPath, getBookPath } from 'src/views/routes/paths';
 import { RouterLocationState } from 'src/views/routes/types';
 import Component from './component';
 
@@ -21,29 +22,32 @@ const selector = createSelector(
 const Container: FC<Props> = (props) => {
   const {
     history: { push },
-    location: { search },
+    location: { pathname, search },
   } = props;
-  const dispatch = useReduxDispatch();
+
+  const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(booksActions.fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
-  const state = useReduxSelector(selector);
+  const state = useStoreSelector(selector);
+
+  const path = joinString(pathname, search);
 
   const onClickAdd = useCallback(
-    () => push(booksNewPath, { search } as RouterLocationState),
-    [push, search]
+    () => push(bookNewPath, { path } as RouterLocationState),
+    [push, path]
   );
 
-  const onClickLink = useCallback(
+  const onClickShow = useCallback(
     (bookId: number) =>
-      push(getBookEditPath({ bookId: `${bookId}` }), {
-        search,
+      push(getBookPath({ bookId: `${bookId}` }), {
+        path,
       } as RouterLocationState),
-    [push, search]
+    [push, path]
   );
 
   return (
-    <Component {...state} onClickAdd={onClickAdd} onClickLink={onClickLink} />
+    <Component {...state} onClickAdd={onClickAdd} onClickShow={onClickShow} />
   );
 };
 

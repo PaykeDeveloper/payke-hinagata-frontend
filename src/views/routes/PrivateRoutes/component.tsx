@@ -2,9 +2,7 @@ import React, { FC } from 'react';
 
 import { Route, Switch } from 'react-router-dom';
 import PrivateLayout from 'src/views/components/PrivateLayout';
-import privateRoutes, {
-  privatePaths,
-} from 'src/views/routes/PrivateRoutes/routes';
+import privateRoutes from 'src/views/routes/PrivateRoutes/routes';
 
 const Component: FC = () => {
   return (
@@ -14,7 +12,6 @@ const Component: FC = () => {
           <Route key={index} exact {...route} />
         ))}
       </Switch>
-      <Route path={privatePaths} />
     </PrivateLayout>
   );
 };

@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { serialize } from 'object-to-formdata';
 import api, { CancelToken, isAxiosError } from 'src/base/api';
 import { siteName } from 'src/base/constants';
 import { RootState } from 'src/state/types';
@@ -79,15 +80,22 @@ export const createPostAsyncThunk = <Returned, PathParams, BodyParams>(
 ) =>
   createAsyncThunk<
     Returned,
-    { pathParams: PathParams; bodyParams: BodyParams },
+    { pathParams: PathParams; bodyParams: BodyParams; useFormData?: boolean },
     ThunkApiConfig
   >(
     `${siteName}/${name}`,
-    async ({ pathParams, bodyParams }, { signal, rejectWithValue }) => {
+    async (
+      { pathParams, bodyParams, useFormData },
+      { signal, rejectWithValue }
+    ) => {
       try {
-        const response = await api.post(getApiUrl(pathParams), bodyParams, {
-          cancelToken: createCancelToken(signal),
-        });
+        const response = await api.post(
+          getApiUrl(pathParams),
+          useFormData ? serialize(bodyParams) : bodyParams,
+          {
+            cancelToken: createCancelToken(signal),
+          }
+        );
         return response.data;
       } catch (e) {
         const rejectValue = getRejectValue(e);
@@ -102,15 +110,25 @@ export const createPatchAsyncThunk = <Returned, PathParams, BodyParams>(
 ) =>
   createAsyncThunk<
     Returned,
-    { pathParams: PathParams; bodyParams: BodyParams },
+    { pathParams: PathParams; bodyParams: BodyParams; useFormData?: boolean },
     ThunkApiConfig
   >(
     `${siteName}/${name}`,
-    async ({ pathParams, bodyParams }, { signal, rejectWithValue }) => {
+    async (
+      { pathParams, bodyParams, useFormData },
+      { signal, rejectWithValue }
+    ) => {
       try {
-        const response = await api.patch(getApiUrl(pathParams), bodyParams, {
-          cancelToken: createCancelToken(signal),
-        });
+        const response = await api.post(
+          getApiUrl(pathParams),
+          useFormData ? serialize(bodyParams) : bodyParams,
+          {
+            cancelToken: createCancelToken(signal),
+            headers: {
+              'X-HTTP-Method-Override': 'PATCH',
+            },
+          }
+        );
         return response.data;
       } catch (e) {
         const rejectValue = getRejectValue(e);

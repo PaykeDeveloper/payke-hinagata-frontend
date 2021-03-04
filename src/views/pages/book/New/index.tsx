@@ -2,10 +2,9 @@ import React, { FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
-import { joinString } from 'src/base/utils';
 import { booksStatusSelector } from 'src/state/ducks/domain/books/selectors';
 import { booksActions } from 'src/state/ducks/domain/books/slice';
-import { useReduxDispatch, useReduxSelector } from 'src/state/store';
+import { useStoreDispatch, useStoreSelector } from 'src/state/store';
 import { booksPath } from 'src/views/routes/paths';
 import { RouterLocationState } from 'src/views/routes/types';
 import Form from '../components/Form';
@@ -22,14 +21,10 @@ const Container: FC<Props> = (props) => {
     history: { push },
     location,
   } = props;
-  const search = location.state?.search;
+  const backPath = location.state?.path || booksPath;
+  const onBack = useCallback(() => push(backPath), [push, backPath]);
 
-  const onBack = useCallback(() => push(joinString(booksPath, search)), [
-    push,
-    search,
-  ]);
-
-  const dispatch = useReduxDispatch();
+  const dispatch = useStoreDispatch();
 
   const onSubmit = useCallback(
     async (bodyParams) => {
@@ -44,10 +39,16 @@ const Container: FC<Props> = (props) => {
     [dispatch, pathParams, onBack]
   );
 
-  const state = useReduxSelector(selector);
+  const state = useStoreSelector(selector);
 
   return (
-    <Form {...state} title="Add book" onSubmit={onSubmit} onBack={onBack} />
+    <Form
+      {...state}
+      title="Add book"
+      object={undefined}
+      onSubmit={onSubmit}
+      onBack={onBack}
+    />
   );
 };
 

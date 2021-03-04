@@ -3,8 +3,8 @@ import { Button } from '@material-ui/core';
 import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
+import { Book } from 'src/state/ducks/domain/books/types';
 import { StoreStatus } from 'src/state/types/base';
-import { Book } from 'src/state/types/domain';
 import {
   dateColDef,
   RouterDataGrid,
@@ -24,11 +24,11 @@ interface Props {
   status: StoreStatus;
 
   onClickAdd: () => void;
-  onClickLink: (bookId: number) => void;
+  onClickShow: (bookId: number) => void;
 }
 
 const Component: FC<Props> = (props) => {
-  const { books, status, onClickAdd, onClickLink } = props;
+  const { books, status, onClickAdd, onClickShow } = props;
   const { t } = useTranslation();
 
   const columns: GridColumns = [
@@ -36,7 +36,7 @@ const Component: FC<Props> = (props) => {
       field: 'id',
       headerName: t('ID'),
       renderCell: ({ value }) => (
-        <Link onClick={() => onClickLink(value as Book['id'])}>{value}</Link>
+        <Link onClick={() => onClickShow(value as Book['id'])}>{value}</Link>
       ),
     },
     { field: 'title', headerName: t('Title'), width: 200 },

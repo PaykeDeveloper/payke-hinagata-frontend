@@ -32,16 +32,18 @@ export const getEntitiesInitialState = () => ({
 });
 
 const createEntitiesSlice = <
-  EntitiesEntity,
-  EntitiesPath,
   Entity,
+  EntitiesPath,
+  EntityDetail,
   EntityPath,
+  CreateInput,
+  UpdateInput = CreateInput,
   DomainState extends EntitiesState<
-    EntitiesEntity,
-    EntitiesPath,
     Entity,
+    EntitiesPath,
+    EntityDetail,
     EntityPath
-  > = EntitiesState<EntitiesEntity, EntitiesPath, Entity, EntityPath>
+  > = EntitiesState<Entity, EntitiesPath, EntityDetail, EntityPath>
 >(
   domainName: string,
   initialState: DomainState,
@@ -65,26 +67,26 @@ const createEntitiesSlice = <
   >;
   type GetState = () => RootState;
 
-  const fetchEntities = createGetAsyncThunk<
-    EntitiesEntity[],
-    EntitiesPath,
-    unknown
-  >(`${domainName}/fetchEntities`, entitiesUrl);
+  const fetchEntities = createGetAsyncThunk<Entity[], EntitiesPath, unknown>(
+    `${domainName}/fetchEntities`,
+    entitiesUrl
+  );
 
-  const fetchEntity = createGetAsyncThunk<Entity, EntityPath, never>(
+  const fetchEntity = createGetAsyncThunk<EntityDetail, EntityPath, never>(
     `${domainName}/fetchEntity`,
     entityUrl
   );
 
-  const addEntity = createPostAsyncThunk<Entity, EntitiesPath, Partial<Entity>>(
-    `${domainName}/addEntity`,
-    entitiesUrl
-  );
+  const addEntity = createPostAsyncThunk<
+    EntityDetail,
+    EntitiesPath,
+    CreateInput
+  >(`${domainName}/addEntity`, entitiesUrl);
 
   const mergeEntity = createPatchAsyncThunk<
-    Entity,
+    EntityDetail,
     EntityPath,
-    Partial<Entity>
+    UpdateInput
   >(`${domainName}/mergeEntity`, entityUrl);
 
   const removeEntity = createDeleteAsyncThunk<null, EntityPath>(
@@ -109,7 +111,7 @@ const createEntitiesSlice = <
         {
           payload: { entity, timestamp, arg },
         }: PayloadAction<{
-          entity: Entity;
+          entity: EntityDetail;
           timestamp: number;
           arg: FetchEntityArg;
         }>
