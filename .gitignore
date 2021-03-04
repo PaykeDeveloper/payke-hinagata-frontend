@@ -28,4 +28,5 @@ yarn-error.log*
 # Project
 /.env
 /analyze.html
-/.firebase
+/.firebase/
+/.firebaserc
