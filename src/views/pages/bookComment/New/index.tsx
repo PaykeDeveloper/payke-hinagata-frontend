@@ -2,6 +2,7 @@ import React, { FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
+import { inputsToObject } from 'src/base/utils';
 import { bookCommentsStatusSelector } from 'src/state/ducks/domain/bookComments/selectors';
 import { bookCommentsActions } from 'src/state/ducks/domain/bookComments/slice';
 import { bookSelector } from 'src/state/ducks/domain/books/selectors';
@@ -37,11 +38,11 @@ const Container: FC<Props> = (props) => {
   }, [dispatch, pathParams]);
 
   const onSubmit = useCallback(
-    async (bodyParams) => {
+    async (params) => {
       const action = await dispatch(
         bookCommentsActions.addEntity({
           pathParams,
-          bodyParams,
+          bodyParams: inputsToObject(params, { approvedAt: 'dateTime' }),
           useFormData: true,
         })
       );

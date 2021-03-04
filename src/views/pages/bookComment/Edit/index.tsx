@@ -30,6 +30,8 @@ type Props = RouteComponentProps<
   RouterLocationState
 >;
 
+const rules = { approvedAt: 'dateTime' } as const;
+
 const Container: FC<Props> = (props) => {
   const {
     match: { params: pathParams },
@@ -51,7 +53,7 @@ const Container: FC<Props> = (props) => {
       const action = await dispatch(
         bookCommentsActions.mergeEntity({
           pathParams,
-          bodyParams: inputsToObject(params, ['approvedAt']),
+          bodyParams: inputsToObject(params, rules),
           useFormData: true,
         })
       );
@@ -65,8 +67,7 @@ const Container: FC<Props> = (props) => {
 
   const { bookComment, ...otherState } = useStoreSelector(selector);
   const object = useMemo(
-    () =>
-      bookComment && objectToInputs(bookComment, { approvedAt: 'dateTime' }),
+    () => bookComment && objectToInputs(bookComment, rules),
     [bookComment]
   );
 
