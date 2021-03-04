@@ -9,6 +9,7 @@ import { Book } from 'src/state/ducks/domain/books/types';
 import { StoreStatus } from 'src/state/types/base';
 import {
   dateColDef,
+  dateTimeColDef,
   RouterDataGrid,
   timestampColDef,
 } from 'src/views/base/material-ui/DataGrid';
@@ -68,7 +69,7 @@ const Component: FC<Props> = (props) => {
     {
       field: 'approvedAt',
       headerName: t('Approved at'),
-      ...timestampColDef,
+      ...dateTimeColDef,
     },
     { field: 'Amount', headerName: t('Amount'), width: 100 },
     { field: 'column', headerName: t('Column'), width: 100 },

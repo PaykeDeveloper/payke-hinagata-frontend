@@ -59,6 +59,7 @@ const Container: FC<Props> = (props) => {
     <Form
       {...state}
       title="Add comment"
+      object={undefined}
       bookComment={undefined}
       onSubmit={onSubmit}
       onBack={onBack}

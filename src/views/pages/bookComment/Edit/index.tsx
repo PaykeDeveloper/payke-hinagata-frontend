@@ -1,7 +1,8 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
+import { inputsToObject, objectToInputs } from 'src/base/utils';
 import {
   bookCommentSelector,
   bookCommentStatusSelector,
@@ -46,11 +47,11 @@ const Container: FC<Props> = (props) => {
   }, [dispatch, pathParams]);
 
   const onSubmit = useCallback(
-    async (bodyParams) => {
+    async (params) => {
       const action = await dispatch(
         bookCommentsActions.mergeEntity({
           pathParams,
-          bodyParams,
+          bodyParams: inputsToObject(params, ['approvedAt']),
           useFormData: true,
         })
       );
@@ -62,10 +63,22 @@ const Container: FC<Props> = (props) => {
     [dispatch, pathParams, onBack]
   );
 
-  const State = useStoreSelector(selector);
+  const { bookComment, ...otherState } = useStoreSelector(selector);
+  const object = useMemo(
+    () =>
+      bookComment && objectToInputs(bookComment, { approvedAt: 'dateTime' }),
+    [bookComment]
+  );
 
   return (
-    <Form {...State} title="Edit comment" onSubmit={onSubmit} onBack={onBack} />
+    <Form
+      {...otherState}
+      title="Edit comment"
+      object={object}
+      bookComment={bookComment}
+      onSubmit={onSubmit}
+      onBack={onBack}
+    />
   );
 };
 

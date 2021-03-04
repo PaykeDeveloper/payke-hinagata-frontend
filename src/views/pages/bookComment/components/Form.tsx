@@ -38,6 +38,7 @@ import * as yup from 'yup';
 
 export interface FormProps {
   title: string;
+  object: BookCommentInput | undefined;
   status: StoreStatus;
   book: Book | undefined;
   bookComment: BookCommentDetail | undefined;
@@ -50,6 +51,7 @@ export interface FormProps {
 const Form: FC<FormProps> = (props) => {
   const {
     title,
+    object,
     status,
     book,
     bookComment,
@@ -57,7 +59,6 @@ const Form: FC<FormProps> = (props) => {
     onBack,
     onDelete,
   } = props;
-  const object: BookCommentInput | undefined = bookComment;
   return (
     <ContentWrapper>
       <ContentHeader

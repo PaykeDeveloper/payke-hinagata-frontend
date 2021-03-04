@@ -11,7 +11,11 @@ import isEqual from 'lodash/isEqual';
 import qs from 'qs';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { formatDate, formatTimestamp } from 'src/base/dateFormat';
+import {
+  formatDate,
+  formatUtcToZonedDateTime,
+  formatUtcToZonedTimestamp,
+} from 'src/base/dateFormat';
 
 type BaseDataGridProps = Omit<DataGridProps, 'localeText'>;
 
@@ -29,11 +33,19 @@ export const dateColDef: Omit<GridColDef, 'field'> = {
       : value,
 };
 
+export const dateTimeColDef: Omit<GridColDef, 'field'> = {
+  width: 150,
+  valueFormatter: ({ value }) =>
+    typeof value === 'string' || value instanceof Date
+      ? formatUtcToZonedDateTime(value)
+      : value,
+};
+
 export const timestampColDef: Omit<GridColDef, 'field'> = {
   width: 180,
   valueFormatter: ({ value }) =>
     typeof value === 'string' || value instanceof Date
-      ? formatTimestamp(value)
+      ? formatUtcToZonedTimestamp(value)
       : value,
 };
 
