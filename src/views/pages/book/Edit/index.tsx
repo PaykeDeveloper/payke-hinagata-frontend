@@ -53,10 +53,10 @@ const Container: FC<Props> = (props) => {
   const onDelete = useCallback(async () => {
     const action = await dispatch(booksActions.removeEntity({ pathParams }));
     if (booksActions.removeEntity.fulfilled.match(action)) {
-      onBack();
+      push(booksPath);
     }
     return action;
-  }, [dispatch, pathParams, onBack]);
+  }, [dispatch, pathParams, push]);
 
   return (
     <Form
