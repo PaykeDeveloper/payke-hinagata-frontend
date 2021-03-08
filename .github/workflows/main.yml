@@ -34,7 +34,8 @@ jobs:
           path: analyze.html
   deploy-staging:
     needs: test
-    if: github.ref == 'refs/heads/main'
+#    FIXME: CIテストでコメントアウト
+#    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
