@@ -1,6 +1,12 @@
-import app from './app';
-import domain from './domain';
+import app, { AppState } from './app';
+import domain, { DomainState } from './domain';
 // import ui from './ui';
+
+export interface RootState {
+  app: AppState;
+  domain: DomainState;
+  // ui: UiState;
+}
 
 const reducers = {
   app,

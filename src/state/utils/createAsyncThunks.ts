@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { serialize } from 'object-to-formdata';
 import api, { CancelToken, isAxiosError } from 'src/base/api';
 import { siteName } from 'src/base/constants';
-import { RootState } from 'src/state/ducks/types';
+import { RootState } from 'src/state/ducks';
 import {
   ErrorStatus,
   NotFoundError,
