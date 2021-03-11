@@ -13,7 +13,7 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   listItemIcon: {
-    minWidth: theme.spacing(4),
+    minWidth: theme.spacing(5),
   },
 }));
 
