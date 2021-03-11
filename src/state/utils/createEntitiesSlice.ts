@@ -8,9 +8,9 @@ import {
 import { castDraft } from 'immer';
 import isEqual from 'lodash/isEqual';
 import { siteName } from 'src/base/constants';
+import { RootState } from 'src/state/ducks/types';
 import { Dispatch } from 'src/state/store';
-import { RootState } from 'src/state/types';
-import { EntitiesState, StoreStatus } from 'src/state/types/base';
+import { EntitiesState, StoreStatus } from 'src/state/types';
 import {
   createDeleteAsyncThunk,
   createGetAsyncThunk,

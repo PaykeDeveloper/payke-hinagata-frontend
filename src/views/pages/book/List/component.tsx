@@ -4,8 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
-import { Book } from 'src/state/ducks/domain/books/types';
-import { StoreStatus } from 'src/state/types/base';
+import { Book } from 'src/state/ducks/domain/sample/books/types';
+import { StoreStatus } from 'src/state/types';
 import {
   dateColDef,
   RouterDataGrid,

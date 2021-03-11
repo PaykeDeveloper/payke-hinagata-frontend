@@ -5,8 +5,8 @@ import { RouteComponentProps } from 'react-router-dom';
 import {
   bookSelector,
   bookStatusSelector,
-} from 'src/state/ducks/domain/books/selectors';
-import { booksActions } from 'src/state/ducks/domain/books/slice';
+} from 'src/state/ducks/domain/sample/books/selectors';
+import { booksActions } from 'src/state/ducks/domain/sample/books/slice';
 import { useStoreDispatch, useStoreSelector } from 'src/state/store';
 import { BookPath, booksPath } from 'src/views/routes/paths';
 import { BaseRouterState } from 'src/views/routes/types';

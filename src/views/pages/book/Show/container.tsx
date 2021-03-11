@@ -6,13 +6,13 @@ import { joinString } from 'src/base/utils';
 import {
   bookCommentsSelector,
   bookCommentsStatusSelector,
-} from 'src/state/ducks/domain/bookComments/selectors';
-import { bookCommentsActions } from 'src/state/ducks/domain/bookComments/slice';
+} from 'src/state/ducks/domain/sample/bookComments/selectors';
+import { bookCommentsActions } from 'src/state/ducks/domain/sample/bookComments/slice';
 import {
   bookSelector,
   bookStatusSelector,
-} from 'src/state/ducks/domain/books/selectors';
-import { booksActions } from 'src/state/ducks/domain/books/slice';
+} from 'src/state/ducks/domain/sample/books/selectors';
+import { booksActions } from 'src/state/ducks/domain/sample/books/slice';
 import { useStoreDispatch, useStoreSelector } from 'src/state/store';
 import { BookEditRouterState } from 'src/views/pages/book/Edit';
 import {

@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next';
 import {
   BookCommentDetail,
   BookCommentInput,
-} from 'src/state/ducks/domain/bookComments/types';
-import { Book } from 'src/state/ducks/domain/books/types';
-import { StoreStatus } from 'src/state/types/base';
+} from 'src/state/ducks/domain/sample/bookComments/types';
+import { Book } from 'src/state/ducks/domain/sample/books/types';
+import { StoreStatus } from 'src/state/types';
 import { BaseCheckField } from 'src/views/base/formik/CheckField';
 import { BaseForm } from 'src/views/base/formik/Form';
 import { BaseImageField } from 'src/views/base/formik/ImageField';

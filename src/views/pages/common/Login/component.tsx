@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Trans, useTranslation } from 'react-i18next';
-import { StoreStatus } from 'src/state/types/base';
+import { StoreStatus } from 'src/state/types';
 import { BaseForm } from 'src/views/base/formik/Form';
 import SubmitButton from 'src/views/base/formik/SubmitButton';
 import {

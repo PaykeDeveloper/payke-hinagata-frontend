@@ -3,7 +3,7 @@ import Button, { ButtonProps } from '@material-ui/core/Button';
 import Loader from 'src/views/components/Loader';
 
 type Props<T> = Omit<ButtonProps, 'onClick'> & {
-  onClick: () => Promise<T>;
+  onClick: () => void | Promise<T>;
 };
 
 export default function LoaderButton<T>(props: Props<T>) {

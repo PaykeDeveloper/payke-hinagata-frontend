@@ -1,13 +1,13 @@
 import { RootState } from 'src/state/store';
 
 export const bookCommentsSelector = (state: RootState) =>
-  state.domain.bookComments.entities;
+  state.domain.sample.bookComments.entities;
 
 export const bookCommentsStatusSelector = (state: RootState) =>
-  state.domain.bookComments.meta.fetchEntities.status;
+  state.domain.sample.bookComments.meta.fetchEntities.status;
 
 export const bookCommentSelector = (state: RootState) =>
-  state.domain.bookComments.entity;
+  state.domain.sample.bookComments.entity;
 
 export const bookCommentStatusSelector = (state: RootState) =>
-  state.domain.bookComments.meta.fetchEntity.status;
+  state.domain.sample.bookComments.meta.fetchEntity.status;
