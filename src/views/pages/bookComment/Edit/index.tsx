@@ -40,8 +40,9 @@ const Container: FC<Props> = (props) => {
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
-    dispatch(booksActions.fetchEntityIfNeeded({ pathParams }));
-    dispatch(bookCommentsActions.fetchEntityIfNeeded({ pathParams }));
+    const init = true;
+    dispatch(booksActions.fetchEntityIfNeeded({ pathParams, init }));
+    dispatch(bookCommentsActions.fetchEntityIfNeeded({ pathParams, init }));
   }, [dispatch, pathParams]);
 
   const onSubmit = useCallback(

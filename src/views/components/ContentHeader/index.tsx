@@ -16,11 +16,9 @@ const ContentHeader: FC<Props> = (props) => {
       <Box mt={3}>
         <RouterBreadcrumbs links={links} />
       </Box>
-      {children && (
-        <Box>
-          <Typography variant="h4">{children}</Typography>
-        </Box>
-      )}
+      <Box>
+        <Typography variant="h4">{children || <>&nbsp;</>}</Typography>
+      </Box>
     </>
   );
 };

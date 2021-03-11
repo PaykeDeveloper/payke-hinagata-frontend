@@ -18,8 +18,8 @@ import {
   createPostAsyncThunk,
 } from './createAsyncThunks';
 import {
-  getMetaInitialState,
   defaultActiveMilliSeconds,
+  getMetaInitialState,
 } from './createEntitySlice';
 
 export const getEntitiesInitialState = () => ({
@@ -229,6 +229,10 @@ const createEntitiesSlice = <
       return undefined;
     }
 
+    if (arg.init) {
+      dispatch(resetEntitiesIfNeeded());
+    }
+
     return dispatch(fetchEntities(arg));
   };
 
@@ -258,6 +262,10 @@ const createEntitiesSlice = <
     const domain = domainSelector(getState());
     if (!shouldFetchEntity(domain, arg)) {
       return undefined;
+    }
+
+    if (arg.init) {
+      dispatch(resetEntityIfNeeded());
     }
 
     return dispatch(fetchEntity(arg));

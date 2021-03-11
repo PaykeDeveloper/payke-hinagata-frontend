@@ -54,8 +54,9 @@ const Container: FC<Props> = (props) => {
 
   const dispatch = useStoreDispatch();
   useEffect(() => {
-    dispatch(booksActions.fetchEntityIfNeeded({ pathParams }));
-    dispatch(bookCommentsActions.fetchEntitiesIfNeeded({ pathParams }));
+    const init = true;
+    dispatch(booksActions.fetchEntityIfNeeded({ pathParams, init }));
+    dispatch(bookCommentsActions.fetchEntitiesIfNeeded({ pathParams, init }));
   }, [dispatch, pathParams]);
 
   const path = joinString(location.pathname, location.search);

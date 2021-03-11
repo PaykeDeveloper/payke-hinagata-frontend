@@ -34,7 +34,7 @@ const Container: FC<Props> = (props) => {
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
-    dispatch(booksActions.fetchEntityIfNeeded({ pathParams }));
+    dispatch(booksActions.fetchEntityIfNeeded({ pathParams, init: true }));
   }, [dispatch, pathParams]);
 
   const onSubmit = useCallback(
