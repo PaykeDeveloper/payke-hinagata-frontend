@@ -5,8 +5,8 @@ import {
   HomeIcon,
   ListIcon,
   MenuBookIcon,
-} from 'src/views/base/material-ui/Icon';
-import { MenuList } from 'src/views/components/SideMenu';
+} from 'src/views/components/base/material-ui/Icon';
+import { MenuList } from 'src/views/components/common/SideMenu';
 import {
   bookEditPath,
   bookPath,

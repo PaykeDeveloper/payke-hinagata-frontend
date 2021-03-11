@@ -1,13 +1,13 @@
 import { RouteProps } from 'react-router-dom';
 import { notUndefined } from 'src/base/utils';
-import BookEdit from 'src/views/pages/book/Edit';
-import BookList from 'src/views/pages/book/List';
-import BookNew from 'src/views/pages/book/New';
-import BookShow from 'src/views/pages/book/Show';
-import BookCommentEdit from 'src/views/pages/bookComment/Edit';
-import BookCommentNew from 'src/views/pages/bookComment/New';
 import Home from 'src/views/pages/common/Home';
 import NotFound from 'src/views/pages/common/NotFound';
+import BookEdit from 'src/views/pages/sample/book/Edit';
+import BookList from 'src/views/pages/sample/book/List';
+import BookNew from 'src/views/pages/sample/book/New';
+import BookShow from 'src/views/pages/sample/book/Show';
+import BookCommentEdit from 'src/views/pages/sample/bookComment/Edit';
+import BookCommentNew from 'src/views/pages/sample/bookComment/New';
 import {
   bookCommentEditPath,
   bookCommentNewPath,
