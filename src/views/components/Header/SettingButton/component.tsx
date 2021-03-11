@@ -1,4 +1,5 @@
 import React, { FC, MouseEvent, useState } from 'react';
+import { makeStyles } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Menu from '@material-ui/core/Menu';
@@ -9,6 +10,12 @@ import {
   MoreVertIcon,
   PowerSettingsNewIcon,
 } from 'src/views/base/material-ui/Icon';
+
+const useStyles = makeStyles((theme) => ({
+  listItemIcon: {
+    minWidth: theme.spacing(4),
+  },
+}));
 
 interface Props {
   onLogout: () => void;
@@ -23,6 +30,7 @@ const Component: FC<Props> = (props) => {
     handleClose();
     onLogout();
   };
+  const classes = useStyles();
   return (
     <>
       <IconButton color="inherit" onClick={handleMenu}>
@@ -43,7 +51,7 @@ const Component: FC<Props> = (props) => {
         }}
       >
         <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
+          <ListItemIcon className={classes.listItemIcon}>
             <PowerSettingsNewIcon />
           </ListItemIcon>
           <Typography>
