@@ -65,6 +65,16 @@ const Container: FC<Props> = (props) => {
     [dispatch, pathParams, onBack]
   );
 
+  const onDelete = useCallback(async () => {
+    const action = await dispatch(
+      bookCommentsActions.removeEntity({ pathParams })
+    );
+    if (bookCommentsActions.removeEntity.fulfilled.match(action)) {
+      onBack();
+    }
+    return action;
+  }, [dispatch, pathParams, onBack]);
+
   const { bookComment, ...otherState } = useStoreSelector(selector);
   const object = useMemo(
     () => bookComment && objectToInputs(bookComment, rules),
@@ -78,6 +88,7 @@ const Container: FC<Props> = (props) => {
       object={object}
       bookComment={bookComment}
       onSubmit={onSubmit}
+      onDelete={onDelete}
       onBack={onBack}
     />
   );
