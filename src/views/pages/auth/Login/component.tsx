@@ -7,7 +7,7 @@ import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { StoreStatus } from 'src/state/types/base';
 import { BaseForm } from 'src/views/base/formik/Form';
 import SubmitButton from 'src/views/base/formik/SubmitButton';
@@ -52,6 +52,8 @@ const Login: FC<LoginProps> = (props) => {
     }
   }, [onLoggedIn, isAuthenticated]);
   const classes = useStyles();
+  const { t } = useTranslation();
+
   return (
     <Fade in timeout={1000}>
       <Container maxWidth="xs">
@@ -70,18 +72,18 @@ const Login: FC<LoginProps> = (props) => {
                 initialValues={object}
                 onSubmit={onSubmit}
                 validationSchema={yup.object({
-                  email: yup.string().required(),
-                  password: yup.string().required(),
+                  email: yup.string().label(t('Email')).required(),
+                  password: yup.string().label(t('Password')).required(),
                 })}
               >
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
-                    <EmailTextField name="email" label="Email" required />
+                    <EmailTextField name="email" label={t('Email')} required />
                   </Grid>
                   <Grid item xs={12}>
                     <PasswordTextField
                       name="password"
-                      label="Password"
+                      label={t('Password')}
                       required
                     />
                   </Grid>

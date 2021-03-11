@@ -3,7 +3,6 @@ import React, { FC } from 'react';
 import { FormControlProps } from '@material-ui/core/FormControl';
 import { SelectProps } from '@material-ui/core/Select';
 import { useField, useFormikContext } from 'formik';
-import { useTranslation } from 'react-i18next';
 import MuiSelectField, {
   SelectFieldProps,
 } from 'src/views/base/material-ui/SelectField';
@@ -62,14 +61,13 @@ export const BaseSelectField: FC<BaseSelectFieldProps> = (props) => {
     formControlProps,
     ...otherProps
   } = props;
-  const { t } = useTranslation();
   return (
     <SelectField
-      label={t(label)}
+      label={label}
       formControlProps={{ disabled, required, ...formControlProps }}
       {...otherProps}
     >
-      {nullable && <option value="">{t('')}</option>}
+      {nullable && <option value="" />}
       {children}
     </SelectField>
   );

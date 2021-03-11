@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import {
   BookCommentDetail,
   BookCommentInput,
@@ -59,19 +59,20 @@ const Form: FC<FormProps> = (props) => {
     onBack,
     onDelete,
   } = props;
+  const { t } = useTranslation();
   return (
     <ContentWrapper>
       <ContentHeader
         links={[
-          { children: <Trans>Home</Trans>, to: rootPath },
-          { children: <Trans>Books</Trans>, to: booksPath },
+          { children: t('Home'), to: rootPath },
+          { children: t('Books'), to: booksPath },
           {
-            children: <Trans>{book?.title}</Trans>,
+            children: book?.title,
             to: getBookPath({ bookId: `${book?.id}` }),
           },
         ]}
       >
-        <Trans>{title}</Trans>
+        {t(title)}
       </ContentHeader>
       <ContentBody>
         <Buttons
@@ -81,7 +82,7 @@ const Form: FC<FormProps> = (props) => {
               startIcon={<NavigateBeforeIcon />}
               variant="outlined"
             >
-              <Trans>Back</Trans>
+              {t('Back')}
             </Button>,
           ]}
           rightButtons={
@@ -92,7 +93,7 @@ const Form: FC<FormProps> = (props) => {
                 color="secondary"
                 variant="outlined"
               >
-                <Trans>Delete</Trans>
+                {t('Delete')}
               </LoaderButton>,
             ]
           }
@@ -100,48 +101,60 @@ const Form: FC<FormProps> = (props) => {
         <BaseForm
           initialValues={object}
           onSubmit={onSubmit}
-          validationSchema={yup.object({})}
+          validationSchema={yup.object({
+            slug: yup.string().label(t('Slug')).required(),
+          })}
         >
           <Loader status={status}>
             <Card>
               <CardContent>
                 <Grid container spacing={1}>
                   <Grid item xs={12} sm={6}>
-                    <DateTextField name="publishDate" label="Publish date" />
+                    <DateTextField
+                      name="publishDate"
+                      label={t('Publish date')}
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <DateTimeTextField name="approvedAt" label="Approved at" />
+                    <DateTimeTextField
+                      name="approvedAt"
+                      label={t('Approved at')}
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <NumberTextField name="amount" label="Amount" />
+                    <NumberTextField name="amount" label={t('Amount')} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <NumberTextField name="column" label="column" />
+                    <NumberTextField name="column" label={t('Column')} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <BaseSelectField name="choices" label="Choices" nullable>
+                    <BaseSelectField
+                      name="choices"
+                      label={t('Choices')}
+                      nullable
+                    >
                       <FooBarOptions />
                     </BaseSelectField>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <NumberTextField name="votes" label="Votes" />
+                    <NumberTextField name="votes" label={t('Votes')} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <BaseTextField name="slug" label="Slug" />
+                    <BaseTextField name="slug" label={t('Slug')} required />
                   </Grid>
                   <Grid item xs={12}>
                     <MultiLineTextField
                       name="description"
-                      label="Description"
+                      label={t('Description')}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <BaseCheckField name="confirmed" label="Confirmed" />
+                    <BaseCheckField name="confirmed" label={t('Confirmed')} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <BaseImageField
                       name="cover"
-                      label="Cover"
+                      label={t('Cover')}
                       defaultImage={bookComment?.coverUrl}
                       maxWidth={150}
                       height={150}

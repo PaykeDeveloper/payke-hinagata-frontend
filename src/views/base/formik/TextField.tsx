@@ -3,7 +3,6 @@ import React, { FC } from 'react';
 import { InputLabelProps } from '@material-ui/core/InputLabel';
 import MuiTextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useField, useFormikContext } from 'formik';
-import { useTranslation } from 'react-i18next';
 
 type Props = TextFieldProps & {
   name: string;
@@ -44,12 +43,11 @@ interface BaseTextFieldProps {
 
 export const BaseTextField: FC<BaseTextFieldProps> = (props) => {
   const { label, ...otherProps } = props;
-  const { t } = useTranslation();
   return (
     <TextField
       variant="outlined"
-      label={t(label)}
-      placeholder={t(label)}
+      label={label}
+      placeholder={label}
       {...otherProps}
     />
   );

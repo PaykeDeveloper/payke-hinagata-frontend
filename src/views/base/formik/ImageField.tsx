@@ -3,7 +3,6 @@ import React, { FC } from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import { useField, useFormikContext } from 'formik';
-import { Trans } from 'react-i18next';
 import MuiImageField, {
   ImageFieldProps,
 } from 'src/views/base/material-ui/ImageField';
@@ -57,7 +56,7 @@ export const BaseImageField: FC<BaseImageFieldProps> = (props) => {
   return (
     <>
       <InputLabel htmlFor={otherProps.name} className={classes.label}>
-        <Trans>{label}</Trans>
+        {label}
       </InputLabel>
       <ImageField {...otherProps} />
     </>
