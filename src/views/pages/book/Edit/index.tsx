@@ -9,7 +9,7 @@ import {
 import { booksActions } from 'src/state/ducks/domain/books/slice';
 import { useStoreDispatch, useStoreSelector } from 'src/state/store';
 import { BookPath, booksPath } from 'src/views/routes/paths';
-import { RouterLocationState } from 'src/views/routes/types';
+import { BaseRouterState } from 'src/views/routes/types';
 import Form from '../components/Form';
 
 const selector = createSelector(
@@ -17,7 +17,13 @@ const selector = createSelector(
   (object, status) => ({ object, status })
 );
 
-type Props = RouteComponentProps<BookPath, StaticContext, RouterLocationState>;
+export type BookEditRouterState =
+  | (BaseRouterState & {
+      fromShow: boolean;
+    })
+  | undefined;
+
+type Props = RouteComponentProps<BookPath, StaticContext, BookEditRouterState>;
 
 const Container: FC<Props> = (props) => {
   const {
@@ -50,13 +56,18 @@ const Container: FC<Props> = (props) => {
 
   const state = useStoreSelector(selector);
 
+  const fromShow = location.state?.fromShow;
   const onDelete = useCallback(async () => {
     const action = await dispatch(booksActions.removeEntity({ pathParams }));
     if (booksActions.removeEntity.fulfilled.match(action)) {
-      push(booksPath);
+      if (fromShow) {
+        push(booksPath);
+      } else {
+        onBack();
+      }
     }
     return action;
-  }, [dispatch, pathParams, push]);
+  }, [dispatch, pathParams, onBack, push, fromShow]);
 
   return (
     <Form

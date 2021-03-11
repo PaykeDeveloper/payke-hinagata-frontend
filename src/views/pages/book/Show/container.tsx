@@ -14,6 +14,7 @@ import {
 } from 'src/state/ducks/domain/books/selectors';
 import { booksActions } from 'src/state/ducks/domain/books/slice';
 import { useStoreDispatch, useStoreSelector } from 'src/state/store';
+import { BookEditRouterState } from 'src/views/pages/book/Edit';
 import {
   BookPath,
   booksPath,
@@ -21,10 +22,10 @@ import {
   getBookCommentNewPath,
   getBookEditPath,
 } from 'src/views/routes/paths';
-import { RouterLocationState } from 'src/views/routes/types';
+import { RouterState } from 'src/views/routes/types';
 import Component from './component';
 
-type Props = RouteComponentProps<BookPath, StaticContext, RouterLocationState>;
+type Props = RouteComponentProps<BookPath, StaticContext, RouterState>;
 
 const selector = createSelector(
   [
@@ -60,7 +61,11 @@ const Container: FC<Props> = (props) => {
   const path = joinString(location.pathname, location.search);
 
   const onClickEditBook = useCallback(
-    () => push(getBookEditPath(pathParams), { path } as RouterLocationState),
+    () =>
+      push(getBookEditPath(pathParams), {
+        path,
+        fromShow: true,
+      } as BookEditRouterState),
     [push, pathParams, path]
   );
 
@@ -70,7 +75,7 @@ const Container: FC<Props> = (props) => {
     () =>
       push(getBookCommentNewPath(pathParams), {
         path,
-      } as RouterLocationState),
+      } as RouterState),
     [push, pathParams, path]
   );
 
@@ -78,7 +83,7 @@ const Container: FC<Props> = (props) => {
     (commentId: string) =>
       push(getBookCommentEditPath({ ...pathParams, commentId }), {
         path,
-      } as RouterLocationState),
+      } as RouterState),
     [push, pathParams, path]
   );
 

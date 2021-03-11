@@ -8,8 +8,12 @@ import {
 } from 'src/state/ducks/domain/books/selectors';
 import { booksActions } from 'src/state/ducks/domain/books/slice';
 import { useStoreDispatch, useStoreSelector } from 'src/state/store';
-import { bookNewPath, getBookPath } from 'src/views/routes/paths';
-import { RouterLocationState } from 'src/views/routes/types';
+import {
+  bookNewPath,
+  getBookEditPath,
+  getBookPath,
+} from 'src/views/routes/paths';
+import { RouterState } from 'src/views/routes/types';
 import Component from './component';
 
 type Props = RouteComponentProps;
@@ -34,7 +38,7 @@ const Container: FC<Props> = (props) => {
   const path = joinString(pathname, search);
 
   const onClickAdd = useCallback(
-    () => push(bookNewPath, { path } as RouterLocationState),
+    () => push(bookNewPath, { path } as RouterState),
     [push, path]
   );
 
@@ -42,12 +46,25 @@ const Container: FC<Props> = (props) => {
     (bookId: number) =>
       push(getBookPath({ bookId: `${bookId}` }), {
         path,
-      } as RouterLocationState),
+      } as RouterState),
+    [push, path]
+  );
+
+  const onClickEdit = useCallback(
+    (bookId: number) =>
+      push(getBookEditPath({ bookId: `${bookId}` }), {
+        path,
+      } as RouterState),
     [push, path]
   );
 
   return (
-    <Component {...state} onClickAdd={onClickAdd} onClickShow={onClickShow} />
+    <Component
+      {...state}
+      onClickAdd={onClickAdd}
+      onClickShow={onClickShow}
+      onClickEdit={onClickEdit}
+    />
   );
 };
 

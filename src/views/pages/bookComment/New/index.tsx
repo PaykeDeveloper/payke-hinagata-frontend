@@ -9,7 +9,7 @@ import { bookSelector } from 'src/state/ducks/domain/books/selectors';
 import { booksActions } from 'src/state/ducks/domain/books/slice';
 import { useStoreDispatch, useStoreSelector } from 'src/state/store';
 import { BookPath, getBookPath } from 'src/views/routes/paths';
-import { RouterLocationState } from 'src/views/routes/types';
+import { RouterState } from 'src/views/routes/types';
 import Form from '../components/Form';
 
 const selector = createSelector(
@@ -20,7 +20,7 @@ const selector = createSelector(
   })
 );
 
-type Props = RouteComponentProps<BookPath, StaticContext, RouterLocationState>;
+type Props = RouteComponentProps<BookPath, StaticContext, RouterState>;
 
 const Container: FC<Props> = (props) => {
   const {

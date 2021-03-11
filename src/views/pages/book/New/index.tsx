@@ -6,14 +6,14 @@ import { booksStatusSelector } from 'src/state/ducks/domain/books/selectors';
 import { booksActions } from 'src/state/ducks/domain/books/slice';
 import { useStoreDispatch, useStoreSelector } from 'src/state/store';
 import { booksPath } from 'src/views/routes/paths';
-import { RouterLocationState } from 'src/views/routes/types';
+import { RouterState } from 'src/views/routes/types';
 import Form from '../components/Form';
 
 const selector = createSelector([booksStatusSelector], (status) => ({
   status,
 }));
 
-type Props = RouteComponentProps<{}, StaticContext, RouterLocationState>;
+type Props = RouteComponentProps<{}, StaticContext, RouterState>;
 
 const Container: FC<Props> = (props) => {
   const {

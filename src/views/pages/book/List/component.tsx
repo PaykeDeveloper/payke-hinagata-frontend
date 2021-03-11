@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { Button } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
@@ -19,25 +20,49 @@ import ContentWrapper from 'src/views/components/ContentWrapper';
 import Loader from 'src/views/components/Loader';
 import { rootPath } from 'src/views/routes/paths';
 
+const useStyles = makeStyles((theme) => ({
+  showLink: {
+    marginRight: theme.spacing(1),
+  },
+}));
+
 interface Props {
   books: Book[];
   status: StoreStatus;
 
   onClickAdd: () => void;
   onClickShow: (bookId: number) => void;
+  onClickEdit: (bookId: number) => void;
 }
 
 const Component: FC<Props> = (props) => {
-  const { books, status, onClickAdd, onClickShow } = props;
+  const { books, status, onClickAdd, onClickShow, onClickEdit } = props;
   const { t } = useTranslation();
+  const classes = useStyles();
 
   const columns: GridColumns = [
     {
+      field: ' ',
+      sortable: false,
+      filterable: false,
+      renderCell: ({ row }) => (
+        <Box>
+          <Link
+            className={classes.showLink}
+            onClick={() => onClickShow(row['id'] as number)}
+          >
+            {t('Show')}
+          </Link>
+          <Link onClick={() => onClickEdit(row['id'] as number)}>
+            {t('Edit')}
+          </Link>
+        </Box>
+      ),
+    },
+    {
       field: 'id',
       headerName: t('ID'),
-      renderCell: ({ value }) => (
-        <Link onClick={() => onClickShow(value as Book['id'])}>{value}</Link>
-      ),
+      width: 100,
     },
     { field: 'title', headerName: t('Title'), width: 200 },
     { field: 'author', headerName: t('Author'), width: 150 },

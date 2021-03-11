@@ -54,16 +54,17 @@ const Component: FC<Props> = (props) => {
 
   const columns: GridColumns = [
     {
-      field: 'id',
-      headerName: t('ID'),
-      renderCell: ({ value }) => (
-        <Link
-          onClick={() => onClickEditBookComment(value as BookComment['id'])}
-        >
-          {value}
+      field: ' ',
+      sortable: false,
+      filterable: false,
+      renderCell: ({ row }) => (
+        <Link onClick={() => onClickEditBookComment(row['id'] as string)}>
+          {t('Edit')}
         </Link>
       ),
+      width: 50,
     },
+    { field: 'slug', headerName: t('Slug'), width: 200 },
     { field: 'confirmed', headerName: t('Confirmed'), width: 100 },
     { field: 'publishDate', headerName: t('Publish date'), ...dateColDef },
     {
@@ -75,7 +76,6 @@ const Component: FC<Props> = (props) => {
     { field: 'column', headerName: t('Column'), width: 100 },
     { field: 'choices', headerName: t('Choices'), width: 100 },
     { field: 'votes', headerName: t('Votes'), width: 100 },
-    { field: 'slug', headerName: t('Slug'), width: 200 },
     { field: 'coverUrl', headerName: t('Cover'), width: 200 },
     {
       field: 'createdAt',

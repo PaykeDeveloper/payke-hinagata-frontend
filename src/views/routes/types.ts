@@ -1,5 +1,5 @@
-export type RouterLocationState =
-  | {
-      path: string;
-    }
-  | undefined;
+export type BaseRouterState = {
+  path: string;
+};
+
+export type RouterState = BaseRouterState | undefined;
