@@ -4,8 +4,8 @@ import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
 import store from 'src/state/store';
-import ThemeProvider from 'src/views/components/base/material-ui/ThemeProvider';
-import SetLocale from 'src/views/components/base/yup/SetLocale';
+import ThemeProvider from 'src/views/base/material-ui/ThemeProvider';
+import SetLocale from 'src/views/base/yup/SetLocale';
 import RootRoutes from 'src/views/routes/RootRoutes';
 
 function App() {

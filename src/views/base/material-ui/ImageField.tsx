@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { Property } from 'csstype';
 import { useDropzone } from 'react-dropzone';
 import { Trans } from 'react-i18next';
-import { AddIcon, CloseIcon } from 'src/views/components/base/material-ui/Icon';
+import { AddIcon, CloseIcon } from 'src/views/base/material-ui/Icon';
 
 type StyleProps = {
   maxWidth?: Property.MaxWidth<number>;

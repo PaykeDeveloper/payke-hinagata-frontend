@@ -12,14 +12,14 @@ import {
   dateTimeColDef,
   RouterDataGrid,
   timestampColDef,
-} from 'src/views/components/base/material-ui/DataGrid';
-import DefinitionList from 'src/views/components/base/material-ui/DefinitionList';
+} from 'src/views/base/material-ui/DataGrid';
+import DefinitionList from 'src/views/base/material-ui/DefinitionList';
 import {
   AddIcon,
   EditIcon,
   NavigateBeforeIcon,
-} from 'src/views/components/base/material-ui/Icon';
-import Link from 'src/views/components/base/material-ui/Link';
+} from 'src/views/base/material-ui/Icon';
+import Link from 'src/views/base/material-ui/Link';
 import Buttons from 'src/views/components/common/Buttons';
 import ContentBody from 'src/views/components/common/ContentBody';
 import ContentHeader from 'src/views/components/common/ContentHeader';

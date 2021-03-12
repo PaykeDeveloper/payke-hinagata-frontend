@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useField, useFormikContext } from 'formik';
 import MuiImageField, {
   ImageFieldProps,
-} from 'src/views/components/base/material-ui/ImageField';
+} from 'src/views/base/material-ui/ImageField';
 
 const useStyles = makeStyles((theme) => ({
   label: {

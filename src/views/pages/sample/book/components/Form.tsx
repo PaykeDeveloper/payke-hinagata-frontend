@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 import React, { FC } from 'react';
 import { Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
@@ -5,17 +7,14 @@ import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
 import { BookInput } from 'src/state/ducks/domain/sample/books/types';
 import { StoreStatus } from 'src/state/types';
-import { BaseForm } from 'src/views/components/base/formik/Form';
-import SubmitButton from 'src/views/components/base/formik/SubmitButton';
-import {
-  BaseTextField,
-  DateTextField,
-} from 'src/views/components/base/formik/TextField';
-import { OnSubmit } from 'src/views/components/base/formik/types';
+import { BaseForm } from 'src/views/base/formik/Form';
+import SubmitButton from 'src/views/base/formik/SubmitButton';
+import { BaseTextField, DateTextField } from 'src/views/base/formik/TextField';
+import { OnSubmit } from 'src/views/base/formik/types';
 import {
   DeleteIcon,
   NavigateBeforeIcon,
-} from 'src/views/components/base/material-ui/Icon';
+} from 'src/views/base/material-ui/Icon';
 import Buttons from 'src/views/components/common/Buttons';
 import ContentBody from 'src/views/components/common/ContentBody';
 import ContentHeader from 'src/views/components/common/ContentHeader';

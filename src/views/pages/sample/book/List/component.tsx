@@ -10,9 +10,9 @@ import {
   dateColDef,
   RouterDataGrid,
   timestampColDef,
-} from 'src/views/components/base/material-ui/DataGrid';
-import { AddIcon } from 'src/views/components/base/material-ui/Icon';
-import Link from 'src/views/components/base/material-ui/Link';
+} from 'src/views/base/material-ui/DataGrid';
+import { AddIcon } from 'src/views/base/material-ui/Icon';
+import Link from 'src/views/base/material-ui/Link';
 import Buttons from 'src/views/components/common/Buttons';
 import ContentBody from 'src/views/components/common/ContentBody';
 import ContentHeader from 'src/views/components/common/ContentHeader';

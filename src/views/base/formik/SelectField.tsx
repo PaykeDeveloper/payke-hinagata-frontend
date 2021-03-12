@@ -5,7 +5,7 @@ import { SelectProps } from '@material-ui/core/Select';
 import { useField, useFormikContext } from 'formik';
 import MuiSelectField, {
   SelectFieldProps,
-} from 'src/views/components/base/material-ui/SelectField';
+} from 'src/views/base/material-ui/SelectField';
 
 type Props = SelectFieldProps & {
   name: string;

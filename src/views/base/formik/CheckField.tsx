@@ -4,7 +4,7 @@ import { FormControlProps } from '@material-ui/core/FormControl';
 import { useField, useFormikContext } from 'formik';
 import MuiCheckField, {
   CheckFieldProps,
-} from 'src/views/components/base/material-ui/CheckField';
+} from 'src/views/base/material-ui/CheckField';
 
 type Props = CheckFieldProps & {
   name: string;

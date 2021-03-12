@@ -9,23 +9,23 @@ import {
 } from 'src/state/ducks/domain/sample/bookComments/types';
 import { Book } from 'src/state/ducks/domain/sample/books/types';
 import { StoreStatus } from 'src/state/types';
-import { BaseCheckField } from 'src/views/components/base/formik/CheckField';
-import { BaseForm } from 'src/views/components/base/formik/Form';
-import { BaseImageField } from 'src/views/components/base/formik/ImageField';
-import { BaseSelectField } from 'src/views/components/base/formik/SelectField';
-import SubmitButton from 'src/views/components/base/formik/SubmitButton';
+import { BaseCheckField } from 'src/views/base/formik/CheckField';
+import { BaseForm } from 'src/views/base/formik/Form';
+import { BaseImageField } from 'src/views/base/formik/ImageField';
+import { BaseSelectField } from 'src/views/base/formik/SelectField';
+import SubmitButton from 'src/views/base/formik/SubmitButton';
 import {
   BaseTextField,
   DateTextField,
   DateTimeTextField,
   MultiLineTextField,
   NumberTextField,
-} from 'src/views/components/base/formik/TextField';
-import { OnSubmit } from 'src/views/components/base/formik/types';
+} from 'src/views/base/formik/TextField';
+import { OnSubmit } from 'src/views/base/formik/types';
 import {
   DeleteIcon,
   NavigateBeforeIcon,
-} from 'src/views/components/base/material-ui/Icon';
+} from 'src/views/base/material-ui/Icon';
 import Buttons from 'src/views/components/common/Buttons';
 import ContentBody from 'src/views/components/common/ContentBody';
 import ContentHeader from 'src/views/components/common/ContentHeader';

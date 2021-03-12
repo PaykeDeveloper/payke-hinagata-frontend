@@ -7,7 +7,7 @@ import Slide from '@material-ui/core/Slide';
 import Toolbar from '@material-ui/core/Toolbar';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import clsx from 'clsx';
-import { MenuIcon } from 'src/views/components/base/material-ui/Icon';
+import { MenuIcon } from 'src/views/base/material-ui/Icon';
 import Logo from 'src/views/components/common/Logo';
 import { drawerWidth } from 'src/views/components/common/Sidebar';
 import SettingButton from './SettingButton';

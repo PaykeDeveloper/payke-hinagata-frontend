@@ -5,7 +5,7 @@ import {
   HomeIcon,
   ListIcon,
   MenuBookIcon,
-} from 'src/views/components/base/material-ui/Icon';
+} from 'src/views/base/material-ui/Icon';
 import { MenuList } from 'src/views/components/common/SideMenu';
 import {
   bookEditPath,
@@ -18,7 +18,7 @@ import {
 } from 'src/views/routes/paths';
 
 export const privateMenuLists: MenuList[] = [
-  // FIXME: サンプルコードです。
+  // FIXME: SAMPLE CODE
   {
     menus: [
       {

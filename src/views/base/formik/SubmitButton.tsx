@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { useFormikContext } from 'formik';
 import BaseButton, {
   SubmitButtonProps,
-} from 'src/views/components/base/material-ui/SubmitButton';
+} from 'src/views/base/material-ui/SubmitButton';
 
 const SubmitButton: FC<SubmitButtonProps> = (props) => {
   const { disabled, ...otherProps } = props;

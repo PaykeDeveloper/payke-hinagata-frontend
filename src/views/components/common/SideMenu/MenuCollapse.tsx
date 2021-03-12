@@ -8,7 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import {
   ExpandLessIcon,
   ExpandMoreIcon,
-} from 'src/views/components/base/material-ui/Icon';
+} from 'src/views/base/material-ui/Icon';
 import MenuLink, { CollapseMenu, exactMatchPath } from './MenuLink';
 import { getExactMatch } from './utils';
 

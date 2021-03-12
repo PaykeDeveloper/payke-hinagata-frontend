@@ -9,7 +9,7 @@ import { Trans } from 'react-i18next';
 import {
   MoreVertIcon,
   PowerSettingsNewIcon,
-} from 'src/views/components/base/material-ui/Icon';
+} from 'src/views/base/material-ui/Icon';
 
 const useStyles = makeStyles((theme) => ({
   listItemIcon: {

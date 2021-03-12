@@ -9,14 +9,14 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Trans, useTranslation } from 'react-i18next';
 import { StoreStatus } from 'src/state/types';
-import { BaseForm } from 'src/views/components/base/formik/Form';
-import SubmitButton from 'src/views/components/base/formik/SubmitButton';
+import { BaseForm } from 'src/views/base/formik/Form';
+import SubmitButton from 'src/views/base/formik/SubmitButton';
 import {
   EmailTextField,
   PasswordTextField,
-} from 'src/views/components/base/formik/TextField';
-import { OnSubmit } from 'src/views/components/base/formik/types';
-import { PowerSettingsNewIcon } from 'src/views/components/base/material-ui/Icon';
+} from 'src/views/base/formik/TextField';
+import { OnSubmit } from 'src/views/base/formik/types';
+import { PowerSettingsNewIcon } from 'src/views/base/material-ui/Icon';
 import Loader from 'src/views/components/common/Loader';
 import Logo from 'src/views/components/common/Logo';
 import * as yup from 'yup';
