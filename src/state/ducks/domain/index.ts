@@ -1,5 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import sampleReducer, { SampleState } from './sample';
+import sampleReducer, { SampleState } from 'src/state/ducks/domain/sample';
 
 // FIXME: SAMPLE CODE
 
