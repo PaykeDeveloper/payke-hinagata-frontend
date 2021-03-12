@@ -2,6 +2,8 @@ export const otherPath = '*';
 export const rootPath = '/';
 export const loginPath = `${rootPath}login/`;
 
+// FIXME: SAMPLE CODE
+
 export interface BookPath {
   bookId: string;
 }

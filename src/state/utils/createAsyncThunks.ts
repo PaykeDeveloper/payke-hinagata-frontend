@@ -2,13 +2,13 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { serialize } from 'object-to-formdata';
 import api, { CancelToken, isAxiosError } from 'src/base/api';
 import { siteName } from 'src/base/constants';
-import { RootState } from 'src/state/types';
+import { RootState } from 'src/state/ducks';
 import {
   ErrorStatus,
   NotFoundError,
   StoreError,
   UnprocessableEntityError,
-} from 'src/state/types/base';
+} from 'src/state/types';
 
 const getError = (status: number, data: unknown) => {
   switch (status) {

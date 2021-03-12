@@ -3,7 +3,7 @@ import {
   NotFoundError,
   StoreError,
   UnprocessableEntityError,
-} from 'src/state/types/base';
+} from 'src/state/types';
 export {
   createGetAsyncThunk,
   createPostAsyncThunk,

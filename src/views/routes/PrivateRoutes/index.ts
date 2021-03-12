@@ -1,3 +1,2 @@
-import Component from './component';
-
-export default Component;
+export { default } from './component';
+export { default as privateRoutes, privatePaths } from './routes';

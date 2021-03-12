@@ -3,5 +3,7 @@
   "Some error occurred.": "不明なエラーが発生しました。",
   "Email": "メールアドレス",
   "Password": "パスワード",
-  "Log in": "ログイン"
+  "Log in": "ログイン",
+
+  "${path} is a required field": "${path}は入力必須です"
 }

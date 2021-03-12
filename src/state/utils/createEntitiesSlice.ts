@@ -8,9 +8,9 @@ import {
 import { castDraft } from 'immer';
 import isEqual from 'lodash/isEqual';
 import { siteName } from 'src/base/constants';
+import { RootState } from 'src/state/ducks';
 import { Dispatch } from 'src/state/store';
-import { RootState } from 'src/state/types';
-import { EntitiesState, StoreStatus } from 'src/state/types/base';
+import { EntitiesState, StoreStatus } from 'src/state/types';
 import {
   createDeleteAsyncThunk,
   createGetAsyncThunk,
@@ -18,8 +18,8 @@ import {
   createPostAsyncThunk,
 } from './createAsyncThunks';
 import {
-  getMetaInitialState,
   defaultActiveMilliSeconds,
+  getMetaInitialState,
 } from './createEntitySlice';
 
 export const getEntitiesInitialState = () => ({
@@ -229,6 +229,10 @@ const createEntitiesSlice = <
       return undefined;
     }
 
+    if (arg.init) {
+      dispatch(resetEntitiesIfNeeded());
+    }
+
     return dispatch(fetchEntities(arg));
   };
 
@@ -258,6 +262,10 @@ const createEntitiesSlice = <
     const domain = domainSelector(getState());
     if (!shouldFetchEntity(domain, arg)) {
       return undefined;
+    }
+
+    if (arg.init) {
+      dispatch(resetEntityIfNeeded());
     }
 
     return dispatch(fetchEntity(arg));

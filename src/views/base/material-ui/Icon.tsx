@@ -21,7 +21,7 @@ export const DeleteIcon = createIcon('delete');
 export const CloseIcon = createIcon('close');
 export const EditIcon = createIcon('edit');
 
-// FIXME: サンプルコードです。
+// FIXME: SAMPLE CODE
 export const HomeIcon = createIcon('home');
 export const MenuBookIcon = createIcon('menu_book');
 export const ListIcon = createIcon('list');

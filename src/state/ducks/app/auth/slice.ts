@@ -2,11 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { siteName } from 'src/base/constants';
 import { getLoginApiUrl, getLogoutApiUrl } from 'src/state/urls';
 import { createPostAsyncThunk } from 'src/state/utils';
-
-interface LoginInput {
-  email?: string;
-  password?: string;
-}
+import { LoginInput } from './types';
 
 const login = createPostAsyncThunk<
   { key: string; firebaseToken: string },

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import { Route, Switch } from 'react-router-dom';
-import PublicLayout from 'src/views/components/PublicLayout';
+import PublicLayout from 'src/views/components/templates/PublicLayout';
 import publicRoutes from './routes';
 
 const PublicRoutes: FC = () => {
