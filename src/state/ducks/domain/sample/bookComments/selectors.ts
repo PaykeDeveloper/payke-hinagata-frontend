@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 import { RootState } from 'src/state/store';
 
 export const bookCommentsSelector = (state: RootState) =>

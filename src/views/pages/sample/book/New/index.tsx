@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 import React, { FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';

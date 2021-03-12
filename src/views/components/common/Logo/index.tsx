@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+
+// FIXME: SAMPLE CODE
 import logo from './logo.svg';
 
 export interface LogoProps {

@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 export enum FooBarType {
   Foo = 'foo',
   Bar = 'bar',

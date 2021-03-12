@@ -20,6 +20,7 @@ import {
 } from 'src/views/routes/paths';
 
 const privateRoutes: RouteProps[] = [
+  // FIXME: SAMPLE CODE
   { path: bookCommentNewPath, component: BookCommentNew },
   { path: bookCommentEditPath, component: BookCommentEdit },
   { path: bookNewPath, component: BookNew },
