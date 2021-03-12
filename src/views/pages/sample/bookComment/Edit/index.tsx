@@ -43,7 +43,12 @@ const Container: FC<Props> = (props) => {
 
   useEffect(() => {
     const init = true;
-    dispatch(booksActions.fetchEntityIfNeeded({ pathParams, init }));
+    dispatch(
+      booksActions.fetchEntityIfNeeded({
+        pathParams: { bookId: pathParams.bookId },
+        init,
+      })
+    );
     dispatch(bookCommentsActions.fetchEntityIfNeeded({ pathParams, init }));
   }, [dispatch, pathParams]);
 
