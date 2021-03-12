@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import Button, { ButtonProps } from '@material-ui/core/Button';
-import Loader from 'src/views/components/common/Loader';
+import Loader from 'src/views/components/atoms/Loader';
 
 type Props<T> = Omit<ButtonProps, 'onClick'> & {
   onClick: () => void | Promise<T>;

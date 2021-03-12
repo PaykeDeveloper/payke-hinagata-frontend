@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import RouterBreadcrumbs from 'src/views/components/common/RouterBreadcrumbs';
-import { RouterLinkProps } from 'src/views/components/common/RouterLink';
+import { RouterLinkProps } from 'src/views/components/atoms/RouterLink';
+import RouterBreadcrumbs from 'src/views/components/molecules/RouterBreadcrumbs';
 
 interface Props {
   links?: RouterLinkProps[];

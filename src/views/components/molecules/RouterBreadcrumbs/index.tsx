@@ -4,7 +4,7 @@ import Breadcrumbs, { BreadcrumbsProps } from '@material-ui/core/Breadcrumbs';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import RouterLink, {
   RouterLinkProps,
-} from 'src/views/components/common/RouterLink';
+} from 'src/views/components/atoms/RouterLink';
 
 export interface RouterBreadcrumbsProps {
   links?: RouterLinkProps[];

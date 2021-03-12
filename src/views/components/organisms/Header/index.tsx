@@ -8,8 +8,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import clsx from 'clsx';
 import { MenuIcon } from 'src/views/base/material-ui/Icon';
-import Logo from 'src/views/components/common/Logo';
-import { drawerWidth } from 'src/views/components/common/Sidebar';
+import Logo from 'src/views/components/atoms/Logo';
+import { drawerWidth } from 'src/views/components/organisms/Sidebar';
 import SettingButton from './SettingButton';
 
 const useStyles = makeStyles((theme) => ({

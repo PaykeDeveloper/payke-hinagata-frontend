@@ -6,7 +6,7 @@ import {
   ListIcon,
   MenuBookIcon,
 } from 'src/views/base/material-ui/Icon';
-import { MenuList } from 'src/views/components/common/SideMenu';
+import { MenuList } from 'src/views/components/molecules/SideMenu';
 import {
   bookEditPath,
   bookPath,

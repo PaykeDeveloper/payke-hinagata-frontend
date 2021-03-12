@@ -15,11 +15,11 @@ import {
 } from 'src/views/base/material-ui/DataGrid';
 import { AddIcon } from 'src/views/base/material-ui/Icon';
 import Link from 'src/views/base/material-ui/Link';
-import Buttons from 'src/views/components/common/Buttons';
-import ContentBody from 'src/views/components/common/ContentBody';
-import ContentHeader from 'src/views/components/common/ContentHeader';
-import ContentWrapper from 'src/views/components/common/ContentWrapper';
-import Loader from 'src/views/components/common/Loader';
+import Loader from 'src/views/components/atoms/Loader';
+import Buttons from 'src/views/components/molecules/Buttons';
+import ContentBody from 'src/views/components/molecules/ContentBody';
+import ContentHeader from 'src/views/components/molecules/ContentHeader';
+import ContentWrapper from 'src/views/components/molecules/ContentWrapper';
 import { rootPath } from 'src/views/routes/paths';
 
 const useStyles = makeStyles((theme) => ({

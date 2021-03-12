@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { siteName } from 'src/base/constants';
-import { drawerWidth } from 'src/views/components/common/Sidebar';
+import { drawerWidth } from 'src/views/components/organisms/Sidebar';
 
 const useStyles = makeStyles((theme) => ({
   footer: {

@@ -3,10 +3,10 @@ import { makeStyles, Theme } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
-import Footer from 'src/views/components/common/Footer';
-import Header from 'src/views/components/common/Header';
-import ScrollToTop from 'src/views/components/common/ScrollToTop';
-import Sidebar, { drawerWidth } from 'src/views/components/common/Sidebar';
+import ScrollToTop from 'src/views/components/atoms/ScrollToTop';
+import Footer from 'src/views/components/organisms/Footer';
+import Header from 'src/views/components/organisms/Header';
+import Sidebar, { drawerWidth } from 'src/views/components/organisms/Sidebar';
 import { privateMenuLists } from 'src/views/routes/menus';
 
 export const footerSpace = 8;

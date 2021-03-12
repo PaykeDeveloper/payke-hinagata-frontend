@@ -17,8 +17,8 @@ import {
 } from 'src/views/base/formik/TextField';
 import { OnSubmit } from 'src/views/base/formik/types';
 import { PowerSettingsNewIcon } from 'src/views/base/material-ui/Icon';
-import Loader from 'src/views/components/common/Loader';
-import Logo from 'src/views/components/common/Logo';
+import Loader from 'src/views/components/atoms/Loader';
+import Logo from 'src/views/components/atoms/Logo';
 import * as yup from 'yup';
 
 const useStyles = makeStyles({

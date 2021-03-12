@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Trans } from 'react-i18next';
-import ContentHeader from 'src/views/components/common/ContentHeader';
-import ContentWrapper from 'src/views/components/common/ContentWrapper';
+import ContentHeader from 'src/views/components/molecules/ContentHeader';
+import ContentWrapper from 'src/views/components/molecules/ContentWrapper';
 
 // FIXME: SAMPLE CODE
 const Home: FC = () => (

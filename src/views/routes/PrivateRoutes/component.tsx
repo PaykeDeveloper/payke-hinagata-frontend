@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import { Route, Switch } from 'react-router-dom';
-import PrivateLayout from 'src/views/components/common/PrivateLayout';
+import PrivateLayout from 'src/views/components/templates/PrivateLayout';
 import privateRoutes from './routes';
 
 const Component: FC = () => {

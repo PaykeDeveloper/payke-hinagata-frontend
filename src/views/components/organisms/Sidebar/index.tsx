@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import SwipeDrawer from '@material-ui/core/SwipeableDrawer';
-import SideMenu, { MenuList } from 'src/views/components/common/SideMenu';
+import SideMenu, { MenuList } from 'src/views/components/molecules/SideMenu';
 
 export const drawerWidth = 240;
 
