@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import baseTheme from './theme';
 
 const getLocale = (lang: string | undefined) => {
-  console.log(lang);
   switch (lang) {
     case 'ja': {
       return jaJP;
