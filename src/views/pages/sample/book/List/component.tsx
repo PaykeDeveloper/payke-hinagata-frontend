@@ -7,7 +7,7 @@ import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { Book } from 'src/state/ducks/domain/sample/books/types';
-import { StoreStatus } from 'src/state/types';
+import { StoreError, StoreStatus } from 'src/state/types';
 import {
   dateColDef,
   RouterDataGrid,
@@ -20,6 +20,7 @@ import Buttons from 'src/views/components/molecules/Buttons';
 import ContentBody from 'src/views/components/molecules/ContentBody';
 import ContentHeader from 'src/views/components/molecules/ContentHeader';
 import ContentWrapper from 'src/views/components/molecules/ContentWrapper';
+import ErrorWrapper from 'src/views/components/molecules/ErrorWrapper';
 import { rootPath } from 'src/views/routes/paths';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   books: Book[];
   status: StoreStatus;
+  error: StoreError | undefined;
 
   onClickAdd: () => void;
   onClickShow: (bookId: number) => void;
@@ -38,7 +40,7 @@ interface Props {
 }
 
 const Component: FC<Props> = (props) => {
-  const { books, status, onClickAdd, onClickShow, onClickEdit } = props;
+  const { books, status, error, onClickAdd, onClickShow, onClickEdit } = props;
   const { t } = useTranslation();
   const classes = useStyles();
 
@@ -91,21 +93,23 @@ const Component: FC<Props> = (props) => {
         <Trans>Books</Trans>
       </ContentHeader>
       <ContentBody>
-        <Buttons
-          leftButtons={[
-            <Button
-              onClick={onClickAdd}
-              startIcon={<AddIcon />}
-              color="primary"
-              variant="outlined"
-            >
-              <Trans>Add</Trans>
-            </Button>,
-          ]}
-        />
-        <Loader status={status}>
-          <RouterDataGrid columns={columns} rows={books} />
-        </Loader>
+        <ErrorWrapper error={error}>
+          <Buttons
+            leftButtons={[
+              <Button
+                onClick={onClickAdd}
+                startIcon={<AddIcon />}
+                color="primary"
+                variant="outlined"
+              >
+                <Trans>Add</Trans>
+              </Button>,
+            ]}
+          />
+          <Loader status={status}>
+            <RouterDataGrid columns={columns} rows={books} />
+          </Loader>
+        </ErrorWrapper>
       </ContentBody>
     </ContentWrapper>
   );

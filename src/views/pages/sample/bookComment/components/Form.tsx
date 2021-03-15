@@ -10,7 +10,7 @@ import {
   BookCommentInput,
 } from 'src/state/ducks/domain/sample/bookComments/types';
 import { Book } from 'src/state/ducks/domain/sample/books/types';
-import { StoreStatus } from 'src/state/types';
+import { StoreError, StoreStatus } from 'src/state/types';
 import { BaseCheckField } from 'src/views/base/formik/CheckField';
 import { BaseForm } from 'src/views/base/formik/Form';
 import { BaseImageField } from 'src/views/base/formik/ImageField';
@@ -33,6 +33,7 @@ import Buttons from 'src/views/components/molecules/Buttons';
 import ContentBody from 'src/views/components/molecules/ContentBody';
 import ContentHeader from 'src/views/components/molecules/ContentHeader';
 import ContentWrapper from 'src/views/components/molecules/ContentWrapper';
+import ErrorWrapper from 'src/views/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/views/components/molecules/LoaderButton';
 import { booksPath, getBookPath, rootPath } from 'src/views/routes/paths';
 import * as yup from 'yup';
@@ -42,6 +43,7 @@ export interface FormProps {
   title: string;
   object: BookCommentInput | undefined;
   status: StoreStatus;
+  error: StoreError | undefined;
   book: Book | undefined;
   bookComment: BookCommentDetail | undefined;
 
@@ -55,6 +57,7 @@ const Form: FC<FormProps> = (props) => {
     title,
     object,
     status,
+    error,
     book,
     bookComment,
     onSubmit,
@@ -77,99 +80,101 @@ const Form: FC<FormProps> = (props) => {
         {t(title)}
       </ContentHeader>
       <ContentBody>
-        <Buttons
-          leftButtons={[
-            <Button
-              onClick={onBack}
-              startIcon={<NavigateBeforeIcon />}
-              variant="outlined"
-            >
-              {t('Back')}
-            </Button>,
-          ]}
-          rightButtons={
-            onDelete && [
-              <LoaderButton
-                onClick={onDelete}
-                startIcon={<DeleteIcon />}
-                color="secondary"
+        <ErrorWrapper error={error}>
+          <Buttons
+            leftButtons={[
+              <Button
+                onClick={onBack}
+                startIcon={<NavigateBeforeIcon />}
                 variant="outlined"
               >
-                {t('Delete')}
-              </LoaderButton>,
-            ]
-          }
-        />
-        <BaseForm
-          initialValues={object}
-          onSubmit={onSubmit}
-          validationSchema={yup.object({
-            slug: yup.string().label(t('Slug')).required(),
-          })}
-        >
-          <Loader status={status}>
-            <Card>
-              <CardContent>
-                <Grid container spacing={1}>
-                  <Grid item xs={12} sm={6}>
-                    <DateTextField
-                      name="publishDate"
-                      label={t('Publish date')}
-                    />
+                {t('Back')}
+              </Button>,
+            ]}
+            rightButtons={
+              onDelete && [
+                <LoaderButton
+                  onClick={onDelete}
+                  startIcon={<DeleteIcon />}
+                  color="secondary"
+                  variant="outlined"
+                >
+                  {t('Delete')}
+                </LoaderButton>,
+              ]
+            }
+          />
+          <BaseForm
+            initialValues={object}
+            onSubmit={onSubmit}
+            validationSchema={yup.object({
+              slug: yup.string().label(t('Slug')).required(),
+            })}
+          >
+            <Loader status={status}>
+              <Card>
+                <CardContent>
+                  <Grid container spacing={1}>
+                    <Grid item xs={12} sm={6}>
+                      <DateTextField
+                        name="publishDate"
+                        label={t('Publish date')}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <DateTimeTextField
+                        name="approvedAt"
+                        label={t('Approved at')}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <NumberTextField name="amount" label={t('Amount')} />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <NumberTextField name="column" label={t('Column')} />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <BaseSelectField
+                        name="choices"
+                        label={t('Choices')}
+                        nullable
+                      >
+                        <FooBarOptions />
+                      </BaseSelectField>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <NumberTextField name="votes" label={t('Votes')} />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <BaseTextField name="slug" label={t('Slug')} required />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <MultiLineTextField
+                        name="description"
+                        label={t('Description')}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <BaseCheckField name="confirmed" label={t('Confirmed')} />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <BaseImageField
+                        name="cover"
+                        label={t('Cover')}
+                        defaultImage={bookComment?.coverUrl}
+                        maxWidth={150}
+                        height={150}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <DateTimeTextField
-                      name="approvedAt"
-                      label={t('Approved at')}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <NumberTextField name="amount" label={t('Amount')} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <NumberTextField name="column" label={t('Column')} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <BaseSelectField
-                      name="choices"
-                      label={t('Choices')}
-                      nullable
-                    >
-                      <FooBarOptions />
-                    </BaseSelectField>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <NumberTextField name="votes" label={t('Votes')} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <BaseTextField name="slug" label={t('Slug')} required />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <MultiLineTextField
-                      name="description"
-                      label={t('Description')}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <BaseCheckField name="confirmed" label={t('Confirmed')} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <BaseImageField
-                      name="cover"
-                      label={t('Cover')}
-                      defaultImage={bookComment?.coverUrl}
-                      maxWidth={150}
-                      height={150}
-                    />
-                  </Grid>
-                </Grid>
-              </CardContent>
-              <CardActions>
-                <SubmitButton />
-              </CardActions>
-            </Card>
-          </Loader>
-        </BaseForm>
+                </CardContent>
+                <CardActions>
+                  <SubmitButton />
+                </CardActions>
+              </Card>
+            </Loader>
+          </BaseForm>
+        </ErrorWrapper>
       </ContentBody>
     </ContentWrapper>
   );

@@ -6,6 +6,7 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { inputsToObject, objectToInputs } from 'src/base/utils';
 import {
+  bookCommentErrorSelector,
   bookCommentSelector,
   bookCommentStatusSelector,
 } from 'src/state/ducks/domain/sample/bookComments/selectors';
@@ -18,11 +19,17 @@ import { RouterState } from 'src/views/routes/types';
 import Form from '../components/Form';
 
 const selector = createSelector(
-  [bookSelector, bookCommentSelector, bookCommentStatusSelector],
-  (book, bookComment, status) => ({
+  [
+    bookSelector,
+    bookCommentSelector,
+    bookCommentStatusSelector,
+    bookCommentErrorSelector,
+  ],
+  (book, bookComment, status, error) => ({
     book,
     bookComment,
     status,
+    error,
   })
 );
 

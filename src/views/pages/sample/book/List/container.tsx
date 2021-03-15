@@ -5,6 +5,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import {
+  booksErrorSelector,
   booksSelector,
   booksStatusSelector,
 } from 'src/state/ducks/domain/sample/books/selectors';
@@ -21,8 +22,8 @@ import Component from './component';
 type Props = RouteComponentProps;
 
 const selector = createSelector(
-  [booksSelector, booksStatusSelector],
-  (books, status) => ({ books, status })
+  [booksSelector, booksStatusSelector, booksErrorSelector],
+  (books, status, error) => ({ books, status, error })
 );
 
 const Container: FC<Props> = (props) => {

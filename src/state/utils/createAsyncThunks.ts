@@ -6,12 +6,17 @@ import { RootState } from 'src/state/ducks';
 import {
   ErrorStatus,
   NotFoundError,
+  InternalServerError,
   StoreError,
+  UnauthorizedError,
   UnprocessableEntityError,
 } from 'src/state/types';
 
 const getError = (status: number, data: unknown) => {
   switch (status) {
+    case 401: {
+      return { status: ErrorStatus.Unauthorized, data } as UnauthorizedError;
+    }
     case 404: {
       return { status: ErrorStatus.NotFound } as NotFoundError;
     }
@@ -21,8 +26,14 @@ const getError = (status: number, data: unknown) => {
         data,
       } as UnprocessableEntityError;
     }
+    case 500: {
+      return {
+        status: ErrorStatus.InternalServerError,
+        data,
+      } as InternalServerError;
+    }
     default: {
-      return { status: ErrorStatus.Unknown } as StoreError;
+      return undefined;
     }
   }
 };
@@ -31,7 +42,10 @@ const getRejectValue = (error: Error) => {
   if (isAxiosError(error)) {
     if (error.response) {
       const { status, data } = error.response;
-      return getError(status, data);
+      const e = getError(status, data);
+      if (e) {
+        return e;
+      }
     }
     return { status: ErrorStatus.Unknown } as StoreError;
   }

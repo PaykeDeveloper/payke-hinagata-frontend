@@ -6,11 +6,13 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import {
+  bookCommentsErrorSelector,
   bookCommentsSelector,
   bookCommentsStatusSelector,
 } from 'src/state/ducks/domain/sample/bookComments/selectors';
 import { bookCommentsActions } from 'src/state/ducks/domain/sample/bookComments/slice';
 import {
+  bookErrorSelector,
   bookSelector,
   bookStatusSelector,
 } from 'src/state/ducks/domain/sample/books/selectors';
@@ -33,14 +35,24 @@ const selector = createSelector(
   [
     bookSelector,
     bookStatusSelector,
+    bookErrorSelector,
     bookCommentsSelector,
     bookCommentsStatusSelector,
+    bookCommentsErrorSelector,
   ],
-  (book, bookStatus, bookComments, bookCommentsStatus) => ({
+  (
+    book,
+    bookStatus,
+    bookError,
+    bookComments,
+    bookCommentsStatus,
+    bookCommentsError
+  ) => ({
     book,
     bookStatus,
     bookComments,
     bookCommentsStatus,
+    errors: [bookError, bookCommentsError],
   })
 );
 
