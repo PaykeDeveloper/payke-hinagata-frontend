@@ -5,18 +5,19 @@ import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import {
+  bookErrorSelector,
   bookSelector,
   bookStatusSelector,
-} from 'src/state/ducks/domain/sample/books/selectors';
-import { booksActions } from 'src/state/ducks/domain/sample/books/slice';
-import { useStoreDispatch, useStoreSelector } from 'src/state/store';
+} from 'src/store/state/domain/sample/books/selectors';
+import { booksActions } from 'src/store/state/domain/sample/books/slice';
+import { useStoreDispatch, useStoreSelector } from 'src/store/store';
 import { BookPath, booksPath } from 'src/views/routes/paths';
 import { BaseRouterState } from 'src/views/routes/types';
 import Form from '../components/Form';
 
 const selector = createSelector(
-  [bookSelector, bookStatusSelector],
-  (object, status) => ({ object, status })
+  [bookSelector, bookStatusSelector, bookErrorSelector],
+  (object, status, error) => ({ object, status, error })
 );
 
 export type BookEditRouterState =

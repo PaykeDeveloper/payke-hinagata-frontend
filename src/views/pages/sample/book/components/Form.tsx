@@ -5,8 +5,8 @@ import { Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
-import { BookInput } from 'src/state/ducks/domain/sample/books/types';
-import { StoreStatus } from 'src/state/types';
+import { BookInput } from 'src/store/state/domain/sample/books/types';
+import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/views/base/formik/Form';
 import SubmitButton from 'src/views/base/formik/SubmitButton';
 import { BaseTextField, DateTextField } from 'src/views/base/formik/TextField';
@@ -20,6 +20,7 @@ import Buttons from 'src/views/components/molecules/Buttons';
 import ContentBody from 'src/views/components/molecules/ContentBody';
 import ContentHeader from 'src/views/components/molecules/ContentHeader';
 import ContentWrapper from 'src/views/components/molecules/ContentWrapper';
+import ErrorWrapper from 'src/views/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/views/components/molecules/LoaderButton';
 import { booksPath, rootPath } from 'src/views/routes/paths';
 import * as yup from 'yup';
@@ -28,6 +29,7 @@ export interface FormProps {
   title: string;
   object: BookInput | undefined;
   status: StoreStatus;
+  error: StoreError | undefined;
 
   onSubmit: OnSubmit<BookInput>;
   onBack: () => void;
@@ -35,7 +37,7 @@ export interface FormProps {
 }
 
 const Form: FC<FormProps> = (props) => {
-  const { title, object, status, onSubmit, onBack, onDelete } = props;
+  const { title, object, status, error, onSubmit, onBack, onDelete } = props;
   const { t } = useTranslation();
   return (
     <ContentWrapper>
@@ -48,62 +50,64 @@ const Form: FC<FormProps> = (props) => {
         {t(title)}
       </ContentHeader>
       <ContentBody>
-        <Buttons
-          leftButtons={[
-            <Button
-              onClick={onBack}
-              startIcon={<NavigateBeforeIcon />}
-              variant="outlined"
-            >
-              {t('Back')}
-            </Button>,
-          ]}
-          rightButtons={
-            onDelete && [
-              <LoaderButton
-                onClick={onDelete}
-                startIcon={<DeleteIcon />}
-                color="secondary"
+        <ErrorWrapper error={error}>
+          <Buttons
+            leftButtons={[
+              <Button
+                onClick={onBack}
+                startIcon={<NavigateBeforeIcon />}
                 variant="outlined"
               >
-                {t('Delete')}
-              </LoaderButton>,
-            ]
-          }
-        />
-        <BaseForm
-          initialValues={object}
-          onSubmit={onSubmit}
-          validationSchema={yup.object({
-            title: yup.string().label(t('Title')).required().max(30),
-            author: yup.string().label(t('Author')).nullable(),
-            releaseDate: yup.date().label(t('Release date')).nullable(),
-          })}
-        >
-          <Loader status={status}>
-            <Card>
-              <CardContent>
-                <Grid container spacing={1}>
-                  <Grid item xs={12} sm={6}>
-                    <BaseTextField name="title" label={t('Title')} required />
+                {t('Back')}
+              </Button>,
+            ]}
+            rightButtons={
+              onDelete && [
+                <LoaderButton
+                  onClick={onDelete}
+                  startIcon={<DeleteIcon />}
+                  color="secondary"
+                  variant="outlined"
+                >
+                  {t('Delete')}
+                </LoaderButton>,
+              ]
+            }
+          />
+          <BaseForm
+            initialValues={object}
+            onSubmit={onSubmit}
+            validationSchema={yup.object({
+              title: yup.string().label(t('Title')).required().max(30),
+              author: yup.string().label(t('Author')).nullable(),
+              releaseDate: yup.date().label(t('Release date')).nullable(),
+            })}
+          >
+            <Loader status={status}>
+              <Card>
+                <CardContent>
+                  <Grid container spacing={1}>
+                    <Grid item xs={12} sm={6}>
+                      <BaseTextField name="title" label={t('Title')} required />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <DateTextField
+                        name="releaseDate"
+                        label={t('Release date')}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <BaseTextField name="author" label={t('Author')} />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <DateTextField
-                      name="releaseDate"
-                      label={t('Release date')}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <BaseTextField name="author" label={t('Author')} />
-                  </Grid>
-                </Grid>
-              </CardContent>
-              <CardActions>
-                <SubmitButton />
-              </CardActions>
-            </Card>
-          </Loader>
-        </BaseForm>
+                </CardContent>
+                <CardActions>
+                  <SubmitButton />
+                </CardActions>
+              </Card>
+            </Loader>
+          </BaseForm>
+        </ErrorWrapper>
       </ContentBody>
     </ContentWrapper>
   );

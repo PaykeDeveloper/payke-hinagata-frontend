@@ -6,9 +6,9 @@ import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { formatDate } from 'src/base/dateFormat';
-import { BookComment } from 'src/state/ducks/domain/sample/bookComments/types';
-import { Book } from 'src/state/ducks/domain/sample/books/types';
-import { StoreStatus } from 'src/state/types';
+import { BookComment } from 'src/store/state/domain/sample/bookComments/types';
+import { Book } from 'src/store/state/domain/sample/books/types';
+import { StoreError, StoreStatus } from 'src/store/types';
 import {
   dateColDef,
   dateTimeColDef,
@@ -27,6 +27,7 @@ import Buttons from 'src/views/components/molecules/Buttons';
 import ContentBody from 'src/views/components/molecules/ContentBody';
 import ContentHeader from 'src/views/components/molecules/ContentHeader';
 import ContentWrapper from 'src/views/components/molecules/ContentWrapper';
+import ErrorWrapper from 'src/views/components/molecules/ErrorWrapper';
 import { booksPath, rootPath } from 'src/views/routes/paths';
 
 interface Props {
@@ -34,6 +35,7 @@ interface Props {
   bookStatus: StoreStatus;
   bookComments: BookComment[];
   bookCommentsStatus: StoreStatus;
+  errors: (StoreError | undefined)[];
 
   onBack: () => void;
   onClickEditBook: () => void;
@@ -47,6 +49,7 @@ const Component: FC<Props> = (props) => {
     // bookStatus,
     bookComments,
     bookCommentsStatus,
+    errors,
     onBack,
     onClickEditBook,
     onClickAddBookComment,
@@ -102,67 +105,69 @@ const Component: FC<Props> = (props) => {
         {book?.title}
       </ContentHeader>
       <ContentBody>
-        <Box>
-          <Buttons
-            leftButtons={[
-              <Button
-                onClick={onBack}
-                startIcon={<NavigateBeforeIcon />}
-                variant="outlined"
-              >
-                <Trans>Back</Trans>
-              </Button>,
-              <Button
-                onClick={onClickEditBook}
-                startIcon={<EditIcon />}
-                variant="outlined"
-                color="primary"
-              >
-                <Trans>Edit</Trans>
-              </Button>,
-            ]}
-          />
-          <Card>
-            <CardContent>
-              <DefinitionList
-                list={[
-                  {
-                    key: <Trans>Author</Trans>,
-                    value: <Typography>{book?.author}</Typography>,
-                  },
-                  {
-                    key: <Trans>Release date</Trans>,
-                    value: (
-                      <Typography>{formatDate(book?.releaseDate)}</Typography>
-                    ),
-                  },
-                ]}
-              />
-            </CardContent>
-          </Card>
-        </Box>
-        <Box mt={3}>
-          <Typography variant="h5">
-            <Trans>Comments</Trans>
-          </Typography>
-          <Box mt={1}>
+        <ErrorWrapper errors={errors}>
+          <Box>
             <Buttons
               leftButtons={[
                 <Button
-                  onClick={onClickAddBookComment}
-                  startIcon={<AddIcon />}
-                  color="primary"
+                  onClick={onBack}
+                  startIcon={<NavigateBeforeIcon />}
                   variant="outlined"
                 >
-                  <Trans>Add</Trans>
+                  <Trans>Back</Trans>
+                </Button>,
+                <Button
+                  onClick={onClickEditBook}
+                  startIcon={<EditIcon />}
+                  variant="outlined"
+                  color="primary"
+                >
+                  <Trans>Edit</Trans>
                 </Button>,
               ]}
             />
-            <Loader status={bookCommentsStatus}>
-              <RouterDataGrid columns={columns} rows={bookComments} />
-            </Loader>
+            <Card>
+              <CardContent>
+                <DefinitionList
+                  list={[
+                    {
+                      key: <Trans>Author</Trans>,
+                      value: <Typography>{book?.author}</Typography>,
+                    },
+                    {
+                      key: <Trans>Release date</Trans>,
+                      value: (
+                        <Typography>{formatDate(book?.releaseDate)}</Typography>
+                      ),
+                    },
+                  ]}
+                />
+              </CardContent>
+            </Card>
           </Box>
-        </Box>
+          <Box mt={3}>
+            <Typography variant="h5">
+              <Trans>Comments</Trans>
+            </Typography>
+            <Box mt={1}>
+              <Buttons
+                leftButtons={[
+                  <Button
+                    onClick={onClickAddBookComment}
+                    startIcon={<AddIcon />}
+                    color="primary"
+                    variant="outlined"
+                  >
+                    <Trans>Add</Trans>
+                  </Button>,
+                ]}
+              />
+              <Loader status={bookCommentsStatus}>
+                <RouterDataGrid columns={columns} rows={bookComments} />
+              </Loader>
+            </Box>
+          </Box>
+        </ErrorWrapper>
       </ContentBody>
     </ContentWrapper>
   );

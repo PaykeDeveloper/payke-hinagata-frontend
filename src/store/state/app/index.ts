@@ -1,7 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { statusReducer } from 'src/state/ducks/app/status/slice';
-import { Status } from 'src/state/ducks/app/status/types';
-import { EntityState } from 'src/state/types';
+import { statusReducer } from 'src/store/state/app/status/slice';
+import { Status } from 'src/store/state/app/status/types';
+import { EntityState } from 'src/store/types';
 
 export interface AppState {
   status: EntityState<Status, unknown>;

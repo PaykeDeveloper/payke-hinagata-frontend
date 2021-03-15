@@ -1,5 +1,5 @@
-import app, { AppState } from 'src/state/ducks/app';
-import domain, { DomainState } from 'src/state/ducks/domain';
+import app, { AppState } from 'src/store/state/app';
+import domain, { DomainState } from 'src/store/state/domain';
 // import ui from './ui';
 
 export interface RootState {

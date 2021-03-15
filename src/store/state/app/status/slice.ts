@@ -1,6 +1,6 @@
-import { authActions } from 'src/state/ducks/app/auth/slice';
-import { getStatusApiUrl } from 'src/state/urls';
-import { createEntitySlice, getEntityInitialState } from 'src/state/utils';
+import { authActions } from 'src/store/state/app/auth/slice';
+import { getStatusApiUrl } from 'src/store/urls';
+import { createEntitySlice, getEntityInitialState } from 'src/store/utils';
 import { Status } from './types';
 
 const statusSlice = createEntitySlice<Status, unknown>(

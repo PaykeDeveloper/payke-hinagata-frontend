@@ -6,16 +6,18 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import {
+  bookCommentsErrorSelector,
   bookCommentsSelector,
   bookCommentsStatusSelector,
-} from 'src/state/ducks/domain/sample/bookComments/selectors';
-import { bookCommentsActions } from 'src/state/ducks/domain/sample/bookComments/slice';
+} from 'src/store/state/domain/sample/bookComments/selectors';
+import { bookCommentsActions } from 'src/store/state/domain/sample/bookComments/slice';
 import {
+  bookErrorSelector,
   bookSelector,
   bookStatusSelector,
-} from 'src/state/ducks/domain/sample/books/selectors';
-import { booksActions } from 'src/state/ducks/domain/sample/books/slice';
-import { useStoreDispatch, useStoreSelector } from 'src/state/store';
+} from 'src/store/state/domain/sample/books/selectors';
+import { booksActions } from 'src/store/state/domain/sample/books/slice';
+import { useStoreDispatch, useStoreSelector } from 'src/store/store';
 import { BookEditRouterState } from 'src/views/pages/sample/book/Edit';
 import {
   BookPath,
@@ -33,14 +35,24 @@ const selector = createSelector(
   [
     bookSelector,
     bookStatusSelector,
+    bookErrorSelector,
     bookCommentsSelector,
     bookCommentsStatusSelector,
+    bookCommentsErrorSelector,
   ],
-  (book, bookStatus, bookComments, bookCommentsStatus) => ({
+  (
+    book,
+    bookStatus,
+    bookError,
+    bookComments,
+    bookCommentsStatus,
+    bookCommentsError
+  ) => ({
     book,
     bookStatus,
     bookComments,
     bookCommentsStatus,
+    errors: [bookError, bookCommentsError],
   })
 );
 

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -11,10 +11,14 @@ interface Props {
 
 const ContentHeader: FC<Props> = (props) => {
   const { children, links } = props;
+  const filteredLinks = useMemo(
+    () => links?.filter((link) => !!link.children),
+    [links]
+  );
   return (
     <>
       <Box mt={3}>
-        <RouterBreadcrumbs links={links} />
+        <RouterBreadcrumbs links={filteredLinks} />
       </Box>
       <Box>
         <Typography variant="h4">{children || <>&nbsp;</>}</Typography>
