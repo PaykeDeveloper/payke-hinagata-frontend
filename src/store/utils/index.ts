@@ -5,7 +5,7 @@ import {
   StoreError,
   UnauthorizedError,
   UnprocessableEntityError,
-} from 'src/state/types';
+} from 'src/store/types';
 export {
   createGetAsyncThunk,
   createPostAsyncThunk,

@@ -1,9 +1,9 @@
 import React, { FC, useCallback } from 'react';
 
 import { createSelector } from '@reduxjs/toolkit';
-import { statusStatusSelector } from 'src/state/ducks/app/status/selectors';
-import { statusActions } from 'src/state/ducks/app/status/slice';
-import { useStoreDispatch, useStoreSelector } from 'src/state/store';
+import { statusStatusSelector } from 'src/store/state/app/status/selectors';
+import { statusActions } from 'src/store/state/app/status/slice';
+import { useStoreDispatch, useStoreSelector } from 'src/store/store';
 import Component from './component';
 
 const selector = createSelector([statusStatusSelector], (status) => ({

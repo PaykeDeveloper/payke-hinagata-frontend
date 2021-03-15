@@ -5,7 +5,7 @@ import {
   useDispatch,
   useSelector,
 } from 'react-redux';
-import reducers from './ducks';
+import reducers from './state';
 
 const reducer = combineReducers(reducers);
 

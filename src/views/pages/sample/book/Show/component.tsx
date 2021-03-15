@@ -6,9 +6,9 @@ import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { formatDate } from 'src/base/dateFormat';
-import { BookComment } from 'src/state/ducks/domain/sample/bookComments/types';
-import { Book } from 'src/state/ducks/domain/sample/books/types';
-import { StoreError, StoreStatus } from 'src/state/types';
+import { BookComment } from 'src/store/state/domain/sample/bookComments/types';
+import { Book } from 'src/store/state/domain/sample/books/types';
+import { StoreError, StoreStatus } from 'src/store/types';
 import {
   dateColDef,
   dateTimeColDef,

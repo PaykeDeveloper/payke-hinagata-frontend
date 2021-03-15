@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { siteName } from 'src/base/constants';
-import { getLoginApiUrl, getLogoutApiUrl } from 'src/state/urls';
-import { createPostAsyncThunk } from 'src/state/utils';
+import { getLoginApiUrl, getLogoutApiUrl } from 'src/store/urls';
+import { createPostAsyncThunk } from 'src/store/utils';
 import { LoginInput } from './types';
 
 const login = createPostAsyncThunk<

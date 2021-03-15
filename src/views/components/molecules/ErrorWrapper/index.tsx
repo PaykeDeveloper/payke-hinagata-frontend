@@ -2,12 +2,12 @@ import { FC } from 'react';
 import { Box, Button, Container, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { notUndefined } from 'src/base/utils';
-import { StoreError } from 'src/state/types';
+import { StoreError } from 'src/store/types';
 import {
   isNotFoundError,
   isInternalServerError,
   isUnauthorizedError,
-} from 'src/state/utils';
+} from 'src/store/utils';
 import ErrorMessage, {
   ErrorMessageProps,
 } from 'src/views/components/molecules/ErrorMessage';

@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import { RootState } from 'src/state/store';
+import { RootState } from 'src/store/store';
 
 export const booksSelector = (state: RootState) =>
   state.domain.sample.books.entities;

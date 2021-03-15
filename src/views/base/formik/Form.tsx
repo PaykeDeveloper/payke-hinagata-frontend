@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { Form, Formik, FormikConfig } from 'formik';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { isUnprocessableEntityError } from 'src/state/utils';
+import { isUnprocessableEntityError } from 'src/store/utils';
 
 type Props<T> = Omit<FormikConfig<T>, 'initialValues'> & {
   initialValues: T | undefined;

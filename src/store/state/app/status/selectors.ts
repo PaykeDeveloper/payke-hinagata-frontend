@@ -1,4 +1,4 @@
-import { RootState } from 'src/state/store';
+import { RootState } from 'src/store/store';
 
 export const statusSelector = (state: RootState) => state.app.status.entity;
 

@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { CssBaseline } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
-import store from 'src/state/store';
+import store from 'src/store/store';
 import ThemeProvider from 'src/views/base/material-ui/ThemeProvider';
 import SetLocale from 'src/views/base/yup/SetLocale';
 import RootRoutes from 'src/views/routes/RootRoutes';
 
-function App() {
+const App: FC = () => {
   return (
     <Provider store={store}>
       <ThemeProvider>
@@ -24,6 +24,6 @@ function App() {
       </ThemeProvider>
     </Provider>
   );
-}
+};
 
 export default App;

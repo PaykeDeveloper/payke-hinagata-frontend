@@ -5,8 +5,8 @@ import {
   BookApiUrl,
   getBookCommentApiUrl,
   getBookCommentsApiUrl,
-} from 'src/state/urls';
-import { createEntitiesSlice, getEntitiesInitialState } from 'src/state/utils';
+} from 'src/store/urls';
+import { createEntitiesSlice, getEntitiesInitialState } from 'src/store/utils';
 import { BookComment, BookCommentDetail, BookCommentInput } from './types';
 
 const bookCommentsSlice = createEntitiesSlice<

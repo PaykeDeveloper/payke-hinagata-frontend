@@ -3,7 +3,7 @@ import React, { FC, useEffect } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CSS from 'csstype';
 import { Route, Switch } from 'react-router-dom';
-import { StoreStatus } from 'src/state/types';
+import { StoreStatus } from 'src/store/types';
 import PrivateRoute from 'src/views/components/atoms/PrivateRoute';
 import { otherPath } from 'src/views/routes/paths';
 import PrivateRoutes from 'src/views/routes/PrivateRoutes';

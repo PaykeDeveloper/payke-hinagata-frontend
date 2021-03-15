@@ -4,10 +4,10 @@ import { combineReducers } from '@reduxjs/toolkit';
 import {
   BookComment,
   BookCommentDetail,
-} from 'src/state/ducks/domain/sample/bookComments/types';
-import { Book } from 'src/state/ducks/domain/sample/books/types';
-import { EntitiesState } from 'src/state/types';
-import { BookApiUrl, BookCommentApiUrl } from 'src/state/urls';
+} from 'src/store/state/domain/sample/bookComments/types';
+import { Book } from 'src/store/state/domain/sample/books/types';
+import { EntitiesState } from 'src/store/types';
+import { BookApiUrl, BookCommentApiUrl } from 'src/store/urls';
 import { bookCommentsReducer } from './bookComments/slice';
 import { booksReducer } from './books/slice';
 

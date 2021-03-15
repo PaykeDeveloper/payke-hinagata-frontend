@@ -8,9 +8,9 @@ import {
   booksErrorSelector,
   booksSelector,
   booksStatusSelector,
-} from 'src/state/ducks/domain/sample/books/selectors';
-import { booksActions } from 'src/state/ducks/domain/sample/books/slice';
-import { useStoreDispatch, useStoreSelector } from 'src/state/store';
+} from 'src/store/state/domain/sample/books/selectors';
+import { booksActions } from 'src/store/state/domain/sample/books/slice';
+import { useStoreDispatch, useStoreSelector } from 'src/store/store';
 import {
   bookNewPath,
   getBookEditPath,

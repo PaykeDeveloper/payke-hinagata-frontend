@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ErrorStatus, NotFoundError } from 'src/state/types';
+import { ErrorStatus, NotFoundError } from 'src/store/types';
 import ContentBody from 'src/views/components/molecules/ContentBody';
 import ContentHeader from 'src/views/components/molecules/ContentHeader';
 import ContentWrapper from 'src/views/components/molecules/ContentWrapper';

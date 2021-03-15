@@ -4,7 +4,7 @@ import 'src/base/i18n';
 
 import { Story } from '@storybook/react';
 import { Provider } from 'react-redux';
-import store from 'src/state/store';
+import store from 'src/store/store';
 import ThemeProvider from 'src/views/base/material-ui/ThemeProvider';
 
 export const ThemeDecorator = (StoryComponent: Story) => (

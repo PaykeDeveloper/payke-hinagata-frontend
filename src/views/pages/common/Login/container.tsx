@@ -2,12 +2,12 @@ import React, { FC, useCallback } from 'react';
 
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
-import { authActions } from 'src/state/ducks/app/auth/slice';
+import { authActions } from 'src/store/state/app/auth/slice';
 import {
   statusSelector,
   statusStatusSelector,
-} from 'src/state/ducks/app/status/selectors';
-import { useStoreDispatch, useStoreSelector } from 'src/state/store';
+} from 'src/store/state/app/status/selectors';
+import { useStoreDispatch, useStoreSelector } from 'src/store/store';
 import { rootPath } from 'src/views/routes/paths';
 import Component, { LoginProps } from './component';
 
