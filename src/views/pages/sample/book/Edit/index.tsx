@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
@@ -15,6 +15,8 @@ import { BookPath, booksPath } from 'src/views/routes/paths';
 import { BaseRouterState } from 'src/views/routes/types';
 import Form from '../components/Form';
 
+type ChildProps = ComponentProps<typeof Form>;
+
 const selector = createSelector(
   [bookSelector, bookStatusSelector, bookErrorSelector],
   (object, status, error) => ({ object, status, error })
@@ -26,9 +28,9 @@ export type BookEditRouterState =
     })
   | undefined;
 
-type Props = RouteComponentProps<BookPath, StaticContext, BookEditRouterState>;
-
-const Container: FC<Props> = (props) => {
+const Container: FC<
+  RouteComponentProps<BookPath, StaticContext, BookEditRouterState>
+> = (props) => {
   const {
     match: { params: pathParams },
     history: { push },
@@ -36,7 +38,10 @@ const Container: FC<Props> = (props) => {
   } = props;
 
   const backPath = location.state?.path || booksPath;
-  const onBack = useCallback(() => push(backPath), [push, backPath]);
+  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
+    push,
+    backPath,
+  ]);
 
   const dispatch = useStoreDispatch();
 
@@ -44,7 +49,7 @@ const Container: FC<Props> = (props) => {
     dispatch(booksActions.fetchEntityIfNeeded({ pathParams, init: true }));
   }, [dispatch, pathParams]);
 
-  const onSubmit = useCallback(
+  const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
         booksActions.mergeEntity({ pathParams, bodyParams })
@@ -60,7 +65,7 @@ const Container: FC<Props> = (props) => {
   const state = useStoreSelector(selector);
 
   const fromShow = location.state?.fromShow;
-  const onDelete = useCallback(async () => {
+  const onDelete: ChildProps['onDelete'] = useCallback(async () => {
     const action = await dispatch(booksActions.removeEntity({ pathParams }));
     if (booksActions.removeEntity.fulfilled.match(action)) {
       if (fromShow) {

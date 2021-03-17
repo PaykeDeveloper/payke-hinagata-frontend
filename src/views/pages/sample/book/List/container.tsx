@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
@@ -19,14 +19,14 @@ import {
 import { RouterState } from 'src/views/routes/types';
 import Component from './component';
 
-type Props = RouteComponentProps;
+type ChildProps = ComponentProps<typeof Component>;
 
 const selector = createSelector(
   [booksSelector, booksStatusSelector, booksErrorSelector],
   (books, status, error) => ({ books, status, error })
 );
 
-const Container: FC<Props> = (props) => {
+const Container: FC<RouteComponentProps> = (props) => {
   const {
     history: { push },
     location: { pathname, search },
@@ -40,21 +40,21 @@ const Container: FC<Props> = (props) => {
 
   const path = joinString(pathname, search);
 
-  const onClickAdd = useCallback(
+  const onClickAdd: ChildProps['onClickAdd'] = useCallback(
     () => push(bookNewPath, { path } as RouterState),
     [push, path]
   );
 
-  const onClickShow = useCallback(
-    (bookId: number) =>
+  const onClickShow: ChildProps['onClickShow'] = useCallback(
+    (bookId) =>
       push(getBookPath({ bookId: `${bookId}` }), {
         path,
       } as RouterState),
     [push, path]
   );
 
-  const onClickEdit = useCallback(
-    (bookId: number) =>
+  const onClickEdit: ChildProps['onClickEdit'] = useCallback(
+    (bookId) =>
       push(getBookEditPath({ bookId: `${bookId}` }), {
         path,
       } as RouterState),

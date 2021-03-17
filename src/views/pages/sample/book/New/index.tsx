@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC, useCallback } from 'react';
+import React, { ComponentProps, FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
@@ -14,6 +14,8 @@ import { booksPath } from 'src/views/routes/paths';
 import { RouterState } from 'src/views/routes/types';
 import Form from '../components/Form';
 
+type ChildProps = ComponentProps<typeof Form>;
+
 const selector = createSelector(
   [booksStatusSelector, booksErrorSelector],
   (status, error) => ({
@@ -22,20 +24,23 @@ const selector = createSelector(
   })
 );
 
-type Props = RouteComponentProps<{}, StaticContext, RouterState>;
-
-const Container: FC<Props> = (props) => {
+const Container: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
+  props
+) => {
   const {
     match: { params: pathParams },
     history: { push },
     location,
   } = props;
   const backPath = location.state?.path || booksPath;
-  const onBack = useCallback(() => push(backPath), [push, backPath]);
+  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
+    push,
+    backPath,
+  ]);
 
   const dispatch = useStoreDispatch();
 
-  const onSubmit = useCallback(
+  const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
         booksActions.addEntity({ pathParams, bodyParams })

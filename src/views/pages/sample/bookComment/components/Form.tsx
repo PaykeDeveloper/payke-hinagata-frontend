@@ -39,7 +39,7 @@ import { booksPath, getBookPath, rootPath } from 'src/views/routes/paths';
 import * as yup from 'yup';
 import FooBarOptions from './FooBarOptions';
 
-export interface FormProps {
+const Form: FC<{
   title: string;
   object: BookCommentInput | undefined;
   status: StoreStatus;
@@ -50,9 +50,7 @@ export interface FormProps {
   onSubmit: OnSubmit<BookCommentInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
-}
-
-const Form: FC<FormProps> = (props) => {
+}> = (props) => {
   const {
     title,
     object,

@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Trans, useTranslation } from 'react-i18next';
+import { LoginInput } from 'src/store/state/app/auth/types';
 import { StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/views/base/formik/Form';
 import SubmitButton from 'src/views/base/formik/SubmitButton';
@@ -30,21 +31,14 @@ const useStyles = makeStyles({
   },
 });
 
-interface LoginInput {
-  email?: string;
-  password?: string;
-}
-
-export interface LoginProps {
+const Login: FC<{
   object?: LoginInput;
   isAuthenticated: boolean;
   status: StoreStatus;
 
   onSubmit: OnSubmit<LoginInput>;
   onLoggedIn: () => void;
-}
-
-const Login: FC<LoginProps> = (props) => {
+}> = (props) => {
   const { object, isAuthenticated, status, onSubmit, onLoggedIn } = props;
   useEffect(() => {
     if (isAuthenticated) {

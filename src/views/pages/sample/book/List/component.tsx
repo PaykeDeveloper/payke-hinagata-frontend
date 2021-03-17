@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface Props {
+const Component: FC<{
   books: Book[];
   status: StoreStatus;
   error: StoreError | undefined;
@@ -37,9 +37,7 @@ interface Props {
   onClickAdd: () => void;
   onClickShow: (bookId: number) => void;
   onClickEdit: (bookId: number) => void;
-}
-
-const Component: FC<Props> = (props) => {
+}> = (props) => {
   const { books, status, error, onClickAdd, onClickShow, onClickEdit } = props;
   const { t } = useTranslation();
   const classes = useStyles();

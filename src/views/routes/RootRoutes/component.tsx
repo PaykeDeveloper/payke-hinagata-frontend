@@ -16,13 +16,11 @@ const loaderStyle: CSS.Properties = {
   transform: 'translate(-50%, -50%)',
 };
 
-export interface Props {
+const Component: FC<{
   status?: StoreStatus;
 
   onMounted: () => void;
-}
-
-const Component: FC<Props> = (props) => {
+}> = (props) => {
   const { status, onMounted } = props;
   useEffect(() => {
     if (status === StoreStatus.Initial) {

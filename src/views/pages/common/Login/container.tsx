@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { ComponentProps, FC, useCallback } from 'react';
 
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
@@ -9,9 +9,9 @@ import {
 } from 'src/store/state/app/status/selectors';
 import { useStoreDispatch, useStoreSelector } from 'src/store/store';
 import { rootPath } from 'src/views/routes/paths';
-import Component, { LoginProps } from './component';
+import Component from './component';
 
-type Props = RouteComponentProps;
+type ChildProps = ComponentProps<typeof Component>;
 
 const selector = createSelector(
   [statusSelector, statusStatusSelector],
@@ -23,7 +23,7 @@ const selector = createSelector(
 
 const { login } = authActions;
 
-const Login: FC<Props> = (props) => {
+const Login: FC<RouteComponentProps> = (props) => {
   const {
     location: { search },
     history: { push, replace },
@@ -31,7 +31,7 @@ const Login: FC<Props> = (props) => {
   const state = useStoreSelector(selector);
 
   const dispatch = useStoreDispatch();
-  const onLoggedIn = useCallback(() => {
+  const onLoggedIn: ChildProps['onLoggedIn'] = useCallback(() => {
     const searchParams = new URLSearchParams(search);
     const next = searchParams.get('next');
     if (next) {
@@ -40,7 +40,7 @@ const Login: FC<Props> = (props) => {
     return push(rootPath);
   }, [push, replace, search]);
 
-  const onSubmit: LoginProps['onSubmit'] = useCallback(
+  const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(login({ pathParams: {}, bodyParams }));
       if (login.fulfilled.match(action)) {

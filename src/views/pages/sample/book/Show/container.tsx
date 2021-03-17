@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
@@ -29,7 +29,7 @@ import {
 import { RouterState } from 'src/views/routes/types';
 import Component from './component';
 
-type Props = RouteComponentProps<BookPath, StaticContext, RouterState>;
+type ChildProps = ComponentProps<typeof Component>;
 
 const selector = createSelector(
   [
@@ -56,7 +56,9 @@ const selector = createSelector(
   })
 );
 
-const Container: FC<Props> = (props) => {
+const Container: FC<
+  RouteComponentProps<BookPath, StaticContext, RouterState>
+> = (props) => {
   const {
     history: { push },
     match: { params: pathParams },
@@ -64,7 +66,10 @@ const Container: FC<Props> = (props) => {
   } = props;
 
   const backPath = location.state?.path || booksPath;
-  const onBack = useCallback(() => push(backPath), [push, backPath]);
+  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
+    push,
+    backPath,
+  ]);
 
   const dispatch = useStoreDispatch();
   useEffect(() => {
@@ -75,7 +80,7 @@ const Container: FC<Props> = (props) => {
 
   const path = joinString(location.pathname, location.search);
 
-  const onClickEditBook = useCallback(
+  const onClickEditBook: ChildProps['onClickEditBook'] = useCallback(
     () =>
       push(getBookEditPath(pathParams), {
         path,
@@ -86,7 +91,7 @@ const Container: FC<Props> = (props) => {
 
   const state = useStoreSelector(selector);
 
-  const onClickAddBookComment = useCallback(
+  const onClickAddBookComment: ChildProps['onClickAddBookComment'] = useCallback(
     () =>
       push(getBookCommentNewPath(pathParams), {
         path,
@@ -94,8 +99,8 @@ const Container: FC<Props> = (props) => {
     [push, pathParams, path]
   );
 
-  const onClickEditBookComment = useCallback(
-    (commentId: string) =>
+  const onClickEditBookComment: ChildProps['onClickEditBookComment'] = useCallback(
+    (commentId) =>
       push(getBookCommentEditPath({ ...pathParams, commentId }), {
         path,
       } as RouterState),

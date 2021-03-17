@@ -25,7 +25,7 @@ import LoaderButton from 'src/views/components/molecules/LoaderButton';
 import { booksPath, rootPath } from 'src/views/routes/paths';
 import * as yup from 'yup';
 
-export interface FormProps {
+const Form: FC<{
   title: string;
   object: BookInput | undefined;
   status: StoreStatus;
@@ -34,9 +34,7 @@ export interface FormProps {
   onSubmit: OnSubmit<BookInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
-}
-
-const Form: FC<FormProps> = (props) => {
+}> = (props) => {
   const { title, object, status, error, onSubmit, onBack, onDelete } = props;
   const { t } = useTranslation();
   return (

@@ -30,7 +30,7 @@ import ContentWrapper from 'src/views/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/views/components/molecules/ErrorWrapper';
 import { booksPath, rootPath } from 'src/views/routes/paths';
 
-interface Props {
+const Component: FC<{
   book: Book | undefined;
   bookStatus: StoreStatus;
   bookComments: BookComment[];
@@ -41,9 +41,7 @@ interface Props {
   onClickEditBook: () => void;
   onClickAddBookComment: () => void;
   onClickEditBookComment: (commentId: string) => void;
-}
-
-const Component: FC<Props> = (props) => {
+}> = (props) => {
   const {
     book,
     // bookStatus,

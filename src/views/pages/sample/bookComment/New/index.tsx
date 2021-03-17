@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
@@ -17,6 +17,8 @@ import { BookPath, getBookPath } from 'src/views/routes/paths';
 import { RouterState } from 'src/views/routes/types';
 import Form from '../components/Form';
 
+type ChildProps = ComponentProps<typeof Form>;
+
 const selector = createSelector(
   [bookSelector, bookCommentsStatusSelector, bookCommentsErrorSelector],
   (book, status, error) => ({
@@ -26,16 +28,19 @@ const selector = createSelector(
   })
 );
 
-type Props = RouteComponentProps<BookPath, StaticContext, RouterState>;
-
-const Container: FC<Props> = (props) => {
+const Container: FC<
+  RouteComponentProps<BookPath, StaticContext, RouterState>
+> = (props) => {
   const {
     match: { params: pathParams },
     history: { push },
     location,
   } = props;
   const backPath = location.state?.path || getBookPath(pathParams);
-  const onBack = useCallback(() => push(backPath), [push, backPath]);
+  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
+    push,
+    backPath,
+  ]);
 
   const dispatch = useStoreDispatch();
 
@@ -43,7 +48,7 @@ const Container: FC<Props> = (props) => {
     dispatch(booksActions.fetchEntityIfNeeded({ pathParams, init: true }));
   }, [dispatch, pathParams]);
 
-  const onSubmit = useCallback(
+  const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (params) => {
       const action = await dispatch(
         bookCommentsActions.addEntity({
