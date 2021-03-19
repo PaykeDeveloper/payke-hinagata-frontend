@@ -2,12 +2,12 @@ import React, { ComponentProps, FC, useCallback } from 'react';
 
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
+import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { authActions } from 'src/store/state/app/auth/slice';
 import {
   statusSelector,
   statusStatusSelector,
 } from 'src/store/state/app/status/selectors';
-import { useStoreDispatch, useStoreSelector } from 'src/store/store';
 import { rootPath } from 'src/views/routes/paths';
 import Component from './component';
 

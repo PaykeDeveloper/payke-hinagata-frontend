@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useStoreDispatch } from 'src/store';
 import { authActions } from 'src/store/state/app/auth/slice';
-import { useStoreDispatch } from 'src/store/store';
 import { loginPath } from 'src/views/routes/paths';
 import Component from './component';
 

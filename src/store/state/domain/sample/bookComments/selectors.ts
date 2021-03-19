@@ -1,21 +1,21 @@
 // FIXME: SAMPLE CODE
 
-import { RootState } from 'src/store/store';
+import { StoreState } from 'src/store';
 
-export const bookCommentsSelector = (state: RootState) =>
+export const bookCommentsSelector = (state: StoreState) =>
   state.domain.sample.bookComments.entities;
 
-export const bookCommentsStatusSelector = (state: RootState) =>
+export const bookCommentsStatusSelector = (state: StoreState) =>
   state.domain.sample.bookComments.meta.fetchEntities.status;
 
-export const bookCommentsErrorSelector = (state: RootState) =>
+export const bookCommentsErrorSelector = (state: StoreState) =>
   state.domain.sample.bookComments.meta.fetchEntities.error;
 
-export const bookCommentSelector = (state: RootState) =>
+export const bookCommentSelector = (state: StoreState) =>
   state.domain.sample.bookComments.entity;
 
-export const bookCommentStatusSelector = (state: RootState) =>
+export const bookCommentStatusSelector = (state: StoreState) =>
   state.domain.sample.bookComments.meta.fetchEntity.status;
 
-export const bookCommentErrorSelector = (state: RootState) =>
+export const bookCommentErrorSelector = (state: StoreState) =>
   state.domain.sample.bookComments.meta.fetchEntity.error;

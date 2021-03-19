@@ -11,6 +11,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { inputsToObject, objectToInputs } from 'src/base/utils';
+import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
   bookCommentErrorSelector,
   bookCommentSelector,
@@ -19,7 +20,6 @@ import {
 import { bookCommentsActions } from 'src/store/state/domain/sample/bookComments/slice';
 import { bookSelector } from 'src/store/state/domain/sample/books/selectors';
 import { booksActions } from 'src/store/state/domain/sample/books/slice';
-import { useStoreDispatch, useStoreSelector } from 'src/store/store';
 import { BookCommentPath, getBookPath } from 'src/views/routes/paths';
 import { RouterState } from 'src/views/routes/types';
 import Form from '../components/Form';

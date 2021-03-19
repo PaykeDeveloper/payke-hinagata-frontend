@@ -7,8 +7,8 @@ import {
 import { castDraft } from 'immer';
 import isEqual from 'lodash/isEqual';
 import { siteName } from 'src/base/constants';
+import { StoreDispatch } from 'src/store';
 import { RootState } from 'src/store/state';
-import { Dispatch } from 'src/store/store';
 import { EntityState, StoreStatus } from 'src/store/types';
 import {
   createDeleteAsyncThunk,
@@ -164,7 +164,7 @@ const createEntitySlice = <
   };
 
   const fetchEntityIfNeeded = (arg: FetchEntityArg) => (
-    dispatch: Dispatch,
+    dispatch: StoreDispatch,
     getState: GetState
   ) => {
     const domain = domainSelector(getState());
@@ -184,7 +184,7 @@ const createEntitySlice = <
   };
 
   const resetEntityIfNeeded = () => (
-    dispatch: Dispatch,
+    dispatch: StoreDispatch,
     getState: GetState
   ) => {
     const domain = domainSelector(getState());

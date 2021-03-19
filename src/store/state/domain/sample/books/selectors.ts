@@ -1,21 +1,21 @@
 // FIXME: SAMPLE CODE
 
-import { RootState } from 'src/store/store';
+import { StoreState } from 'src/store';
 
-export const booksSelector = (state: RootState) =>
+export const booksSelector = (state: StoreState) =>
   state.domain.sample.books.entities;
 
-export const booksStatusSelector = (state: RootState) =>
+export const booksStatusSelector = (state: StoreState) =>
   state.domain.sample.books.meta.fetchEntities.status;
 
-export const booksErrorSelector = (state: RootState) =>
+export const booksErrorSelector = (state: StoreState) =>
   state.domain.sample.books.meta.fetchEntities.error;
 
-export const bookSelector = (state: RootState) =>
+export const bookSelector = (state: StoreState) =>
   state.domain.sample.books.entity;
 
-export const bookStatusSelector = (state: RootState) =>
+export const bookStatusSelector = (state: StoreState) =>
   state.domain.sample.books.meta.fetchEntity.status;
 
-export const bookErrorSelector = (state: RootState) =>
+export const bookErrorSelector = (state: StoreState) =>
   state.domain.sample.books.meta.fetchEntity.error;
