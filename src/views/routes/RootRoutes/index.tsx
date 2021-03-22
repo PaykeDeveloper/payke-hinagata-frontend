@@ -4,7 +4,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { statusStatusSelector } from 'src/store/state/app/status/selectors';
 import { statusActions } from 'src/store/state/app/status/slice';
-import Component from './component';
+import Component from 'src/views/routes/RootRoutes/Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 
@@ -12,7 +12,7 @@ const selector = createSelector([statusStatusSelector], (status) => ({
   status,
 }));
 
-const Container: FC = () => {
+const RootRoutes: FC = () => {
   const state = useStoreSelector(selector);
 
   const dispatch = useStoreDispatch();
@@ -24,4 +24,4 @@ const Container: FC = () => {
   return <Component {...state} onMounted={onMounted} />;
 };
 
-export default Container;
+export default RootRoutes;

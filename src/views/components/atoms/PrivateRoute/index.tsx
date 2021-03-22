@@ -3,7 +3,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RouteProps } from 'react-router-dom';
 import { useStoreSelector } from 'src/store';
 import { statusSelector } from 'src/store/state/app/status/selectors';
-import Component from './component';
+import Component from './Component';
 
 type Props = RouteProps;
 

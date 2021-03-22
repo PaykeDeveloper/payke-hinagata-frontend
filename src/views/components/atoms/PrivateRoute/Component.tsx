@@ -6,7 +6,7 @@ interface Props extends RouteProps {
   isAuthenticated: boolean;
 }
 
-const PrivateRoute: FC<Props> = (props) => {
+const Component: FC<Props> = (props) => {
   const { isAuthenticated, ...otherProps } = props;
   if (isAuthenticated) {
     return <Route {...otherProps} />;
@@ -21,4 +21,4 @@ const PrivateRoute: FC<Props> = (props) => {
   return <Redirect to={to} />;
 };
 
-export default PrivateRoute;
+export default Component;
