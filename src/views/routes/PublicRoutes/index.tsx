@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PublicLayout from 'src/views/components/templates/PublicLayout';
 import publicRoutes from './routes';
+export { default as publicRoutes, publicPaths } from './routes';
 
 const PublicRoutes: FC = () => {
   return (

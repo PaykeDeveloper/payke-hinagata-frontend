@@ -9,7 +9,7 @@ import {
   statusStatusSelector,
 } from 'src/store/state/app/status/selectors';
 import { rootPath } from 'src/views/routes/paths';
-import Component from './component';
+import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 

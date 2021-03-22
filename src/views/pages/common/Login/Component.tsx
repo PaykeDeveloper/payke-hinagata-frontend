@@ -31,7 +31,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Login: FC<{
+const Component: FC<{
   object?: LoginInput;
   isAuthenticated: boolean;
   status: StoreStatus;
@@ -96,4 +96,4 @@ const Login: FC<{
   );
 };
 
-export default Login;
+export default Component;

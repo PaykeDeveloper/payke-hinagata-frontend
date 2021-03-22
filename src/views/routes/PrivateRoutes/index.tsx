@@ -3,8 +3,9 @@ import React, { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PrivateLayout from 'src/views/components/templates/PrivateLayout';
 import privateRoutes from './routes';
+export { default as privateRoutes, privatePaths } from './routes';
 
-const Component: FC = () => {
+const PrivateRoutes: FC = () => {
   return (
     <PrivateLayout>
       <Switch>
@@ -15,4 +16,4 @@ const Component: FC = () => {
     </PrivateLayout>
   );
 };
-export default Component;
+export default PrivateRoutes;

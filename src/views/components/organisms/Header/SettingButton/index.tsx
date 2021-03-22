@@ -3,11 +3,11 @@ import { useHistory } from 'react-router-dom';
 import { useStoreDispatch } from 'src/store';
 import { authActions } from 'src/store/state/app/auth/slice';
 import { loginPath } from 'src/views/routes/paths';
-import Component from './component';
+import Component from './Component';
 
 const { logout, resetAll } = authActions;
 
-const Container: FC = () => {
+const SettingButton: FC = () => {
   const dispatch = useStoreDispatch();
   const { push } = useHistory();
   const onLogout = useCallback(async () => {
@@ -22,4 +22,4 @@ const Container: FC = () => {
   return <Component onLogout={onLogout} />;
 };
 
-export default Container;
+export default SettingButton;
