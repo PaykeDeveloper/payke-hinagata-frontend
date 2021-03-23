@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import Logo, { LogoProps } from 'src/views/components/atoms/Logo';
+import Logo, { LogoProps } from 'src/view/components/atoms/Logo';
 
 export default {
   title: 'Logo',
