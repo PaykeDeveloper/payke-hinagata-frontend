@@ -4,9 +4,9 @@ import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
 import store from 'src/store';
-import ThemeProvider from 'src/views/base/material-ui/ThemeProvider';
-import SetLocale from 'src/views/base/yup/SetLocale';
-import RootRoutes from 'src/views/routes/RootRoutes';
+import ThemeProvider from 'src/view/base/material-ui/ThemeProvider';
+import SetLocale from 'src/view/base/yup/SetLocale';
+import RootRoutes from 'src/view/routes/RootRoutes';
 
 const App: FC = () => {
   return (
