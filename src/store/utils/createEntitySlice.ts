@@ -172,7 +172,7 @@ const createEntitySlice = <
       return undefined;
     }
 
-    if (arg.init) {
+    if (arg.reset) {
       dispatch(resetEntityIfNeeded());
     }
 

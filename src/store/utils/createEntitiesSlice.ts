@@ -229,7 +229,7 @@ const createEntitiesSlice = <
       return undefined;
     }
 
-    if (arg.init) {
+    if (arg.reset) {
       dispatch(resetEntitiesIfNeeded());
     }
 
@@ -264,7 +264,7 @@ const createEntitiesSlice = <
       return undefined;
     }
 
-    if (arg.init) {
+    if (arg.reset) {
       dispatch(resetEntityIfNeeded());
     }
 

@@ -48,7 +48,7 @@ interface StoreMeta<Arg> {
 
 interface FetchEntityArg<EntityUrl> {
   pathParams: EntityUrl;
-  init?: boolean;
+  reset?: boolean;
 }
 
 export interface EntityState<Entity, EntityArg> {
@@ -61,7 +61,7 @@ export interface EntityState<Entity, EntityArg> {
 interface FetchEntitiesArg<EntitiesUrl> {
   pathParams: EntitiesUrl;
   searchParams?: unknown;
-  init?: boolean;
+  reset?: boolean;
 }
 
 export interface EntitiesState<EntitiesEntity, EntitiesArg, Entity, EntityArg>

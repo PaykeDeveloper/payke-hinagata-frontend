@@ -60,14 +60,14 @@ const Container: FC<
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
-    const init = true;
+    const reset = true;
     dispatch(
       booksActions.fetchEntityIfNeeded({
         pathParams: { bookId: pathParams.bookId },
-        init,
+        reset,
       })
     );
-    dispatch(bookCommentsActions.fetchEntityIfNeeded({ pathParams, init }));
+    dispatch(bookCommentsActions.fetchEntityIfNeeded({ pathParams, reset }));
   }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(

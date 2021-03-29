@@ -73,9 +73,9 @@ const Show: FC<RouteComponentProps<BookPath, StaticContext, RouterState>> = (
 
   const dispatch = useStoreDispatch();
   useEffect(() => {
-    const init = true;
-    dispatch(booksActions.fetchEntityIfNeeded({ pathParams, init }));
-    dispatch(bookCommentsActions.fetchEntitiesIfNeeded({ pathParams, init }));
+    const reset = true;
+    dispatch(booksActions.fetchEntityIfNeeded({ pathParams, reset }));
+    dispatch(bookCommentsActions.fetchEntitiesIfNeeded({ pathParams, reset }));
   }, [dispatch, pathParams]);
 
   const path = joinString(location.pathname, location.search);
