@@ -1,11 +1,11 @@
 // FIXME: SAMPLE CODE
 
 import { combineReducers } from '@reduxjs/toolkit';
-import { BookImportCsv } from 'src/store/state/domain/sample/bookImportCsvs/types';
 import {
   BookComment,
   BookCommentDetail,
 } from 'src/store/state/domain/sample/bookComments/types';
+import { BookImportCsv } from 'src/store/state/domain/sample/bookImportCsvs/types';
 import { Book } from 'src/store/state/domain/sample/books/types';
 import { EntitiesState } from 'src/store/types';
 import {
@@ -13,8 +13,8 @@ import {
   BookCommentApiUrl,
   BookImportCsvApiUrl,
 } from 'src/store/urls';
-import { bookImportCsvsReducer } from './bookImportCsvs/slice';
 import { bookCommentsReducer } from './bookComments/slice';
+import { bookImportCsvsReducer } from './bookImportCsvs/slice';
 import { booksReducer } from './books/slice';
 
 export interface SampleState {

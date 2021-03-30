@@ -2,9 +2,7 @@ import React, { FC } from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import { useField, useFormikContext } from 'formik';
-import MuFileField, {
-  FileFieldProps,
-} from 'src/view/base/material-ui/FileField';
+import MuFileField from 'src/view/base/material-ui/FileField';
 
 const useStyles = makeStyles((theme) => ({
   label: {
@@ -22,7 +20,7 @@ type Props = {
 const FileField: FC<Props> = (props) => {
   const { name, defaultFile, helperText, disabled, ...otherProps } = props;
   const { isSubmitting, submitCount } = useFormikContext();
-  const [field, meta, helpers] = useField({ name });
+  const [, meta, helpers] = useField({ name });
   const hasError = !!((meta.touched || submitCount) && meta.error);
   return (
     <MuFileField

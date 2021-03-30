@@ -4,7 +4,6 @@ import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
-import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
   bookImportCsvErrorSelector,
@@ -51,8 +50,6 @@ const Show: FC<
     const reset = true;
     dispatch(bookImportCsvsActions.fetchEntityIfNeeded({ pathParams, reset }));
   }, [dispatch, pathParams]);
-
-  const path = joinString(location.pathname, location.search);
 
   const state = useStoreSelector(selector);
 

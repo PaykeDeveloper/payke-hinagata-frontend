@@ -2,7 +2,6 @@
 
 import React, { FC } from 'react';
 import { Box, Button, Card, CardContent, Typography } from '@material-ui/core';
-import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { BookImportCsv } from 'src/store/state/domain/sample/bookImportCsvs/types';
 import { StoreError, StoreStatus } from 'src/store/types';
@@ -23,13 +22,10 @@ const Component: FC<{
   onBack: () => void;
 }> = (props) => {
   const {
-    bookImportCsv: bookImportCsv,
-    // bookStatus,
+    bookImportCsv,
     errors,
     onBack,
   } = props;
-  const { t } = useTranslation();
-
   return (
     <ContentWrapper>
       <ContentHeader

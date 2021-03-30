@@ -9,7 +9,6 @@ import { Trans } from 'react-i18next';
 import { BookImportCsv } from 'src/store/state/domain/sample/bookImportCsvs/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
-  dateColDef,
   RouterDataGrid,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
