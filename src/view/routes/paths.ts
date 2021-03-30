@@ -30,3 +30,13 @@ export const getBookCommentEditPath = (params: BookCommentPath) =>
   `${getBookCommentPath(params)}edit/`;
 export const bookCommentNewPath = getBookCommentNewPath(bookParams);
 export const bookCommentEditPath = getBookCommentEditPath(bookCommentParams);
+
+export interface BookImportCsvPath {
+  bookImportCsvId: string;
+}
+const bookImportCsvParams = { bookImportCsvId: ':bookImportCsvId' };
+export const getBookImportCsvPath = ({ bookImportCsvId }: BookImportCsvPath) =>
+  `${bookImportCsvsPath}${bookImportCsvId}/`;
+export const bookImportCsvsPath = `${rootPath}bookCsvImporter/`;
+export const bookImportCsvNewPath = `${rootPath}bookCsvImporter/new/`;
+export const bookImportCsvPath = getBookImportCsvPath(bookImportCsvParams);

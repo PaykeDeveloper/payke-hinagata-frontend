@@ -25,3 +25,4 @@ export const EditIcon = createIcon('edit');
 export const HomeIcon = createIcon('home');
 export const MenuBookIcon = createIcon('menu_book');
 export const ListIcon = createIcon('list');
+export const PublishIcon = createIcon('publish');

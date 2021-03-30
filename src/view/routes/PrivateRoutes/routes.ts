@@ -8,7 +8,13 @@ import BookNew from 'src/view/pages/sample/book/New';
 import BookShow from 'src/view/pages/sample/book/Show';
 import BookCommentEdit from 'src/view/pages/sample/bookComment/Edit';
 import BookCommentNew from 'src/view/pages/sample/bookComment/New';
+import BooksCsvList from 'src/view/pages/sample/bookImportCsv/List';
+import BooksCsvNew from 'src/view/pages/sample/bookImportCsv/New';
+import BooksCsvShow from 'src/view/pages/sample/bookImportCsv/Show';
 import {
+  bookImportCsvPath,
+  bookImportCsvsPath,
+  bookImportCsvNewPath,
   bookCommentEditPath,
   bookCommentNewPath,
   bookEditPath,
@@ -21,6 +27,9 @@ import {
 
 const privateRoutes: RouteProps[] = [
   // FIXME: SAMPLE CODE
+  { path: bookImportCsvNewPath, component: BooksCsvNew },
+  { path: bookImportCsvPath, component: BooksCsvShow },
+  { path: bookImportCsvsPath, component: BooksCsvList },
   { path: bookCommentNewPath, component: BookCommentNew },
   { path: bookCommentEditPath, component: BookCommentEdit },
   { path: bookNewPath, component: BookNew },
