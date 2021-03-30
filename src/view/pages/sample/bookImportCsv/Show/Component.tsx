@@ -21,11 +21,7 @@ const Component: FC<{
 
   onBack: () => void;
 }> = (props) => {
-  const {
-    bookImportCsv,
-    errors,
-    onBack,
-  } = props;
+  const { bookImportCsv, errors, onBack } = props;
   return (
     <ContentWrapper>
       <ContentHeader
