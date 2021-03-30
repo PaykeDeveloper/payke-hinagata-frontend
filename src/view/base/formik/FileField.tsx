@@ -1,8 +1,10 @@
-import React, { FC, ReactNode, useCallback } from 'react';
+import React, { FC } from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import { useField, useFormikContext } from 'formik';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import MuFileField, {
+  FileFieldProps,
+} from 'src/view/base/material-ui/FileField';
 
 const useStyles = makeStyles((theme) => ({
   label: {
@@ -15,33 +17,6 @@ type Props = {
   defaultFile?: string | null;
   helperText?: string | null;
   disabled?: boolean | null;
-};
-
-export type FileFieldProps = {
-  name?: string;
-  helperText?: ReactNode;
-  error?: boolean;
-  onChange: (file: File | null) => void;
-  disabled?: boolean;
-};
-
-const MuFileField: FC<FileFieldProps> = (props) => {
-  const { name, helperText, error, onChange: callOnChange } = props;
-  return (
-    <>
-      <input
-        id={name}
-        name={name}
-        type="file"
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          callOnChange(event?.currentTarget?.files?.item(0) ?? null);
-        }}
-      />
-      {helperText && (
-        <FormHelperText error={error}>{helperText}</FormHelperText>
-      )}
-    </>
-  );
 };
 
 const FileField: FC<Props> = (props) => {
