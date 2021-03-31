@@ -20,6 +20,7 @@ export const AddIcon = createIcon('add');
 export const DeleteIcon = createIcon('delete');
 export const CloseIcon = createIcon('close');
 export const EditIcon = createIcon('edit');
+export const ErrorOutlineIcon = createIcon('error_outline');
 
 // FIXME: SAMPLE CODE
 export const HomeIcon = createIcon('home');

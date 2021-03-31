@@ -1,5 +1,6 @@
 export enum ErrorStatus {
-  Unknown,
+  Unknown = -1,
+  Connection = -2,
   Unauthorized = 401,
   NotFound = 404,
   UnprocessableEntity = 422,
@@ -11,24 +12,31 @@ export interface StoreError<Status = ErrorStatus, Data = unknown> {
   data: Data;
 }
 
+export type UnknownError = StoreError<ErrorStatus.Unknown, {}>;
+
+export type ConnectionError = StoreError<ErrorStatus.Connection, {}>;
+
 export type UnauthorizedError = StoreError<
   ErrorStatus.Unauthorized,
-  { message: string }
+  { message?: string }
 >;
 
-export type NotFoundError = StoreError<ErrorStatus.NotFound, undefined>;
+export type NotFoundError = StoreError<
+  ErrorStatus.NotFound,
+  { message?: string }
+>;
 
 export type UnprocessableEntityError = StoreError<
   ErrorStatus.UnprocessableEntity,
   {
-    message: string;
-    errors: Record<string, string[]>;
+    message?: string;
+    errors?: Record<string, string[]>;
   }
 >;
 
 export type InternalServerError = StoreError<
   ErrorStatus.InternalServerError,
-  { message: string }
+  { message?: string }
 >;
 
 export enum StoreStatus {
