@@ -168,7 +168,7 @@ const createEntitiesSlice = <
             state.meta.fetchEntity.error = action.payload;
           }
         })
-        .addCase(addEntity.fulfilled, (state, action) => {
+        .addCase(addEntity.fulfilled, (state) => {
           if (state.meta.fetchEntities.status === StoreStatus.Done) {
             state.entities = [];
             state.meta.fetchEntities = getMetaInitialState();
@@ -178,16 +178,20 @@ const createEntitiesSlice = <
           if (state.meta.fetchEntity.status === StoreStatus.Done) {
             state.entity = castDraft(action.payload);
             state.meta.fetchEntity.timestamp = Date.now();
+          }
 
+          if (state.meta.fetchEntities.status === StoreStatus.Done) {
             state.entities = [];
             state.meta.fetchEntities = getMetaInitialState();
           }
         })
-        .addCase(removeEntity.fulfilled, (state, action) => {
+        .addCase(removeEntity.fulfilled, (state) => {
           if (state.meta.fetchEntity.status === StoreStatus.Done) {
             state.entity = undefined;
             state.meta.fetchEntity = getMetaInitialState();
+          }
 
+          if (state.meta.fetchEntities.status === StoreStatus.Done) {
             state.entities = [];
             state.meta.fetchEntities = getMetaInitialState();
           }
@@ -204,13 +208,13 @@ const createEntitiesSlice = <
   const shouldFetchEntities = (domain: DomainState, arg: FetchEntitiesArg) => {
     const meta = domain.meta.fetchEntities;
     switch (meta.status) {
-      case StoreStatus.Initial: {
+      case StoreStatus.Initial:
+      case StoreStatus.Failed: {
         return true;
       }
       case StoreStatus.Started: {
         return false;
       }
-      case StoreStatus.Failed:
       case StoreStatus.Done: {
         return !checkInActivePeriod(meta.timestamp) || !isEqual(meta.arg, arg);
       }
@@ -239,13 +243,13 @@ const createEntitiesSlice = <
   const shouldFetchEntity = (domain: DomainState, arg: FetchEntityArg) => {
     const meta = domain.meta.fetchEntity;
     switch (meta.status) {
-      case StoreStatus.Initial: {
+      case StoreStatus.Initial:
+      case StoreStatus.Failed: {
         return true;
       }
       case StoreStatus.Started: {
         return false;
       }
-      case StoreStatus.Failed:
       case StoreStatus.Done: {
         return !checkInActivePeriod(meta.timestamp) || !isEqual(meta.arg, arg);
       }
