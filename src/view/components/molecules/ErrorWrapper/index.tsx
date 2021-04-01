@@ -3,14 +3,8 @@ import { Box, Button, Container, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { notUndefined } from 'src/base/utils';
 import { StoreError } from 'src/store/types';
-import {
-  isNotFoundError,
-  isInternalServerError,
-  isUnauthorizedError,
-} from 'src/store/utils';
-import ErrorMessage, {
-  ErrorMessageProps,
-} from 'src/view/components/molecules/ErrorMessage';
+import { getErrorMessage } from 'src/store/utils';
+import ErrorMessage from 'src/view/components/molecules/ErrorMessage';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -45,33 +39,17 @@ const ErrorWrapper: FC<Props> = (props) => {
     return <>{children}</>;
   }
 
-  let messageProps: ErrorMessageProps;
-
-  if (isNotFoundError(error)) {
-    messageProps = { title: `${error.status}`, message: t('Page not found') };
-  } else if (isUnauthorizedError(error)) {
-    messageProps = { title: `${error.status}`, message: t('Unauthorized') };
-  } else if (isInternalServerError(error)) {
-    messageProps = {
-      title: `${error.status}`,
-      message: t('Internal server error'),
-    };
-  } else {
-    messageProps = {
-      title: 'Unknown error',
-      message: t('An unknown error has occurred.'),
-    };
-  }
-
-  const onClick = () => {
-    window.location.reload();
-  };
-
+  const message = getErrorMessage(error);
   return (
     <Container maxWidth="sm" className={classes.container}>
-      <ErrorMessage {...messageProps} />
+      <ErrorMessage message={message} />
       <Box mt={4} display="flex" justifyContent="center">
-        <Button variant="outlined" onClick={onClick}>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            window.location.reload();
+          }}
+        >
           {t('Reload')}
         </Button>
       </Box>

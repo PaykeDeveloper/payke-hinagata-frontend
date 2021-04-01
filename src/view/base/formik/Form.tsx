@@ -2,8 +2,11 @@ import React, { useCallback } from 'react';
 
 import { Form, Formik, FormikConfig } from 'formik';
 import { useSnackbar } from 'notistack';
-import { useTranslation } from 'react-i18next';
-import { isUnprocessableEntityError } from 'src/store/utils';
+import {
+  getErrorMessage,
+  isStoreError,
+  isUnprocessableEntityError,
+} from 'src/store/utils';
 
 type Props<T> = Omit<FormikConfig<T>, 'initialValues'> & {
   initialValues: T | undefined;
@@ -30,7 +33,6 @@ const shouldCheckEmpty = (key: string) => {
 export const BaseForm = <T extends object>(props: Props<T>) => {
   const { children, initialValues, onSubmit, ...otherProps } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const { t } = useTranslation();
 
   const handleSubmit: Props<T>['onSubmit'] = useCallback(
     async (values, helpers) => {
@@ -44,18 +46,21 @@ export const BaseForm = <T extends object>(props: Props<T>) => {
       const action = await onSubmit(submitValues, helpers);
       if (action?.error) {
         const payload = action?.payload;
-        let message = 'Some error occurred.';
         if (isUnprocessableEntityError(payload)) {
-          message = payload.data?.message || message;
-          helpers.setErrors(payload.data?.errors as T);
+          const errors: object = payload.data?.errors ?? {};
+          helpers.setErrors(errors);
         }
-        enqueueSnackbar(t(message), {
-          variant: 'error',
-        });
+
+        if (isStoreError(payload)) {
+          const message = getErrorMessage(payload);
+          enqueueSnackbar(message, {
+            variant: 'error',
+          });
+        }
       }
       return action;
     },
-    [onSubmit, enqueueSnackbar, t]
+    [onSubmit, enqueueSnackbar]
   );
 
   return (

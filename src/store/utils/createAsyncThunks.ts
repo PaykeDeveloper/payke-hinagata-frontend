@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
 import { serialize } from 'object-to-formdata';
 import api, { CancelToken, isAxiosError } from 'src/base/api';
 import { siteName } from 'src/base/constants';
@@ -10,44 +11,60 @@ import {
   StoreError,
   UnauthorizedError,
   UnprocessableEntityError,
+  UnknownError,
+  ConnectionError,
 } from 'src/store/types';
 
-const getError = (status: number, data: unknown) => {
+const getError = (error: AxiosError) => {
+  if (!error.response) {
+    const result: ConnectionError = {
+      status: ErrorStatus.Connection,
+      data: {},
+    };
+    return result;
+  }
+  const { status, data: responseData } = error.response;
+  const data =
+    responseData && typeof responseData === 'object' ? responseData : {};
   switch (status) {
     case 401: {
-      return { status: ErrorStatus.Unauthorized, data } as UnauthorizedError;
+      const result: UnauthorizedError = {
+        status: ErrorStatus.Unauthorized,
+        data,
+      };
+      return result;
     }
     case 404: {
-      return { status: ErrorStatus.NotFound } as NotFoundError;
+      const result: NotFoundError = { status: ErrorStatus.NotFound, data };
+      return result;
     }
     case 422: {
-      return {
+      const result: UnprocessableEntityError = {
         status: ErrorStatus.UnprocessableEntity,
         data,
-      } as UnprocessableEntityError;
+      };
+      return result;
     }
     case 500: {
-      return {
+      const result: InternalServerError = {
         status: ErrorStatus.InternalServerError,
         data,
-      } as InternalServerError;
+      };
+      return result;
     }
     default: {
-      return undefined;
+      const result: UnknownError = {
+        status: ErrorStatus.Unknown,
+        data,
+      };
+      return result;
     }
   }
 };
 
 const getRejectValue = (error: Error) => {
   if (isAxiosError(error)) {
-    if (error.response) {
-      const { status, data } = error.response;
-      const e = getError(status, data);
-      if (e) {
-        return e;
-      }
-    }
-    return { status: ErrorStatus.Unknown } as StoreError;
+    return getError(error);
   }
   throw error;
 };

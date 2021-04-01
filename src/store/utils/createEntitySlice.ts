@@ -115,10 +115,7 @@ const createEntitySlice = <
           }
         })
         .addCase(addEntity.fulfilled, (state, action) => {
-          if (
-            state.meta.fetchEntity.status === StoreStatus.Done ||
-            state.meta.fetchEntity.status === StoreStatus.Failed
-          ) {
+          if (state.meta.fetchEntity.status === StoreStatus.Done) {
             state.entity = castDraft(action.payload);
             state.meta.fetchEntity.timestamp = Date.now();
           }
@@ -147,13 +144,13 @@ const createEntitySlice = <
   const shouldFetchEntity = (domain: DomainState, arg: FetchEntityArg) => {
     const meta = domain.meta.fetchEntity;
     switch (meta.status) {
-      case StoreStatus.Initial: {
+      case StoreStatus.Initial:
+      case StoreStatus.Failed: {
         return true;
       }
       case StoreStatus.Started: {
         return false;
       }
-      case StoreStatus.Failed:
       case StoreStatus.Done: {
         return !checkInActivePeriod(meta.timestamp) || !isEqual(meta.arg, arg);
       }

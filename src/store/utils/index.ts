@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import {
   ErrorStatus,
   NotFoundError,
@@ -5,6 +6,8 @@ import {
   StoreError,
   UnauthorizedError,
   UnprocessableEntityError,
+  UnknownError,
+  ConnectionError,
 } from 'src/store/types';
 export {
   createGetAsyncThunk,
@@ -21,11 +24,19 @@ export {
   getEntitiesInitialState,
 } from './createEntitiesSlice';
 
-export const isUnauthorizedError = (
-  error: StoreError
-): error is UnauthorizedError => error.status === ErrorStatus.Unauthorized;
+export const isStoreError = (error: unknown): error is StoreError =>
+  !!(error && typeof error === 'object' && 'status' in error);
 
-export const isNotFoundError = (error: StoreError): error is NotFoundError =>
+const isUnknownError = (error: StoreError): error is UnknownError =>
+  error.status === ErrorStatus.Unknown;
+
+const isConnectionError = (error: StoreError): error is ConnectionError =>
+  error.status === ErrorStatus.Connection;
+
+const isUnauthorizedError = (error: StoreError): error is UnauthorizedError =>
+  error.status === ErrorStatus.Unauthorized;
+
+const isNotFoundError = (error: StoreError): error is NotFoundError =>
   error.status === ErrorStatus.NotFound;
 
 export const isUnprocessableEntityError = (
@@ -33,7 +44,47 @@ export const isUnprocessableEntityError = (
 ): error is UnprocessableEntityError =>
   error.status === ErrorStatus.UnprocessableEntity;
 
-export const isInternalServerError = (
+const isInternalServerError = (
   error: StoreError
 ): error is InternalServerError =>
   error.status === ErrorStatus.InternalServerError;
+
+// const getResponseErrorMessage = (error: StoreError) => {
+//   if (isUnknownError(error)) {
+//   } else if (isConnectionError(error)) {
+//   } else if (isUnauthorizedError(error)) {
+//     return error.data.message;
+//   } else if (isNotFoundError(error)) {
+//     return error.data.message;
+//   } else if (isUnprocessableEntityError(error)) {
+//     return error.data.message;
+//   } else if (isInternalServerError(error)) {
+//     return error.data.message;
+//   }
+//   return undefined;
+// };
+
+const getDefault = (error: StoreError) => {
+  if (isUnknownError(error)) {
+  } else if (isConnectionError(error)) {
+    return 'An network error has occurred.';
+  } else if (isUnauthorizedError(error)) {
+    return 'Unauthorized';
+  } else if (isNotFoundError(error)) {
+    return 'Page not found';
+  } else if (isUnprocessableEntityError(error)) {
+    return 'The given data was invalid.';
+  } else if (isInternalServerError(error)) {
+    return 'Internal server error';
+  }
+  return 'An unknown error has occurred.';
+};
+
+const getDefaultErrorMessage = (error: StoreError) => {
+  const message = getDefault(error);
+  return i18next.t(message);
+};
+
+export const getErrorMessage = (error: StoreError) =>
+  // getResponseErrorMessage(error) || getDefaultErrorMessage(error);
+  getDefaultErrorMessage(error);

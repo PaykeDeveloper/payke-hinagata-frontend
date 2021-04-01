@@ -8,7 +8,7 @@ import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 const NotFound: FC = () => {
   const error: NotFoundError = {
     status: ErrorStatus.NotFound,
-    data: undefined,
+    data: {},
   };
   return (
     <ContentWrapper>

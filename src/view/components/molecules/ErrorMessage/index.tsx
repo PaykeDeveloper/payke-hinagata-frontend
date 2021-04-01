@@ -1,32 +1,29 @@
 import { FC } from 'react';
-import { Grid, makeStyles, Typography } from '@material-ui/core';
+import { Box, makeStyles, Typography } from '@material-ui/core';
+import { ErrorOutlineIcon } from 'src/view/base/material-ui/Icon';
 
 const useStyles = makeStyles((theme) => ({
-  logoGrid: {
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: theme.spacing(1),
-    },
+  icon: {
+    fontSize: theme.spacing(14),
   },
 }));
 
 export interface ErrorMessageProps {
-  title: string;
   message: string;
 }
 
 const ErrorMessage: FC<ErrorMessageProps> = (props) => {
-  const { title, message } = props;
+  const { message } = props;
   const classes = useStyles();
   return (
-    <Grid container spacing={1} justify="center" alignItems="center">
-      <Grid item xs={12} sm={2} className={classes.logoGrid}>
-        <Typography variant="h1">:(</Typography>
-      </Grid>
-      <Grid item xs={12} sm={10}>
-        <Typography variant="h3">{title}</Typography>
+    <Box>
+      <Box display="flex" justifyContent="center">
+        <ErrorOutlineIcon color="error" className={classes.icon} />
+      </Box>
+      <Box display="flex" justifyContent="center" mt={1}>
         <Typography variant="h4">{message}</Typography>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 };
 
