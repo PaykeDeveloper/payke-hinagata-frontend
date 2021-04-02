@@ -8,6 +8,8 @@ export const getRootApiUrl = () => `${backendOriginUrl}api/v1/`;
 
 export const getStatusApiUrl = () => `${getRootApiUrl()}status/`;
 
+// FIXME: SAMPLE CODE
+
 export interface BookApiUrl {
   bookId: string;
 }
