@@ -18,11 +18,11 @@ export const getBookApiUrl = ({ bookId }: BookApiUrl) =>
   `${getBooksApiUrl()}${bookId}/`;
 
 export interface BookCommentApiUrl extends BookApiUrl {
-  commentId: string;
+  commentSlug: string;
 }
 export const getBookCommentsApiUrl = ({ bookId }: BookApiUrl) =>
   `${getBooksApiUrl()}${bookId}/comments/`;
 export const getBookCommentApiUrl = ({
   bookId,
-  commentId,
-}: BookCommentApiUrl) => `${getBookCommentsApiUrl({ bookId })}${commentId}/`;
+  commentSlug,
+}: BookCommentApiUrl) => `${getBookCommentsApiUrl({ bookId })}${commentSlug}/`;

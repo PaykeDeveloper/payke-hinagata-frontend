@@ -40,7 +40,7 @@ const Component: FC<{
   onBack: () => void;
   onClickEditBook: () => void;
   onClickAddBookComment: () => void;
-  onClickEditBookComment: (commentId: string) => void;
+  onClickEditBookComment: (commentSlug: string) => void;
 }> = (props) => {
   const {
     book,
@@ -57,17 +57,17 @@ const Component: FC<{
 
   const columns: GridColumns = [
     {
-      field: ' ',
+      field: 'slug',
+      headerName: '',
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <Link onClick={() => onClickEditBookComment(row['id'] as string)}>
+        <Link onClick={() => onClickEditBookComment(row['slug'] as string)}>
           {t('Edit')}
         </Link>
       ),
       width: 50,
     },
-    { field: 'slug', headerName: t('Slug'), width: 200 },
     { field: 'confirmed', headerName: t('Confirmed'), width: 100 },
     { field: 'publishDate', headerName: t('Publish date'), ...dateColDef },
     {
