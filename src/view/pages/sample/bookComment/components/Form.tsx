@@ -17,7 +17,6 @@ import { BaseImageField } from 'src/view/base/formik/ImageField';
 import { BaseSelectField } from 'src/view/base/formik/SelectField';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
 import {
-  BaseTextField,
   DateTextField,
   DateTimeTextField,
   MultiLineTextField,
@@ -102,9 +101,7 @@ const Form: FC<{
           <BaseForm
             initialValues={object}
             onSubmit={onSubmit}
-            validationSchema={yup.object({
-              slug: yup.string().label(t('Slug')).required(),
-            })}
+            validationSchema={yup.object({})}
           >
             <Loader status={status}>
               <Card>
@@ -139,9 +136,6 @@ const Form: FC<{
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <NumberTextField name="votes" label={t('Votes')} />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <BaseTextField name="slug" label={t('Slug')} required />
                     </Grid>
                     <Grid item xs={12}>
                       <MultiLineTextField
