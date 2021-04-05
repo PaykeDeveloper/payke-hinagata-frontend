@@ -17,15 +17,15 @@ export const bookPath = getBookPath(bookParams);
 export const bookEditPath = getBookEditPath(bookParams);
 
 export interface BookCommentPath extends BookPath {
-  commentId: string;
+  commentSlug: string;
 }
-const bookCommentParams = { ...bookParams, commentId: ':commentId' };
+const bookCommentParams = { ...bookParams, commentSlug: ':commentSlug' };
 const getBookCommentsPath = (params: BookPath) =>
   `${getBookPath(params)}comments/`;
 export const getBookCommentNewPath = (params: BookPath) =>
   `${getBookCommentsPath(params)}new/`;
-const getBookCommentPath = ({ commentId, ...otherPrams }: BookCommentPath) =>
-  `${getBookCommentsPath(otherPrams)}${commentId}/`;
+const getBookCommentPath = ({ commentSlug, ...otherPrams }: BookCommentPath) =>
+  `${getBookCommentsPath(otherPrams)}${commentSlug}/`;
 export const getBookCommentEditPath = (params: BookCommentPath) =>
   `${getBookCommentPath(params)}edit/`;
 export const bookCommentNewPath = getBookCommentNewPath(bookParams);

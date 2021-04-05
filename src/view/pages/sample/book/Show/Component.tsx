@@ -40,7 +40,7 @@ const Component: FC<{
   onBack: () => void;
   onClickEditBook: () => void;
   onClickAddBookComment: () => void;
-  onClickEditBookComment: (commentId: string) => void;
+  onClickEditBookComment: (commentSlug: string) => void;
 }> = (props) => {
   const {
     book,
