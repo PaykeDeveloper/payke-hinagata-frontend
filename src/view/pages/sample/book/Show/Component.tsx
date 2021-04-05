@@ -44,7 +44,7 @@ const Component: FC<{
 }> = (props) => {
   const {
     book,
-    // bookStatus,
+    bookStatus,
     bookComments,
     bookCommentsStatus,
     errors,
@@ -124,24 +124,28 @@ const Component: FC<{
                 </Button>,
               ]}
             />
-            <Card>
-              <CardContent>
-                <DefinitionList
-                  list={[
-                    {
-                      key: <Trans>Author</Trans>,
-                      value: <Typography>{book?.author}</Typography>,
-                    },
-                    {
-                      key: <Trans>Release date</Trans>,
-                      value: (
-                        <Typography>{formatDate(book?.releaseDate)}</Typography>
-                      ),
-                    },
-                  ]}
-                />
-              </CardContent>
-            </Card>
+            <Loader status={bookStatus}>
+              <Card>
+                <CardContent>
+                  <DefinitionList
+                    list={[
+                      {
+                        key: <Trans>Author</Trans>,
+                        value: <Typography>{book?.author}</Typography>,
+                      },
+                      {
+                        key: <Trans>Release date</Trans>,
+                        value: (
+                          <Typography>
+                            {formatDate(book?.releaseDate)}
+                          </Typography>
+                        ),
+                      },
+                    ]}
+                  />
+                </CardContent>
+              </Card>
+            </Loader>
           </Box>
           <Box mt={3}>
             <Typography variant="h5">
