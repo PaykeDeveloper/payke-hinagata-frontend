@@ -5,7 +5,6 @@ import {
   HomeIcon,
   ListIcon,
   MenuBookIcon,
-  PublishIcon,
 } from 'src/view/base/material-ui/Icon';
 import { MenuList } from 'src/view/components/molecules/SideMenu';
 import {
@@ -16,9 +15,6 @@ import {
   rootPath,
   bookCommentNewPath,
   bookCommentEditPath,
-  bookImportCsvPath,
-  bookImportCsvsPath,
-  bookImportCsvNewPath,
 } from 'src/view/routes/paths';
 
 export const privateMenuLists: MenuList[] = [
@@ -61,16 +57,6 @@ export const privateMenuLists: MenuList[] = [
             icon: <AddIcon />,
             to: bookNewPath,
             paths: [bookNewPath],
-          },
-          {
-            text: <Trans>Csv Importer</Trans>,
-            icon: <PublishIcon />,
-            to: bookImportCsvsPath,
-            paths: [
-              bookImportCsvPath,
-              bookImportCsvsPath,
-              bookImportCsvNewPath,
-            ],
           },
         ],
       },

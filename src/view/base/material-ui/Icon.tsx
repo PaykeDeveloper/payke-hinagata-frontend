@@ -26,4 +26,3 @@ export const ErrorOutlineIcon = createIcon('error_outline');
 export const HomeIcon = createIcon('home');
 export const MenuBookIcon = createIcon('menu_book');
 export const ListIcon = createIcon('list');
-export const PublishIcon = createIcon('publish');

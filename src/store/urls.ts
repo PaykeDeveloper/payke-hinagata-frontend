@@ -26,12 +26,3 @@ export const getBookCommentApiUrl = ({
   bookId,
   commentId,
 }: BookCommentApiUrl) => `${getBookCommentsApiUrl({ bookId })}${commentId}/`;
-
-export interface BookImportCsvApiUrl {
-  bookImportCsvId: string;
-}
-export const getBookImportCsvsApiUrl = () =>
-  `${getRootApiUrl()}csv-upload/books/`;
-export const getBookImportCsvApiUrl = ({
-  bookImportCsvId,
-}: BookImportCsvApiUrl) => `${getBookImportCsvsApiUrl()}${bookImportCsvId}/`;
