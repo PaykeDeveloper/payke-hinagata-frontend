@@ -51,11 +51,11 @@ const Component: FC<{
   const { t } = useTranslation();
 
   return (
-    <Fade in timeout={1000}>
-      <Container maxWidth="xs">
-        <Box mt={2} mb={6} className={classes.logoBox}>
-          <Logo className={classes.logo} />
-        </Box>
+    <Container maxWidth="xs">
+      <Box mt={2} mb={6} className={classes.logoBox}>
+        <Logo className={classes.logo} />
+      </Box>
+      <Fade in timeout={1000}>
         <Paper>
           <Loader status={status}>
             <Box p={[2, 5]}>
@@ -93,9 +93,11 @@ const Component: FC<{
             </Box>
           </Loader>
         </Paper>
-        <RouterLink to={forgotPasswordPath}>Reset</RouterLink>
-      </Container>
-    </Fade>
+      </Fade>
+      <Box m={1}>
+        <RouterLink to={forgotPasswordPath}>Forgot your password?</RouterLink>
+      </Box>
+    </Container>
   );
 };
 

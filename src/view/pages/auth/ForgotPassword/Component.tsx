@@ -17,6 +17,8 @@ import { OnSubmit } from 'src/view/base/formik/types';
 import { SendIcon } from 'src/view/base/material-ui/Icon';
 import Loader from 'src/view/components/atoms/Loader';
 import Logo from 'src/view/components/atoms/Logo';
+import RouterLink from 'src/view/components/atoms/RouterLink';
+import { loginPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
 const useStyles = makeStyles({
@@ -38,11 +40,11 @@ const Component: FC<{
   const classes = useStyles();
   const { t } = useTranslation();
   return (
-    <Fade in timeout={1000}>
-      <Container maxWidth="xs">
-        <Box mt={2} mb={6} className={classes.logoBox}>
-          <Logo className={classes.logo} />
-        </Box>
+    <Container maxWidth="xs">
+      <Box mt={2} mb={6} className={classes.logoBox}>
+        <Logo className={classes.logo} />
+      </Box>
+      <Fade in timeout={1000}>
         <Paper>
           <Loader status={status}>
             <Box p={[2, 5]}>
@@ -72,8 +74,11 @@ const Component: FC<{
             </Box>
           </Loader>
         </Paper>
-      </Container>
-    </Fade>
+      </Fade>
+      <Box m={1}>
+        <RouterLink to={loginPath}>Back to Login</RouterLink>
+      </Box>
+    </Container>
   );
 };
 
