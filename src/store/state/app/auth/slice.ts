@@ -1,8 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
 import { siteName } from 'src/base/constants';
-import { getLoginApiUrl, getLogoutApiUrl } from 'src/store/urls';
+import {
+  getForgotPasswordApiUrl,
+  getLoginApiUrl,
+  getLogoutApiUrl,
+  getResetPasswordApiUrl,
+} from 'src/store/urls';
 import { createPostAsyncThunk } from 'src/store/utils';
-import { LoginInput } from './types';
+import { ForgotPasswordInput, LoginInput, ResetPasswordInput } from './types';
 
 const login = createPostAsyncThunk<
   { key: string; firebaseToken: string },
@@ -15,10 +20,24 @@ const logout = createPostAsyncThunk<unknown, unknown, unknown>(
   getLogoutApiUrl
 );
 
+const forgotPassword = createPostAsyncThunk<
+  { message: string },
+  unknown,
+  ForgotPasswordInput
+>('forgotPassword', getForgotPasswordApiUrl);
+
+const resetPassword = createPostAsyncThunk<
+  { message: string },
+  unknown,
+  ResetPasswordInput
+>('resetPassword', getResetPasswordApiUrl);
+
 const resetAll = createAction(`${siteName}/resetAll`);
 
 export const authActions = {
   login,
   logout,
+  forgotPassword,
+  resetPassword,
   resetAll,
 };
