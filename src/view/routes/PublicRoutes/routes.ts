@@ -1,6 +1,6 @@
 import { RouteProps } from 'react-router-dom';
 import { notUndefined } from 'src/base/utils';
-import Login from 'src/view/pages/common/Login';
+import Login from 'src/view/pages/auth/Login';
 import { loginPath } from 'src/view/routes/paths';
 
 const publicRoutes: RouteProps[] = [{ path: loginPath, component: Login }];
