@@ -7,6 +7,9 @@ export const getLogoutApiUrl = () => `${backendOriginUrl}logout/`;
 export const getForgotPasswordApiUrl = () =>
   `${backendOriginUrl}forgot-password/`;
 
+export const getResetPasswordApiUrl = () =>
+  `${backendOriginUrl}reset-password/`;
+
 export const getRootApiUrl = () => `${backendOriginUrl}api/v1/`;
 
 export const getStatusApiUrl = () => `${getRootApiUrl()}status/`;

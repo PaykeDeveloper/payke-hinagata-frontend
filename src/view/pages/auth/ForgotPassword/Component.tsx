@@ -57,7 +57,7 @@ const Component: FC<{
                 initialValues={object}
                 onSubmit={onSubmit}
                 validationSchema={yup.object({
-                  email: yup.string().label(t('Email')).required(),
+                  email: yup.string().email().label(t('Email')).required(),
                 })}
               >
                 <Grid container spacing={1}>
