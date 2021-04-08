@@ -1,6 +1,8 @@
 export const otherPath = '*';
 export const rootPath = '/';
 export const loginPath = `${rootPath}login/`;
+export const forgotPasswordPath = `${rootPath}forgot-password/`;
+export const resetPasswordPath = `${rootPath}reset-password/`;
 
 // FIXME: SAMPLE CODE
 

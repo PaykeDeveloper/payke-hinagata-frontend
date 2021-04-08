@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 
 import { makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
@@ -8,20 +8,15 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Trans, useTranslation } from 'react-i18next';
-import { LoginInput } from 'src/store/state/app/auth/types';
+import { ForgotPasswordInput } from 'src/store/state/app/auth/types';
 import { StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
-import {
-  EmailTextField,
-  PasswordTextField,
-} from 'src/view/base/formik/TextField';
+import { EmailTextField } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
-import { PowerSettingsNewIcon } from 'src/view/base/material-ui/Icon';
+import { SendIcon } from 'src/view/base/material-ui/Icon';
 import Loader from 'src/view/components/atoms/Loader';
 import Logo from 'src/view/components/atoms/Logo';
-import RouterLink from 'src/view/components/atoms/RouterLink';
-import { forgotPasswordPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
 const useStyles = makeStyles({
@@ -34,22 +29,14 @@ const useStyles = makeStyles({
 });
 
 const Component: FC<{
-  object?: LoginInput;
-  isAuthenticated: boolean;
+  object?: ForgotPasswordInput;
   status: StoreStatus;
 
-  onSubmit: OnSubmit<LoginInput>;
-  onLoggedIn: () => void;
+  onSubmit: OnSubmit<ForgotPasswordInput>;
 }> = (props) => {
-  const { object, isAuthenticated, status, onSubmit, onLoggedIn } = props;
-  useEffect(() => {
-    if (isAuthenticated) {
-      onLoggedIn();
-    }
-  }, [onLoggedIn, isAuthenticated]);
+  const { object, status, onSubmit } = props;
   const classes = useStyles();
   const { t } = useTranslation();
-
   return (
     <Fade in timeout={1000}>
       <Container maxWidth="xs">
@@ -61,7 +48,7 @@ const Component: FC<{
             <Box p={[2, 5]}>
               <Box mb={4}>
                 <Typography component="h1" variant="h5" align="center">
-                  <Trans>Log in</Trans>
+                  <Trans>Reset password</Trans>
                 </Typography>
               </Box>
               <BaseForm
@@ -69,7 +56,6 @@ const Component: FC<{
                 onSubmit={onSubmit}
                 validationSchema={yup.object({
                   email: yup.string().label(t('Email')).required(),
-                  password: yup.string().label(t('Password')).required(),
                 })}
               >
                 <Grid container spacing={1}>
@@ -77,15 +63,8 @@ const Component: FC<{
                     <EmailTextField name="email" label={t('Email')} required />
                   </Grid>
                   <Grid item xs={12}>
-                    <PasswordTextField
-                      name="password"
-                      label={t('Password')}
-                      required
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <SubmitButton icon={PowerSettingsNewIcon} fullWidth>
-                      <Trans>Log in</Trans>
+                    <SubmitButton icon={SendIcon} fullWidth>
+                      <Trans>Send</Trans>
                     </SubmitButton>
                   </Grid>
                 </Grid>
@@ -93,7 +72,6 @@ const Component: FC<{
             </Box>
           </Loader>
         </Paper>
-        <RouterLink to={forgotPasswordPath}>Reset</RouterLink>
       </Container>
     </Fade>
   );
