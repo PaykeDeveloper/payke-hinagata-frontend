@@ -4,6 +4,8 @@ export const getLoginApiUrl = () => `${backendOriginUrl}login/`;
 
 export const getLogoutApiUrl = () => `${backendOriginUrl}logout/`;
 
+export const getRegisterApiUrl = () => `${backendOriginUrl}register/`;
+
 export const getForgotPasswordApiUrl = () =>
   `${backendOriginUrl}forgot-password/`;
 

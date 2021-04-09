@@ -1,6 +1,7 @@
 export const otherPath = '*';
 export const rootPath = '/';
 export const loginPath = `${rootPath}login/`;
+export const registerPath = `${rootPath}register/`;
 export const forgotPasswordPath = `${rootPath}forgot-password/`;
 export const resetPasswordPath = `${rootPath}reset-password/`;
 
