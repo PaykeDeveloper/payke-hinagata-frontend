@@ -21,6 +21,11 @@ const statusSlice = createEntitySlice<Status, unknown>(
           state.entity.isAuthenticated = false;
         }
       })
+      .addCase(authActions.register.fulfilled, (state) => {
+        if (state.entity) {
+          state.entity.isAuthenticated = true;
+        }
+      })
 );
 
 export const statusActions = statusSlice.actions;

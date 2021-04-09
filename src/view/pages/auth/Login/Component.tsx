@@ -21,7 +21,7 @@ import { PowerSettingsNewIcon } from 'src/view/base/material-ui/Icon';
 import Loader from 'src/view/components/atoms/Loader';
 import Logo from 'src/view/components/atoms/Logo';
 import RouterLink from 'src/view/components/atoms/RouterLink';
-import { forgotPasswordPath } from 'src/view/routes/paths';
+import { forgotPasswordPath, registerPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
 const useStyles = makeStyles({
@@ -88,6 +88,9 @@ const Component: FC<{
           </Loader>
         </Paper>
       </Fade>
+      <Box m={1}>
+        <RouterLink to={registerPath}>Don't have an account?</RouterLink>
+      </Box>
       <Box m={1}>
         <RouterLink to={forgotPasswordPath}>Forgot your password?</RouterLink>
       </Box>
