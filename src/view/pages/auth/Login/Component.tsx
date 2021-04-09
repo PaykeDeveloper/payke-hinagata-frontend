@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 
 import { makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
@@ -35,18 +35,12 @@ const useStyles = makeStyles({
 
 const Component: FC<{
   object?: LoginInput;
-  isAuthenticated: boolean;
   status: StoreStatus;
 
   onSubmit: OnSubmit<LoginInput>;
   onLoggedIn: () => void;
 }> = (props) => {
-  const { object, isAuthenticated, status, onSubmit, onLoggedIn } = props;
-  useEffect(() => {
-    if (isAuthenticated) {
-      onLoggedIn();
-    }
-  }, [onLoggedIn, isAuthenticated]);
+  const { object, status, onSubmit } = props;
   const classes = useStyles();
   const { t } = useTranslation();
 

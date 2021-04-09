@@ -4,22 +4,15 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { authActions } from 'src/store/state/app/auth/slice';
-import {
-  statusSelector,
-  statusStatusSelector,
-} from 'src/store/state/app/status/selectors';
+import { statusStatusSelector } from 'src/store/state/app/status/selectors';
 import { rootPath } from 'src/view/routes/paths';
 import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 
-const selector = createSelector(
-  [statusSelector, statusStatusSelector],
-  (object, status) => ({
-    isAuthenticated: !!object?.isAuthenticated,
-    status,
-  })
-);
+const selector = createSelector([statusStatusSelector], (status) => ({
+  status,
+}));
 
 const { login } = authActions;
 
