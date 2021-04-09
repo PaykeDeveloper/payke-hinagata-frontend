@@ -12,6 +12,13 @@ export const getForgotPasswordApiUrl = () =>
 export const getResetPasswordApiUrl = () =>
   `${backendOriginUrl}reset-password/`;
 
+export interface VerifyEmailApiUrl {
+  id: string;
+  token: string;
+}
+export const getVerifyEmailApiUrl = ({ id, token }: VerifyEmailApiUrl) =>
+  `${backendOriginUrl}email/verify/${id}/${token}/`;
+
 export const getRootApiUrl = () => `${backendOriginUrl}api/v1/`;
 
 export const getStatusApiUrl = () => `${getRootApiUrl()}status/`;

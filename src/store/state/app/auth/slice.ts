@@ -6,8 +6,10 @@ import {
   getLogoutApiUrl,
   getRegisterApiUrl,
   getResetPasswordApiUrl,
+  getVerifyEmailApiUrl,
+  VerifyEmailApiUrl,
 } from 'src/store/urls';
-import { createPostAsyncThunk } from 'src/store/utils';
+import { createGetAsyncThunk, createPostAsyncThunk } from 'src/store/utils';
 import {
   ForgotPasswordInput,
   LoginInput,
@@ -44,6 +46,12 @@ const resetPassword = createPostAsyncThunk<
   ResetPasswordInput
 >('resetPassword', getResetPasswordApiUrl);
 
+const verifyEmail = createGetAsyncThunk<
+  { message: string },
+  VerifyEmailApiUrl,
+  unknown
+>('verifyEmail', getVerifyEmailApiUrl);
+
 const resetAll = createAction(`${siteName}/resetAll`);
 
 export const authActions = {
@@ -52,5 +60,6 @@ export const authActions = {
   register,
   forgotPassword,
   resetPassword,
+  verifyEmail,
   resetAll,
 };
