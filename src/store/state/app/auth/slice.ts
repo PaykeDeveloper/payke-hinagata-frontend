@@ -47,7 +47,7 @@ const resetPassword = createPostAsyncThunk<
 >('resetPassword', getResetPasswordApiUrl);
 
 const verifyEmail = createGetAsyncThunk<
-  { message: string },
+  unknown,
   VerifyEmailApiUrl,
   { expires?: string; signature?: string }
 >('verifyEmail', getVerifyEmailApiUrl);
