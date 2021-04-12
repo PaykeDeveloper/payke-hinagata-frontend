@@ -24,11 +24,8 @@ const Register: FC<RouteComponentProps> = (props) => {
 
   const dispatch = useStoreDispatch();
   const onSubmit: ChildProps['onSubmit'] = useCallback(
-    async (input) => {
-      const name = input.email?.split('@')[0];
-      const action = await dispatch(
-        register({ pathParams: {}, bodyParams: { ...input, name } })
-      );
+    async (bodyParams) => {
+      const action = await dispatch(register({ pathParams: {}, bodyParams }));
       if (register.fulfilled.match(action)) {
         push(rootPath);
       }

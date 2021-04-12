@@ -13,6 +13,7 @@ import { StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
 import {
+  BaseTextField,
   EmailTextField,
   PasswordTextField,
 } from 'src/view/base/formik/TextField';
@@ -61,6 +62,7 @@ const Component: FC<{
                 initialValues={object}
                 onSubmit={onSubmit}
                 validationSchema={yup.object({
+                  name: yup.string().label(t('Name')).required(),
                   email: yup.string().email().label(t('Email')).required(),
                   password: yup.string().label(t('Password')).required(),
                   passwordConfirmation: yup
@@ -70,6 +72,9 @@ const Component: FC<{
                 })}
               >
                 <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <BaseTextField name="name" label={t('Name')} required />
+                  </Grid>
                   <Grid item xs={12}>
                     <EmailTextField name="email" label={t('Email')} required />
                   </Grid>
