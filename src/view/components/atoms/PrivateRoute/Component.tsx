@@ -15,7 +15,7 @@ const Component: FC<Props> = (props) => {
   const { location } = otherProps;
   if (location) {
     const { pathname, search } = location;
-    next = encodeURI(`${pathname}${search}`);
+    next = encodeURIComponent(`${pathname}${search}`);
   }
   const to = `${loginPath}${next && `?next=${next}`}`;
   return <Redirect to={to} />;

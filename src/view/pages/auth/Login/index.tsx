@@ -28,7 +28,7 @@ const Login: FC<RouteComponentProps> = (props) => {
     const searchParams = new URLSearchParams(search);
     const next = searchParams.get('next');
     if (next) {
-      return replace(next);
+      return replace(decodeURIComponent(next));
     }
     return push(rootPath);
   }, [push, replace, search]);

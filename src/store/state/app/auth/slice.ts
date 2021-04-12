@@ -49,7 +49,7 @@ const resetPassword = createPostAsyncThunk<
 const verifyEmail = createGetAsyncThunk<
   { message: string },
   VerifyEmailApiUrl,
-  unknown
+  { expires?: string; signature?: string }
 >('verifyEmail', getVerifyEmailApiUrl);
 
 const resetAll = createAction(`${siteName}/resetAll`);

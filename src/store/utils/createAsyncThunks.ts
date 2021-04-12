@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { serialize } from 'object-to-formdata';
+import qs from 'qs';
 import api, { CancelToken, isAxiosError } from 'src/base/api';
 import { siteName } from 'src/base/constants';
 import { RootState } from 'src/store/state';
@@ -92,9 +93,14 @@ export const createGetAsyncThunk = <Returned, PathParams, SearchParams>(
     ThunkApiConfig
   >(
     `${siteName}/${name}`,
-    async ({ pathParams }, { signal, rejectWithValue }) => {
+    async ({ pathParams, searchParams }, { signal, rejectWithValue }) => {
       try {
-        const response = await api.get(getApiUrl(pathParams), {
+        let url = getApiUrl(pathParams);
+        if (searchParams) {
+          url += `?${qs.stringify(searchParams)}`;
+        }
+        api.defaults.maxRedirects = 0;
+        const response = await api.get(url, {
           cancelToken: createCancelToken(signal),
         });
         return response.data;
