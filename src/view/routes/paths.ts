@@ -1,8 +1,20 @@
 export const otherPath = '*';
 export const rootPath = '/';
 export const loginPath = `${rootPath}login/`;
+export const registerPath = `${rootPath}register/`;
 export const forgotPasswordPath = `${rootPath}forgot-password/`;
 export const resetPasswordPath = `${rootPath}reset-password/`;
+
+export interface VerifyEmailPath {
+  id: string;
+  token: string;
+}
+export const getVerifyEmailPath = ({ id, token }: VerifyEmailPath) =>
+  `${rootPath}email/verify/${id}/${token}`;
+export const verifyEmailPath = getVerifyEmailPath({
+  id: ':id',
+  token: ':token',
+});
 
 // FIXME: SAMPLE CODE
 

@@ -4,10 +4,18 @@ import {
   getForgotPasswordApiUrl,
   getLoginApiUrl,
   getLogoutApiUrl,
+  getRegisterApiUrl,
   getResetPasswordApiUrl,
+  getVerifyEmailApiUrl,
+  VerifyEmailApiUrl,
 } from 'src/store/urls';
-import { createPostAsyncThunk } from 'src/store/utils';
-import { ForgotPasswordInput, LoginInput, ResetPasswordInput } from './types';
+import { createGetAsyncThunk, createPostAsyncThunk } from 'src/store/utils';
+import {
+  ForgotPasswordInput,
+  LoginInput,
+  RegisterInput,
+  ResetPasswordInput,
+} from './types';
 
 const login = createPostAsyncThunk<
   { key: string; firebaseToken: string },
@@ -19,6 +27,12 @@ const logout = createPostAsyncThunk<unknown, unknown, unknown>(
   'logout',
   getLogoutApiUrl
 );
+
+const register = createPostAsyncThunk<
+  { message: string },
+  unknown,
+  RegisterInput
+>('register', getRegisterApiUrl);
 
 const forgotPassword = createPostAsyncThunk<
   { message: string },
@@ -32,12 +46,20 @@ const resetPassword = createPostAsyncThunk<
   ResetPasswordInput
 >('resetPassword', getResetPasswordApiUrl);
 
+const verifyEmail = createGetAsyncThunk<
+  unknown,
+  VerifyEmailApiUrl,
+  { expires?: string; signature?: string }
+>('verifyEmail', getVerifyEmailApiUrl);
+
 const resetAll = createAction(`${siteName}/resetAll`);
 
 export const authActions = {
   login,
   logout,
+  register,
   forgotPassword,
   resetPassword,
+  verifyEmail,
   resetAll,
 };

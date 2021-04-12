@@ -14,44 +14,27 @@ const selector = createSelector([statusStatusSelector], (status) => ({
   status,
 }));
 
-const { login } = authActions;
+const { register } = authActions;
 
-const Login: FC<RouteComponentProps> = (props) => {
+const Register: FC<RouteComponentProps> = (props) => {
   const {
-    location: { search },
-    history: { push, replace },
+    history: { push },
   } = props;
   const state = useStoreSelector(selector);
 
   const dispatch = useStoreDispatch();
-  const onLoggedIn: ChildProps['onLoggedIn'] = useCallback(() => {
-    const searchParams = new URLSearchParams(search);
-    const next = searchParams.get('next');
-    if (next) {
-      return replace(decodeURIComponent(next));
-    }
-    return push(rootPath);
-  }, [push, replace, search]);
-
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
-      const action = await dispatch(login({ pathParams: {}, bodyParams }));
-      if (login.fulfilled.match(action)) {
-        onLoggedIn();
+      const action = await dispatch(register({ pathParams: {}, bodyParams }));
+      if (register.fulfilled.match(action)) {
+        push(rootPath);
       }
       return action;
     },
-    [dispatch, onLoggedIn]
+    [dispatch, push]
   );
 
-  return (
-    <Component
-      {...state}
-      object={undefined}
-      onLoggedIn={onLoggedIn}
-      onSubmit={onSubmit}
-    />
-  );
+  return <Component {...state} object={undefined} onSubmit={onSubmit} />;
 };
 
-export default Login;
+export default Register;
