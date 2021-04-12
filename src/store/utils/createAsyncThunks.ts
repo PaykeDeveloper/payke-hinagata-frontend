@@ -99,7 +99,6 @@ export const createGetAsyncThunk = <Returned, PathParams, SearchParams>(
         if (searchParams) {
           url += `?${qs.stringify(searchParams)}`;
         }
-        api.defaults.maxRedirects = 0;
         const response = await api.get(url, {
           cancelToken: createCancelToken(signal),
         });
