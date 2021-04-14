@@ -7,7 +7,7 @@ import {
   Invitation,
   InvitationStatus,
 } from 'src/store/state/domain/common/invitations/types';
-import { StoreError, StoreStatus } from 'src/store/types';
+import { StoreError } from 'src/store/types';
 import {
   RouterDataGrid,
   timestampColDef,

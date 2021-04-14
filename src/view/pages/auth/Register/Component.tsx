@@ -15,7 +15,6 @@ import { BaseForm } from 'src/view/base/formik/Form';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
 import {
   BaseTextField,
-  EmailTextField,
   PasswordTextField,
 } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
