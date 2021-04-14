@@ -6,7 +6,7 @@ export enum FooBarType {
 }
 
 export interface BookComment {
-  id: string;
+  id: number;
   bookId: number;
   // confirmed: 0 | 1;
   // publishDate: string;
@@ -21,7 +21,7 @@ export interface BookComment {
 }
 
 export interface BookCommentDetail {
-  id: string;
+  id: number;
   bookId: number;
   confirmed: boolean;
   publishDate: string;
@@ -36,7 +36,7 @@ export interface BookCommentDetail {
 }
 
 export interface BookCommentInput {
-  id: string;
+  id: number;
   bookId: number;
   confirmed: boolean;
   publishDate: string;
