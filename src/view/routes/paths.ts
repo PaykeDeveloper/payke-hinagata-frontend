@@ -16,6 +16,9 @@ export const verifyEmailPath = getVerifyEmailPath({
   token: ':token',
 });
 
+export const invitationsPath = `${rootPath}invitations/`;
+export const invitationNewPath = `${rootPath}invitations/new/`;
+
 // FIXME: SAMPLE CODE
 
 export interface BookPath {

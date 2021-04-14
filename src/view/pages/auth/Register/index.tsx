@@ -18,8 +18,13 @@ const { register } = authActions;
 
 const Register: FC<RouteComponentProps> = (props) => {
   const {
+    location,
     history: { push },
   } = props;
+  const searchParams = new URLSearchParams(location.search);
+  const id = searchParams.get('id') || undefined;
+  const token = searchParams.get('token') || undefined;
+
   const state = useStoreSelector(selector);
 
   const dispatch = useStoreDispatch();
@@ -34,7 +39,7 @@ const Register: FC<RouteComponentProps> = (props) => {
     [dispatch, push]
   );
 
-  return <Component {...state} object={undefined} onSubmit={onSubmit} />;
+  return <Component {...state} object={{ id, token }} onSubmit={onSubmit} />;
 };
 
 export default Register;

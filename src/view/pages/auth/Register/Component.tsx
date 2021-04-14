@@ -10,11 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import { Trans, useTranslation } from 'react-i18next';
 import { RegisterInput } from 'src/store/state/app/auth/types';
 import { StoreStatus } from 'src/store/types';
+import { BaseErrorField } from 'src/view/base/formik/ErrorField';
 import { BaseForm } from 'src/view/base/formik/Form';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
 import {
   BaseTextField,
-  EmailTextField,
   PasswordTextField,
 } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
@@ -63,7 +63,6 @@ const Component: FC<{
                 onSubmit={onSubmit}
                 validationSchema={yup.object({
                   name: yup.string().label(t('Name')).required(),
-                  email: yup.string().email().label(t('Email')).required(),
                   password: yup.string().label(t('Password')).required(),
                   passwordConfirmation: yup
                     .string()
@@ -74,9 +73,6 @@ const Component: FC<{
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
                     <BaseTextField name="name" label={t('Name')} required />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <EmailTextField name="email" label={t('Email')} required />
                   </Grid>
                   <Grid item xs={12}>
                     <PasswordTextField
@@ -91,6 +87,9 @@ const Component: FC<{
                       label={t('Confirm Password')}
                       required
                     />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <BaseErrorField name="token" />
                   </Grid>
                   <Grid item xs={12}>
                     <SubmitButton icon={SaveIcon} fullWidth>

@@ -5,9 +5,10 @@ export interface LoginInput {
 
 export interface RegisterInput {
   name?: string;
-  email?: string;
   password?: string;
   passwordConfirmation?: string;
+  id?: string;
+  token?: string;
 }
 
 export interface ForgotPasswordInput {
