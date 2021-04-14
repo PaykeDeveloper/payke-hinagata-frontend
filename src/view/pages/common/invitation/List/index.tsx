@@ -1,4 +1,10 @@
-import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
+import React, {
+  ComponentProps,
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import i18next from 'i18next';
 import { RouteComponentProps } from 'react-router-dom';
@@ -10,6 +16,7 @@ import {
   invitationsStatusSelector,
 } from 'src/store/state/domain/common/invitations/selectors';
 import { invitationsActions } from 'src/store/state/domain/common/invitations/slice';
+import { checkLoading } from 'src/view/components/atoms/Loader';
 import { invitationNewPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Component from './Component';
@@ -31,7 +38,7 @@ const List: FC<RouteComponentProps> = (props) => {
   useEffect(() => {
     dispatch(invitationsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
-  const state = useStoreSelector(selector);
+  const { status, ...otherState } = useStoreSelector(selector);
 
   const path = joinString(pathname, search);
 
@@ -40,9 +47,12 @@ const List: FC<RouteComponentProps> = (props) => {
     [push, path]
   );
 
+  const [loading, setLoading] = useState(false);
+
   const onClickDelete: ChildProps['onClickDelete'] = useCallback(
     async (invitationId) => {
       if (window.confirm(i18next.t('Are you sure to delete this item?'))) {
+        setLoading(true);
         const action = await dispatch(
           invitationsActions.removeEntity({
             pathParams: { invitationId: `${invitationId}` },
@@ -53,6 +63,7 @@ const List: FC<RouteComponentProps> = (props) => {
             invitationsActions.fetchEntitiesIfNeeded({ pathParams: {} })
           );
         }
+        setLoading(false);
       }
     },
     [dispatch]
@@ -60,7 +71,8 @@ const List: FC<RouteComponentProps> = (props) => {
 
   return (
     <Component
-      {...state}
+      {...otherState}
+      loading={checkLoading(status) || loading}
       onClickAdd={onClickAdd}
       onClickDelete={onClickDelete}
     />

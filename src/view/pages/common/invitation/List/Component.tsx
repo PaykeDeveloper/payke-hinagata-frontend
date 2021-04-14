@@ -45,13 +45,13 @@ const InvitationStatusLabel: FC<{ status: InvitationStatus }> = ({
 
 const Component: FC<{
   invitations: Invitation[];
-  status: StoreStatus;
+  loading: boolean;
   error: StoreError | undefined;
 
   onClickAdd: () => void;
   onClickDelete: (invitationId: number) => void;
 }> = (props) => {
-  const { invitations, status, error, onClickAdd, onClickDelete } = props;
+  const { invitations, loading, error, onClickAdd, onClickDelete } = props;
   const { t } = useTranslation();
 
   const columns: GridColumns = [
@@ -113,7 +113,7 @@ const Component: FC<{
               </Button>,
             ]}
           />
-          <Loader status={status}>
+          <Loader loading={loading}>
             <RouterDataGrid columns={columns} rows={invitations} />
           </Loader>
         </ErrorWrapper>
