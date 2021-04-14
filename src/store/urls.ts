@@ -23,6 +23,13 @@ export const getRootApiUrl = () => `${backendOriginUrl}api/v1/`;
 
 export const getStatusApiUrl = () => `${getRootApiUrl()}status/`;
 
+export interface InvitationApiUrl {
+  invitationId: string;
+}
+export const getInvitationsApiUrl = () => `${getRootApiUrl()}invitations/`;
+export const getInvitationApiUrl = ({ invitationId }: InvitationApiUrl) =>
+  `${getInvitationsApiUrl()}${invitationId}/`;
+
 // FIXME: SAMPLE CODE
 
 export interface BookApiUrl {
