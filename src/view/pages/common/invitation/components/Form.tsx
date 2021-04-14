@@ -73,8 +73,8 @@ const Form: FC<{
             initialValues={object}
             onSubmit={onSubmit}
             validationSchema={yup.object({
-              name: yup.string().label(t('Name')).required().max(255),
               email: yup.string().label(t('Email')).required().email(),
+              locale: yup.string().label(t('Locale')).required(),
             })}
           >
             <Loader status={status}>
