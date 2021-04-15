@@ -11,9 +11,9 @@ import { invitationsActions } from 'src/store/state/domain/common/invitations/sl
 import { LocaleType } from 'src/store/state/domain/common/invitations/types';
 import { invitationsPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
-import Form from '../components/Form';
+import Component from './Component';
 
-type ChildProps = ComponentProps<typeof Form>;
+type ChildProps = ComponentProps<typeof Component>;
 
 const selector = createSelector(
   [invitationsStatusSelector, invitationsErrorSelector],
@@ -55,9 +55,8 @@ const Container: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
   const state = useStoreSelector(selector);
 
   return (
-    <Form
+    <Component
       {...state}
-      title="Add invitation"
       object={{ locale: LocaleType.Japanese }}
       onSubmit={onSubmit}
       onBack={onBack}

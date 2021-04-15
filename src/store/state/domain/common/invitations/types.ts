@@ -12,9 +12,14 @@ export interface Invitation {
   updatedAt: string | null;
 }
 
-export type InvitationInput = {
+export type InvitationCreateInput = {
+  name?: string;
   email?: string;
   locale?: LocaleType;
+};
+
+export type InvitationUpdateInput = {
+  name?: string;
 };
 
 export enum LocaleType {
