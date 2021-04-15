@@ -16,8 +16,15 @@ export const verifyEmailPath = getVerifyEmailPath({
   token: ':token',
 });
 
+export interface InvitationPath {
+  invitationId: string;
+}
+const invitationParams = { invitationId: ':invitationId' };
+export const getInvitationEditPath = ({ invitationId }: InvitationPath) =>
+  `${invitationsPath}${invitationId}/edit/`;
 export const invitationsPath = `${rootPath}invitations/`;
 export const invitationNewPath = `${rootPath}invitations/new/`;
+export const invitationEditPath = getInvitationEditPath(invitationParams);
 
 // FIXME: SAMPLE CODE
 

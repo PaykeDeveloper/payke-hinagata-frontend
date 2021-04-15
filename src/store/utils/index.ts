@@ -8,6 +8,7 @@ import {
   UnprocessableEntityError,
   UnknownError,
   ConnectionError,
+  MethodNotAllowedError,
 } from 'src/store/types';
 export {
   createGetAsyncThunk,
@@ -38,6 +39,11 @@ const isUnauthorizedError = (error: StoreError): error is UnauthorizedError =>
 
 const isNotFoundError = (error: StoreError): error is NotFoundError =>
   error.status === ErrorStatus.NotFound;
+
+const isMethodNotAllowedError = (
+  error: StoreError
+): error is MethodNotAllowedError =>
+  error.status === ErrorStatus.MethodNotAllowed;
 
 export const isUnprocessableEntityError = (
   error: StoreError
@@ -72,6 +78,8 @@ const getDefault = (error: StoreError) => {
     return 'Unauthorized';
   } else if (isNotFoundError(error)) {
     return 'Page not found';
+  } else if (isMethodNotAllowedError(error)) {
+    return 'This action is not allowed';
   } else if (isUnprocessableEntityError(error)) {
     return 'The given data was invalid.';
   } else if (isInternalServerError(error)) {

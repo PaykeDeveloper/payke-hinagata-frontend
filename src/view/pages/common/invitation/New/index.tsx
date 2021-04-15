@@ -57,7 +57,6 @@ const Container: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
   return (
     <Component
       {...state}
-      title="Add invitation"
       object={{ locale: LocaleType.Japanese }}
       onSubmit={onSubmit}
       onBack={onBack}

@@ -4,14 +4,19 @@ import {
   InvitationApiUrl,
 } from 'src/store/urls';
 import { createEntitiesSlice, getEntitiesInitialState } from 'src/store/utils';
-import { Invitation, InvitationInput } from './types';
+import {
+  Invitation,
+  InvitationCreateInput,
+  InvitationUpdateInput,
+} from './types';
 
 const invitationsSlice = createEntitiesSlice<
   Invitation,
   {},
   Invitation,
   InvitationApiUrl,
-  InvitationInput
+  InvitationCreateInput,
+  InvitationUpdateInput
 >(
   'invitations',
   getEntitiesInitialState(),

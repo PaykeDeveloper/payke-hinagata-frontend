@@ -6,20 +6,19 @@ import { useTranslation } from 'react-i18next';
 import { InvitationCreateInput } from 'src/store/state/domain/common/invitations/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
-import { BaseSelectField } from 'src/view/base/formik/SelectField';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
 import { BaseTextField, EmailTextField } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
-import { NavigateBeforeIcon } from 'src/view/base/material-ui/Icon';
+import { DeleteIcon, NavigateBeforeIcon } from 'src/view/base/material-ui/Icon';
 import Loader from 'src/view/components/atoms/Loader';
 import Buttons from 'src/view/components/molecules/Buttons';
 import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
+import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import { invitationsPath, rootPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
-import LocaleOptions from '../components/LocaleOptions';
 
 const Component: FC<{
   object: InvitationCreateInput | undefined;
@@ -28,8 +27,9 @@ const Component: FC<{
 
   onSubmit: OnSubmit<InvitationCreateInput>;
   onBack: () => void;
+  onDelete: () => Promise<unknown>;
 }> = (props) => {
-  const { object, status, error, onSubmit, onBack } = props;
+  const { object, status, error, onSubmit, onBack, onDelete } = props;
   const { t } = useTranslation();
   return (
     <ContentWrapper>
@@ -39,7 +39,7 @@ const Component: FC<{
           { children: t('Invitations'), to: invitationsPath },
         ]}
       >
-        {t('Add invitation')}
+        {t('Edit invitation')}
       </ContentHeader>
       <ContentBody>
         <ErrorWrapper error={error}>
@@ -53,14 +53,22 @@ const Component: FC<{
                 {t('Back')}
               </Button>,
             ]}
+            rightButtons={[
+              <LoaderButton
+                onClick={onDelete}
+                startIcon={<DeleteIcon />}
+                color="secondary"
+                variant="outlined"
+              >
+                {t('Delete')}
+              </LoaderButton>,
+            ]}
           />
           <BaseForm
             initialValues={object}
             onSubmit={onSubmit}
             validationSchema={yup.object({
               name: yup.string().label(t('Name')).required(),
-              email: yup.string().label(t('Email')).required().email(),
-              locale: yup.string().label(t('Locale')).required(),
             })}
           >
             <Loader status={status}>
@@ -74,17 +82,8 @@ const Component: FC<{
                       <EmailTextField
                         name="email"
                         label={t('Email')}
-                        required
+                        disabled={true}
                       />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <BaseSelectField
-                        name="locale"
-                        label={t('Locale')}
-                        required
-                      >
-                        <LocaleOptions />
-                      </BaseSelectField>
                     </Grid>
                   </Grid>
                 </CardContent>
