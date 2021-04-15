@@ -24,12 +24,13 @@ const Component: FC<{
   object: InvitationCreateInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
+  disabled: boolean;
 
   onSubmit: OnSubmit<InvitationCreateInput>;
   onBack: () => void;
   onDelete: () => Promise<unknown>;
 }> = (props) => {
-  const { object, status, error, onSubmit, onBack, onDelete } = props;
+  const { object, status, error, disabled, onSubmit, onBack, onDelete } = props;
   const { t } = useTranslation();
   return (
     <ContentWrapper>
@@ -56,6 +57,7 @@ const Component: FC<{
             rightButtons={[
               <LoaderButton
                 onClick={onDelete}
+                disabled={disabled}
                 startIcon={<DeleteIcon />}
                 color="secondary"
                 variant="outlined"
@@ -76,7 +78,12 @@ const Component: FC<{
                 <CardContent>
                   <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
-                      <BaseTextField name="name" label={t('Name')} required />
+                      <BaseTextField
+                        name="name"
+                        label={t('Name')}
+                        required
+                        disabled={disabled}
+                      />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <EmailTextField
@@ -88,7 +95,7 @@ const Component: FC<{
                   </Grid>
                 </CardContent>
                 <CardActions>
-                  <SubmitButton />
+                  <SubmitButton disabled={disabled} />
                 </CardActions>
               </Card>
             </Loader>

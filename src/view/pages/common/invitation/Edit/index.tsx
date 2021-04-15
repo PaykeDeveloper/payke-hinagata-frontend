@@ -12,6 +12,7 @@ import {
   invitationStatusSelector,
 } from 'src/store/state/domain/common/invitations/selectors';
 import { invitationsActions } from 'src/store/state/domain/common/invitations/slice';
+import { InvitationStatus } from 'src/store/state/domain/common/invitations/types';
 import { getErrorMessage } from 'src/store/utils';
 import { InvitationPath, invitationsPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
@@ -79,9 +80,11 @@ const Container: FC<
     return action;
   }, [dispatch, pathParams, onBack, enqueueSnackbar]);
 
+  const disabled = state.object?.status === InvitationStatus.Approved;
   return (
     <Component
       {...state}
+      disabled={disabled}
       onSubmit={onSubmit}
       onBack={onBack}
       onDelete={onDelete}
