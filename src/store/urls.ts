@@ -26,3 +26,29 @@ export const getBookCommentApiUrl = ({
   bookId,
   commentId,
 }: BookCommentApiUrl) => `${getBookCommentsApiUrl({ bookId })}${commentId}/`;
+
+export interface UserApiUrl {
+  userId: string;
+}
+export const getUsersApiUrl = () => `${getRootApiUrl()}users/`;
+export const getUserApiUrl = ({ userId }: UserApiUrl) =>
+  `${getUsersApiUrl()}${userId}/`;
+
+export interface DivisionApiUrl {
+  divisionId: string;
+}
+export const getDivisionsApiUrl = () => `${getRootApiUrl()}divisions/`;
+export const getDivisionApiUrl = ({ divisionId }: DivisionApiUrl) =>
+  `${getDivisionsApiUrl()}${divisionId}/`;
+
+export interface DivisionProjectApiUrl extends DivisionApiUrl {
+  divisionId: string;
+  projectId: string;
+}
+export const getDivisionProjectsApiUrl = ({ divisionId }: DivisionApiUrl) =>
+  `${getDivisionsApiUrl()}${divisionId}/projects/`;
+export const getDivisionProjectApiUrl = ({
+  divisionId,
+  projectId,
+}: DivisionProjectApiUrl) =>
+  `${getDivisionProjectsApiUrl({ divisionId })}${projectId}/`;

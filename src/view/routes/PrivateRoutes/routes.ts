@@ -8,6 +8,14 @@ import BookNew from 'src/view/pages/sample/book/New';
 import BookShow from 'src/view/pages/sample/book/Show';
 import BookCommentEdit from 'src/view/pages/sample/bookComment/Edit';
 import BookCommentNew from 'src/view/pages/sample/bookComment/New';
+import UserList from 'src/view/pages/sample/user/List';
+import DivisionList from 'src/view/pages/sample/division/List';
+import DivisionNew from 'src/view/pages/sample/division/New';
+import DivisionEdit from 'src/view/pages/sample/division/Edit';
+import DivisionShow from 'src/view/pages/sample/division/Show';
+import DivisionProjectNew from 'src/view/pages/sample/divisionProject/New';
+import DivisionProjectEdit from 'src/view/pages/sample/divisionProject/Edit';
+
 import {
   bookCommentEditPath,
   bookCommentNewPath,
@@ -17,6 +25,13 @@ import {
   booksPath,
   otherPath,
   rootPath,
+  usersPath,
+  divisionPath,
+  divisionsPath,
+  divisionNewPath,
+  divisionEditPath,
+  divisionProjectNewPath,
+  divisionProjectEditPath,
 } from 'src/view/routes/paths';
 
 const privateRoutes: RouteProps[] = [
@@ -27,6 +42,19 @@ const privateRoutes: RouteProps[] = [
   { path: bookEditPath, component: BookEdit },
   { path: bookPath, component: BookShow },
   { path: booksPath, component: BookList },
+
+  // { path: userNewPath, component: UserNew },
+  // { path: userEditPath, component: UserEdit },
+  // { path: userPath, component: UserShow },
+  { path: usersPath, component: UserList },
+
+  // divisions
+  { path: divisionsPath, component: DivisionList },
+  { path: divisionNewPath, component: DivisionNew },
+  { path: divisionEditPath, component: DivisionEdit },
+  { path: divisionPath, component: DivisionShow },
+  { path: divisionProjectNewPath, component: DivisionProjectNew },
+  { path: divisionProjectEditPath, component: DivisionProjectEdit },
 
   { path: rootPath, component: Home },
   { path: otherPath, component: NotFound },

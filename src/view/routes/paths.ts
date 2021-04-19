@@ -30,3 +30,48 @@ export const getBookCommentEditPath = (params: BookCommentPath) =>
   `${getBookCommentPath(params)}edit/`;
 export const bookCommentNewPath = getBookCommentNewPath(bookParams);
 export const bookCommentEditPath = getBookCommentEditPath(bookCommentParams);
+
+export interface UserPath {
+  userId: string;
+}
+const userParams = { userId: ':userId' };
+export const getUserPath = ({ userId }: UserPath) => `${usersPath}${userId}/`;
+export const getUserEditPath = (params: UserPath) =>
+  `${getUserPath(params)}edit/`;
+export const usersPath = `${rootPath}users/`;
+export const userNewPath = `${rootPath}users/new/`;
+export const userPath = getUserPath(userParams);
+export const userEditPath = getUserEditPath(userParams);
+
+export interface DivisionPath {
+  divisionId: string;
+}
+const divisionParams = { divisionId: ':divisionId' };
+export const getDivisionPath = ({ divisionId }: DivisionPath) =>
+  `${divisionsPath}${divisionId}/`;
+export const getDivisionEditPath = (params: DivisionPath) =>
+  `${getDivisionPath(params)}edit/`;
+export const divisionsPath = `${rootPath}divisions/`;
+export const divisionNewPath = `${rootPath}divisions/new/`;
+export const divisionPath = getDivisionPath(divisionParams);
+export const divisionEditPath = getDivisionEditPath(divisionParams);
+
+export interface DivisionProjectPath extends DivisionPath {
+  projectId: string;
+}
+const divisionProjectParams = { ...divisionParams, projectId: ':projectId' };
+const getDivisionProjectsPath = (params: DivisionPath) =>
+  `${getDivisionPath(params)}projects/`;
+export const getDivisionProjectNewPath = (params: DivisionPath) =>
+  `${getDivisionProjectsPath(params)}new/`;
+const getDivisionProjectPath = ({
+  projectId,
+  ...otherPrams
+}: DivisionProjectPath) =>
+  `${getDivisionProjectsPath(otherPrams)}${projectId}/`;
+export const getDivisionProjectEditPath = (params: DivisionProjectPath) =>
+  `${getDivisionProjectPath(params)}edit/`;
+export const divisionProjectNewPath = getDivisionProjectNewPath(divisionParams);
+export const divisionProjectEditPath = getDivisionProjectEditPath(
+  divisionProjectParams
+);

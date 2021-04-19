@@ -25,4 +25,5 @@ export const ErrorOutlineIcon = createIcon('error_outline');
 // FIXME: SAMPLE CODE
 export const HomeIcon = createIcon('home');
 export const MenuBookIcon = createIcon('menu_book');
+export const MenuUserIcon = createIcon('people');
 export const ListIcon = createIcon('list');

@@ -5,6 +5,7 @@ import {
   HomeIcon,
   ListIcon,
   MenuBookIcon,
+  MenuUserIcon,
 } from 'src/view/base/material-ui/Icon';
 import { MenuList } from 'src/view/components/molecules/SideMenu';
 import {
@@ -15,6 +16,14 @@ import {
   rootPath,
   bookCommentNewPath,
   bookCommentEditPath,
+  usersPath,
+  userNewPath,
+  userPath,
+  userEditPath,
+  divisionsPath,
+  divisionNewPath,
+  divisionPath,
+  divisionEditPath,
 } from 'src/view/routes/paths';
 
 export const privateMenuLists: MenuList[] = [
@@ -57,6 +66,47 @@ export const privateMenuLists: MenuList[] = [
             icon: <AddIcon />,
             to: bookNewPath,
             paths: [bookNewPath],
+          },
+        ],
+      },
+      {
+        text: <Trans>Users</Trans>,
+        icon: <MenuUserIcon />,
+        menus: [
+          {
+            text: <Trans>List</Trans>,
+            icon: <ListIcon />,
+            to: usersPath,
+            paths: [usersPath, userNewPath, userPath, userEditPath],
+          },
+          {
+            text: <Trans>Add</Trans>,
+            icon: <AddIcon />,
+            to: userNewPath,
+            paths: [userNewPath],
+          },
+        ],
+      },
+      {
+        text: <Trans>Division</Trans>,
+        icon: <MenuUserIcon />,
+        menus: [
+          {
+            text: <Trans>List</Trans>,
+            icon: <ListIcon />,
+            to: divisionsPath,
+            paths: [
+              divisionsPath,
+              divisionNewPath,
+              divisionPath,
+              divisionEditPath,
+            ],
+          },
+          {
+            text: <Trans>Add</Trans>,
+            icon: <AddIcon />,
+            to: divisionNewPath,
+            paths: [divisionNewPath],
           },
         ],
       },
