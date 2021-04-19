@@ -3,6 +3,7 @@ export enum ErrorStatus {
   Connection = -2,
   Unauthorized = 401,
   NotFound = 404,
+  MethodNotAllowed = 405,
   UnprocessableEntity = 422,
   InternalServerError = 500,
 }
@@ -24,6 +25,11 @@ export type UnauthorizedError = StoreError<
 export type NotFoundError = StoreError<
   ErrorStatus.NotFound,
   { message?: string }
+>;
+
+export type MethodNotAllowedError = StoreError<
+  ErrorStatus.MethodNotAllowed,
+  {}
 >;
 
 export type UnprocessableEntityError = StoreError<

@@ -1,6 +1,30 @@
 export const otherPath = '*';
 export const rootPath = '/';
 export const loginPath = `${rootPath}login/`;
+export const registerPath = `${rootPath}register/`;
+export const forgotPasswordPath = `${rootPath}forgot-password/`;
+export const resetPasswordPath = `${rootPath}reset-password/`;
+
+export interface VerifyEmailPath {
+  id: string;
+  token: string;
+}
+export const getVerifyEmailPath = ({ id, token }: VerifyEmailPath) =>
+  `${rootPath}email/verify/${id}/${token}`;
+export const verifyEmailPath = getVerifyEmailPath({
+  id: ':id',
+  token: ':token',
+});
+
+export interface InvitationPath {
+  invitationId: string;
+}
+const invitationParams = { invitationId: ':invitationId' };
+export const getInvitationEditPath = ({ invitationId }: InvitationPath) =>
+  `${invitationsPath}${invitationId}/edit/`;
+export const invitationsPath = `${rootPath}invitations/`;
+export const invitationNewPath = `${rootPath}invitations/new/`;
+export const invitationEditPath = getInvitationEditPath(invitationParams);
 
 // FIXME: SAMPLE CODE
 
@@ -17,15 +41,15 @@ export const bookPath = getBookPath(bookParams);
 export const bookEditPath = getBookEditPath(bookParams);
 
 export interface BookCommentPath extends BookPath {
-  commentId: string;
+  commentSlug: string;
 }
-const bookCommentParams = { ...bookParams, commentId: ':commentId' };
+const bookCommentParams = { ...bookParams, commentSlug: ':commentSlug' };
 const getBookCommentsPath = (params: BookPath) =>
   `${getBookPath(params)}comments/`;
 export const getBookCommentNewPath = (params: BookPath) =>
   `${getBookCommentsPath(params)}new/`;
-const getBookCommentPath = ({ commentId, ...otherPrams }: BookCommentPath) =>
-  `${getBookCommentsPath(otherPrams)}${commentId}/`;
+const getBookCommentPath = ({ commentSlug, ...otherPrams }: BookCommentPath) =>
+  `${getBookCommentsPath(otherPrams)}${commentSlug}/`;
 export const getBookCommentEditPath = (params: BookCommentPath) =>
   `${getBookCommentPath(params)}edit/`;
 export const bookCommentNewPath = getBookCommentNewPath(bookParams);

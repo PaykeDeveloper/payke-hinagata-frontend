@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { serialize } from 'object-to-formdata';
+import qs from 'qs';
 import api, { CancelToken, isAxiosError } from 'src/base/api';
 import { siteName } from 'src/base/constants';
 import { RootState } from 'src/store/state';
@@ -13,6 +14,7 @@ import {
   UnprocessableEntityError,
   UnknownError,
   ConnectionError,
+  MethodNotAllowedError,
 } from 'src/store/types';
 
 const getError = (error: AxiosError) => {
@@ -36,6 +38,13 @@ const getError = (error: AxiosError) => {
     }
     case 404: {
       const result: NotFoundError = { status: ErrorStatus.NotFound, data };
+      return result;
+    }
+    case 405: {
+      const result: MethodNotAllowedError = {
+        status: ErrorStatus.MethodNotAllowed,
+        data,
+      };
       return result;
     }
     case 422: {
@@ -92,9 +101,13 @@ export const createGetAsyncThunk = <Returned, PathParams, SearchParams>(
     ThunkApiConfig
   >(
     `${siteName}/${name}`,
-    async ({ pathParams }, { signal, rejectWithValue }) => {
+    async ({ pathParams, searchParams }, { signal, rejectWithValue }) => {
       try {
-        const response = await api.get(getApiUrl(pathParams), {
+        let url = getApiUrl(pathParams);
+        if (searchParams) {
+          url += `?${qs.stringify(searchParams)}`;
+        }
+        const response = await api.get(url, {
           cancelToken: createCancelToken(signal),
         });
         return response.data;

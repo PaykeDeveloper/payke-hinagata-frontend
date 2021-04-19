@@ -100,8 +100,8 @@ const Show: FC<RouteComponentProps<BookPath, StaticContext, RouterState>> = (
   );
 
   const onClickEditBookComment: ChildProps['onClickEditBookComment'] = useCallback(
-    (commentId) =>
-      push(getBookCommentEditPath({ ...pathParams, commentId }), {
+    (commentSlug) =>
+      push(getBookCommentEditPath({ ...pathParams, commentSlug }), {
         path,
       } as RouterState),
     [push, pathParams, path]

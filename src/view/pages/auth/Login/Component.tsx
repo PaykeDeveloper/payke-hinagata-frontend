@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 
 import { makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
@@ -20,6 +20,8 @@ import { OnSubmit } from 'src/view/base/formik/types';
 import { PowerSettingsNewIcon } from 'src/view/base/material-ui/Icon';
 import Loader from 'src/view/components/atoms/Loader';
 import Logo from 'src/view/components/atoms/Logo';
+import RouterLink from 'src/view/components/atoms/RouterLink';
+import { forgotPasswordPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
 const useStyles = makeStyles({
@@ -33,27 +35,21 @@ const useStyles = makeStyles({
 
 const Component: FC<{
   object?: LoginInput;
-  isAuthenticated: boolean;
   status: StoreStatus;
 
   onSubmit: OnSubmit<LoginInput>;
   onLoggedIn: () => void;
 }> = (props) => {
-  const { object, isAuthenticated, status, onSubmit, onLoggedIn } = props;
-  useEffect(() => {
-    if (isAuthenticated) {
-      onLoggedIn();
-    }
-  }, [onLoggedIn, isAuthenticated]);
+  const { object, status, onSubmit } = props;
   const classes = useStyles();
   const { t } = useTranslation();
 
   return (
-    <Fade in timeout={1000}>
-      <Container maxWidth="xs">
-        <Box mt={2} mb={6} className={classes.logoBox}>
-          <Logo className={classes.logo} />
-        </Box>
+    <Container maxWidth="xs">
+      <Box mt={2} mb={6} className={classes.logoBox}>
+        <Logo className={classes.logo} />
+      </Box>
+      <Fade in timeout={1000}>
         <Paper>
           <Loader status={status}>
             <Box p={[2, 5]}>
@@ -66,7 +62,7 @@ const Component: FC<{
                 initialValues={object}
                 onSubmit={onSubmit}
                 validationSchema={yup.object({
-                  email: yup.string().label(t('Email')).required(),
+                  email: yup.string().email().label(t('Email')).required(),
                   password: yup.string().label(t('Password')).required(),
                 })}
               >
@@ -91,8 +87,11 @@ const Component: FC<{
             </Box>
           </Loader>
         </Paper>
-      </Container>
-    </Fade>
+      </Fade>
+      <Box m={1}>
+        <RouterLink to={forgotPasswordPath}>Forgot your password?</RouterLink>
+      </Box>
+    </Container>
   );
 };
 
