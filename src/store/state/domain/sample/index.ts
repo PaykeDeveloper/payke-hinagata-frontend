@@ -16,15 +16,15 @@ import {
   UserApiUrl,
 } from 'src/store/urls';
 import { bookCommentsReducer } from './bookComments/slice';
-import { divisionProjectsReducer } from './divisionProjects/slice';
 import { booksReducer } from './books/slice';
-import { usersReducer } from './users/slice';
-import { divisionsReducer } from './divisions/slice';
-import { Division } from './divisions/types';
+import { divisionProjectsReducer } from './divisionProjects/slice';
 import {
   DivisionProject,
   DivisionProjectDetail,
 } from './divisionProjects/types';
+import { divisionsReducer } from './divisions/slice';
+import { Division } from './divisions/types';
+import { usersReducer } from './users/slice';
 
 export interface SampleState {
   books: EntitiesState<Book, {}, Book, BookApiUrl>;

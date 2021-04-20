@@ -12,13 +12,13 @@ import BookNew from 'src/view/pages/sample/book/New';
 import BookShow from 'src/view/pages/sample/book/Show';
 import BookCommentEdit from 'src/view/pages/sample/bookComment/Edit';
 import BookCommentNew from 'src/view/pages/sample/bookComment/New';
-import UserList from 'src/view/pages/sample/user/List';
+import DivisionEdit from 'src/view/pages/sample/division/Edit';
 import DivisionList from 'src/view/pages/sample/division/List';
 import DivisionNew from 'src/view/pages/sample/division/New';
-import DivisionEdit from 'src/view/pages/sample/division/Edit';
 import DivisionShow from 'src/view/pages/sample/division/Show';
-import DivisionProjectNew from 'src/view/pages/sample/divisionProject/New';
 import DivisionProjectEdit from 'src/view/pages/sample/divisionProject/Edit';
+import DivisionProjectNew from 'src/view/pages/sample/divisionProject/New';
+import UserList from 'src/view/pages/sample/user/List';
 
 import {
   bookCommentEditPath,

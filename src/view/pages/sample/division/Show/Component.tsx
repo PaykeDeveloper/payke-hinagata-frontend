@@ -10,8 +10,6 @@ import { DivisionProject } from 'src/store/state/domain/sample/divisionProjects/
 import { Division } from 'src/store/state/domain/sample/divisions/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
-  dateColDef,
-  dateTimeColDef,
   RouterDataGrid,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';

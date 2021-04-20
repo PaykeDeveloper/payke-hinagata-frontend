@@ -9,7 +9,7 @@ import { BookInput } from 'src/store/state/domain/sample/books/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
-import { BaseTextField, DateTextField } from 'src/view/base/formik/TextField';
+import { BaseTextField } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
 import { DeleteIcon, NavigateBeforeIcon } from 'src/view/base/material-ui/Icon';
 import Loader from 'src/view/components/atoms/Loader';

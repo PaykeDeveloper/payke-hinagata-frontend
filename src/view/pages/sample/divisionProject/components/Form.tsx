@@ -11,18 +11,9 @@ import {
 } from 'src/store/state/domain/sample/divisionProjects/types';
 import { Division } from 'src/store/state/domain/sample/divisions/types';
 import { StoreError, StoreStatus } from 'src/store/types';
-import { BaseCheckField } from 'src/view/base/formik/CheckField';
 import { BaseForm } from 'src/view/base/formik/Form';
-import { BaseImageField } from 'src/view/base/formik/ImageField';
-import { BaseSelectField } from 'src/view/base/formik/SelectField';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
-import {
-  BaseTextField,
-  DateTextField,
-  DateTimeTextField,
-  MultiLineTextField,
-  NumberTextField,
-} from 'src/view/base/formik/TextField';
+import { BaseTextField } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
 import { DeleteIcon, NavigateBeforeIcon } from 'src/view/base/material-ui/Icon';
 import Loader from 'src/view/components/atoms/Loader';
@@ -38,7 +29,6 @@ import {
   rootPath,
 } from 'src/view/routes/paths';
 import * as yup from 'yup';
-import FooBarOptions from './FooBarOptions';
 
 const Form: FC<{
   title: string;
@@ -58,7 +48,6 @@ const Form: FC<{
     status,
     error,
     division,
-    divisionProject,
     onSubmit,
     onBack,
     onDelete,

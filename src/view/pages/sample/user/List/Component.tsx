@@ -1,7 +1,7 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import { Box, Button } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
@@ -9,14 +9,11 @@ import { Trans } from 'react-i18next';
 import { User } from 'src/store/state/domain/sample/users/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
-  dateColDef,
   RouterDataGrid,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
-import { AddIcon } from 'src/view/base/material-ui/Icon';
 import Link from 'src/view/base/material-ui/Link';
 import Loader from 'src/view/components/atoms/Loader';
-import Buttons from 'src/view/components/molecules/Buttons';
 import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
@@ -38,7 +35,7 @@ const Component: FC<{
   onClickShow: (bookId: number) => void;
   onClickEdit: (bookId: number) => void;
 }> = (props) => {
-  const { users, status, error, onClickAdd, onClickShow, onClickEdit } = props;
+  const { users, status, error, onClickShow, onClickEdit } = props;
   const { t } = useTranslation();
   const classes = useStyles();
 
