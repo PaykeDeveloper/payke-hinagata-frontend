@@ -2,6 +2,9 @@ import { RouteProps } from 'react-router-dom';
 import { notUndefined } from 'src/base/utils';
 import VerifyEmail from 'src/view/pages/auth/VerifyEmail';
 import Home from 'src/view/pages/common/Home';
+import InvitationEdit from 'src/view/pages/common/invitation/Edit';
+import InvitationList from 'src/view/pages/common/invitation/List';
+import InvitationNew from 'src/view/pages/common/invitation/New';
 import NotFound from 'src/view/pages/common/NotFound';
 import BookEdit from 'src/view/pages/sample/book/Edit';
 import BookList from 'src/view/pages/sample/book/List';
@@ -19,6 +22,9 @@ import {
   otherPath,
   rootPath,
   verifyEmailPath,
+  invitationsPath,
+  invitationNewPath,
+  invitationEditPath,
 } from 'src/view/routes/paths';
 
 const privateRoutes: RouteProps[] = [
@@ -30,6 +36,9 @@ const privateRoutes: RouteProps[] = [
   { path: bookPath, component: BookShow },
   { path: booksPath, component: BookList },
 
+  { path: invitationNewPath, component: InvitationNew },
+  { path: invitationEditPath, component: InvitationEdit },
+  { path: invitationsPath, component: InvitationList },
   { path: verifyEmailPath, component: VerifyEmail },
   { path: rootPath, component: Home },
   { path: otherPath, component: NotFound },

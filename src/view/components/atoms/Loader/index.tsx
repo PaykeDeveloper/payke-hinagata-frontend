@@ -45,7 +45,8 @@ export type LoaderProps = { size?: number } & (
     }
 );
 
-const checkLoading = (status: StoreStatus) => status === StoreStatus.Started;
+export const checkLoading = (status: StoreStatus) =>
+  status === StoreStatus.Started;
 
 const Loader: FC<LoaderProps> = (props) => {
   const { children, size } = props;

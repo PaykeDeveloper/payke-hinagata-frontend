@@ -14,6 +14,7 @@ import {
   UnprocessableEntityError,
   UnknownError,
   ConnectionError,
+  MethodNotAllowedError,
 } from 'src/store/types';
 
 const getError = (error: AxiosError) => {
@@ -37,6 +38,13 @@ const getError = (error: AxiosError) => {
     }
     case 404: {
       const result: NotFoundError = { status: ErrorStatus.NotFound, data };
+      return result;
+    }
+    case 405: {
+      const result: MethodNotAllowedError = {
+        status: ErrorStatus.MethodNotAllowed,
+        data,
+      };
       return result;
     }
     case 422: {

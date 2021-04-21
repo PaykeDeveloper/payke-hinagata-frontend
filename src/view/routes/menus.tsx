@@ -5,6 +5,7 @@ import {
   HomeIcon,
   ListIcon,
   MenuBookIcon,
+  PersonAddIcon,
 } from 'src/view/base/material-ui/Icon';
 import { MenuList } from 'src/view/components/molecules/SideMenu';
 import {
@@ -15,6 +16,8 @@ import {
   rootPath,
   bookCommentNewPath,
   bookCommentEditPath,
+  invitationsPath,
+  invitationNewPath,
 } from 'src/view/routes/paths';
 
 export const privateMenuLists: MenuList[] = [
@@ -36,6 +39,12 @@ export const privateMenuLists: MenuList[] = [
       </ListSubheader>
     ),
     menus: [
+      {
+        text: <Trans>Invitations</Trans>,
+        icon: <PersonAddIcon />,
+        to: invitationsPath,
+        paths: [invitationsPath, invitationNewPath],
+      },
       {
         text: <Trans>Books</Trans>,
         icon: <MenuBookIcon />,
