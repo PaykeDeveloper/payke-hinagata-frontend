@@ -1,10 +1,5 @@
 // FIXME: SAMPLE CODE
 
-export interface User {
-  id: number;
-  email: string;
-  createdAt: string | null;
-  updatedAt: string | null;
-}
+import { User } from 'src/store/state/domain/common/user/types';
 
 export type UserInput = Partial<User>;

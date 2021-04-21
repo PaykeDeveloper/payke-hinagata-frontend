@@ -27,12 +27,22 @@ const Form: FC<{
   object: BookInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
+  hasDeletePermission?: boolean;
 
   onSubmit: OnSubmit<BookInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
-  const { title, object, status, error, onSubmit, onBack, onDelete } = props;
+  const {
+    title,
+    object,
+    status,
+    error,
+    hasDeletePermission,
+    onSubmit,
+    onBack,
+    onDelete,
+  } = props;
   const { t } = useTranslation();
   return (
     <ContentWrapper>
@@ -59,6 +69,7 @@ const Form: FC<{
             rightButtons={
               onDelete && [
                 <LoaderButton
+                  disabled={!hasDeletePermission}
                   onClick={onDelete}
                   startIcon={<DeleteIcon />}
                   color="secondary"

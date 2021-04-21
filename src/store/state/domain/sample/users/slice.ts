@@ -1,8 +1,9 @@
 // FIXME: SAMPLE CODE
 
+import { User } from 'src/store/state/domain/common/user/types';
 import { UserApiUrl, getUsersApiUrl, getUserApiUrl } from 'src/store/urls';
 import { createEntitiesSlice, getEntitiesInitialState } from 'src/store/utils';
-import { User, UserInput } from './types';
+import { UserInput } from './types';
 
 const usersSlice = createEntitiesSlice<User, {}, User, UserApiUrl, UserInput>(
   'users',

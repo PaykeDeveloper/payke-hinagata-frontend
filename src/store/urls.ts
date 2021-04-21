@@ -55,6 +55,7 @@ export interface UserApiUrl {
 export const getUsersApiUrl = () => `${getRootApiUrl()}users/`;
 export const getUserApiUrl = ({ userId }: UserApiUrl) =>
   `${getUsersApiUrl()}${userId}/`;
+export const getMyUserApiUrl = () => `${getRootApiUrl()}user/`;
 
 export interface DivisionApiUrl {
   divisionId: string;

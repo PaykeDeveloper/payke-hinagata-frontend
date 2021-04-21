@@ -5,7 +5,9 @@ import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
-import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { StoreState, useStoreDispatch, useStoreSelector } from 'src/store';
+import { PermissionFactory } from 'src/store/state/domain/common/permissions/factories';
+import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
 import {
   divisionProjectsErrorSelector,
   divisionProjectsSelector,
@@ -31,6 +33,30 @@ import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 
+const divisionUpdatePermissionCheckSelector = createSelector(
+  divisionSelector,
+  (_: StoreState, params: { divisionUpdatePermissionNames: string[] }) =>
+    params.divisionUpdatePermissionNames,
+  (division, selectedPermissionNames) =>
+    selectedPermissionNames.every((e) => division?.permissionNames?.includes(e))
+);
+
+const projectCreatePermissionCheckSelector = createSelector(
+  permissionNamesSelector,
+  (_: StoreState, params: { projectCreatePermissionNames: string[] }) =>
+    params.projectCreatePermissionNames,
+  (permissionNames, selectedPermissionNames) =>
+    selectedPermissionNames.every((e) => permissionNames?.includes(e))
+);
+
+const projectUpdatePermissionCheckSelector = createSelector(
+  permissionNamesSelector,
+  (_: StoreState, params: { projectUpdatePermissionNames: string[] }) =>
+    params.projectUpdatePermissionNames,
+  (permissionNames, selectedPermissionNames) =>
+    selectedPermissionNames.every((e) => permissionNames?.includes(e))
+);
+
 const selector = createSelector(
   [
     divisionSelector,
@@ -39,6 +65,9 @@ const selector = createSelector(
     divisionProjectsSelector,
     divisionProjectsStatusSelector,
     divisionProjectsErrorSelector,
+    divisionUpdatePermissionCheckSelector,
+    projectCreatePermissionCheckSelector,
+    projectUpdatePermissionCheckSelector,
   ],
   (
     division,
@@ -46,13 +75,19 @@ const selector = createSelector(
     divisionError,
     divisionProjects,
     divisionProjectsStatus,
-    divisionProjectsError
+    divisionProjectsError,
+    hasDivisionUpdatePermission,
+    hasProjectCreatePermission,
+    hasProjectUpdatePermission
   ) => ({
     division,
     divisionStatus,
     divisionProjects,
     divisionProjectsStatus,
     errors: [divisionError, divisionProjectsError],
+    hasDivisionUpdatePermission,
+    hasProjectCreatePermission,
+    hasProjectUpdatePermission,
   })
 );
 
@@ -91,7 +126,13 @@ const Show: FC<
     [push, pathParams, path]
   );
 
-  const state = useStoreSelector(selector);
+  const state = useStoreSelector((s) =>
+    selector(s, {
+      divisionUpdatePermissionNames: PermissionFactory.CreateAll('project'),
+      projectCreatePermissionNames: PermissionFactory.CreateAll('project'),
+      projectUpdatePermissionNames: PermissionFactory.UpdateAll('project'),
+    })
+  );
 
   const onClickAddDivisionProject: ChildProps['onClickAddDivisionProject'] = useCallback(
     () =>

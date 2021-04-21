@@ -4,7 +4,9 @@ import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
-import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { StoreState, useStoreDispatch, useStoreSelector } from 'src/store';
+import { PermissionFactory } from 'src/store/state/domain/common/permissions/factories';
+import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
 import {
   divisionsErrorSelector,
   divisionsSelector,
@@ -21,9 +23,37 @@ import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 
+const updatePermissionCheckSelector = createSelector(
+  permissionNamesSelector,
+  (_: StoreState, params: { updatePermissionNames: string[] }) =>
+    params.updatePermissionNames,
+  (permissionNames, selectedPermissionNames) =>
+    selectedPermissionNames.every((e) => permissionNames?.includes(e))
+);
+
+const createPermissionCheckSelector = createSelector(
+  permissionNamesSelector,
+  (_: StoreState, params: { createPermissionNames: string[] }) =>
+    params.createPermissionNames,
+  (permissionNames, selectedPermissionNames) =>
+    selectedPermissionNames.every((e) => permissionNames?.includes(e))
+);
+
 const selector = createSelector(
-  [divisionsSelector, divisionsStatusSelector, divisionsErrorSelector],
-  (divisions, status, error) => ({ divisions, status, error })
+  [
+    divisionsSelector,
+    divisionsStatusSelector,
+    divisionsErrorSelector,
+    createPermissionCheckSelector,
+    updatePermissionCheckSelector,
+  ],
+  (divisions, status, error, hasCreatePermission, hasUpdatePermission) => ({
+    divisions,
+    status,
+    error,
+    hasCreatePermission,
+    hasUpdatePermission,
+  })
 );
 
 const List: FC<RouteComponentProps> = (props) => {
@@ -36,7 +66,13 @@ const List: FC<RouteComponentProps> = (props) => {
   useEffect(() => {
     dispatch(divisionsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
-  const state = useStoreSelector(selector);
+
+  const state = useStoreSelector((s) =>
+    selector(s, {
+      updatePermissionNames: PermissionFactory.UpdateAll('division'),
+      createPermissionNames: PermissionFactory.CreateAll('division'),
+    })
+  );
 
   const path = joinString(pathname, search);
 

@@ -1,12 +1,12 @@
 // FIXME: SAMPLE CODE
 
 import { combineReducers } from '@reduxjs/toolkit';
+import { User } from 'src/store/state/domain/common/user/types';
 import {
   BookComment,
   BookCommentDetail,
 } from 'src/store/state/domain/sample/bookComments/types';
 import { Book } from 'src/store/state/domain/sample/books/types';
-import { User } from 'src/store/state/domain/sample/users/types';
 import { EntitiesState } from 'src/store/types';
 import {
   BookApiUrl,

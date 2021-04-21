@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
-import { User } from 'src/store/state/domain/sample/users/types';
+import { User } from 'src/store/state/domain/common/user/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
   RouterDataGrid,

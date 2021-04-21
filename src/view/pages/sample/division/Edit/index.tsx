@@ -4,7 +4,9 @@ import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
-import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { StoreState, useStoreDispatch, useStoreSelector } from 'src/store';
+import { PermissionFactory } from 'src/store/state/domain/common/permissions/factories';
+import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
 import {
   divisionErrorSelector,
   divisionSelector,
@@ -17,9 +19,27 @@ import Form from '../components/Form';
 
 type ChildProps = ComponentProps<typeof Form>;
 
+const permissionCheckSelector = createSelector(
+  permissionNamesSelector,
+  (_: StoreState, params: { permissionNames: string[] }) =>
+    params.permissionNames,
+  (permissionNames, selectedPermissionNames) =>
+    selectedPermissionNames.every((e) => permissionNames?.includes(e))
+);
+
 const selector = createSelector(
-  [divisionSelector, divisionStatusSelector, divisionErrorSelector],
-  (object, status, error) => ({ object, status, error })
+  [
+    divisionSelector,
+    divisionStatusSelector,
+    divisionErrorSelector,
+    permissionCheckSelector,
+  ],
+  (object, status, error, hasDeletePermission) => ({
+    object,
+    status,
+    error,
+    hasDeletePermission,
+  })
 );
 
 export type DivisionEditRouterState =
@@ -62,7 +82,11 @@ const Container: FC<
     [dispatch, pathParams, onBack]
   );
 
-  const state = useStoreSelector(selector);
+  const state = useStoreSelector((s) =>
+    selector(s, {
+      permissionNames: PermissionFactory.DeleteAll('division'),
+    })
+  );
 
   const fromShow = location.state?.fromShow;
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {

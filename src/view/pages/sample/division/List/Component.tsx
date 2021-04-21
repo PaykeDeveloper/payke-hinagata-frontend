@@ -32,6 +32,8 @@ const Component: FC<{
   divisions: Division[];
   status: StoreStatus;
   error: StoreError | undefined;
+  hasCreatePermission?: boolean;
+  hasUpdatePermission?: boolean;
 
   onClickAdd: () => void;
   onClickShow: (bookId: number) => void;
@@ -41,6 +43,8 @@ const Component: FC<{
     divisions,
     status,
     error,
+    hasCreatePermission,
+    hasUpdatePermission,
     onClickAdd,
     onClickShow,
     onClickEdit,
@@ -61,9 +65,11 @@ const Component: FC<{
           >
             {t('Show')}
           </Link>
-          <Link onClick={() => onClickEdit(row['id'] as number)}>
-            {t('Edit')}
-          </Link>
+          {hasUpdatePermission ? (
+            <Link onClick={() => onClickEdit(row['id'] as number)}>
+              {t('Edit')}
+            </Link>
+          ) : null}
         </Box>
       ),
     },
@@ -95,6 +101,7 @@ const Component: FC<{
           <Buttons
             leftButtons={[
               <Button
+                disabled={!hasCreatePermission}
                 onClick={onClickAdd}
                 startIcon={<AddIcon />}
                 color="primary"

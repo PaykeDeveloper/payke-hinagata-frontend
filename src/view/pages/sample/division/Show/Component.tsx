@@ -34,6 +34,9 @@ const Component: FC<{
   divisionProjects: DivisionProject[];
   divisionProjectsStatus: StoreStatus;
   errors: (StoreError | undefined)[];
+  hasDivisionUpdatePermission?: boolean;
+  hasProjectCreatePermission?: boolean;
+  hasProjectUpdatePermission?: boolean;
 
   onBack: () => void;
   onClickEditDivision: () => void;
@@ -46,6 +49,9 @@ const Component: FC<{
     divisionProjects,
     divisionProjectsStatus,
     errors,
+    hasDivisionUpdatePermission,
+    hasProjectCreatePermission,
+    hasProjectUpdatePermission,
     onBack,
     onClickEditDivision,
     onClickAddDivisionProject,
@@ -59,9 +65,15 @@ const Component: FC<{
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <Link onClick={() => onClickEditDivisionProject(row['id'] as string)}>
-          {t('Edit')}
-        </Link>
+        <>
+          {hasProjectUpdatePermission ? (
+            <Link
+              onClick={() => onClickEditDivisionProject(row['id'] as string)}
+            >
+              {t('Edit')}
+            </Link>
+          ) : null}
+        </>
       ),
       width: 50,
     },
@@ -102,6 +114,7 @@ const Component: FC<{
                   <Trans>Back</Trans>
                 </Button>,
                 <Button
+                  disabled={!hasDivisionUpdatePermission}
                   onClick={onClickEditDivision}
                   startIcon={<EditIcon />}
                   variant="outlined"
@@ -150,6 +163,7 @@ const Component: FC<{
               <Buttons
                 leftButtons={[
                   <Button
+                    disabled={!hasProjectCreatePermission}
                     onClick={onClickAddDivisionProject}
                     startIcon={<AddIcon />}
                     color="primary"
