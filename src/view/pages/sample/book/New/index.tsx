@@ -52,7 +52,6 @@ const Container: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
     },
     [dispatch, pathParams, onBack]
   );
-
   const state = useStoreSelector(selector);
 
   return (

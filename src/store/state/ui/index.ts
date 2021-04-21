@@ -1,5 +1,11 @@
 import { combineReducers } from '@reduxjs/toolkit';
+import sampleReducer, { SampleState } from 'src/store/state/ui/sample';
 
-export interface UiState {}
+// FIXME: SAMPLE CODE
+export interface UiState {
+  sample: SampleState;
+}
 
-export default combineReducers({});
+export default combineReducers({
+  sample: sampleReducer,
+});

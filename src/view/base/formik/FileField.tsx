@@ -40,7 +40,7 @@ interface BaseFileFieldProps extends Props {
   label: string;
 }
 
-export const BaseFileield: FC<BaseFileFieldProps> = (props) => {
+export const BaseFileField: FC<BaseFileFieldProps> = (props) => {
   const { label, ...otherProps } = props;
   const classes = useStyles();
   return (

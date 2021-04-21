@@ -22,6 +22,7 @@ import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import { rootPath } from 'src/view/routes/paths';
+import Importer from 'src/view/pages/sample/book/Importer';
 
 const useStyles = makeStyles((theme) => ({
   showLink: {
@@ -102,6 +103,7 @@ const Component: FC<{
               >
                 <Trans>Add</Trans>
               </Button>,
+              <Importer />,
             ]}
           />
           <Loader status={status}>

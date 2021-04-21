@@ -191,3 +191,76 @@ export const createDeleteAsyncThunk = <Returned, PathParams>(
       }
     }
   );
+
+export const createBPostAsyncThunk = <Returned, PathParams, BodyParams>(
+  name: string,
+  getApiUrl: (_: PathParams) => string
+) =>
+  createAsyncThunk<
+    Returned,
+    {
+      pathParams: PathParams;
+      bodyParams: BodyParams;
+      useFormData?: boolean;
+      uniqueId?: number | string;
+    },
+    ThunkApiConfig
+  >(
+    `${siteName}/${name}`,
+    async (
+      { pathParams, bodyParams, useFormData },
+      { signal, rejectWithValue }
+    ) => {
+      try {
+        const response = await api.post(
+          getApiUrl(pathParams),
+          useFormData ? serialize(bodyParams) : bodyParams,
+          {
+            cancelToken: createCancelToken(signal),
+          }
+        );
+        return response.data;
+      } catch (e) {
+        const rejectValue = getRejectValue(e);
+        return rejectWithValue(rejectValue);
+      }
+    }
+  );
+
+export const createBPatchAsyncThunk = <Returned, PathParams, BodyParams>(
+  name: string,
+  getApiUrl: (_: PathParams) => string
+) =>
+  createAsyncThunk<
+    Returned,
+    {
+      pathParams: PathParams;
+      bodyParams: BodyParams;
+      useFormData?: boolean;
+      uniqueId?: number | string;
+    },
+    ThunkApiConfig
+  >(
+    `${siteName}/${name}`,
+    async (
+      { pathParams, bodyParams, useFormData },
+      { signal, rejectWithValue }
+    ) => {
+      try {
+        const response = await api.post(
+          getApiUrl(pathParams),
+          useFormData ? serialize(bodyParams) : bodyParams,
+          {
+            cancelToken: createCancelToken(signal),
+            headers: {
+              'X-HTTP-Method-Override': 'PATCH',
+            },
+          }
+        );
+        return response.data;
+      } catch (e) {
+        const rejectValue = getRejectValue(e);
+        return rejectWithValue(rejectValue);
+      }
+    }
+  );

@@ -7,10 +7,7 @@ import {
 } from 'src/store/state/domain/sample/bookComments/types';
 import { Book } from 'src/store/state/domain/sample/books/types';
 import { EntitiesState } from 'src/store/types';
-import {
-  BookApiUrl,
-  BookCommentApiUrl,
-} from 'src/store/urls';
+import { BookApiUrl, BookCommentApiUrl } from 'src/store/urls';
 import { bookCommentsReducer } from './bookComments/slice';
 import { booksReducer } from './books/slice';
 
