@@ -21,12 +21,14 @@ export interface ItemMenu {
   icon?: ReactElement;
   to: string;
   paths: string[];
+  requiredPermissions?: string[];
 }
 
 export interface CollapseMenu {
   text: ReactElement;
   menus: Menu[];
   icon?: ReactElement;
+  requiredPermissions?: string[];
 }
 
 export const exactMatchPath = (menu: Menu, path: string): boolean => {

@@ -1,5 +1,6 @@
 import { ListSubheader } from '@material-ui/core';
 import { Trans } from 'react-i18next';
+import { PermissionFactory } from 'src/store/state/domain/common/permissions/factories';
 import {
   AddIcon,
   HomeIcon,
@@ -53,6 +54,7 @@ export const privateMenuLists: MenuList[] = [
         icon: <PersonAddIcon />,
         to: invitationsPath,
         paths: [invitationsPath, invitationNewPath],
+        requiredPermissions: PermissionFactory.ViewAll('invitation'),
       },
       {
         text: <Trans>Books</Trans>,
@@ -116,6 +118,7 @@ export const privateMenuLists: MenuList[] = [
             icon: <AddIcon />,
             to: divisionNewPath,
             paths: [divisionNewPath],
+            requiredPermissions: PermissionFactory.CreateOwnAll('division'),
           },
         ],
       },
