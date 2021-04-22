@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Logo from '../Logo';
+import Logo from '..';
 
 test('renders Logo', () => {
   const className = 'test-class';

@@ -5,29 +5,29 @@ import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
-import { StoreState, useStoreDispatch, useStoreSelector } from 'src/store';
-import { PermissionFactory } from 'src/store/state/domain/common/permissions/factories';
-import { PermissionType } from 'src/store/state/domain/common/permissions/types';
-import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
+import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
   divisionMembersSelector,
   divisionMembersStatusSelector,
   divisionMembersErrorSelector,
+  memberViewPermissionCheckSelector,
 } from 'src/store/state/domain/sample/divisionMembers/selectors';
 import { divisionMembersActions } from 'src/store/state/domain/sample/divisionMembers/slice';
 import {
   divisionProjectsErrorSelector,
   divisionProjectsSelector,
   divisionProjectsStatusSelector,
+  projectCreatePermissionCheckSelector,
+  projectUpdatePermissionCheckSelector,
 } from 'src/store/state/domain/sample/divisionProjects/selectors';
 import { divisionProjectsActions } from 'src/store/state/domain/sample/divisionProjects/slice';
 import {
   divisionErrorSelector,
   divisionSelector,
   divisionStatusSelector,
+  divisionUpdatePermissionCheckSelector,
 } from 'src/store/state/domain/sample/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/sample/divisions/slice';
-import { Division } from 'src/store/state/domain/sample/divisions/types';
 import { DivisionEditRouterState } from 'src/view/pages/sample/division/Edit';
 import {
   DivisionPath,
@@ -35,54 +35,13 @@ import {
   getDivisionProjectEditPath,
   getDivisionProjectNewPath,
   getDivisionEditPath,
+  getDivisionMemberNewPath,
+  getDivisionMemberEditPath,
 } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Component, { PermissionList } from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
-
-export const divisionUpdatePermissionCheck = (
-  division: Division | undefined,
-  selected: string[]
-) =>
-  selected.some((e) =>
-    PermissionType.isOwn(e)
-      ? division?.requestMemberId
-        ? division?.permissionNames?.includes(e)
-        : false
-      : division?.permissionNames?.includes(e)
-  );
-
-const divisionUpdatePermissionCheckSelector = createSelector(
-  divisionSelector,
-  (_: StoreState, params: { divisionUpdatePermissionNames: string[] }) =>
-    params.divisionUpdatePermissionNames,
-  divisionUpdatePermissionCheck
-);
-
-const projectCreatePermissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (_: StoreState, params: { projectCreatePermissionNames: string[] }) =>
-    params.projectCreatePermissionNames,
-  (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.some((e) => permissionNames?.includes(e))
-);
-
-const projectUpdatePermissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (_: StoreState, params: { projectUpdatePermissionNames: string[] }) =>
-    params.projectUpdatePermissionNames,
-  (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.some((e) => permissionNames?.includes(e))
-);
-
-const memberViewPermissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (_: StoreState, params: { memberViewPermissionNames: string[] }) =>
-    params.memberViewPermissionNames,
-  (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.some((e) => permissionNames?.includes(e))
-);
 
 const permissionSelector = createSelector(
   [
@@ -174,14 +133,7 @@ const Show: FC<
     [push, pathParams, path]
   );
 
-  const state = useStoreSelector((s) =>
-    selector(s, {
-      divisionUpdatePermissionNames: PermissionFactory.CreateOwnAll('project'),
-      projectCreatePermissionNames: PermissionFactory.CreateOwnAll('project'),
-      projectUpdatePermissionNames: PermissionFactory.UpdateOwnAll('project'),
-      memberViewPermissionNames: PermissionFactory.UpdateOwnAll('project'),
-    })
-  );
+  const state = useStoreSelector(selector);
 
   const onClickAddDivisionProject: ChildProps['onClickAddDivisionProject'] = useCallback(
     () =>
@@ -199,6 +151,22 @@ const Show: FC<
     [push, pathParams, path]
   );
 
+  const onClickAddDivisionMember: ChildProps['onClickAddDivisionMember'] = useCallback(
+    () =>
+      push(getDivisionMemberNewPath(pathParams), {
+        path,
+      } as RouterState),
+    [push, pathParams, path]
+  );
+
+  const onClickEditDivisionMember: ChildProps['onClickEditDivisionMember'] = useCallback(
+    (memberId) =>
+      push(getDivisionMemberEditPath({ ...pathParams, memberId }), {
+        path,
+      } as RouterState),
+    [push, pathParams, path]
+  );
+
   return (
     <Component
       {...state}
@@ -206,6 +174,8 @@ const Show: FC<
       onClickEditDivision={onClickEditDivision}
       onClickAddDivisionProject={onClickAddDivisionProject}
       onClickEditDivisionProject={onClickEditDivisionProject}
+      onClickAddDivisionMember={onClickAddDivisionMember}
+      onClickEditDivisionMember={onClickEditDivisionMember}
     />
   );
 };

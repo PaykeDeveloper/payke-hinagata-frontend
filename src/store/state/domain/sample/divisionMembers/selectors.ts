@@ -1,6 +1,9 @@
 // FIXME: SAMPLE CODE
 
+import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
+import { PermissionFactory } from '../../common/permissions/factories';
+import { permissionNamesSelector } from '../../common/user/selectors';
 
 export const divisionMembersSelector = (state: StoreState) =>
   state.domain.sample.divisionMembers.entities;
@@ -19,3 +22,11 @@ export const divisionStatusSelector = (state: StoreState) =>
 
 export const divisionErrorSelector = (state: StoreState) =>
   state.domain.sample.divisionMembers.meta.fetchEntity.error;
+
+export const memberViewPermissionCheckSelector = createSelector(
+  permissionNamesSelector,
+  (permissionNames) =>
+    PermissionFactory.UpdateOwnAll('project').some((e) =>
+      permissionNames?.includes(e)
+    )
+);

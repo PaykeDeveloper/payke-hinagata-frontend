@@ -105,7 +105,7 @@ export interface DivisionMemberPath extends DivisionPath {
 }
 const divisionMemberParams = { ...divisionParams, memberId: ':memberId' };
 const getDivisionMembersPath = (params: DivisionPath) =>
-  `${getDivisionPath(params)}projects/`;
+  `${getDivisionPath(params)}members/`;
 export const getDivisionMemberNewPath = (params: DivisionPath) =>
   `${getDivisionMembersPath(params)}new/`;
 export const getDivisionMemberPath = ({

@@ -1,6 +1,6 @@
 import { PermissionFactory } from 'src/store/state/domain/common/permissions/factories';
 import { Division } from 'src/store/state/domain/sample/divisions/types';
-import { divisionUpdatePermissionCheck } from '../index';
+import { divisionUpdatePermissionCheck } from '../selectors';
 
 test('divisionUpdatePermissionCheck: success: own', () => {
   const division: Division = {

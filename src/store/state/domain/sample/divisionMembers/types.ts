@@ -2,10 +2,11 @@
 
 export interface DivisionMember {
   id: number;
-  name: string;
+  userId: string;
   createdAt: string | null;
   updatedAt: string | null;
   permissionNames: string[];
+  roleNames: string[];
 }
 
 export type DivisionMemberInput = Partial<DivisionMember>;

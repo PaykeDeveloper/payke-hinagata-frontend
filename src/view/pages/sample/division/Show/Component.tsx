@@ -49,7 +49,9 @@ const Component: FC<{
   onBack: () => void;
   onClickEditDivision: () => void;
   onClickAddDivisionProject: () => void;
-  onClickEditDivisionProject: (commentId: string) => void;
+  onClickEditDivisionProject: (projectId: string) => void;
+  onClickAddDivisionMember: () => void;
+  onClickEditDivisionMember: (memberId: string) => void;
 }> = (props) => {
   const {
     division,
@@ -64,10 +66,12 @@ const Component: FC<{
     onClickEditDivision,
     onClickAddDivisionProject,
     onClickEditDivisionProject,
+    onClickAddDivisionMember,
+    onClickEditDivisionMember,
   } = props;
   const { t } = useTranslation();
 
-  const columns: GridColumns = [
+  const projectColumns: GridColumns = [
     {
       field: ' ',
       sortable: false,
@@ -87,6 +91,39 @@ const Component: FC<{
     },
     { field: 'id', headerName: t('ID'), width: 100 },
     { field: 'name', headerName: t('Name'), width: 200 },
+    {
+      field: 'createdAt',
+      headerName: t('Created at'),
+      ...timestampColDef,
+    },
+    {
+      field: 'updatedAt',
+      headerName: t('Updated at'),
+      ...timestampColDef,
+    },
+  ];
+
+  const memberColumns: GridColumns = [
+    {
+      field: ' ',
+      sortable: false,
+      filterable: false,
+      renderCell: ({ row }) => (
+        <>
+          {permission.projectUpdate ? (
+            <Link
+              onClick={() => onClickEditDivisionMember(row['id'] as string)}
+            >
+              {t('Edit')}
+            </Link>
+          ) : null}
+        </>
+      ),
+      width: 50,
+    },
+    { field: 'id', headerName: t('ID'), width: 100 },
+    { field: 'userId', headerName: t('UserID'), width: 200 },
+    { field: 'roleNames', headerName: t('Role Names'), width: 200 },
     {
       field: 'createdAt',
       headerName: t('Created at'),
@@ -182,7 +219,10 @@ const Component: FC<{
                 ]}
               />
               <Loader status={divisionProjectsStatus}>
-                <RouterDataGrid columns={columns} rows={divisionProjects} />
+                <RouterDataGrid
+                  columns={projectColumns}
+                  rows={divisionProjects}
+                />
               </Loader>
             </Box>
           </Box>
@@ -196,7 +236,7 @@ const Component: FC<{
                   leftButtons={[
                     <Button
                       disabled={!permission.projectCreate}
-                      onClick={onClickAddDivisionProject}
+                      onClick={onClickAddDivisionMember}
                       startIcon={<AddIcon />}
                       color="primary"
                       variant="outlined"
@@ -206,7 +246,10 @@ const Component: FC<{
                   ]}
                 />
                 <Loader status={divisionMembersStatus}>
-                  <RouterDataGrid columns={columns} rows={divisionMembers} />
+                  <RouterDataGrid
+                    columns={memberColumns}
+                    rows={divisionMembers}
+                  />
                 </Loader>
               </Box>
             </Box>

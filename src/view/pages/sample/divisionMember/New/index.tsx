@@ -58,7 +58,7 @@ const Container: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
   return (
     <Form
       {...state}
-      title="Add division"
+      title="Add member"
       object={undefined}
       onSubmit={onSubmit}
       onBack={onBack}

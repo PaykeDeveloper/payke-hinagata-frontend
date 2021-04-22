@@ -16,6 +16,8 @@ import DivisionEdit from 'src/view/pages/sample/division/Edit';
 import DivisionList from 'src/view/pages/sample/division/List';
 import DivisionNew from 'src/view/pages/sample/division/New';
 import DivisionShow from 'src/view/pages/sample/division/Show';
+import DivisionMemberEdit from 'src/view/pages/sample/divisionMember/Edit';
+import DivisionMemberNew from 'src/view/pages/sample/divisionMember/New';
 import DivisionProjectEdit from 'src/view/pages/sample/divisionProject/Edit';
 import DivisionProjectNew from 'src/view/pages/sample/divisionProject/New';
 import UserList from 'src/view/pages/sample/user/List';
@@ -40,6 +42,8 @@ import {
   invitationsPath,
   invitationNewPath,
   invitationEditPath,
+  divisionMemberNewPath,
+  divisionMemberEditPath,
 } from 'src/view/routes/paths';
 
 const privateRoutes: RouteProps[] = [
@@ -63,6 +67,8 @@ const privateRoutes: RouteProps[] = [
   { path: divisionPath, component: DivisionShow },
   { path: divisionProjectNewPath, component: DivisionProjectNew },
   { path: divisionProjectEditPath, component: DivisionProjectEdit },
+  { path: divisionMemberNewPath, component: DivisionMemberNew },
+  { path: divisionMemberEditPath, component: DivisionMemberEdit },
 
   { path: invitationNewPath, component: InvitationNew },
   { path: invitationEditPath, component: InvitationEdit },
