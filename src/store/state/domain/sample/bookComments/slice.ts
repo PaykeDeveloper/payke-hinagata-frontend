@@ -1,5 +1,6 @@
 // FIXME: SAMPLE CODE
 
+import { authActions } from 'src/store/state/app/auth/slice';
 import {
   BookCommentApiUrl,
   BookApiUrl,
@@ -20,7 +21,10 @@ const bookCommentsSlice = createEntitiesSlice<
   getEntitiesInitialState(),
   getBookCommentsApiUrl,
   getBookCommentApiUrl,
-  (state) => state.domain.sample.bookComments
+  (state) => state.domain.sample.bookComments,
+  undefined,
+  (builder) =>
+    builder.addCase(authActions.resetAll, () => getEntitiesInitialState())
 );
 
 export const bookCommentsActions = bookCommentsSlice.actions;

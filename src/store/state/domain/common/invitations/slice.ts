@@ -1,3 +1,4 @@
+import { authActions } from 'src/store/state/app/auth/slice';
 import {
   getInvitationApiUrl,
   getInvitationsApiUrl,
@@ -22,7 +23,10 @@ const invitationsSlice = createEntitiesSlice<
   getEntitiesInitialState(),
   getInvitationsApiUrl,
   getInvitationApiUrl,
-  (state) => state.domain.common.invitations
+  (state) => state.domain.common.invitations,
+  undefined,
+  (builder) =>
+    builder.addCase(authActions.resetAll, () => getEntitiesInitialState())
 );
 
 export const invitationsActions = invitationsSlice.actions;
