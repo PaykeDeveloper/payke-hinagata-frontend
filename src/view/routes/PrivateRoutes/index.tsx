@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
 
 import { Route, Switch } from 'react-router-dom';
+import SyncDomains from 'src/view/components/molecules/SyncDomains';
 import PrivateLayout from 'src/view/components/templates/PrivateLayout';
-import privateRoutes from './routes';
+import privateRoutes, { privatePaths } from './routes';
 export { default as privateRoutes, privatePaths } from './routes';
 
 const PrivateRoutes: FC = () => {
@@ -13,6 +14,7 @@ const PrivateRoutes: FC = () => {
           <Route key={index} exact {...route} />
         ))}
       </Switch>
+      <Route path={privatePaths} component={SyncDomains} />
     </PrivateLayout>
   );
 };

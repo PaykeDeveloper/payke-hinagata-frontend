@@ -1,4 +1,4 @@
-import React, { ComponentProps, FC, useCallback } from 'react';
+import React, { ComponentProps, FC, useCallback, useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
@@ -9,6 +9,7 @@ import {
 } from 'src/store/state/domain/common/invitations/selectors';
 import { invitationsActions } from 'src/store/state/domain/common/invitations/slice';
 import { LocaleType } from 'src/store/state/domain/common/invitations/types';
+import { userRolesSelector } from 'src/store/state/domain/common/roles/selectors';
 import { invitationsPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Component from './Component';
@@ -16,10 +17,11 @@ import Component from './Component';
 type ChildProps = ComponentProps<typeof Component>;
 
 const selector = createSelector(
-  [invitationsStatusSelector, invitationsErrorSelector],
-  (status, error) => ({
+  [invitationsStatusSelector, invitationsErrorSelector, userRolesSelector],
+  (status, error, roles) => ({
     status,
     error,
+    roles,
   })
 );
 
@@ -53,14 +55,16 @@ const Container: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
   );
 
   const state = useStoreSelector(selector);
+  const { roles } = state;
+  const object = useMemo(() => {
+    const roleNames = roles
+      .filter(({ required }) => required)
+      .map(({ name }) => name);
+    return { locale: LocaleType.Japanese, roleNames };
+  }, [roles]);
 
   return (
-    <Component
-      {...state}
-      object={{ locale: LocaleType.Japanese }}
-      onSubmit={onSubmit}
-      onBack={onBack}
-    />
+    <Component {...state} object={object} onSubmit={onSubmit} onBack={onBack} />
   );
 };
 

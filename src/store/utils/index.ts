@@ -15,6 +15,7 @@ export {
   createPostAsyncThunk,
   createDeleteAsyncThunk,
   createPatchAsyncThunk,
+  createPutAsyncThunk,
 } from './createAsyncThunks';
 export {
   default as createEntitySlice,

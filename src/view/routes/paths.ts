@@ -16,6 +16,8 @@ export const verifyEmailPath = getVerifyEmailPath({
   token: ':token',
 });
 
+export const changePasswordPath = `${rootPath}user/password/`;
+
 export interface InvitationPath {
   invitationId: string;
 }
