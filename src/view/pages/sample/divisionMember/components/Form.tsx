@@ -6,6 +6,10 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
 import { BookInput } from 'src/store/state/domain/sample/books/types';
+import {
+  DivisionMemberDetail,
+  DivisionMemberInput,
+} from 'src/store/state/domain/sample/divisionMembers/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
@@ -24,10 +28,11 @@ import * as yup from 'yup';
 
 const Form: FC<{
   title: string;
-  object: BookInput | undefined;
+  object: DivisionMemberInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
   hasDeletePermission?: boolean;
+  divisionMember: DivisionMemberDetail | undefined;
 
   onSubmit: OnSubmit<BookInput>;
   onBack: () => void;
@@ -84,7 +89,7 @@ const Form: FC<{
             initialValues={object}
             onSubmit={onSubmit}
             validationSchema={yup.object({
-              name: yup.string().label(t('Name')).required().max(30),
+              userId: yup.string().label(t('User ID')).required().max(30),
             })}
           >
             <Loader status={status}>
@@ -92,7 +97,11 @@ const Form: FC<{
                 <CardContent>
                   <Grid container spacing={1}>
                     <Grid item xs={12} sm={8}>
-                      <BaseTextField name="name" label={t('Name')} required />
+                      <BaseTextField
+                        name="userId"
+                        label={t('User ID')}
+                        required
+                      />
                     </Grid>
                   </Grid>
                 </CardContent>

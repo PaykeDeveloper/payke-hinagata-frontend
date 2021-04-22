@@ -14,13 +14,13 @@ export const divisionMembersStatusSelector = (state: StoreState) =>
 export const divisionMembersErrorSelector = (state: StoreState) =>
   state.domain.sample.divisionMembers.meta.fetchEntities.error;
 
-export const divisionSelector = (state: StoreState) =>
+export const divisionMemberSelector = (state: StoreState) =>
   state.domain.sample.divisionMembers.entity;
 
-export const divisionStatusSelector = (state: StoreState) =>
+export const divisionMemberStatusSelector = (state: StoreState) =>
   state.domain.sample.divisionMembers.meta.fetchEntity.status;
 
-export const divisionErrorSelector = (state: StoreState) =>
+export const divisionMemberErrorSelector = (state: StoreState) =>
   state.domain.sample.divisionMembers.meta.fetchEntity.error;
 
 export const memberViewPermissionCheckSelector = createSelector(

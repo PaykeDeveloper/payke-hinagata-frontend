@@ -108,7 +108,7 @@ const Container: FC<
   return (
     <Form
       {...otherState}
-      title="Edit comment"
+      title="Edit project"
       object={object}
       divisionProject={divisionProject}
       onSubmit={onSubmit}
