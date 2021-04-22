@@ -13,6 +13,7 @@ import {
 } from 'src/store/state/domain/common/invitations/selectors';
 import { invitationsActions } from 'src/store/state/domain/common/invitations/slice';
 import { InvitationStatus } from 'src/store/state/domain/common/invitations/types';
+import { userRolesSelector } from 'src/store/state/domain/common/roles/selectors';
 import { getErrorMessage } from 'src/store/utils';
 import { InvitationPath, invitationsPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
@@ -21,8 +22,13 @@ import Component from './Component';
 type ChildProps = ComponentProps<typeof Component>;
 
 const selector = createSelector(
-  [invitationSelector, invitationStatusSelector, invitationErrorSelector],
-  (object, status, error) => ({ object, status, error })
+  [
+    invitationSelector,
+    invitationStatusSelector,
+    invitationErrorSelector,
+    userRolesSelector,
+  ],
+  (object, status, error, roles) => ({ object, status, error, roles })
 );
 
 const Container: FC<

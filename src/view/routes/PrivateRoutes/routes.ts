@@ -1,5 +1,6 @@
 import { RouteProps } from 'react-router-dom';
 import { notUndefined } from 'src/base/utils';
+import ChangePassword from 'src/view/pages/auth/ChangePassword';
 import VerifyEmail from 'src/view/pages/auth/VerifyEmail';
 import Home from 'src/view/pages/common/Home';
 import InvitationEdit from 'src/view/pages/common/invitation/Edit';
@@ -44,6 +45,7 @@ import {
   invitationEditPath,
   divisionMemberNewPath,
   divisionMemberEditPath,
+  changePasswordPath,
 } from 'src/view/routes/paths';
 
 const privateRoutes: RouteProps[] = [
@@ -73,6 +75,7 @@ const privateRoutes: RouteProps[] = [
   { path: invitationNewPath, component: InvitationNew },
   { path: invitationEditPath, component: InvitationEdit },
   { path: invitationsPath, component: InvitationList },
+  { path: changePasswordPath, component: ChangePassword },
   { path: verifyEmailPath, component: VerifyEmail },
   { path: rootPath, component: Home },
   { path: otherPath, component: NotFound },

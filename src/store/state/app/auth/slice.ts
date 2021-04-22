@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { siteName } from 'src/base/constants';
 import {
+  getChangePasswordApiUrl,
   getForgotPasswordApiUrl,
   getLoginApiUrl,
   getLogoutApiUrl,
@@ -9,8 +10,13 @@ import {
   getVerifyEmailApiUrl,
   VerifyEmailApiUrl,
 } from 'src/store/urls';
-import { createGetAsyncThunk, createPostAsyncThunk } from 'src/store/utils';
 import {
+  createGetAsyncThunk,
+  createPostAsyncThunk,
+  createPutAsyncThunk,
+} from 'src/store/utils';
+import {
+  ChangePasswordInput,
   ForgotPasswordInput,
   LoginInput,
   RegisterInput,
@@ -52,6 +58,12 @@ const verifyEmail = createGetAsyncThunk<
   { expires?: string; signature?: string }
 >('verifyEmail', getVerifyEmailApiUrl);
 
+const changePassword = createPutAsyncThunk<
+  unknown,
+  unknown,
+  ChangePasswordInput
+>('changePassword', getChangePasswordApiUrl);
+
 const resetAll = createAction(`${siteName}/resetAll`);
 
 export const authActions = {
@@ -61,5 +73,6 @@ export const authActions = {
   forgotPassword,
   resetPassword,
   verifyEmail,
+  changePassword,
   resetAll,
 };

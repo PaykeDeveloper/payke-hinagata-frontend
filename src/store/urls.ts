@@ -19,6 +19,9 @@ export interface VerifyEmailApiUrl {
 export const getVerifyEmailApiUrl = ({ id, token }: VerifyEmailApiUrl) =>
   `${backendOriginUrl}email/verify/${id}/${token}/`;
 
+export const getChangePasswordApiUrl = () =>
+  `${backendOriginUrl}user/password/`;
+
 export const getRootApiUrl = () => `${backendOriginUrl}api/v1/`;
 
 export const getStatusApiUrl = () => `${getRootApiUrl()}status/`;
@@ -29,6 +32,8 @@ export interface InvitationApiUrl {
 export const getInvitationsApiUrl = () => `${getRootApiUrl()}invitations/`;
 export const getInvitationApiUrl = ({ invitationId }: InvitationApiUrl) =>
   `${getInvitationsApiUrl()}${invitationId}/`;
+
+export const getRolesApiUrl = () => `${getRootApiUrl()}roles/`;
 
 // FIXME: SAMPLE CODE
 
