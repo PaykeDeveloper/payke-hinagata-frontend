@@ -28,7 +28,7 @@ const updatePermissionCheckSelector = createSelector(
   (_: StoreState, params: { updatePermissionNames: string[] }) =>
     params.updatePermissionNames,
   (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.every((e) => permissionNames?.includes(e))
+    selectedPermissionNames.some((e) => permissionNames?.includes(e))
 );
 
 const createPermissionCheckSelector = createSelector(
@@ -36,7 +36,7 @@ const createPermissionCheckSelector = createSelector(
   (_: StoreState, params: { createPermissionNames: string[] }) =>
     params.createPermissionNames,
   (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.every((e) => permissionNames?.includes(e))
+    selectedPermissionNames.some((e) => permissionNames?.includes(e))
 );
 
 const selector = createSelector(
@@ -69,8 +69,8 @@ const List: FC<RouteComponentProps> = (props) => {
 
   const state = useStoreSelector((s) =>
     selector(s, {
-      updatePermissionNames: PermissionFactory.UpdateAll('division'),
-      createPermissionNames: PermissionFactory.CreateAll('division'),
+      updatePermissionNames: PermissionFactory.UpdateOwnAll('division'),
+      createPermissionNames: PermissionFactory.CreateOwnAll('division'),
     })
   );
 

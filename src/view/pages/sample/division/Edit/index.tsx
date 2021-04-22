@@ -24,7 +24,7 @@ const permissionCheckSelector = createSelector(
   (_: StoreState, params: { permissionNames: string[] }) =>
     params.permissionNames,
   (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.every((e) => permissionNames?.includes(e))
+    selectedPermissionNames.some((e) => permissionNames?.includes(e))
 );
 
 const selector = createSelector(
@@ -84,7 +84,7 @@ const Container: FC<
 
   const state = useStoreSelector((s) =>
     selector(s, {
-      permissionNames: PermissionFactory.DeleteAll('division'),
+      permissionNames: PermissionFactory.DeleteOwnAll('division'),
     })
   );
 

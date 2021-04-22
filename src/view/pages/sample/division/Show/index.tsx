@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { StoreState, useStoreDispatch, useStoreSelector } from 'src/store';
 import { PermissionFactory } from 'src/store/state/domain/common/permissions/factories';
+import { PermissionType } from 'src/store/state/domain/common/permissions/types';
 import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
 import {
   divisionProjectsErrorSelector,
@@ -20,6 +21,7 @@ import {
   divisionStatusSelector,
 } from 'src/store/state/domain/sample/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/sample/divisions/slice';
+import { Division } from 'src/store/state/domain/sample/divisions/types';
 import { DivisionEditRouterState } from 'src/view/pages/sample/division/Edit';
 import {
   DivisionPath,
@@ -33,12 +35,23 @@ import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 
+export const divisionUpdatePermissionCheck = (
+  division: Division | undefined,
+  selected: string[]
+) =>
+  selected.some((e) =>
+    PermissionType.isOwn(e)
+      ? division?.requestMemberId
+        ? division?.permissionNames?.includes(e)
+        : false
+      : division?.permissionNames?.includes(e)
+  );
+
 const divisionUpdatePermissionCheckSelector = createSelector(
   divisionSelector,
   (_: StoreState, params: { divisionUpdatePermissionNames: string[] }) =>
     params.divisionUpdatePermissionNames,
-  (division, selectedPermissionNames) =>
-    selectedPermissionNames.every((e) => division?.permissionNames?.includes(e))
+  divisionUpdatePermissionCheck
 );
 
 const projectCreatePermissionCheckSelector = createSelector(
@@ -46,7 +59,7 @@ const projectCreatePermissionCheckSelector = createSelector(
   (_: StoreState, params: { projectCreatePermissionNames: string[] }) =>
     params.projectCreatePermissionNames,
   (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.every((e) => permissionNames?.includes(e))
+    selectedPermissionNames.some((e) => permissionNames?.includes(e))
 );
 
 const projectUpdatePermissionCheckSelector = createSelector(
@@ -54,7 +67,7 @@ const projectUpdatePermissionCheckSelector = createSelector(
   (_: StoreState, params: { projectUpdatePermissionNames: string[] }) =>
     params.projectUpdatePermissionNames,
   (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.every((e) => permissionNames?.includes(e))
+    selectedPermissionNames.some((e) => permissionNames?.includes(e))
 );
 
 const selector = createSelector(
@@ -128,9 +141,9 @@ const Show: FC<
 
   const state = useStoreSelector((s) =>
     selector(s, {
-      divisionUpdatePermissionNames: PermissionFactory.CreateAll('project'),
-      projectCreatePermissionNames: PermissionFactory.CreateAll('project'),
-      projectUpdatePermissionNames: PermissionFactory.UpdateAll('project'),
+      divisionUpdatePermissionNames: PermissionFactory.CreateOwnAll('project'),
+      projectCreatePermissionNames: PermissionFactory.CreateOwnAll('project'),
+      projectUpdatePermissionNames: PermissionFactory.UpdateOwnAll('project'),
     })
   );
 
