@@ -10,12 +10,6 @@ import { PermissionFactory } from 'src/store/state/domain/common/permissions/fac
 import { PermissionType } from 'src/store/state/domain/common/permissions/types';
 import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
 import {
-  divisionMembersSelector,
-  divisionMembersStatusSelector,
-  divisionMembersErrorSelector,
-} from 'src/store/state/domain/sample/divisionMembers/selectors';
-import { divisionMembersActions } from 'src/store/state/domain/sample/divisionMembers/slice';
-import {
   divisionProjectsErrorSelector,
   divisionProjectsSelector,
   divisionProjectsStatusSelector,
@@ -37,7 +31,7 @@ import {
   getDivisionEditPath,
 } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
-import Component, { PermissionList } from './Component';
+import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 
@@ -76,30 +70,6 @@ const projectUpdatePermissionCheckSelector = createSelector(
     selectedPermissionNames.some((e) => permissionNames?.includes(e))
 );
 
-const memberViewPermissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (_: StoreState, params: { memberViewPermissionNames: string[] }) =>
-    params.memberViewPermissionNames,
-  (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.some((e) => permissionNames?.includes(e))
-);
-
-const permissionSelector = createSelector(
-  [
-    divisionUpdatePermissionCheckSelector,
-    projectCreatePermissionCheckSelector,
-    projectUpdatePermissionCheckSelector,
-    memberViewPermissionCheckSelector,
-  ],
-  (divisionUpdate, projectCreate, projectUpdate, memberView) =>
-    ({
-      divisionUpdate,
-      projectCreate,
-      projectUpdate,
-      memberView,
-    } as PermissionList)
-);
-
 const selector = createSelector(
   [
     divisionSelector,
@@ -108,10 +78,9 @@ const selector = createSelector(
     divisionProjectsSelector,
     divisionProjectsStatusSelector,
     divisionProjectsErrorSelector,
-    divisionMembersSelector,
-    divisionMembersStatusSelector,
-    divisionMembersErrorSelector,
-    permissionSelector,
+    divisionUpdatePermissionCheckSelector,
+    projectCreatePermissionCheckSelector,
+    projectUpdatePermissionCheckSelector,
   ],
   (
     division,
@@ -120,19 +89,18 @@ const selector = createSelector(
     divisionProjects,
     divisionProjectsStatus,
     divisionProjectsError,
-    divisionMembers,
-    divisionMembersStatus,
-    divisionMembersError,
-    permission
+    hasDivisionUpdatePermission,
+    hasProjectCreatePermission,
+    hasProjectUpdatePermission
   ) => ({
     division,
     divisionStatus,
     divisionProjects,
     divisionProjectsStatus,
-    divisionMembers,
-    divisionMembersStatus,
-    errors: [divisionError, divisionProjectsError, divisionMembersError],
-    permission,
+    errors: [divisionError, divisionProjectsError],
+    hasDivisionUpdatePermission,
+    hasProjectCreatePermission,
+    hasProjectUpdatePermission,
   })
 );
 
@@ -158,9 +126,6 @@ const Show: FC<
     dispatch(
       divisionProjectsActions.fetchEntitiesIfNeeded({ pathParams, reset })
     );
-    dispatch(
-      divisionMembersActions.fetchEntitiesIfNeeded({ pathParams, reset })
-    );
   }, [dispatch, pathParams]);
 
   const path = joinString(location.pathname, location.search);
@@ -179,7 +144,6 @@ const Show: FC<
       divisionUpdatePermissionNames: PermissionFactory.CreateOwnAll('project'),
       projectCreatePermissionNames: PermissionFactory.CreateOwnAll('project'),
       projectUpdatePermissionNames: PermissionFactory.UpdateOwnAll('project'),
-      memberViewPermissionNames: PermissionFactory.UpdateOwnAll('project'),
     })
   );
 

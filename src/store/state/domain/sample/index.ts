@@ -14,9 +14,12 @@ import {
   DivisionApiUrl,
   DivisionProjectApiUrl,
   UserApiUrl,
+  DivisionMemberApiUrl,
 } from 'src/store/urls';
 import { bookCommentsReducer } from './bookComments/slice';
 import { booksReducer } from './books/slice';
+import { divisionMembersReducer } from './divisionMembers/slice';
+import { DivisionMember, DivisionMemberDetail } from './divisionMembers/types';
 import { divisionProjectsReducer } from './divisionProjects/slice';
 import {
   DivisionProject,
@@ -36,6 +39,12 @@ export interface SampleState {
   >;
   users: EntitiesState<User, {}, User, UserApiUrl>;
   divisions: EntitiesState<Division, {}, Division, DivisionApiUrl>;
+  divisionMembers: EntitiesState<
+    DivisionMember,
+    DivisionApiUrl,
+    DivisionMemberDetail,
+    DivisionMemberApiUrl
+  >;
   divisionProjects: EntitiesState<
     DivisionProject,
     DivisionApiUrl,
@@ -49,5 +58,6 @@ export default combineReducers({
   bookComments: bookCommentsReducer,
   users: usersReducer,
   divisions: divisionsReducer,
+  divisionMembers: divisionMembersReducer,
   divisionProjects: divisionProjectsReducer,
 });

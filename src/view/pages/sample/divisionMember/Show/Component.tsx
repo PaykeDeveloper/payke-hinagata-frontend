@@ -6,7 +6,6 @@ import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { formatDate } from 'src/base/dateFormat';
-import { DivisionMember } from 'src/store/state/domain/sample/divisionMembers/types';
 import { DivisionProject } from 'src/store/state/domain/sample/divisionProjects/types';
 import { Division } from 'src/store/state/domain/sample/divisions/types';
 import { StoreError, StoreStatus } from 'src/store/types';
@@ -29,22 +28,15 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import { divisionsPath, rootPath } from 'src/view/routes/paths';
 
-export type PermissionList = {
-  divisionUpdate: boolean;
-  projectCreate: boolean;
-  projectUpdate: boolean;
-  memberView: boolean;
-};
-
 const Component: FC<{
   division: Division | undefined;
   divisionStatus: StoreStatus;
   divisionProjects: DivisionProject[];
   divisionProjectsStatus: StoreStatus;
-  divisionMembers: DivisionMember[];
-  divisionMembersStatus: StoreStatus;
   errors: (StoreError | undefined)[];
-  permission: PermissionList;
+  hasDivisionUpdatePermission?: boolean;
+  hasProjectCreatePermission?: boolean;
+  hasProjectUpdatePermission?: boolean;
 
   onBack: () => void;
   onClickEditDivision: () => void;
@@ -56,10 +48,10 @@ const Component: FC<{
     divisionStatus,
     divisionProjects,
     divisionProjectsStatus,
-    divisionMembers,
-    divisionMembersStatus,
     errors,
-    permission,
+    hasDivisionUpdatePermission,
+    hasProjectCreatePermission,
+    hasProjectUpdatePermission,
     onBack,
     onClickEditDivision,
     onClickAddDivisionProject,
@@ -74,7 +66,7 @@ const Component: FC<{
       filterable: false,
       renderCell: ({ row }) => (
         <>
-          {permission.projectUpdate ? (
+          {hasProjectUpdatePermission ? (
             <Link
               onClick={() => onClickEditDivisionProject(row['id'] as string)}
             >
@@ -122,7 +114,7 @@ const Component: FC<{
                   <Trans>Back</Trans>
                 </Button>,
                 <Button
-                  disabled={!permission.divisionUpdate}
+                  disabled={!hasDivisionUpdatePermission}
                   onClick={onClickEditDivision}
                   startIcon={<EditIcon />}
                   variant="outlined"
@@ -165,13 +157,13 @@ const Component: FC<{
           </Box>
           <Box mt={3}>
             <Typography variant="h5">
-              <Trans>Projects</Trans>
+              <Trans>Comments</Trans>
             </Typography>
             <Box mt={1}>
               <Buttons
                 leftButtons={[
                   <Button
-                    disabled={!permission.projectCreate}
+                    disabled={!hasProjectCreatePermission}
                     onClick={onClickAddDivisionProject}
                     startIcon={<AddIcon />}
                     color="primary"
@@ -186,31 +178,6 @@ const Component: FC<{
               </Loader>
             </Box>
           </Box>
-          {permission.memberView && (
-            <Box mt={3}>
-              <Typography variant="h5">
-                <Trans>Members</Trans>
-              </Typography>
-              <Box mt={1}>
-                <Buttons
-                  leftButtons={[
-                    <Button
-                      disabled={!permission.projectCreate}
-                      onClick={onClickAddDivisionProject}
-                      startIcon={<AddIcon />}
-                      color="primary"
-                      variant="outlined"
-                    >
-                      <Trans>Add</Trans>
-                    </Button>,
-                  ]}
-                />
-                <Loader status={divisionMembersStatus}>
-                  <RouterDataGrid columns={columns} rows={divisionMembers} />
-                </Loader>
-              </Box>
-            </Box>
-          )}
         </ErrorWrapper>
       </ContentBody>
     </ContentWrapper>

@@ -99,3 +99,22 @@ export const divisionProjectNewPath = getDivisionProjectNewPath(divisionParams);
 export const divisionProjectEditPath = getDivisionProjectEditPath(
   divisionProjectParams
 );
+
+export interface DivisionMemberPath extends DivisionPath {
+  memberId: string;
+}
+const divisionMemberParams = { ...divisionParams, memberId: ':memberId' };
+const getDivisionMembersPath = (params: DivisionPath) =>
+  `${getDivisionPath(params)}projects/`;
+export const getDivisionMemberNewPath = (params: DivisionPath) =>
+  `${getDivisionMembersPath(params)}new/`;
+export const getDivisionMemberPath = ({
+  memberId,
+  ...otherPrams
+}: DivisionMemberPath) => `${getDivisionMembersPath(otherPrams)}${memberId}/`;
+export const getDivisionMemberEditPath = (params: DivisionMemberPath) =>
+  `${getDivisionMemberPath(params)}edit/`;
+export const divisionMemberNewPath = getDivisionMemberNewPath(divisionParams);
+export const divisionMemberEditPath = getDivisionMemberEditPath(
+  divisionMemberParams
+);
