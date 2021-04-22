@@ -43,7 +43,7 @@ const selector = createSelector(
         ) {
           return [];
         } else {
-          const collapseMenu = item as CollapseMenu;
+          const collapseMenu = { ...(item as CollapseMenu) };
           if (collapseMenu.menus) {
             collapseMenu.menus = collapseMenu.menus.flatMap((cMenu) => {
               if (
@@ -57,7 +57,7 @@ const selector = createSelector(
                 return [cMenu];
               }
             });
-            return [item];
+            return [collapseMenu];
           } else {
             return [item];
           }
