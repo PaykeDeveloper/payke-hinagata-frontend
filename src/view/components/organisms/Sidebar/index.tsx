@@ -7,7 +7,7 @@ import { createSelector } from 'reselect';
 import { StoreState, useStoreSelector } from 'src/store';
 import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
 import SideMenu, { MenuList } from 'src/view/components/molecules/SideMenu';
-import { CollapseMenu, Menu } from '../../molecules/SideMenu/MenuLink';
+import { CollapseMenu } from '../../molecules/SideMenu/MenuLink';
 
 export const drawerWidth = 240;
 
