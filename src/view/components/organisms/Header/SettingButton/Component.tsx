@@ -8,8 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import { Trans } from 'react-i18next';
 import {
   MoreVertIcon,
+  PasswordIcon,
   PowerSettingsNewIcon,
 } from 'src/view/base/material-ui/Icon';
+import MenuItemLink from 'src/view/components/atoms/MenuItemLink';
+import { changePasswordPath } from 'src/view/routes/paths';
 
 const useStyles = makeStyles((theme) => ({
   listItemIcon: {
@@ -58,6 +61,14 @@ const Component: FC<Props> = (props) => {
             <Trans>Logout</Trans>
           </Typography>
         </MenuItem>
+        <MenuItemLink to={changePasswordPath}>
+          <ListItemIcon className={classes.listItemIcon}>
+            <PasswordIcon />
+          </ListItemIcon>
+          <Typography>
+            <Trans>Change password</Trans>
+          </Typography>
+        </MenuItemLink>
       </Menu>
     </>
   );
