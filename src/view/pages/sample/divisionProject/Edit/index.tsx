@@ -41,7 +41,7 @@ const selector = createSelector(
   })
 );
 
-const rules = { approvedAt: 'dateTime' } as const;
+const rules = {} as const;
 
 const Container: FC<
   RouteComponentProps<DivisionProjectPath, StaticContext, RouterState>

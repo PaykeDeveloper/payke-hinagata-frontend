@@ -57,7 +57,7 @@ const Container: FC<
       const action = await dispatch(
         divisionProjectsActions.addEntity({
           pathParams,
-          bodyParams: inputsToObject(params, { approvedAt: 'dateTime' }),
+          bodyParams: inputsToObject(params, {}),
           useFormData: true,
         })
       );
