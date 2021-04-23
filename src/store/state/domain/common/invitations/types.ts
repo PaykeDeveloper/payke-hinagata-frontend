@@ -18,15 +18,10 @@ export type InvitationCreateInput = {
   name?: string;
   email?: string;
   roleNames?: string[];
-  locale?: LocaleType;
+  locale?: string;
 };
 
 export type InvitationUpdateInput = {
   name?: string;
   roleNames?: string[];
 };
-
-export enum LocaleType {
-  English = 'en',
-  Japanese = 'ja',
-}

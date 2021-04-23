@@ -1,10 +1,10 @@
 import React, { FC, useEffect } from 'react';
 import { useStoreDispatch } from 'src/store';
-import { rolesActions } from 'src/store/state/domain/common/roles/slice';
+import { localesActions } from 'src/store/state/domain/common/locales/slice';
 
-const { fetchEntitiesIfNeeded } = rolesActions;
+const { fetchEntitiesIfNeeded } = localesActions;
 
-const SyncRoles: FC = (props) => {
+const SyncLocales: FC = (props) => {
   const { children } = props;
   const dispatch = useStoreDispatch();
   useEffect(() => {
@@ -14,4 +14,4 @@ const SyncRoles: FC = (props) => {
   return <>{children}</>;
 };
 
-export default SyncRoles;
+export default SyncLocales;
