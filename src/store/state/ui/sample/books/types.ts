@@ -10,7 +10,7 @@ export enum ImportStatus {
 }
 
 export type BookImporter = {
-  id: number;
+  id: string;
   status: ImportStatus;
   book: BookInput;
 };

@@ -1,9 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC, useCallback } from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { useTranslation } from 'react-i18next';
-import Dialog from '@material-ui/core/Dialog';
+import React, { ComponentProps, FC, useCallback } from 'react';
 import {
   Box,
   Button,
@@ -12,35 +9,41 @@ import {
   CardActions,
   Typography,
 } from '@material-ui/core';
-import { GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
-import { parse } from 'papaparse';
-import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { StoreError } from 'src/store/types';
-import { dateColDef, RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
-import { createSelector } from '@reduxjs/toolkit';
-import { useGridApiRef } from '@material-ui/data-grid';
-import Loader from 'src/view/components/atoms/Loader';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
-import { CloseIcon } from 'src/view/base/material-ui/Icon';
 import Slide from '@material-ui/core/Slide';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
 import { TransitionProps } from '@material-ui/core/transitions';
-import ContentBody from 'src/view/components/molecules/ContentBody';
-import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
-import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
-import { BaseFileField } from 'src/view/base/formik/FileField';
-import { BaseForm } from 'src/view/base/formik/Form';
-import * as yup from 'yup';
-import SubmitButton from 'src/view/base/formik/SubmitButton';
+import { GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
+import { createSelector } from '@reduxjs/toolkit';
+import { parse, ParseResult } from 'papaparse';
+import { useTranslation } from 'react-i18next';
+import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { StoreState } from 'src/store';
+import { BookInput } from 'src/store/state/domain/sample/books/types';
+import {
+  bookImportersSelector,
+  bookImporterResultsSelector,
+} from 'src/store/state/ui/sample/books/selectors';
+import { bookImportersActions } from 'src/store/state/ui/sample/books/slice';
 import {
   BookImporter,
   ImportStatus,
 } from 'src/store/state/ui/sample/books/types';
-import { BookInput } from 'src/store/state/domain/sample/books/types';
-import { bookImportersSelector } from 'src/store/state/ui/sample/books/selectors';
-import { bookImportersActions } from 'src/store/state/ui/sample/books/slice';
+import { StoreError } from 'src/store/types';
+import { BaseFileField } from 'src/view/base/formik/FileField';
+import { BaseForm } from 'src/view/base/formik/Form';
+import SubmitButton from 'src/view/base/formik/SubmitButton';
 import { OnSubmit } from 'src/view/base/formik/types';
+import { dateColDef, RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
+import { CloseIcon } from 'src/view/base/material-ui/Icon';
+import Loader from 'src/view/components/atoms/Loader';
+import ContentBody from 'src/view/components/molecules/ContentBody';
+import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
+import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
+import * as yup from 'yup';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,19 +67,123 @@ const Transition = React.forwardRef(function Transition(
 const MAX_FILE_SIZE = 1024 * 1024;
 const SUPPORTED_FORMATS = ['text/csv'];
 
-const selector = createSelector([bookImportersSelector], (bookImports) => ({
-  bookImports,
-}));
-
-const Importer: FC = () => {
-  const apiRef = useGridApiRef();
-  const classes = useStyles();
+const CsvUploadForm: FC<{
+  error: StoreError | undefined;
+  onSubmit: OnSubmit<{ csv_file: File }>;
+  onStartImport: () => void;
+  onReset: () => void;
+}> = (props) => {
+  console.log('render CsvUploadForm!!');
+  const { error, onSubmit, onStartImport, onReset } = props;
   const { t } = useTranslation();
-  const [open, setOpen] = React.useState(false);
-  const errors: (StoreError | undefined)[] = [];
+  return (
+    <ContentWrapper>
+      <ContentBody>
+        <ErrorWrapper error={error}>
+          <Box mt={3}>
+            <BaseForm
+              initialValues={undefined}
+              onSubmit={onSubmit}
+              validationSchema={yup.object({
+                csv_file: yup
+                  .mixed()
+                  .label(t('CsvFile'))
+                  .required(t('A file is required'))
+                  .test(
+                    'fileFormat',
+                    t('Unsupported Format'),
+                    (value) => value && SUPPORTED_FORMATS.includes(value.type)
+                  )
+                  .test(
+                    'fileSize',
+                    t('File too large'),
+                    (value) => value && value.size <= MAX_FILE_SIZE
+                  ),
+              })}
+            >
+              <Card>
+                <CardContent>
+                  <BaseFileField name="csv_file" label={t('CsvFile')} />
+                </CardContent>
+                <CardActions>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                  >
+                    {t('Parse CSV')}
+                  </Button>
+                </CardActions>
+              </Card>
+            </BaseForm>
+          </Box>
+          <Box mt={3}>
+            <Card>
+              <CardActions>
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={onStartImport}
+                >
+                  {t('Start Import')}
+                </Button>
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={onReset}
+                >
+                  {t('Clean')}
+                </Button>
+              </CardActions>
+              <CardContent>
+                <ChildB />
+              </CardContent>
+            </Card>
+          </Box>
+        </ErrorWrapper>
+      </ContentBody>
+    </ContentWrapper>
+  );
+};
+
+const importersSelector = createSelector(
+  [bookImportersSelector],
+  (importers) => ({ importers })
+);
+
+const importResultsSelector = createSelector(
+  bookImporterResultsSelector,
+  (_: StoreState, id: string) => id,
+  (importResults, id) => importResults[id]
+);
+
+const ChildC: FC<{ rowId: string }> = ({ rowId }) => {
+  const result = useStoreSelector((s) => importResultsSelector(s, rowId));
+  console.log('render ChildC:' + rowId + ' results => ' + result?.status);
+  return (
+    <div>
+      <div>RootB: {result?.status}</div>
+    </div>
+  );
+};
+
+const ChildB: FC = () => {
+  console.log('render ChildB');
+  const { t } = useTranslation();
+  const { importers } = useStoreSelector(importersSelector);
   const columns: GridColumns = [
     { field: 'id', hide: true },
-    { field: 'status' },
+    {
+      field: 'status',
+      renderCell: ({ row }) => {
+        return <ChildC rowId={row['id'].toString()} />;
+      },
+    },
     {
       field: 'book_id',
       valueGetter: (params: GridValueGetterParams) => params.row.book.id,
@@ -96,43 +203,59 @@ const Importer: FC = () => {
       headerName: t('Release date'),
     },
   ];
-  const state = useStoreSelector(selector);
-  const dispatch = useStoreDispatch();
-  const handleSubmit: OnSubmit<any> = useCallback(async () => {
-    dispatch(bookImportersActions.startImport());
-  }, [dispatch, state]);
-  const handleChange = useCallback(
-    async (values) => {
-      if (!values.csv_file) {
-        dispatch(bookImportersActions.resetEntities());
-        return;
-      }
-      parse(values.csv_file, {
-        header: true,
-        dynamicTyping: true,
-        skipEmptyLines: true,
-        complete: (rows: any) => {
-          const _books: BookImporter[] = [];
-          rows.data.forEach((row: BookInput, index: number) => {
-            _books.push({
-              id: index + 1,
-              status: ImportStatus.Waiting,
-              book: row,
-            });
-          });
-          dispatch(bookImportersActions.setImporters(_books));
-        },
-      });
-    },
-    [dispatch, state]
+  return (
+    <Box mt={1}>
+      <RouterDataGrid columns={columns} rows={importers} pageSize={20} />
+    </Box>
   );
+};
+
+type ChildProps = ComponentProps<typeof CsvUploadForm>;
+
+const readCsv = (file: File) => {
+  return new Promise<BookInput[]>((resolve, reject) => {
+    parse(file, {
+      header: true,
+      dynamicTyping: true,
+      skipEmptyLines: true,
+      complete: (rows: ParseResult<BookInput>) => {
+        resolve(rows.data);
+      },
+    });
+  });
+};
+
+const Importer: FC = (): JSX.Element => {
+  console.log('render Importer!!');
+  const { t } = useTranslation();
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
+  const dispatch = useStoreDispatch();
+  const handleSubmit: ChildProps['onSubmit'] = useCallback(
+    async (values, helpers) => {
+      console.log('handle submit');
+      const data = await readCsv(values.csv_file);
+      data.forEach((row) => {
+        dispatch(bookImportersActions.addImporter(row));
+      });
+    },
+    [dispatch]
+  );
+  const handleImport: ChildProps['onStartImport'] = useCallback(async () => {
+    console.log('start import');
+    dispatch(bookImportersActions.startImport());
+  }, [dispatch]);
+  const handleClear: ChildProps['onReset'] = useCallback(async () => {
+    console.log('clear');
+    dispatch(bookImportersActions.resetImporters());
+  }, [dispatch]);
+  const error: StoreError | undefined = undefined;
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -159,54 +282,12 @@ const Importer: FC = () => {
             </Typography>
           </Toolbar>
         </AppBar>
-        <ContentWrapper>
-          <ContentBody>
-            <ErrorWrapper errors={errors}>
-              <Box mt={3}>
-                <BaseForm
-                  initialValues={undefined}
-                  onSubmit={handleSubmit}
-                  validate={(values) => handleChange(values)}
-                  validationSchema={yup.object({
-                    csv_file: yup
-                      .mixed()
-                      .label(t('CsvFile'))
-                      .required(t('A file is required'))
-                      .test(
-                        'fileFormat',
-                        t('Unsupported Format'),
-                        (value) =>
-                          value && SUPPORTED_FORMATS.includes(value.type)
-                      )
-                      .test(
-                        'fileSize',
-                        t('File too large'),
-                        (value) => value && value.size <= MAX_FILE_SIZE
-                      ),
-                  })}
-                >
-                  <Card>
-                    <CardContent>
-                      <BaseFileField name="csv_file" label={t('CsvFile')} />
-                    </CardContent>
-                    <CardActions>
-                      <SubmitButton />
-                    </CardActions>
-                    <CardContent>
-                      <Box mt={1}>
-                        <RouterDataGrid
-                          columns={columns}
-                          rows={state.bookImports}
-                          pageSize={20}
-                        />
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </BaseForm>
-              </Box>
-            </ErrorWrapper>
-          </ContentBody>
-        </ContentWrapper>
+        <CsvUploadForm
+          onSubmit={handleSubmit}
+          onStartImport={handleImport}
+          onReset={handleClear}
+          error={error}
+        />
       </Dialog>
     </div>
   );

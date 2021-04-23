@@ -2,16 +2,16 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { siteName } from 'src/base/constants';
+import { StoreDispatch } from 'src/store';
+import { RootState } from 'src/store/state';
+import { Book, BookInput } from 'src/store/state/domain/sample/books/types';
+import { StoreError } from 'src/store/types';
+import { BookApiUrl, getBookApiUrl, getBooksApiUrl } from 'src/store/urls';
 import {
   createBPatchAsyncThunk,
   createBPostAsyncThunk,
 } from 'src/store/utils/createAsyncThunks';
-import { StoreDispatch } from 'src/store';
-import { RootState } from 'src/store/state';
-import { BookApiUrl, getBookApiUrl, getBooksApiUrl } from 'src/store/urls';
 import { BookImporter, BookImporterInput, ImportStatus } from './types';
-import { Book, BookInput } from 'src/store/state/domain/sample/books/types';
-import { StoreError } from 'src/store/types';
 
 export type ImportResults = {
   status: ImportStatus;
@@ -20,16 +20,23 @@ export type ImportResults = {
 
 export interface BookImportersState {
   importers: BookImporter[];
-  importResults: Map<number, ImportResults>;
+  importResults: {
+    [id: string]: ImportResults;
+  };
+  meta: {
+    finished: number;
+    total: number;
+  };
 }
 
 const initialState: BookImportersState = {
   importers: [],
+  importResults: {},
+  meta: {
+    finished: 0,
+    total: 0,
+  },
 };
-
-export const getEntitiesInitialState = () => ({
-  importers: [],
-});
 
 const createEntitiesSlice = <DomainState extends BookImportersState>(
   domainName: string,
@@ -50,66 +57,87 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
     name: `${siteName}/${domainName}`,
     initialState,
     reducers: {
-      resetEntities: (state) => ({
-        ...state,
-        importers: [],
-      }),
-      setImporters: (state, action: PayloadAction<BookImporter[]>) => ({
-        ...state,
-        importers: action.payload,
-      }),
+      resetImporters: (state) => {
+        state.importers = [];
+        state.meta.finished = 0;
+        state.meta.total = 0;
+        Object.keys(state.importResults).forEach((key) => {
+          delete state.importResults[key];
+        });
+      },
+      addImporter: (state, action: PayloadAction<BookInput>) => {
+        // FIXME: UUIDなどを自動で割り当てたい
+        const id: string = `${Date.now()}`;
+        state.importers.push({
+          id,
+          status: ImportStatus.Waiting,
+          book: action.payload,
+        });
+        state.importResults[id] = {
+          status: ImportStatus.Waiting,
+          error: undefined,
+        };
+        state.meta.total += 1;
+      },
+      setImporters: (state, action: PayloadAction<BookInput[]>) => {
+        const _books: BookImporter[] = [];
+        action.payload.forEach((book, index) => {
+          // FIXME: UUIDなどを自動で割り当てたい
+          const id: string = `${index + 1}`;
+          _books.push({
+            id,
+            status: ImportStatus.Waiting,
+            book,
+          });
+          state.importResults[id] = {
+            status: ImportStatus.Waiting,
+            error: undefined,
+          };
+          state.meta.total += 1;
+        });
+        state.importers = _books;
+      },
     },
     extraReducers: (builder) => {
       const extraBuilder = builder
         .addCase(addEntity.pending, (state, action) => {
-          const currentIndex = state.importers.findIndex(
-            (entity) => entity.id === action.meta.arg.uniqueId
-          );
-          console.log('pending:' + currentIndex);
-          if (currentIndex !== -1) {
-            state.importers[currentIndex]!.status = ImportStatus.Prepareing;
+          if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
+            state.importResults[action.meta.arg.uniqueId!]!.status =
+              ImportStatus.Prepareing;
           }
         })
         .addCase(addEntity.fulfilled, (state, action) => {
-          const currentIndex = state.importers.findIndex(
-            (entity) => entity.id === action.meta.arg.uniqueId
-          );
-          console.log('fulfilled:' + currentIndex);
-          if (currentIndex !== -1) {
-            state.importers[currentIndex]!.status = ImportStatus.Success;
+          if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
+            state.importResults[action.meta.arg.uniqueId!]!.status =
+              ImportStatus.Success;
+            state.meta.finished += 1;
           }
         })
         .addCase(addEntity.rejected, (state, action) => {
-          const currentIndex = state.importers.findIndex(
-            (entity) => entity.id === action.meta.arg.uniqueId
-          );
-          console.log('rejected:' + currentIndex);
-          if (currentIndex !== -1) {
-            state.importers[currentIndex]!.status = ImportStatus.Failed;
+          if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
+            state.importResults[action.meta.arg.uniqueId!]!.status =
+              ImportStatus.Failed;
+            state.meta.finished += 1;
           }
         })
         .addCase(mergeEntity.pending, (state, action) => {
-          const currentIndex = state.importers.findIndex(
-            (entity) => entity.id === action.meta.arg.uniqueId
-          );
-          if (currentIndex !== -1) {
-            state.importers[currentIndex]!.status = ImportStatus.Prepareing;
+          if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
+            state.importResults[action.meta.arg.uniqueId!]!.status =
+              ImportStatus.Prepareing;
           }
         })
         .addCase(mergeEntity.fulfilled, (state, action) => {
-          const currentIndex = state.importers.findIndex(
-            (entity) => entity.id === action.meta.arg.uniqueId
-          );
-          if (currentIndex !== -1) {
-            state.importers[currentIndex]!.status = ImportStatus.Success;
+          if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
+            state.importResults[action.meta.arg.uniqueId!]!.status =
+              ImportStatus.Success;
+            state.meta.finished += 1;
           }
         })
         .addCase(mergeEntity.rejected, (state, action) => {
-          const currentIndex = state.importers.findIndex(
-            (entity) => entity.id === action.meta.arg.uniqueId
-          );
-          if (currentIndex !== -1) {
-            state.importers[currentIndex]!.status = ImportStatus.Failed;
+          if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
+            state.importResults[action.meta.arg.uniqueId!]!.status =
+              ImportStatus.Failed;
+            state.meta.finished += 1;
           }
         });
       return extraBuilder;
@@ -129,7 +157,7 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
               mergeEntity({
                 pathParams: { bookId: bodyParams.id.toString() },
                 bodyParams,
-                uniqueId: importers[index]?.id,
+                uniqueId: importers[index]!.id,
               })
             );
           } else {
@@ -137,7 +165,7 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
               addEntity({
                 pathParams: {},
                 bodyParams,
-                uniqueId: importers[index]?.id,
+                uniqueId: importers[index]!.id,
               })
             );
           }
@@ -156,7 +184,6 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
   };
 };
 
-// createSliceでreducerとactionを同時に定義
 const bookImportersSlice = createEntitiesSlice(
   'bookImporters',
   (state) => state.ui.sample.bookImporters
