@@ -14,17 +14,4 @@ export namespace PermissionType {
   export function isOwn(permission: string) {
     return permission.includes('Own');
   }
-
-  export function isPermitted(
-    acceptables: string[] | undefined,
-    targets: string[]
-  ) {
-    return targets.some((e) => {
-      if (PermissionType.isOwn(e)) {
-        return acceptables?.includes(e);
-      } else {
-        return acceptables?.includes(e);
-      }
-    });
-  }
 }
