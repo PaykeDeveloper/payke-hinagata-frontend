@@ -142,7 +142,6 @@ const Component: FC<{
                 />
                 <Loader statuses={statuses}>
                   <RouterDataGrid
-                    name="member"
                     columns={memberColumns}
                     rows={divisionMembers}
                   />
