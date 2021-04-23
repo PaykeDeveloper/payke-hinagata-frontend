@@ -35,6 +35,8 @@ export const getInvitationApiUrl = ({ invitationId }: InvitationApiUrl) =>
 
 export const getRolesApiUrl = () => `${getRootApiUrl()}roles/`;
 
+export const getLocalesApiUrl = () => `${getRootApiUrl()}locales/`;
+
 // FIXME: SAMPLE CODE
 
 export interface BookApiUrl {
