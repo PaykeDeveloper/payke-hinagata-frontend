@@ -39,16 +39,26 @@ test('divisionOwnAllPermissionCheck: failure: own', () => {
 });
 
 // Own の場合は requestMemberId がないと false
-test('divisionOwnAllPermissionCheck: failure: own: requestMemberId is required', () => {
+test('divisionOwnAllPermissionCheck: failure: own and all: requestMemberId is required', () => {
   const division: Division = {
     id: 0,
     name: 'test division',
     createdAt: null,
     updatedAt: null,
-    permissionNames: [],
+    permissionNames: PermissionFactory.CreateOwnAll('division'),
     requestMemberId: null,
   };
 
+  expect(
+    divisionOwnAllPermissionCheck(
+      division,
+      PermissionFactory.CreateOwn('division')
+    )
+  ).toEqual(false);
+});
+
+test('divisionOwnAllPermissionCheck: failure: own: division undefined', () => {
+  const division: Division | undefined = undefined;
   expect(
     divisionOwnAllPermissionCheck(
       division,
@@ -63,7 +73,7 @@ test('divisionOwnAllPermissionCheck: success: all', () => {
     name: 'test division',
     createdAt: null,
     updatedAt: null,
-    permissionNames: ['division_createAll'],
+    permissionNames: PermissionFactory.CreateAll('division'),
     requestMemberId: 1,
   };
 
@@ -82,7 +92,7 @@ test('divisionOwnAllPermissionCheck: failure: all', () => {
     name: 'test division',
     createdAt: null,
     updatedAt: null,
-    permissionNames: ['division_createOwn'],
+    permissionNames: PermissionFactory.CreateOwn('division'),
     requestMemberId: 1,
   };
 
