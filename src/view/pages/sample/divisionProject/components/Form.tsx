@@ -26,6 +26,7 @@ import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import {
   divisionsPath,
   getDivisionPath,
+  getDivisionProjectsPath,
   rootPath,
 } from 'src/view/routes/paths';
 import * as yup from 'yup';
@@ -62,6 +63,10 @@ const Form: FC<{
           {
             children: division?.name,
             to: getDivisionPath({ divisionId: `${division?.id}` }),
+          },
+          {
+            children: t('Projects'),
+            to: getDivisionProjectsPath({ divisionId: `${division?.id}` }),
           },
         ]}
       >

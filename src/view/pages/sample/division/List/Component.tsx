@@ -36,8 +36,10 @@ const Component: FC<{
   hasUpdatePermission?: boolean;
 
   onClickAdd: () => void;
-  onClickShow: (bookId: number) => void;
-  onClickEdit: (bookId: number) => void;
+  onClickShow: (divisionId: number) => void;
+  onClickProjectsShow: (divisionId: number) => void;
+  onClickMembersShow: (divisionId: number) => void;
+  onClickEdit: (divisionId: number) => void;
 }> = (props) => {
   const {
     divisions,
@@ -47,6 +49,8 @@ const Component: FC<{
     hasUpdatePermission,
     onClickAdd,
     onClickShow,
+    onClickProjectsShow,
+    onClickMembersShow,
     onClickEdit,
   } = props;
   const { t } = useTranslation();
@@ -65,6 +69,18 @@ const Component: FC<{
           >
             {t('Show')}
           </Link>
+          <Link
+            className={classes.showLink}
+            onClick={() => onClickProjectsShow(row['id'] as number)}
+          >
+            {t('Projects')}
+          </Link>
+          <Link
+            className={classes.showLink}
+            onClick={() => onClickMembersShow(row['id'] as number)}
+          >
+            {t('Members')}
+          </Link>
           {hasUpdatePermission ? (
             <Link onClick={() => onClickEdit(row['id'] as number)}>
               {t('Edit')}
@@ -72,6 +88,7 @@ const Component: FC<{
           ) : null}
         </Box>
       ),
+      width: 260,
     },
     {
       field: 'id',

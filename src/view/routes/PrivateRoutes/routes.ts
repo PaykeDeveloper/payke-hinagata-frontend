@@ -18,8 +18,10 @@ import DivisionList from 'src/view/pages/sample/division/List';
 import DivisionNew from 'src/view/pages/sample/division/New';
 import DivisionShow from 'src/view/pages/sample/division/Show';
 import DivisionMemberEdit from 'src/view/pages/sample/divisionMember/Edit';
+import DivisionMemberList from 'src/view/pages/sample/divisionMember/List';
 import DivisionMemberNew from 'src/view/pages/sample/divisionMember/New';
 import DivisionProjectEdit from 'src/view/pages/sample/divisionProject/Edit';
+import DivisionProjectList from 'src/view/pages/sample/divisionProject/List';
 import DivisionProjectNew from 'src/view/pages/sample/divisionProject/New';
 import UserList from 'src/view/pages/sample/user/List';
 
@@ -46,6 +48,8 @@ import {
   divisionMemberNewPath,
   divisionMemberEditPath,
   changePasswordPath,
+  divisionProjectsPath,
+  divisionMembersPath,
 } from 'src/view/routes/paths';
 
 const privateRoutes: RouteProps[] = [
@@ -67,8 +71,10 @@ const privateRoutes: RouteProps[] = [
   { path: divisionNewPath, component: DivisionNew },
   { path: divisionEditPath, component: DivisionEdit },
   { path: divisionPath, component: DivisionShow },
+  { path: divisionProjectsPath, component: DivisionProjectList },
   { path: divisionProjectNewPath, component: DivisionProjectNew },
   { path: divisionProjectEditPath, component: DivisionProjectEdit },
+  { path: divisionMembersPath, component: DivisionMemberList },
   { path: divisionMemberNewPath, component: DivisionMemberNew },
   { path: divisionMemberEditPath, component: DivisionMemberEdit },
 

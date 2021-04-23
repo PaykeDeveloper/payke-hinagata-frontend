@@ -16,6 +16,8 @@ import { divisionsActions } from 'src/store/state/domain/sample/divisions/slice'
 import {
   divisionNewPath,
   getDivisionEditPath,
+  getDivisionProjectsPath,
+  getDivisionMembersPath,
   getDivisionPath,
 } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
@@ -89,6 +91,22 @@ const List: FC<RouteComponentProps> = (props) => {
     [push, path]
   );
 
+  const onClickProjectsShow: ChildProps['onClickProjectsShow'] = useCallback(
+    (divisionId) =>
+      push(getDivisionProjectsPath({ divisionId: `${divisionId}` }), {
+        path,
+      } as RouterState),
+    [push, path]
+  );
+
+  const onClickMembersShow: ChildProps['onClickMembersShow'] = useCallback(
+    (divisionId) =>
+      push(getDivisionMembersPath({ divisionId: `${divisionId}` }), {
+        path,
+      } as RouterState),
+    [push, path]
+  );
+
   const onClickEdit: ChildProps['onClickEdit'] = useCallback(
     (divisionId) =>
       push(getDivisionEditPath({ divisionId: `${divisionId}` }), {
@@ -102,6 +120,8 @@ const List: FC<RouteComponentProps> = (props) => {
       {...state}
       onClickAdd={onClickAdd}
       onClickShow={onClickShow}
+      onClickProjectsShow={onClickProjectsShow}
+      onClickMembersShow={onClickMembersShow}
       onClickEdit={onClickEdit}
     />
   );

@@ -4,13 +4,14 @@ import React, { FC } from 'react';
 import { Button, Card, Grid, MenuItem } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Role } from 'src/store/state/domain/common/roles/types';
 import { BookInput } from 'src/store/state/domain/sample/books/types';
 import {
   DivisionMemberDetail,
   DivisionMemberInput,
 } from 'src/store/state/domain/sample/divisionMembers/types';
+import { Division } from 'src/store/state/domain/sample/divisions/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
 import { BaseMultiSelectField } from 'src/view/base/formik/MultiSelectField';
@@ -25,7 +26,12 @@ import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
-import { divisionsPath, rootPath } from 'src/view/routes/paths';
+import {
+  divisionsPath,
+  getDivisionMembersPath,
+  getDivisionPath,
+  rootPath,
+} from 'src/view/routes/paths';
 import * as yup from 'yup';
 
 export type PermissionList = {
@@ -38,6 +44,7 @@ const Form: FC<{
   statuses: StoreStatus[];
   error: StoreError | undefined;
   permissions?: PermissionList;
+  division: Division | undefined;
   divisionMember: DivisionMemberDetail | undefined;
   memberRoles: Role[];
 
@@ -52,11 +59,11 @@ const Form: FC<{
     error,
     permissions,
     memberRoles: roles,
+    division,
     onSubmit,
     onBack,
     onDelete,
   } = props;
-  console.log(statuses);
   const { t } = useTranslation();
   return (
     <ContentWrapper>
@@ -64,6 +71,14 @@ const Form: FC<{
         links={[
           { children: t('Home'), to: rootPath },
           { children: t('Divisions'), to: divisionsPath },
+          {
+            children: division?.name,
+            to: getDivisionPath({ divisionId: `${division?.id}` }),
+          },
+          {
+            children: <Trans>Members</Trans>,
+            to: getDivisionMembersPath({ divisionId: `${division?.id}` }),
+          },
         ]}
       >
         {t(title)}
