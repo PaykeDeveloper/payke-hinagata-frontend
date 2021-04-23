@@ -1,8 +1,8 @@
 import { PermissionFactory } from 'src/store/state/domain/common/permissions/factories';
 import { Division } from 'src/store/state/domain/sample/divisions/types';
-import { divisionUpdatePermissionCheck } from '../selectors';
+import { divisionOwnAllPermissionCheck } from '../selectors';
 
-test('divisionUpdatePermissionCheck: success: own', () => {
+test('divisionOwnAllPermissionCheck: success: own', () => {
   const division: Division = {
     id: 0,
     name: 'test division',
@@ -13,14 +13,14 @@ test('divisionUpdatePermissionCheck: success: own', () => {
   };
 
   expect(
-    divisionUpdatePermissionCheck(
+    divisionOwnAllPermissionCheck(
       division,
       PermissionFactory.CreateOwn('division')
     )
   ).toEqual(true);
 });
 
-test('divisionUpdatePermissionCheck: failure: own', () => {
+test('divisionOwnAllPermissionCheck: failure: own', () => {
   const division: Division = {
     id: 0,
     name: 'test division',
@@ -31,7 +31,7 @@ test('divisionUpdatePermissionCheck: failure: own', () => {
   };
 
   expect(
-    divisionUpdatePermissionCheck(
+    divisionOwnAllPermissionCheck(
       division,
       PermissionFactory.CreateOwn('division')
     )
@@ -39,7 +39,7 @@ test('divisionUpdatePermissionCheck: failure: own', () => {
 });
 
 // Own の場合は requestMemberId がないと false
-test('divisionUpdatePermissionCheck: failure: own: requestMemberId is required', () => {
+test('divisionOwnAllPermissionCheck: failure: own: requestMemberId is required', () => {
   const division: Division = {
     id: 0,
     name: 'test division',
@@ -50,14 +50,14 @@ test('divisionUpdatePermissionCheck: failure: own: requestMemberId is required',
   };
 
   expect(
-    divisionUpdatePermissionCheck(
+    divisionOwnAllPermissionCheck(
       division,
       PermissionFactory.CreateOwn('division')
     )
   ).toEqual(false);
 });
 
-test('divisionUpdatePermissionCheck: success: all', () => {
+test('divisionOwnAllPermissionCheck: success: all', () => {
   const division: Division = {
     id: 0,
     name: 'test division',
@@ -69,14 +69,14 @@ test('divisionUpdatePermissionCheck: success: all', () => {
 
   // all
   expect(
-    divisionUpdatePermissionCheck(
+    divisionOwnAllPermissionCheck(
       division,
       PermissionFactory.CreateAll('division')
     )
   ).toEqual(true);
 });
 
-test('divisionUpdatePermissionCheck: failure: all', () => {
+test('divisionOwnAllPermissionCheck: failure: all', () => {
   const division: Division = {
     id: 0,
     name: 'test division',
@@ -88,7 +88,7 @@ test('divisionUpdatePermissionCheck: failure: all', () => {
 
   // not all
   expect(
-    divisionUpdatePermissionCheck(
+    divisionOwnAllPermissionCheck(
       division,
       PermissionFactory.CreateAll('division')
     )

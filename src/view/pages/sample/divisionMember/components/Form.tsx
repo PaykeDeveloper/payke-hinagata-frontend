@@ -1,10 +1,11 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import { Button, Card, Grid } from '@material-ui/core';
+import { Button, Card, Grid, MenuItem } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
+import { Role } from 'src/store/state/domain/common/roles/types';
 import { BookInput } from 'src/store/state/domain/sample/books/types';
 import {
   DivisionMemberDetail,
@@ -12,6 +13,7 @@ import {
 } from 'src/store/state/domain/sample/divisionMembers/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
+import { BaseMultiSelectField } from 'src/view/base/formik/MultiSelectField';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
 import { BaseTextField } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
@@ -26,13 +28,18 @@ import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import { divisionsPath, rootPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
+export type PermissionList = {
+  memberDelete: boolean;
+};
+
 const Form: FC<{
   title: string;
   object: DivisionMemberInput | undefined;
-  status: StoreStatus;
+  statuses: StoreStatus[];
   error: StoreError | undefined;
-  hasDeletePermission?: boolean;
+  permissions?: PermissionList;
   divisionMember: DivisionMemberDetail | undefined;
+  memberRoles: Role[];
 
   onSubmit: OnSubmit<BookInput>;
   onBack: () => void;
@@ -41,13 +48,15 @@ const Form: FC<{
   const {
     title,
     object,
-    status,
+    statuses,
     error,
-    hasDeletePermission,
+    permissions,
+    memberRoles: roles,
     onSubmit,
     onBack,
     onDelete,
   } = props;
+  console.log(statuses);
   const { t } = useTranslation();
   return (
     <ContentWrapper>
@@ -74,7 +83,7 @@ const Form: FC<{
             rightButtons={
               onDelete && [
                 <LoaderButton
-                  disabled={!hasDeletePermission}
+                  disabled={!permissions?.memberDelete}
                   onClick={onDelete}
                   startIcon={<DeleteIcon />}
                   color="secondary"
@@ -92,7 +101,7 @@ const Form: FC<{
               userId: yup.string().label(t('User ID')).required().max(30),
             })}
           >
-            <Loader status={status}>
+            <Loader statuses={statuses}>
               <Card>
                 <CardContent>
                   <Grid container spacing={1}>
@@ -102,6 +111,19 @@ const Form: FC<{
                         label={t('User ID')}
                         required
                       />
+                    </Grid>
+                    <Grid item xs={12} sm={8}>
+                      <BaseMultiSelectField
+                        name="roleNames"
+                        label={t('Role')}
+                        required
+                      >
+                        {roles.map(({ id, name, required }) => (
+                          <MenuItem key={id} value={name}>
+                            {t(name)}
+                          </MenuItem>
+                        ))}
+                      </BaseMultiSelectField>
                     </Grid>
                   </Grid>
                 </CardContent>

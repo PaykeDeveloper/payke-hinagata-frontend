@@ -22,7 +22,7 @@ export const divisionStatusSelector = (state: StoreState) =>
 export const divisionErrorSelector = (state: StoreState) =>
   state.domain.sample.divisions.meta.fetchEntity.error;
 
-export const divisionUpdatePermissionCheck = (
+export const divisionOwnAllPermissionCheck = (
   division: Division | undefined,
   selected: string[]
 ) =>
@@ -37,7 +37,7 @@ export const divisionUpdatePermissionCheck = (
 export const divisionUpdatePermissionCheckSelector = createSelector(
   divisionSelector,
   (division) =>
-    divisionUpdatePermissionCheck(
+    divisionOwnAllPermissionCheck(
       division,
       PermissionFactory.CreateOwnAll('project')
     )

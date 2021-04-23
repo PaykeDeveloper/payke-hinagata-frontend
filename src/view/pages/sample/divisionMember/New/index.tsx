@@ -6,9 +6,14 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
+  memberRolesSelector,
+  rolesStatusSelector,
+} from 'src/store/state/domain/common/roles/selectors';
+import {
   divisionMembersErrorSelector,
   divisionMembersStatusSelector,
 } from 'src/store/state/domain/sample/divisionMembers/selectors';
+import { divisionMembersActions } from 'src/store/state/domain/sample/divisionMembers/slice';
 import { divisionSelector } from 'src/store/state/domain/sample/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/sample/divisions/slice';
 import { DivisionPath, getDivisionPath } from 'src/view/routes/paths';
@@ -21,11 +26,14 @@ const selector = createSelector(
   [
     divisionSelector,
     divisionMembersStatusSelector,
+    memberRolesSelector,
+    rolesStatusSelector,
     divisionMembersErrorSelector,
   ],
-  (division, status, error) => ({
+  (division, memberStatus, memberRoles, rolesStatus, error) => ({
     division,
-    status,
+    statuses: [memberStatus, rolesStatus],
+    memberRoles,
     error,
   })
 );
@@ -53,9 +61,9 @@ const Container: FC<
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        divisionsActions.addEntity({ pathParams, bodyParams })
+        divisionMembersActions.addEntity({ pathParams, bodyParams })
       );
-      if (divisionsActions.addEntity.fulfilled.match(action)) {
+      if (divisionMembersActions.addEntity.fulfilled.match(action)) {
         onBack();
       }
       return action;
@@ -64,6 +72,8 @@ const Container: FC<
   );
 
   const state = useStoreSelector(selector);
+
+  console.log(state);
 
   return (
     <Form

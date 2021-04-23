@@ -12,34 +12,62 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { objectToInputs } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { deletePermissionCheckSelector } from 'src/store/state/domain/common/permissions/selectors';
+import {
+  memberRolesSelector,
+  rolesStatusSelector,
+} from 'src/store/state/domain/common/roles/selectors';
+import { memberDeletePermissionCheckSelector } from 'src/store/state/domain/sample/divisionMembers/selectors';
 import {
   divisionMemberErrorSelector,
   divisionMemberSelector,
   divisionMemberStatusSelector,
 } from 'src/store/state/domain/sample/divisionMembers/selectors';
 import { divisionMembersActions } from 'src/store/state/domain/sample/divisionMembers/slice';
-import { divisionSelector } from 'src/store/state/domain/sample/divisions/selectors';
+import {
+  divisionSelector,
+  divisionStatusSelector,
+} from 'src/store/state/domain/sample/divisions/selectors';
 import { DivisionMemberPath, divisionsPath } from 'src/view/routes/paths';
 import { BaseRouterState } from 'src/view/routes/types';
-import Form from '../components/Form';
+import Form, { PermissionList } from '../components/Form';
 
 type ChildProps = ComponentProps<typeof Form>;
+
+const permissionSelector = createSelector(
+  memberDeletePermissionCheckSelector,
+  (memberDelete) =>
+    ({
+      memberDelete,
+    } as PermissionList)
+);
 
 const selector = createSelector(
   [
     divisionSelector,
+    divisionStatusSelector,
+    memberRolesSelector,
+    rolesStatusSelector,
     divisionMemberSelector,
     divisionMemberStatusSelector,
     divisionMemberErrorSelector,
-    deletePermissionCheckSelector,
+    permissionSelector,
   ],
-  (division, divisionMember, status, error, hasDeletePermission) => ({
+  (
     division,
+    divisionStatus,
+    memberRoles,
+    rolesStatus,
     divisionMember,
-    status,
+    memberStatus,
     error,
-    hasDeletePermission,
+    permissions
+  ) => ({
+    division,
+    memberRoles,
+    divisionMember,
+    statuses: [divisionStatus, rolesStatus, memberStatus],
+    error,
+    permissions,
   })
 );
 
