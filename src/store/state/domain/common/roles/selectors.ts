@@ -5,6 +5,9 @@ import { RoleType } from './types';
 export const rolesSelector = (state: StoreState) =>
   state.domain.common.roles.entities;
 
+export const rolesStatusSelector = (state: StoreState) =>
+  state.domain.common.roles.meta.fetchEntities.status;
+
 export const userRolesSelector = createSelector(rolesSelector, (roles) =>
   roles.filter((role) => role.type === RoleType.User)
 );
