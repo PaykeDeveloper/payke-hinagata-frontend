@@ -4,6 +4,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
 import { InvitationCreateInput } from 'src/store/state/domain/common/invitations/types';
+import { DomainLocale } from 'src/store/state/domain/common/locales/types';
 import { Role } from 'src/store/state/domain/common/roles/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
@@ -19,20 +20,21 @@ import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
+import Options from 'src/view/components/molecules/Options';
 import { invitationsPath, rootPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
-import LocaleOptions from '../components/LocaleOptions';
 
 const Component: FC<{
   object: InvitationCreateInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
   roles: Role[];
+  locales: DomainLocale[];
 
   onSubmit: OnSubmit<InvitationCreateInput>;
   onBack: () => void;
 }> = (props) => {
-  const { object, status, error, roles, onSubmit, onBack } = props;
+  const { object, status, error, roles, locales, onSubmit, onBack } = props;
   const { t } = useTranslation();
   return (
     <ContentWrapper>
@@ -86,7 +88,11 @@ const Component: FC<{
                         label={t('Locale')}
                         required
                       >
-                        <LocaleOptions />
+                        <Options
+                          objects={locales}
+                          display="label"
+                          value="value"
+                        />
                       </BaseSelectField>
                     </Grid>
                     <Grid item xs={12} sm={6}>
