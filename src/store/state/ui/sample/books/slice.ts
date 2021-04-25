@@ -5,19 +5,17 @@ import { siteName } from 'src/base/constants';
 import { StoreDispatch } from 'src/store';
 import { RootState } from 'src/store/state';
 import { Book, BookInput } from 'src/store/state/domain/sample/books/types';
-import { StoreError } from 'src/store/types';
 import { BookApiUrl, getBookApiUrl, getBooksApiUrl } from 'src/store/urls';
 import {
   createBPatchAsyncThunk,
   createBPostAsyncThunk,
 } from 'src/store/utils/createAsyncThunks';
-import { BookImporter, BookImporterInput, ImportStatus } from './types';
-
-export type ImportResults = {
-  status: ImportStatus;
-  error: StoreError | undefined;
-};
-
+import {
+  BookImporter,
+  BookImporterInput,
+  ImportStatus,
+  ImportResults,
+} from './types';
 export interface BookImportersState {
   importers: BookImporter[];
   importResults: {
@@ -149,15 +147,15 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
       dispatch: StoreDispatch,
       importers: BookImporter[]
     ) {
-      for (const index in importers) {
-        let bodyParams = importers[index]?.book;
-        if (importers[index] !== undefined && bodyParams !== undefined) {
+      importers.forEach((importer) => {
+        let bodyParams = importer?.book;
+        if (bodyParams !== undefined) {
           if (bodyParams.id) {
             dispatch(
               mergeEntity({
                 pathParams: { bookId: bodyParams.id.toString() },
                 bodyParams,
-                uniqueId: importers[index]!.id,
+                uniqueId: importer!.id,
               })
             );
           } else {
@@ -165,12 +163,12 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
               addEntity({
                 pathParams: {},
                 bodyParams,
-                uniqueId: importers[index]!.id,
+                uniqueId: importer!.id,
               })
             );
           }
         }
-      }
+      });
     }
     const ui = domainSelector(getState());
     importLoop(dispatch, ui.importers);

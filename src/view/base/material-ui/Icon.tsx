@@ -23,6 +23,8 @@ export const EditIcon = createIcon('edit');
 export const ErrorOutlineIcon = createIcon('error_outline');
 export const SendIcon = createIcon('send');
 export const PersonAddIcon = createIcon('person_add');
+export const BlockIcon = createIcon('block');
+export const CheckIcon = createIcon('check');
 
 // FIXME: SAMPLE CODE
 export const HomeIcon = createIcon('home');

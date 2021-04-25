@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
@@ -18,7 +19,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
 import { createSelector } from '@reduxjs/toolkit';
-import { parse, ParseResult } from 'papaparse';
 import { useTranslation } from 'react-i18next';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { StoreState } from 'src/store';
@@ -31,15 +31,20 @@ import { bookImportersActions } from 'src/store/state/ui/sample/books/slice';
 import {
   BookImporter,
   ImportStatus,
+  ImportResults,
 } from 'src/store/state/ui/sample/books/types';
 import { StoreError } from 'src/store/types';
+import { readCsv } from 'src/store/utils/csvParser';
 import { BaseFileField } from 'src/view/base/formik/FileField';
 import { BaseForm } from 'src/view/base/formik/Form';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
 import { OnSubmit } from 'src/view/base/formik/types';
-import { dateColDef, RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
-import { CloseIcon } from 'src/view/base/material-ui/Icon';
-import Loader from 'src/view/components/atoms/Loader';
+import { RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
+import {
+  CloseIcon,
+  BlockIcon,
+  CheckIcon,
+} from 'src/view/base/material-ui/Icon';
 import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
@@ -70,91 +75,106 @@ const SUPPORTED_FORMATS = ['text/csv'];
 const CsvUploadForm: FC<{
   error: StoreError | undefined;
   onSubmit: OnSubmit<{ csv_file: File }>;
-  onStartImport: () => void;
-  onReset: () => void;
 }> = (props) => {
   console.log('render CsvUploadForm!!');
-  const { error, onSubmit, onStartImport, onReset } = props;
+  const { error, onSubmit } = props;
   const { t } = useTranslation();
   return (
-    <ContentWrapper>
-      <ContentBody>
-        <ErrorWrapper error={error}>
-          <Box mt={3}>
-            <BaseForm
-              initialValues={undefined}
-              onSubmit={onSubmit}
-              validationSchema={yup.object({
-                csv_file: yup
-                  .mixed()
-                  .label(t('CsvFile'))
-                  .required(t('A file is required'))
-                  .test(
-                    'fileFormat',
-                    t('Unsupported Format'),
-                    (value) => value && SUPPORTED_FORMATS.includes(value.type)
-                  )
-                  .test(
-                    'fileSize',
-                    t('File too large'),
-                    (value) => value && value.size <= MAX_FILE_SIZE
-                  ),
-              })}
-            >
-              <Card>
-                <CardContent>
-                  <BaseFileField name="csv_file" label={t('CsvFile')} />
-                </CardContent>
-                <CardActions>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                  >
-                    {t('Parse CSV')}
-                  </Button>
-                </CardActions>
-              </Card>
-            </BaseForm>
-          </Box>
-          <Box mt={3}>
-            <Card>
-              <CardActions>
-                <Button
-                  type="button"
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  onClick={onStartImport}
-                >
-                  {t('Start Import')}
-                </Button>
-                <Button
-                  type="button"
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  onClick={onReset}
-                >
-                  {t('Clean')}
-                </Button>
-              </CardActions>
-              <CardContent>
-                <ChildB />
-              </CardContent>
-            </Card>
-          </Box>
-        </ErrorWrapper>
-      </ContentBody>
-    </ContentWrapper>
+    <ErrorWrapper error={error}>
+      <Box mt={3}>
+        <BaseForm
+          initialValues={undefined}
+          onSubmit={onSubmit}
+          validationSchema={yup.object({
+            csv_file: yup
+              .mixed()
+              .label(t('CsvFile'))
+              .required(t('A file is required'))
+              .test(
+                'fileFormat',
+                t('Unsupported Format'),
+                (value) => value && SUPPORTED_FORMATS.includes(value.type)
+              )
+              .test(
+                'fileSize',
+                t('File too large'),
+                (value) => value && value.size <= MAX_FILE_SIZE
+              ),
+          })}
+        >
+          <Card>
+            <CardContent>
+              <BaseFileField name="csv_file" label={t('CsvFile')} />
+            </CardContent>
+            <CardActions>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="small"
+              >
+                {t('Parse CSV')}
+              </Button>
+            </CardActions>
+          </Card>
+        </BaseForm>
+      </Box>
+    </ErrorWrapper>
   );
 };
 
-const importersSelector = createSelector(
-  [bookImportersSelector],
-  (importers) => ({ importers })
-);
+const CsvParseResults: FC<{
+  onStartImport: () => void;
+  onReset: () => void;
+  importers: BookImporter[];
+}> = (props) => {
+  console.log('render CsvParseResults!!');
+  const { onStartImport, onReset, ...otherProps } = props;
+  const { t } = useTranslation();
+  return (
+    <Box mt={3}>
+      <Card>
+        <CardActions>
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={onStartImport}
+          >
+            {t('Start Import')}
+          </Button>
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={onReset}
+          >
+            {t('Clean')}
+          </Button>
+        </CardActions>
+        <CardContent>
+          <ChildB {...otherProps} />
+        </CardContent>
+      </Card>
+    </Box>
+  );
+};
+
+const StatusCell: FC<{ rowId: string }> = ({ rowId }) => {
+  const result = useStoreSelector((s) => importResultsSelector(s, rowId));
+  console.log('render StatusCell:' + result?.status);
+  if (result?.status === ImportStatus.Prepareing) {
+    console.log('isLoading');
+    return <CircularProgress />;
+  } else if (result?.status === ImportStatus.Success) {
+    return <CheckIcon color="primary" />;
+  } else if (result?.status === ImportStatus.Failed) {
+    return <BlockIcon color="error" />;
+  }
+  return <div></div>;
+};
 
 const importResultsSelector = createSelector(
   bookImporterResultsSelector,
@@ -162,26 +182,18 @@ const importResultsSelector = createSelector(
   (importResults, id) => importResults[id]
 );
 
-const ChildC: FC<{ rowId: string }> = ({ rowId }) => {
-  const result = useStoreSelector((s) => importResultsSelector(s, rowId));
-  console.log('render ChildC:' + rowId + ' results => ' + result?.status);
-  return (
-    <div>
-      <div>RootB: {result?.status}</div>
-    </div>
-  );
-};
-
-const ChildB: FC = () => {
+const ChildB: FC<{
+  importers: BookImporter[];
+}> = (props) => {
   console.log('render ChildB');
+  const { importers } = props;
   const { t } = useTranslation();
-  const { importers } = useStoreSelector(importersSelector);
   const columns: GridColumns = [
     { field: 'id', hide: true },
     {
       field: 'status',
       renderCell: ({ row }) => {
-        return <ChildC rowId={row['id'].toString()} />;
+        return <StatusCell rowId={row['id'].toString()} />;
       },
     },
     {
@@ -210,23 +222,14 @@ const ChildB: FC = () => {
   );
 };
 
-type ChildProps = ComponentProps<typeof CsvUploadForm>;
+type FormProps = ComponentProps<typeof CsvUploadForm>;
+type ListProps = ComponentProps<typeof CsvParseResults>;
 
-const readCsv = (file: File) => {
-  return new Promise<BookInput[]>((resolve, reject) => {
-    parse(file, {
-      header: true,
-      dynamicTyping: true,
-      skipEmptyLines: true,
-      complete: (rows: ParseResult<BookInput>) => {
-        resolve(rows.data);
-      },
-    });
-  });
-};
+const selector = createSelector([bookImportersSelector], (importers) => ({
+  importers,
+}));
 
 const Importer: FC = (): JSX.Element => {
-  console.log('render Importer!!');
   const { t } = useTranslation();
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -237,25 +240,21 @@ const Importer: FC = (): JSX.Element => {
     setOpen(false);
   };
   const dispatch = useStoreDispatch();
-  const handleSubmit: ChildProps['onSubmit'] = useCallback(
-    async (values, helpers) => {
-      console.log('handle submit');
-      const data = await readCsv(values.csv_file);
-      data.forEach((row) => {
-        dispatch(bookImportersActions.addImporter(row));
-      });
+  const handleSubmit: FormProps['onSubmit'] = useCallback(
+    async (values) => {
+      const data = await readCsv<BookInput>(values.csv_file);
+      dispatch(bookImportersActions.setImporters(data));
     },
     [dispatch]
   );
-  const handleImport: ChildProps['onStartImport'] = useCallback(async () => {
-    console.log('start import');
+  const handleImport: ListProps['onStartImport'] = useCallback(async () => {
     dispatch(bookImportersActions.startImport());
   }, [dispatch]);
-  const handleClear: ChildProps['onReset'] = useCallback(async () => {
-    console.log('clear');
+  const handleClear: ListProps['onReset'] = useCallback(async () => {
     dispatch(bookImportersActions.resetImporters());
   }, [dispatch]);
   const error: StoreError | undefined = undefined;
+  const state = useStoreSelector(selector);
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -282,12 +281,16 @@ const Importer: FC = (): JSX.Element => {
             </Typography>
           </Toolbar>
         </AppBar>
-        <CsvUploadForm
-          onSubmit={handleSubmit}
-          onStartImport={handleImport}
-          onReset={handleClear}
-          error={error}
-        />
+        <ContentWrapper>
+          <ContentBody>
+            <CsvUploadForm onSubmit={handleSubmit} error={error} />
+            <CsvParseResults
+              {...state}
+              onStartImport={handleImport}
+              onReset={handleClear}
+            />
+          </ContentBody>
+        </ContentWrapper>
       </Dialog>
     </div>
   );
