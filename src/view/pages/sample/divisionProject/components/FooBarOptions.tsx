@@ -2,7 +2,7 @@
 
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FooBarType } from 'src/store/state/domain/sample/bookComments/types';
+import { FooBarType } from 'src/store/state/domain/sample/divisionProjects/types';
 import Options from 'src/view/components/molecules/Options';
 
 const FooBarOptions: FC = () => {

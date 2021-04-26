@@ -5,7 +5,7 @@ import { Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
-import { BookInput } from 'src/store/state/domain/sample/books/types';
+import { UserInput } from 'src/store/state/domain/sample/users/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
@@ -19,16 +19,16 @@ import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
-import { booksPath, rootPath } from 'src/view/routes/paths';
+import { usersPath, rootPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
 const Form: FC<{
   title: string;
-  object: BookInput | undefined;
+  object: UserInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
 
-  onSubmit: OnSubmit<BookInput>;
+  onSubmit: OnSubmit<UserInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
@@ -39,7 +39,7 @@ const Form: FC<{
       <ContentHeader
         links={[
           { children: t('Home'), to: rootPath },
-          { children: t('Books'), to: booksPath },
+          { children: t('Users'), to: usersPath },
         ]}
       >
         {t(title)}

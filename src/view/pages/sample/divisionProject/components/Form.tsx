@@ -6,10 +6,10 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
 import {
-  BookCommentDetail,
-  BookCommentInput,
-} from 'src/store/state/domain/sample/bookComments/types';
-import { Book } from 'src/store/state/domain/sample/books/types';
+  DivisionProjectDetail,
+  DivisionProjectInput,
+} from 'src/store/state/domain/sample/divisionProjects/types';
+import { Division } from 'src/store/state/domain/sample/divisions/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseCheckField } from 'src/view/base/formik/CheckField';
 import { BaseForm } from 'src/view/base/formik/Form';
@@ -31,19 +31,24 @@ import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
-import { booksPath, getBookPath, rootPath } from 'src/view/routes/paths';
+import {
+  divisionsPath,
+  getDivisionPath,
+  getDivisionProjectsPath,
+  rootPath,
+} from 'src/view/routes/paths';
 import * as yup from 'yup';
 import FooBarOptions from './FooBarOptions';
 
 const Form: FC<{
   title: string;
-  object: BookCommentInput | undefined;
+  object: DivisionProjectInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
-  book: Book | undefined;
-  bookComment: BookCommentDetail | undefined;
+  division: Division | undefined;
+  divisionProject: DivisionProjectDetail | undefined;
 
-  onSubmit: OnSubmit<BookCommentInput>;
+  onSubmit: OnSubmit<DivisionProjectInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
@@ -52,8 +57,8 @@ const Form: FC<{
     object,
     status,
     error,
-    book,
-    bookComment,
+    division,
+    divisionProject,
     onSubmit,
     onBack,
     onDelete,
@@ -64,10 +69,14 @@ const Form: FC<{
       <ContentHeader
         links={[
           { children: t('Home'), to: rootPath },
-          { children: t('Books'), to: booksPath },
+          { children: t('Divisions'), to: divisionsPath },
           {
-            children: book?.title,
-            to: getBookPath({ bookId: `${book?.id}` }),
+            children: division?.name,
+            to: getDivisionPath({ divisionId: `${division?.id}` }),
+          },
+          {
+            children: t('Projects'),
+            to: getDivisionProjectsPath({ divisionId: `${division?.id}` }),
           },
         ]}
       >
@@ -150,7 +159,7 @@ const Form: FC<{
                       <BaseImageField
                         name="cover"
                         label={t('Cover')}
-                        defaultImage={bookComment?.coverUrl}
+                        defaultImage={divisionProject?.coverUrl}
                         maxWidth={150}
                         height={150}
                       />

@@ -5,9 +5,9 @@ export enum FooBarType {
   Bar = 'bar',
 }
 
-export interface BookComment {
+export interface DivisionProject {
   id: number;
-  bookId: number;
+  projectId: number;
   // confirmed: 0 | 1;
   // publishDate: string;
   // approvedAt: string;
@@ -20,9 +20,9 @@ export interface BookComment {
   // cover: string | null;
 }
 
-export interface BookCommentDetail {
+export interface DivisionProjectDetail {
   id: number;
-  bookId: number;
+  projectId: number;
   confirmed: boolean;
   publishDate: string;
   approvedAt: string;
@@ -35,9 +35,9 @@ export interface BookCommentDetail {
   coverUrl: string | null;
 }
 
-export interface BookCommentInput {
+export interface DivisionProjectInput {
   id: number;
-  bookId: number;
+  projectId: number;
   confirmed: boolean;
   publishDate: string;
   approvedAt: string;

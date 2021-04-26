@@ -7,36 +7,40 @@ import { RouteComponentProps } from 'react-router-dom';
 import { inputsToObject } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
-  bookCommentsErrorSelector,
-  bookCommentsStatusSelector,
-} from 'src/store/state/domain/sample/bookComments/selectors';
-import { bookCommentsActions } from 'src/store/state/domain/sample/bookComments/slice';
-import { bookSelector } from 'src/store/state/domain/sample/books/selectors';
-import { booksActions } from 'src/store/state/domain/sample/books/slice';
-import { BookPath, getBookPath } from 'src/view/routes/paths';
+  divisionProjectsErrorSelector,
+  divisionProjectsStatusSelector,
+} from 'src/store/state/domain/sample/divisionProjects/selectors';
+import { divisionProjectsActions } from 'src/store/state/domain/sample/divisionProjects/slice';
+import { divisionSelector } from 'src/store/state/domain/sample/divisions/selectors';
+import { divisionsActions } from 'src/store/state/domain/sample/divisions/slice';
+import { DivisionPath, getDivisionPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Form from '../components/Form';
 
 type ChildProps = ComponentProps<typeof Form>;
 
 const selector = createSelector(
-  [bookSelector, bookCommentsStatusSelector, bookCommentsErrorSelector],
-  (book, status, error) => ({
-    book,
+  [
+    divisionSelector,
+    divisionProjectsStatusSelector,
+    divisionProjectsErrorSelector,
+  ],
+  (division, status, error) => ({
+    division,
     status,
     error,
   })
 );
 
 const Container: FC<
-  RouteComponentProps<BookPath, StaticContext, RouterState>
+  RouteComponentProps<DivisionPath, StaticContext, RouterState>
 > = (props) => {
   const {
     match: { params: pathParams },
     history: { push },
     location,
   } = props;
-  const backPath = location.state?.path || getBookPath(pathParams);
+  const backPath = location.state?.path || getDivisionPath(pathParams);
   const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
     push,
     backPath,
@@ -45,19 +49,19 @@ const Container: FC<
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
-    dispatch(booksActions.fetchEntityIfNeeded({ pathParams, reset: true }));
+    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset: true }));
   }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (params) => {
       const action = await dispatch(
-        bookCommentsActions.addEntity({
+        divisionProjectsActions.addEntity({
           pathParams,
           bodyParams: inputsToObject(params, { approvedAt: 'dateTime' }),
           useFormData: true,
         })
       );
-      if (bookCommentsActions.addEntity.fulfilled.match(action)) {
+      if (divisionProjectsActions.addEntity.fulfilled.match(action)) {
         onBack();
       }
       return action;
@@ -70,9 +74,9 @@ const Container: FC<
   return (
     <Form
       {...state}
-      title="Add comment"
+      title="Add project"
       object={undefined}
-      bookComment={undefined}
+      divisionProject={undefined}
       onSubmit={onSubmit}
       onBack={onBack}
     />

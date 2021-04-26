@@ -57,30 +57,6 @@ export const privateMenuLists: MenuList[] = [
         requiredPermissions: PermissionFactory.ViewAll('invitation'),
       },
       {
-        text: <Trans>Books</Trans>,
-        icon: <MenuBookIcon />,
-        menus: [
-          {
-            text: <Trans>List</Trans>,
-            icon: <ListIcon />,
-            to: booksPath,
-            paths: [
-              booksPath,
-              bookPath,
-              bookEditPath,
-              bookCommentNewPath,
-              bookCommentEditPath,
-            ],
-          },
-          {
-            text: <Trans>Add</Trans>,
-            icon: <AddIcon />,
-            to: bookNewPath,
-            paths: [bookNewPath],
-          },
-        ],
-      },
-      {
         text: <Trans>Users</Trans>,
         icon: <MenuUserIcon />,
         menus: [

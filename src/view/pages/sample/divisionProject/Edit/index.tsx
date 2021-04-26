@@ -13,14 +13,14 @@ import { RouteComponentProps } from 'react-router-dom';
 import { inputsToObject, objectToInputs } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
-  bookCommentErrorSelector,
-  bookCommentSelector,
-  bookCommentStatusSelector,
-} from 'src/store/state/domain/sample/bookComments/selectors';
-import { bookCommentsActions } from 'src/store/state/domain/sample/bookComments/slice';
-import { bookSelector } from 'src/store/state/domain/sample/books/selectors';
-import { booksActions } from 'src/store/state/domain/sample/books/slice';
-import { BookCommentPath, getBookPath } from 'src/view/routes/paths';
+  divisionProjectErrorSelector,
+  divisionProjectSelector,
+  divisionProjectStatusSelector,
+} from 'src/store/state/domain/sample/divisionProjects/selectors';
+import { divisionProjectsActions } from 'src/store/state/domain/sample/divisionProjects/slice';
+import { divisionSelector } from 'src/store/state/domain/sample/divisions/selectors';
+import { divisionsActions } from 'src/store/state/domain/sample/divisions/slice';
+import { DivisionProjectPath, getDivisionPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Form from '../components/Form';
 
@@ -28,14 +28,14 @@ type ChildProps = ComponentProps<typeof Form>;
 
 const selector = createSelector(
   [
-    bookSelector,
-    bookCommentSelector,
-    bookCommentStatusSelector,
-    bookCommentErrorSelector,
+    divisionSelector,
+    divisionProjectSelector,
+    divisionProjectStatusSelector,
+    divisionProjectErrorSelector,
   ],
-  (book, bookComment, status, error) => ({
-    book,
-    bookComment,
+  (division, divisionProject, status, error) => ({
+    division,
+    divisionProject,
     status,
     error,
   })
@@ -44,14 +44,14 @@ const selector = createSelector(
 const rules = { approvedAt: 'dateTime' } as const;
 
 const Container: FC<
-  RouteComponentProps<BookCommentPath, StaticContext, RouterState>
+  RouteComponentProps<DivisionProjectPath, StaticContext, RouterState>
 > = (props) => {
   const {
     match: { params: pathParams },
     history: { push },
     location,
   } = props;
-  const backPath = location.state?.path || getBookPath(pathParams);
+  const backPath = location.state?.path || getDivisionPath(pathParams);
   const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
     push,
     backPath,
@@ -62,24 +62,26 @@ const Container: FC<
   useEffect(() => {
     const reset = true;
     dispatch(
-      booksActions.fetchEntityIfNeeded({
-        pathParams: { bookId: pathParams.bookId },
+      divisionsActions.fetchEntityIfNeeded({
+        pathParams: { divisionId: pathParams.divisionId },
         reset,
       })
     );
-    dispatch(bookCommentsActions.fetchEntityIfNeeded({ pathParams, reset }));
+    dispatch(
+      divisionProjectsActions.fetchEntityIfNeeded({ pathParams, reset })
+    );
   }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (params) => {
       const action = await dispatch(
-        bookCommentsActions.mergeEntity({
+        divisionProjectsActions.mergeEntity({
           pathParams,
           bodyParams: inputsToObject(params, rules),
           useFormData: true,
         })
       );
-      if (bookCommentsActions.mergeEntity.fulfilled.match(action)) {
+      if (divisionProjectsActions.mergeEntity.fulfilled.match(action)) {
         onBack();
       }
       return action;
@@ -89,26 +91,26 @@ const Container: FC<
 
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
     const action = await dispatch(
-      bookCommentsActions.removeEntity({ pathParams })
+      divisionProjectsActions.removeEntity({ pathParams })
     );
-    if (bookCommentsActions.removeEntity.fulfilled.match(action)) {
+    if (divisionProjectsActions.removeEntity.fulfilled.match(action)) {
       onBack();
     }
     return action;
   }, [dispatch, pathParams, onBack]);
 
-  const { bookComment, ...otherState } = useStoreSelector(selector);
+  const { divisionProject, ...otherState } = useStoreSelector(selector);
   const object = useMemo(
-    () => bookComment && objectToInputs(bookComment, rules),
-    [bookComment]
+    () => divisionProject && objectToInputs(divisionProject, rules),
+    [divisionProject]
   );
 
   return (
     <Form
       {...otherState}
-      title="Edit comment"
+      title="Edit project"
       object={object}
-      bookComment={bookComment}
+      divisionProject={divisionProject}
       onSubmit={onSubmit}
       onDelete={onDelete}
       onBack={onBack}

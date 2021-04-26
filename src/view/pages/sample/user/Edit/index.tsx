@@ -6,10 +6,10 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
-  bookErrorSelector,
-  bookSelector,
-  bookStatusSelector,
-} from 'src/store/state/domain/sample/books/selectors';
+  userErrorSelector,
+  userSelector,
+  userStatusSelector,
+} from 'src/store/state/domain/sample/users/selectors';
 import { usersActions } from 'src/store/state/domain/sample/users/slice';
 import { UserPath, booksPath } from 'src/view/routes/paths';
 import { BaseRouterState } from 'src/view/routes/types';
@@ -18,7 +18,7 @@ import Form from '../components/Form';
 type ChildProps = ComponentProps<typeof Form>;
 
 const selector = createSelector(
-  [bookSelector, bookStatusSelector, bookErrorSelector],
+  [userSelector, userStatusSelector, userErrorSelector],
   (object, status, error) => ({ object, status, error })
 );
 

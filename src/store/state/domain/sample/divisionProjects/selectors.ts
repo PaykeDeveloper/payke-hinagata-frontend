@@ -1,21 +1,40 @@
 // FIXME: SAMPLE CODE
 
+import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
+import { PermissionFactory } from '../../common/permissions/factories';
+import { permissionNamesSelector } from '../../common/user/selectors';
 
-export const bookCommentsSelector = (state: StoreState) =>
-  state.domain.sample.bookComments.entities;
+export const divisionProjectsSelector = (state: StoreState) =>
+  state.domain.sample.divisionProjects.entities;
 
-export const bookCommentsStatusSelector = (state: StoreState) =>
-  state.domain.sample.bookComments.meta.fetchEntities.status;
+export const divisionProjectsStatusSelector = (state: StoreState) =>
+  state.domain.sample.divisionProjects.meta.fetchEntities.status;
 
-export const bookCommentsErrorSelector = (state: StoreState) =>
-  state.domain.sample.bookComments.meta.fetchEntities.error;
+export const divisionProjectsErrorSelector = (state: StoreState) =>
+  state.domain.sample.divisionProjects.meta.fetchEntities.error;
 
-export const bookCommentSelector = (state: StoreState) =>
-  state.domain.sample.bookComments.entity;
+export const divisionProjectSelector = (state: StoreState) =>
+  state.domain.sample.divisionProjects.entity;
 
-export const bookCommentStatusSelector = (state: StoreState) =>
-  state.domain.sample.bookComments.meta.fetchEntity.status;
+export const divisionProjectStatusSelector = (state: StoreState) =>
+  state.domain.sample.divisionProjects.meta.fetchEntity.status;
 
-export const bookCommentErrorSelector = (state: StoreState) =>
-  state.domain.sample.bookComments.meta.fetchEntity.error;
+export const divisionProjectErrorSelector = (state: StoreState) =>
+  state.domain.sample.divisionProjects.meta.fetchEntity.error;
+
+export const projectCreatePermissionCheckSelector = createSelector(
+  permissionNamesSelector,
+  (permissionNames) =>
+    PermissionFactory.CreateOwnAll('project').some((e) =>
+      permissionNames?.includes(e)
+    )
+);
+
+export const projectUpdatePermissionCheckSelector = createSelector(
+  permissionNamesSelector,
+  (permissionNames) =>
+    PermissionFactory.UpdateOwnAll('project').some((e) =>
+      permissionNames?.includes(e)
+    )
+);

@@ -6,7 +6,6 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { Trans, useTranslation } from 'react-i18next';
 import { Role } from 'src/store/state/domain/common/roles/types';
-import { BookInput } from 'src/store/state/domain/sample/books/types';
 import {
   DivisionMemberDetail,
   DivisionMemberInput,
@@ -48,7 +47,7 @@ const Form: FC<{
   divisionMember: DivisionMemberDetail | undefined;
   memberRoles: Role[];
 
-  onSubmit: OnSubmit<BookInput>;
+  onSubmit: OnSubmit<DivisionMemberInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {

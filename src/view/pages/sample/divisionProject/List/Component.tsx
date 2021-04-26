@@ -6,12 +6,10 @@ import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { formatDate } from 'src/base/dateFormat';
-import { BookComment } from 'src/store/state/domain/sample/bookComments/types';
-import { Book } from 'src/store/state/domain/sample/books/types';
+import { DivisionProject } from 'src/store/state/domain/sample/divisionProjects/types';
+import { Division } from 'src/store/state/domain/sample/divisions/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
-  dateColDef,
-  dateTimeColDef,
   RouterDataGrid,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
@@ -28,58 +26,66 @@ import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
-import { booksPath, rootPath } from 'src/view/routes/paths';
+import {
+  divisionsPath,
+  getDivisionPath,
+  rootPath,
+} from 'src/view/routes/paths';
+
+export type PermissionList = {
+  divisionUpdate: boolean;
+  projectCreate: boolean;
+  projectUpdate: boolean;
+  memberView: boolean;
+};
 
 const Component: FC<{
-  book: Book | undefined;
-  bookStatus: StoreStatus;
-  bookComments: BookComment[];
-  bookCommentsStatus: StoreStatus;
+  division: Division | undefined;
+  divisionStatus: StoreStatus;
+  divisionProjects: DivisionProject[];
+  divisionProjectsStatus: StoreStatus;
   errors: (StoreError | undefined)[];
+  permission: PermissionList;
 
   onBack: () => void;
-  onClickEditBook: () => void;
-  onClickAddBookComment: () => void;
-  onClickEditBookComment: (commentSlug: string) => void;
+  onClickEditDivision: () => void;
+  onClickAddDivisionProject: () => void;
+  onClickEditDivisionProject: (projectId: string) => void;
 }> = (props) => {
   const {
-    book,
-    bookStatus,
-    bookComments,
-    bookCommentsStatus,
+    division,
+    divisionStatus,
+    divisionProjects,
+    divisionProjectsStatus,
     errors,
+    permission,
     onBack,
-    onClickEditBook,
-    onClickAddBookComment,
-    onClickEditBookComment,
+    onClickEditDivision,
+    onClickAddDivisionProject,
+    onClickEditDivisionProject,
   } = props;
   const { t } = useTranslation();
 
-  const columns: GridColumns = [
+  const projectColumns: GridColumns = [
     {
-      field: 'slug',
-      headerName: '',
+      field: ' ',
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <Link onClick={() => onClickEditBookComment(row['slug'] as string)}>
-          {t('Edit')}
-        </Link>
+        <>
+          {permission.projectUpdate ? (
+            <Link
+              onClick={() => onClickEditDivisionProject(row['id'] as string)}
+            >
+              {t('Edit')}
+            </Link>
+          ) : null}
+        </>
       ),
       width: 50,
     },
-    { field: 'confirmed', headerName: t('Confirmed'), width: 100 },
-    { field: 'publishDate', headerName: t('Publish date'), ...dateColDef },
-    {
-      field: 'approvedAt',
-      headerName: t('Approved at'),
-      ...dateTimeColDef,
-    },
-    { field: 'Amount', headerName: t('Amount'), width: 100 },
-    { field: 'column', headerName: t('Column'), width: 100 },
-    { field: 'choices', headerName: t('Choices'), width: 100 },
-    { field: 'votes', headerName: t('Votes'), width: 100 },
-    { field: 'coverUrl', headerName: t('Cover'), width: 200 },
+    { field: 'id', headerName: t('ID'), width: 100 },
+    { field: 'name', headerName: t('Name'), width: 200 },
     {
       field: 'createdAt',
       headerName: t('Created at'),
@@ -97,10 +103,14 @@ const Component: FC<{
       <ContentHeader
         links={[
           { children: <Trans>Home</Trans>, to: rootPath },
-          { children: <Trans>Books</Trans>, to: booksPath },
+          { children: <Trans>Divisions</Trans>, to: divisionsPath },
+          {
+            children: division?.name,
+            to: getDivisionPath({ divisionId: `${division?.id}` }),
+          },
         ]}
       >
-        {book?.title}
+        <Trans>Projects</Trans>
       </ContentHeader>
       <ContentBody>
         <ErrorWrapper errors={errors}>
@@ -115,7 +125,8 @@ const Component: FC<{
                   <Trans>Back</Trans>
                 </Button>,
                 <Button
-                  onClick={onClickEditBook}
+                  disabled={!permission.divisionUpdate}
+                  onClick={onClickEditDivision}
                   startIcon={<EditIcon />}
                   variant="outlined"
                   color="primary"
@@ -124,20 +135,28 @@ const Component: FC<{
                 </Button>,
               ]}
             />
-            <Loader status={bookStatus}>
+            <Loader status={divisionStatus}>
               <Card>
                 <CardContent>
                   <DefinitionList
                     list={[
                       {
-                        key: <Trans>Author</Trans>,
-                        value: <Typography>{book?.author}</Typography>,
+                        key: <Trans>Division</Trans>,
+                        value: <Typography>{division?.name}</Typography>,
                       },
                       {
-                        key: <Trans>Release date</Trans>,
+                        key: <Trans>Created date</Trans>,
                         value: (
                           <Typography>
-                            {formatDate(book?.releaseDate)}
+                            {formatDate(division?.createdAt)}
+                          </Typography>
+                        ),
+                      },
+                      {
+                        key: <Trans>Updated date</Trans>,
+                        value: (
+                          <Typography>
+                            {formatDate(division?.updatedAt)}
                           </Typography>
                         ),
                       },
@@ -149,13 +168,14 @@ const Component: FC<{
           </Box>
           <Box mt={3}>
             <Typography variant="h5">
-              <Trans>Comments</Trans>
+              <Trans>Projects</Trans>
             </Typography>
             <Box mt={1}>
               <Buttons
                 leftButtons={[
                   <Button
-                    onClick={onClickAddBookComment}
+                    disabled={!permission.projectCreate}
+                    onClick={onClickAddDivisionProject}
                     startIcon={<AddIcon />}
                     color="primary"
                     variant="outlined"
@@ -164,8 +184,11 @@ const Component: FC<{
                   </Button>,
                 ]}
               />
-              <Loader status={bookCommentsStatus}>
-                <RouterDataGrid columns={columns} rows={bookComments} />
+              <Loader status={divisionProjectsStatus}>
+                <RouterDataGrid
+                  columns={projectColumns}
+                  rows={divisionProjects}
+                />
               </Loader>
             </Box>
           </Box>

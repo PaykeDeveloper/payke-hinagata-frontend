@@ -39,23 +39,6 @@ export const getLocalesApiUrl = () => `${getRootApiUrl()}locales/`;
 
 // FIXME: SAMPLE CODE
 
-export interface BookApiUrl {
-  bookId: string;
-}
-export const getBooksApiUrl = () => `${getRootApiUrl()}books/`;
-export const getBookApiUrl = ({ bookId }: BookApiUrl) =>
-  `${getBooksApiUrl()}${bookId}/`;
-
-export interface BookCommentApiUrl extends BookApiUrl {
-  commentSlug: string;
-}
-export const getBookCommentsApiUrl = ({ bookId }: BookApiUrl) =>
-  `${getBooksApiUrl()}${bookId}/comments/`;
-export const getBookCommentApiUrl = ({
-  bookId,
-  commentSlug,
-}: BookCommentApiUrl) => `${getBookCommentsApiUrl({ bookId })}${commentSlug}/`;
-
 export interface UserApiUrl {
   userId: string;
 }
