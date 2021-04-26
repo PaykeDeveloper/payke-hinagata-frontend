@@ -71,26 +71,20 @@ export const getDivisionsApiUrl = () => `${getRootApiUrl()}divisions/`;
 export const getDivisionApiUrl = ({ divisionId }: DivisionApiUrl) =>
   `${getDivisionsApiUrl()}${divisionId}/`;
 
-export interface DivisionProjectApiUrl extends DivisionApiUrl {
+export interface ProjectApiUrl extends DivisionApiUrl {
   divisionId: string;
   projectId: string;
 }
-export const getDivisionProjectsApiUrl = ({ divisionId }: DivisionApiUrl) =>
+export const getProjectsApiUrl = ({ divisionId }: DivisionApiUrl) =>
   `${getDivisionsApiUrl()}${divisionId}/projects/`;
-export const getDivisionProjectApiUrl = ({
-  divisionId,
-  projectId,
-}: DivisionProjectApiUrl) =>
-  `${getDivisionProjectsApiUrl({ divisionId })}${projectId}/`;
+export const getProjectApiUrl = ({ divisionId, projectId }: ProjectApiUrl) =>
+  `${getProjectsApiUrl({ divisionId })}${projectId}/`;
 
-export interface DivisionMemberApiUrl extends DivisionApiUrl {
+export interface MemberApiUrl extends DivisionApiUrl {
   divisionId: string;
   memberId: string;
 }
-export const getDivisionMembersApiUrl = ({ divisionId }: DivisionApiUrl) =>
+export const getMembersApiUrl = ({ divisionId }: DivisionApiUrl) =>
   `${getDivisionsApiUrl()}${divisionId}/members/`;
-export const getDivisionMemberApiUrl = ({
-  divisionId,
-  memberId,
-}: DivisionMemberApiUrl) =>
-  `${getDivisionMembersApiUrl({ divisionId })}${memberId}/`;
+export const getMemberApiUrl = ({ divisionId, memberId }: MemberApiUrl) =>
+  `${getMembersApiUrl({ divisionId })}${memberId}/`;

@@ -7,22 +7,22 @@ import InvitationEdit from 'src/view/pages/common/invitation/Edit';
 import InvitationList from 'src/view/pages/common/invitation/List';
 import InvitationNew from 'src/view/pages/common/invitation/New';
 import NotFound from 'src/view/pages/common/NotFound';
+import DivisionEdit from 'src/view/pages/division/division/Edit';
+import DivisionList from 'src/view/pages/division/division/List';
+import DivisionNew from 'src/view/pages/division/division/New';
+import DivisionShow from 'src/view/pages/division/division/Show';
+import MemberEdit from 'src/view/pages/division/member/Edit';
+import MemberList from 'src/view/pages/division/member/List';
+import MemberNew from 'src/view/pages/division/member/New';
 import BookEdit from 'src/view/pages/sample/book/Edit';
 import BookList from 'src/view/pages/sample/book/List';
 import BookNew from 'src/view/pages/sample/book/New';
 import BookShow from 'src/view/pages/sample/book/Show';
 import BookCommentEdit from 'src/view/pages/sample/bookComment/Edit';
 import BookCommentNew from 'src/view/pages/sample/bookComment/New';
-import DivisionEdit from 'src/view/pages/sample/division/Edit';
-import DivisionList from 'src/view/pages/sample/division/List';
-import DivisionNew from 'src/view/pages/sample/division/New';
-import DivisionShow from 'src/view/pages/sample/division/Show';
-import DivisionMemberEdit from 'src/view/pages/sample/divisionMember/Edit';
-import DivisionMemberList from 'src/view/pages/sample/divisionMember/List';
-import DivisionMemberNew from 'src/view/pages/sample/divisionMember/New';
-import DivisionProjectEdit from 'src/view/pages/sample/divisionProject/Edit';
-import DivisionProjectList from 'src/view/pages/sample/divisionProject/List';
-import DivisionProjectNew from 'src/view/pages/sample/divisionProject/New';
+import ProjectEdit from 'src/view/pages/sample/project/Edit';
+import ProjectList from 'src/view/pages/sample/project/List';
+import ProjectNew from 'src/view/pages/sample/project/New';
 import UserList from 'src/view/pages/sample/user/List';
 
 import {
@@ -39,17 +39,17 @@ import {
   divisionsPath,
   divisionNewPath,
   divisionEditPath,
-  divisionProjectNewPath,
-  divisionProjectEditPath,
+  projectNewPath,
+  projectEditPath,
   verifyEmailPath,
   invitationsPath,
   invitationNewPath,
   invitationEditPath,
-  divisionMemberNewPath,
-  divisionMemberEditPath,
+  memberNewPath,
+  memberEditPath,
   changePasswordPath,
-  divisionProjectsPath,
-  divisionMembersPath,
+  projectsPath,
+  membersPath,
 } from 'src/view/routes/paths';
 
 const privateRoutes: RouteProps[] = [
@@ -71,12 +71,12 @@ const privateRoutes: RouteProps[] = [
   { path: divisionNewPath, component: DivisionNew },
   { path: divisionEditPath, component: DivisionEdit },
   { path: divisionPath, component: DivisionShow },
-  { path: divisionProjectsPath, component: DivisionProjectList },
-  { path: divisionProjectNewPath, component: DivisionProjectNew },
-  { path: divisionProjectEditPath, component: DivisionProjectEdit },
-  { path: divisionMembersPath, component: DivisionMemberList },
-  { path: divisionMemberNewPath, component: DivisionMemberNew },
-  { path: divisionMemberEditPath, component: DivisionMemberEdit },
+  { path: projectsPath, component: ProjectList },
+  { path: projectNewPath, component: ProjectNew },
+  { path: projectEditPath, component: ProjectEdit },
+  { path: membersPath, component: MemberList },
+  { path: memberNewPath, component: MemberNew },
+  { path: memberEditPath, component: MemberEdit },
 
   { path: invitationNewPath, component: InvitationNew },
   { path: invitationEditPath, component: InvitationEdit },
