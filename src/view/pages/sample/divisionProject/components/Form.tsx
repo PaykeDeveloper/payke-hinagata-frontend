@@ -38,7 +38,7 @@ import {
   rootPath,
 } from 'src/view/routes/paths';
 import * as yup from 'yup';
-import FooBarOptions from './FooBarOptions';
+import ProjectStatusOptions from './ProjectStatusOptions';
 
 const Form: FC<{
   title: string;
@@ -117,34 +117,30 @@ const Form: FC<{
                 <CardContent>
                   <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
-                      <DateTextField
-                        name="publishDate"
-                        label={t('Publish date')}
+                      <DateTextField name="startDate" label={t('Start date')} />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <DateTimeTextField name="dueDate" label={t('Due date')} />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <NumberTextField name="priority" label={t('Priority')} />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <NumberTextField
+                        name="salesOrder"
+                        label={t('Sales order')}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <DateTimeTextField
-                        name="approvedAt"
-                        label={t('Approved at')}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <NumberTextField name="amount" label={t('Amount')} />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <NumberTextField name="column" label={t('Column')} />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <BaseSelectField
-                        name="choices"
-                        label={t('Choices')}
-                        nullable
-                      >
-                        <FooBarOptions />
+                      <BaseSelectField name="type" label={t('Type')} nullable>
+                        <ProjectStatusOptions />
                       </BaseSelectField>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <NumberTextField name="votes" label={t('Votes')} />
+                      <NumberTextField
+                        name="estimatedPeriod"
+                        label={t('Estimated period')}
+                      />
                     </Grid>
                     <Grid item xs={12}>
                       <MultiLineTextField
