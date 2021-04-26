@@ -15,6 +15,7 @@ test('divisionOwnAllPermissionCheck: success: own', () => {
   expect(
     divisionOwnAllPermissionCheck(
       division,
+      [],
       PermissionFactory.CreateOwn('division')
     )
   ).toEqual(true);
@@ -33,6 +34,7 @@ test('divisionOwnAllPermissionCheck: failure: own', () => {
   expect(
     divisionOwnAllPermissionCheck(
       division,
+      [],
       PermissionFactory.CreateOwn('division')
     )
   ).toEqual(false);
@@ -52,6 +54,7 @@ test('divisionOwnAllPermissionCheck: failure: own and all: requestMemberId is re
   expect(
     divisionOwnAllPermissionCheck(
       division,
+      [],
       PermissionFactory.CreateOwn('division')
     )
   ).toEqual(false);
@@ -62,6 +65,7 @@ test('divisionOwnAllPermissionCheck: failure: own: division undefined', () => {
   expect(
     divisionOwnAllPermissionCheck(
       division,
+      [],
       PermissionFactory.CreateOwn('division')
     )
   ).toEqual(false);
@@ -81,7 +85,8 @@ test('divisionOwnAllPermissionCheck: success: all', () => {
   expect(
     divisionOwnAllPermissionCheck(
       division,
-      PermissionFactory.CreateAll('division')
+      PermissionFactory.CreateAll('division'),
+      []
     )
   ).toEqual(true);
 });
@@ -100,7 +105,8 @@ test('divisionOwnAllPermissionCheck: failure: all', () => {
   expect(
     divisionOwnAllPermissionCheck(
       division,
-      PermissionFactory.CreateAll('division')
+      PermissionFactory.CreateAll('division'),
+      []
     )
   ).toEqual(false);
 });

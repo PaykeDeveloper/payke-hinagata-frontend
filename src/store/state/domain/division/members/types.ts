@@ -1,3 +1,9 @@
+import { PFactory } from '../../common/permissions/factories';
+import {
+  ModelPermission,
+  AllPermission,
+  OwnPermission,
+} from '../../common/permissions/types';
 export interface Member {
   id: number;
   userId: string;
@@ -17,3 +23,11 @@ export interface MemberDetail {
   permissionNames: string[];
   requestMemberId: number | null;
 }
+
+type ModelType = 'member';
+export type MemberPermission = ModelPermission<
+  ModelType,
+  AllPermission | OwnPermission
+>;
+export type MemberOwnPermission = ModelPermission<ModelType, OwnPermission>;
+export type MemberAllPermission = ModelPermission<ModelType, AllPermission>;

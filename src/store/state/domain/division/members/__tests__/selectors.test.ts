@@ -16,6 +16,7 @@ test('memberOwnAllPermissionCheck: success: own', () => {
     memberOwnAllPermissionCheck(
       division,
       PermissionFactory.CreateOwn('member'),
+      [],
       PermissionFactory.CreateOwn('member')
     )
   ).toEqual(true);
@@ -34,6 +35,7 @@ test('memberOwnAllPermissionCheck: failure: own', () => {
   expect(
     memberOwnAllPermissionCheck(
       division,
+      [],
       [],
       PermissionFactory.CreateOwn('member')
     )
@@ -55,6 +57,7 @@ test('memberOwnAllPermissionCheck: failure: own and all: requestMemberId is requ
     memberOwnAllPermissionCheck(
       division,
       PermissionFactory.CreateOwn('member'),
+      [],
       PermissionFactory.CreateOwn('member')
     )
   ).toEqual(false);
@@ -66,6 +69,7 @@ test('memberOwnAllPermissionCheck: failure: own: division undefined', () => {
     memberOwnAllPermissionCheck(
       division,
       PermissionFactory.CreateOwn('division'),
+      [],
       PermissionFactory.CreateOwn('division')
     )
   ).toEqual(false);
@@ -85,6 +89,7 @@ test('memberOwnAllPermissionCheck: failure: own: permissionNames undefined', () 
     memberOwnAllPermissionCheck(
       division,
       permissionNames,
+      [],
       PermissionFactory.CreateOwn('division')
     )
   ).toEqual(false);
@@ -97,6 +102,7 @@ test('memberOwnAllPermissionCheck: failure: own: division and permisionNames und
     memberOwnAllPermissionCheck(
       division,
       permissionNames,
+      [],
       PermissionFactory.CreateOwn('division')
     )
   ).toEqual(false);
@@ -117,7 +123,8 @@ test('memberOwnAllPermissionCheck: success: all', () => {
     memberOwnAllPermissionCheck(
       division,
       PermissionFactory.CreateAll('member'),
-      PermissionFactory.CreateAll('member')
+      PermissionFactory.CreateAll('member'),
+      []
     )
   ).toEqual(true);
 });
@@ -137,7 +144,8 @@ test('memberOwnAllPermissionCheck: failure: all', () => {
     memberOwnAllPermissionCheck(
       division,
       PermissionFactory.CreateOwn('member'),
-      PermissionFactory.CreateAll('member')
+      PermissionFactory.CreateAll('member'),
+      []
     )
   ).toEqual(false);
 });
@@ -148,7 +156,8 @@ test('memberOwnAllPermissionCheck: success: all: division undefined', () => {
     memberOwnAllPermissionCheck(
       division,
       PermissionFactory.CreateAll('division'),
-      PermissionFactory.CreateAll('division')
+      PermissionFactory.CreateAll('division'),
+      []
     )
   ).toEqual(true);
 });
@@ -167,7 +176,8 @@ test('memberOwnAllPermissionCheck: failure: all: permissionNames undefined', () 
     memberOwnAllPermissionCheck(
       division,
       permissionNames,
-      PermissionFactory.CreateAll('division')
+      PermissionFactory.CreateAll('division'),
+      []
     )
   ).toEqual(false);
 });
@@ -179,7 +189,8 @@ test('memberOwnAllPermissionCheck: failure: all: division and permisionNames und
     memberOwnAllPermissionCheck(
       division,
       permissionNames,
-      PermissionFactory.CreateAll('division')
+      PermissionFactory.CreateAll('division'),
+      []
     )
   ).toEqual(false);
 });

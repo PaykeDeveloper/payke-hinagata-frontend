@@ -1,8 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
 import { PermissionFactory } from '../../common/permissions/factories';
-import { PermissionType } from '../../common/permissions/types';
-import { Division } from './types';
+import {
+  Division,
+  DivisionAllPermission,
+  DivisionOwnPermission,
+} from './types';
 
 export const divisionsSelector = (state: StoreState) =>
   state.domain.division.divisions.entities;
@@ -24,10 +27,11 @@ export const divisionErrorSelector = (state: StoreState) =>
 
 export const divisionOwnAllPermissionCheck = (
   division: Division | undefined,
-  selected: string[]
+  allPermissions: DivisionAllPermission[],
+  ownPermissions: DivisionOwnPermission[]
 ) =>
-  selected.some((e) =>
-    PermissionType.isOwn(e)
+  [...ownPermissions, ...allPermissions].some((e) =>
+    (ownPermissions as string[]).includes(e)
       ? division?.requestMemberId
         ? division?.permissionNames?.includes(e)
         : false
@@ -39,6 +43,7 @@ export const divisionUpdatePermissionCheckSelector = createSelector(
   (division) =>
     divisionOwnAllPermissionCheck(
       division,
-      PermissionFactory.CreateOwnAll('project')
+      PermissionFactory.CreateAll('project'),
+      PermissionFactory.CreateOwn('project')
     )
 );

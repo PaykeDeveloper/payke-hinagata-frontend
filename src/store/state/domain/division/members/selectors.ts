@@ -1,10 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
 import { PermissionFactory } from '../../common/permissions/factories';
-import { PermissionType } from '../../common/permissions/types';
+import { ModelPermission, PermissionType } from '../../common/permissions/types';
 import { permissionNamesSelector } from '../../common/user/selectors';
 import { divisionSelector } from '../divisions/selectors';
 import { Division } from '../divisions/types';
+import { MemberAllPermission, MemberOwnPermission } from './types';
 
 export const membersSelector = (state: StoreState) =>
   state.domain.division.members.entities;
@@ -27,10 +28,11 @@ export const memberErrorSelector = (state: StoreState) =>
 export const memberOwnAllPermissionCheck = (
   division: Division | undefined,
   permissionNames: string[] | undefined,
-  targetPermissions: string[]
+  allPermissions: MemberAllPermission[],
+  ownPermissions: MemberOwnPermission[]
 ) =>
-  targetPermissions.some((e) =>
-    PermissionType.isOwn(e)
+  [...ownPermissions, ...allPermissions].some((e) =>
+    (ownPermissions as string[]).includes(e)
       ? division?.requestMemberId
         ? permissionNames?.includes(e)
         : false
@@ -44,7 +46,8 @@ export const memberViewPermissionCheckSelector = createSelector(
     memberOwnAllPermissionCheck(
       division,
       permissionNames,
-      PermissionFactory.UpdateOwnAll('member')
+      PermissionFactory.UpdateAll('member'),
+      PermissionFactory.UpdateOwn('member')
     )
 );
 
@@ -55,6 +58,7 @@ export const memberDeletePermissionCheckSelector = createSelector(
     memberOwnAllPermissionCheck(
       division,
       permissionNames,
-      PermissionFactory.DeleteOwnAll('member')
+      PermissionFactory.DeleteAll('member'),
+      PermissionFactory.DeleteOwn('member')
     )
 );
