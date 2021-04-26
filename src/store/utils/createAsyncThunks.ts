@@ -148,6 +148,36 @@ export const createPostAsyncThunk = <Returned, PathParams, BodyParams>(
     }
   );
 
+export const createPutAsyncThunk = <Returned, PathParams, BodyParams>(
+  name: string,
+  getApiUrl: (_: PathParams) => string
+) =>
+  createAsyncThunk<
+    Returned,
+    { pathParams: PathParams; bodyParams: BodyParams; useFormData?: boolean },
+    ThunkApiConfig
+  >(
+    `${siteName}/${name}`,
+    async (
+      { pathParams, bodyParams, useFormData },
+      { signal, rejectWithValue }
+    ) => {
+      try {
+        const response = await api.put(
+          getApiUrl(pathParams),
+          useFormData ? serialize(bodyParams) : bodyParams,
+          {
+            cancelToken: createCancelToken(signal),
+          }
+        );
+        return response.data;
+      } catch (e) {
+        const rejectValue = getRejectValue(e);
+        return rejectWithValue(rejectValue);
+      }
+    }
+  );
+
 export const createPatchAsyncThunk = <Returned, PathParams, BodyParams>(
   name: string,
   getApiUrl: (_: PathParams) => string

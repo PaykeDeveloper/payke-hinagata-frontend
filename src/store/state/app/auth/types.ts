@@ -20,3 +20,9 @@ export interface ResetPasswordInput {
   passwordConfirmation?: string;
   token?: string;
 }
+
+export interface ChangePasswordInput {
+  currentPassword?: string;
+  password?: string;
+  passwordConfirmation?: string;
+}
