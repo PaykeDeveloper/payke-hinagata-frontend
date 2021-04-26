@@ -1,5 +1,6 @@
 // FIXME: SAMPLE CODE
 
+import { authActions } from 'src/store/state/app/auth/slice';
 import {
   ProjectApiUrl,
   DivisionApiUrl,
@@ -20,7 +21,10 @@ const projectsSlice = createEntitiesSlice<
   getEntitiesInitialState(),
   getProjectsApiUrl,
   getProjectApiUrl,
-  (state) => state.domain.sample.projects
+  (state) => state.domain.sample.projects,
+  undefined,
+  (builder) =>
+    builder.addCase(authActions.resetAll, () => getEntitiesInitialState())
 );
 
 export const projectsActions = projectsSlice.actions;

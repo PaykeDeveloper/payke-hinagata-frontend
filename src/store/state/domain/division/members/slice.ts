@@ -1,3 +1,4 @@
+import { authActions } from 'src/store/state/app/auth/slice';
 import {
   DivisionApiUrl,
   MemberApiUrl,
@@ -18,7 +19,10 @@ const membersSlice = createEntitiesSlice<
   getEntitiesInitialState(),
   getMembersApiUrl,
   getMemberApiUrl,
-  (state) => state.domain.division.members
+  (state) => state.domain.division.members,
+  undefined,
+  (builder) =>
+    builder.addCase(authActions.resetAll, () => getEntitiesInitialState())
 );
 
 export const membersActions = membersSlice.actions;
