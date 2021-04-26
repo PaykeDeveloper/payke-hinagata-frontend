@@ -33,9 +33,7 @@ export const memberOwnAllPermissionCheck = (
 ) =>
   [...ownPermissions, ...allPermissions].some((e) =>
     (ownPermissions as string[]).includes(e)
-      ? division?.requestMemberId
-        ? permissionNames?.includes(e)
-        : false
+      ? division?.requestMemberId && permissionNames?.includes(e)
       : permissionNames?.includes(e)
   );
 
