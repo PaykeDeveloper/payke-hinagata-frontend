@@ -17,7 +17,6 @@ import {
   membersSelector,
   membersStatusSelector,
   membersErrorSelector,
-  memberViewPermissionCheckSelector,
 } from 'src/store/state/domain/division/members/selectors';
 import { membersActions } from 'src/store/state/domain/division/members/slice';
 import {
@@ -46,14 +45,12 @@ const permissionSelector = createSelector(
     divisionUpdatePermissionCheckSelector,
     projectCreatePermissionCheckSelector,
     projectUpdatePermissionCheckSelector,
-    memberViewPermissionCheckSelector,
   ],
-  (divisionUpdate, projectCreate, projectUpdate, memberView) =>
+  (divisionUpdate, projectCreate, projectUpdate) =>
     ({
       divisionUpdate,
       projectCreate,
       projectUpdate,
-      memberView,
     } as PermissionList)
 );
 

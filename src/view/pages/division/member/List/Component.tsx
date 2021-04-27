@@ -31,7 +31,7 @@ export type PermissionList = {
   divisionUpdate: boolean;
   projectCreate: boolean;
   projectUpdate: boolean;
-  memberView: boolean;
+  memberCreate: boolean;
 };
 
 const Component: FC<{
@@ -96,6 +96,29 @@ const Component: FC<{
     },
   ];
 
+  const leftButtons = [
+    <Button
+      onClick={onBack}
+      startIcon={<NavigateBeforeIcon />}
+      variant="outlined"
+    >
+      <Trans>Back</Trans>
+    </Button>,
+  ];
+  if (permission.memberCreate) {
+    leftButtons.push(
+      <Button
+        disabled={!permission.projectCreate}
+        onClick={onClickAddMember}
+        startIcon={<AddIcon />}
+        color="primary"
+        variant="outlined"
+      >
+        <Trans>Add</Trans>
+      </Button>
+    );
+  }
+
   return (
     <ContentWrapper>
       <ContentHeader
@@ -112,38 +135,17 @@ const Component: FC<{
       </ContentHeader>
       <ContentBody>
         <ErrorWrapper errors={errors}>
-          {permission.memberView && (
-            <Box mt={3}>
-              <Typography variant="h5">
-                <Trans>Members</Trans>
-              </Typography>
-              <Box mt={1}>
-                <Buttons
-                  leftButtons={[
-                    <Button
-                      onClick={onBack}
-                      startIcon={<NavigateBeforeIcon />}
-                      variant="outlined"
-                    >
-                      <Trans>Back</Trans>
-                    </Button>,
-                    <Button
-                      disabled={!permission.projectCreate}
-                      onClick={onClickAddMember}
-                      startIcon={<AddIcon />}
-                      color="primary"
-                      variant="outlined"
-                    >
-                      <Trans>Add</Trans>
-                    </Button>,
-                  ]}
-                />
-                <Loader statuses={statuses}>
-                  <RouterDataGrid columns={memberColumns} rows={members} />
-                </Loader>
-              </Box>
+          <Box mt={3}>
+            <Typography variant="h5">
+              <Trans>Members</Trans>
+            </Typography>
+            <Box mt={1}>
+              <Buttons leftButtons={leftButtons} />
+              <Loader statuses={statuses}>
+                <RouterDataGrid columns={memberColumns} rows={members} />
+              </Loader>
             </Box>
-          )}
+          </Box>
         </ErrorWrapper>
       </ContentBody>
     </ContentWrapper>

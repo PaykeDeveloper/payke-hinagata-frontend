@@ -1,4 +1,3 @@
-import { PFactory } from '../../common/permissions/factories';
 import {
   ModelPermission,
   AllPermission,

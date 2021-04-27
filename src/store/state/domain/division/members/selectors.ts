@@ -1,7 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
 import { PermissionFactory } from '../../common/permissions/factories';
-import { ModelPermission, PermissionType } from '../../common/permissions/types';
 import { permissionNamesSelector } from '../../common/user/selectors';
 import { divisionSelector } from '../divisions/selectors';
 import { Division } from '../divisions/types';
@@ -37,15 +36,15 @@ export const memberOwnAllPermissionCheck = (
       : permissionNames?.includes(e)
   );
 
-export const memberViewPermissionCheckSelector = createSelector(
+export const memberCreatePermissionCheckSelector = createSelector(
   divisionSelector,
   permissionNamesSelector,
   (division, permissionNames) =>
     memberOwnAllPermissionCheck(
       division,
       permissionNames,
-      PermissionFactory.UpdateAll('member'),
-      PermissionFactory.UpdateOwn('member')
+      PermissionFactory.CreateAll('member'),
+      PermissionFactory.CreateOwn('member')
     )
 );
 

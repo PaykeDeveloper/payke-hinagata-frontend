@@ -36,7 +36,6 @@ export type PermissionList = {
   divisionUpdate: boolean;
   projectCreate: boolean;
   projectUpdate: boolean;
-  memberView: boolean;
 };
 
 const Component: FC<{
