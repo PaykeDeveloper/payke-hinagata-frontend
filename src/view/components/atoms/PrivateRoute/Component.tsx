@@ -1,24 +1,13 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
-import { useStoreDispatch } from 'src/store';
-import { userActions } from 'src/store/state/domain/common/user/slice';
 import { loginPath } from 'src/view/routes/paths';
 
 interface Props extends RouteProps {
   isAuthenticated: boolean;
-
-  onMounted: () => void;
 }
 
 const Component: FC<Props> = (props) => {
-  const { isAuthenticated, onMounted, ...otherProps } = props;
-
-  const dispatch = useStoreDispatch();
-  useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(userActions.fetchEntityIfNeeded({ pathParams: {} }));
-    }
-  }, [dispatch, onMounted, isAuthenticated]);
+  const { isAuthenticated, ...otherProps } = props;
 
   if (isAuthenticated) {
     return <Route {...otherProps} />;
