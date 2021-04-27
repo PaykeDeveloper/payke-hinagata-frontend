@@ -11,7 +11,7 @@ const usersSlice = createEntitiesSlice<User, {}, User, UserApiUrl, UserInput>(
   getEntitiesInitialState(),
   getUsersApiUrl,
   getUserApiUrl,
-  (state) => state.domain.sample.users,
+  (state) => state.domain.common.users,
   undefined,
   (builder) =>
     builder.addCase(authActions.resetAll, () => getEntitiesInitialState())

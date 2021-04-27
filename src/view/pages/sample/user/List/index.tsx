@@ -9,8 +9,8 @@ import {
   usersErrorSelector,
   usersSelector,
   usersStatusSelector,
-} from 'src/store/state/domain/sample/users/selectors';
-import { usersActions } from 'src/store/state/domain/sample/users/slice';
+} from 'src/store/state/domain/common/users/selectors';
+import { usersActions } from 'src/store/state/domain/common/users/slice';
 import {
   userNewPath,
   getUserEditPath,

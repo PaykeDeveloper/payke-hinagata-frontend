@@ -3,19 +3,19 @@
 import { StoreState } from 'src/store';
 
 export const usersSelector = (state: StoreState) =>
-  state.domain.sample.users.entities;
+  state.domain.common.users.entities;
 
 export const usersStatusSelector = (state: StoreState) =>
-  state.domain.sample.users.meta.fetchEntities.status;
+  state.domain.common.users.meta.fetchEntities.status;
 
 export const usersErrorSelector = (state: StoreState) =>
-  state.domain.sample.users.meta.fetchEntities.error;
+  state.domain.common.users.meta.fetchEntities.error;
 
 export const userSelector = (state: StoreState) =>
-  state.domain.sample.users.entity;
+  state.domain.common.users.entity;
 
 export const userStatusSelector = (state: StoreState) =>
-  state.domain.sample.users.meta.fetchEntity.status;
+  state.domain.common.users.meta.fetchEntity.status;
 
 export const userErrorSelector = (state: StoreState) =>
-  state.domain.sample.users.meta.fetchEntity.error;
+  state.domain.common.users.meta.fetchEntity.error;

@@ -5,12 +5,12 @@ import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { usersActions } from 'src/store/state/domain/common/users/slice';
 import {
   bookErrorSelector,
   bookSelector,
   bookStatusSelector,
 } from 'src/store/state/domain/sample/books/selectors';
-import { usersActions } from 'src/store/state/domain/sample/users/slice';
 import { UserPath, booksPath } from 'src/view/routes/paths';
 import { BaseRouterState } from 'src/view/routes/types';
 import Form from '../components/Form';

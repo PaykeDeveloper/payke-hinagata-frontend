@@ -1,7 +1,6 @@
 // FIXME: SAMPLE CODE
 
 import { combineReducers } from '@reduxjs/toolkit';
-import { User } from 'src/store/state/domain/common/user/types';
 import {
   BookComment,
   BookCommentDetail,
@@ -13,13 +12,11 @@ import {
   BookCommentApiUrl,
   DivisionApiUrl,
   ProjectApiUrl,
-  UserApiUrl,
 } from 'src/store/urls';
 import { bookCommentsReducer } from './bookComments/slice';
 import { booksReducer } from './books/slice';
 import { projectsReducer } from './projects/slice';
 import { Project, ProjectDetail } from './projects/types';
-import { usersReducer } from './users/slice';
 
 export interface SampleState {
   books: EntitiesState<Book, {}, Book, BookApiUrl>;
@@ -29,7 +26,6 @@ export interface SampleState {
     BookCommentDetail,
     BookCommentApiUrl
   >;
-  users: EntitiesState<User, {}, User, UserApiUrl>;
   projects: EntitiesState<
     Project,
     DivisionApiUrl,
@@ -41,6 +37,5 @@ export interface SampleState {
 export default combineReducers({
   books: booksReducer,
   bookComments: bookCommentsReducer,
-  users: usersReducer,
   projects: projectsReducer,
 });
