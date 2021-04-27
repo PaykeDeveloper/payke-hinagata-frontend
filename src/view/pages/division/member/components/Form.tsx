@@ -10,11 +10,13 @@ import { Division } from 'src/store/state/domain/division/divisions/types';
 import {
   MemberDetail,
   MemberInput,
+  MemberUserDetail,
 } from 'src/store/state/domain/division/members/types';
 import { BookInput } from 'src/store/state/domain/sample/books/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
 import { BaseMultiSelectField } from 'src/view/base/formik/MultiSelectField';
+import { BaseSelectField } from 'src/view/base/formik/SelectField';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
 import { BaseTextField } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
@@ -26,6 +28,7 @@ import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
+import Options from 'src/view/components/molecules/Options';
 import {
   divisionsPath,
   getMembersPath,
@@ -42,9 +45,10 @@ const Form: FC<{
   title: string;
   object: MemberInput | undefined;
   statuses: StoreStatus[];
-  error: StoreError | undefined;
+  errors: (StoreError | undefined)[];
   permissions?: PermissionList;
   division: Division | undefined;
+  memberUsers: MemberUserDetail[];
   member: MemberDetail | undefined;
   memberRoles: Role[];
 
@@ -55,8 +59,9 @@ const Form: FC<{
   const {
     title,
     object,
+    memberUsers,
     statuses,
-    error,
+    errors,
     permissions,
     memberRoles: roles,
     division,
@@ -65,6 +70,12 @@ const Form: FC<{
     onDelete,
   } = props;
   const { t } = useTranslation();
+
+  const userOptions = memberUsers.map((member) => ({
+    value: `${member.userId}`,
+    display: t(member.name || `${member.userId}`),
+  }));
+
   return (
     <ContentWrapper>
       <ContentHeader
@@ -84,7 +95,7 @@ const Form: FC<{
         {t(title)}
       </ContentHeader>
       <ContentBody>
-        <ErrorWrapper error={error}>
+        <ErrorWrapper errors={errors}>
           <Buttons
             leftButtons={[
               <Button
@@ -121,11 +132,18 @@ const Form: FC<{
                 <CardContent>
                   <Grid container spacing={1}>
                     <Grid item xs={12} sm={8}>
-                      <BaseTextField
+                      <BaseSelectField
                         name="userId"
-                        label={t('User ID')}
+                        label={t('User')}
                         required
-                      />
+                        nullable
+                      >
+                        <Options
+                          objects={userOptions}
+                          display="display"
+                          value="value"
+                        />
+                      </BaseSelectField>
                     </Grid>
                     <Grid item xs={12} sm={8}>
                       <BaseMultiSelectField

@@ -1,5 +1,3 @@
-// FIXME: SAMPLE CODE
-
 import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
@@ -9,32 +7,51 @@ import {
   memberRolesSelector,
   rolesStatusSelector,
 } from 'src/store/state/domain/common/roles/selectors';
+import {
+  usersErrorSelector,
+  usersStatusSelector,
+} from 'src/store/state/domain/common/users/selectors';
 import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
   membersErrorSelector,
   membersStatusSelector,
+  memberUsersSelector,
 } from 'src/store/state/domain/division/members/selectors';
 import { membersActions } from 'src/store/state/domain/division/members/slice';
 import { DivisionPath, getDivisionPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Form from '../components/Form';
+import { usersActions } from 'src/store/state/domain/common/users/slice';
 
 type ChildProps = ComponentProps<typeof Form>;
 
 const selector = createSelector(
   [
     divisionSelector,
-    membersStatusSelector,
+    memberUsersSelector,
     memberRolesSelector,
+    membersStatusSelector,
+    usersStatusSelector,
     rolesStatusSelector,
     membersErrorSelector,
+    usersErrorSelector,
   ],
-  (division, memberStatus, memberRoles, rolesStatus, error) => ({
+  (
     division,
-    statuses: [memberStatus, rolesStatus],
+    memberUsers,
     memberRoles,
-    error,
+    memberStatus,
+    usersStatus,
+    rolesStatus,
+    memberError,
+    usersError
+  ) => ({
+    division,
+    statuses: [memberStatus, rolesStatus, usersStatus],
+    memberUsers,
+    memberRoles,
+    errors: [memberError, usersError],
   })
 );
 
@@ -55,7 +72,9 @@ const Container: FC<
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
-    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset: true }));
+    const reset = true;
+    dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
+    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset }));
   }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
@@ -72,8 +91,6 @@ const Container: FC<
   );
 
   const state = useStoreSelector(selector);
-
-  console.log(state);
 
   return (
     <Form

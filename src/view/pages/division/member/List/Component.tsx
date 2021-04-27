@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { formatDate } from 'src/base/dateFormat';
 import { Division } from 'src/store/state/domain/division/divisions/types';
-import { Member } from 'src/store/state/domain/division/members/types';
+import { MemberUserDetail } from 'src/store/state/domain/division/members/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
   RouterDataGrid,
@@ -41,7 +41,8 @@ export type PermissionList = {
 const Component: FC<{
   division: Division | undefined;
   divisionStatus: StoreStatus;
-  members: Member[];
+  memberUsers: MemberUserDetail[];
+  usersStatus: StoreStatus;
   membersStatus: StoreStatus;
   errors: (StoreError | undefined)[];
   permission: PermissionList;
@@ -54,7 +55,8 @@ const Component: FC<{
   const {
     division,
     divisionStatus,
-    members,
+    memberUsers,
+    usersStatus,
     membersStatus,
     errors,
     permission,
@@ -64,7 +66,7 @@ const Component: FC<{
     onClickEditMember,
   } = props;
 
-  const statuses = [divisionStatus, membersStatus];
+  const statuses = [divisionStatus, membersStatus, usersStatus];
 
   const { t } = useTranslation();
 
@@ -84,8 +86,8 @@ const Component: FC<{
       ),
       width: 50,
     },
-    { field: 'id', headerName: t('ID'), width: 100 },
-    { field: 'userId', headerName: t('UserID'), width: 200 },
+    { field: 'name', headerName: t('Name'), width: 200 },
+    { field: 'id', headerName: t('UserID'), width: 100 },
     { field: 'roleNames', headerName: t('Role Names'), width: 200 },
     {
       field: 'createdAt',
@@ -193,7 +195,7 @@ const Component: FC<{
                 ]}
               />
               <Loader statuses={statuses}>
-                <RouterDataGrid columns={memberColumns} rows={members} />
+                <RouterDataGrid columns={memberColumns} rows={memberUsers} />
               </Loader>
             </Box>
           </Box>

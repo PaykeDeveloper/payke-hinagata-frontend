@@ -17,10 +17,17 @@ import {
   rolesStatusSelector,
 } from 'src/store/state/domain/common/roles/selectors';
 import {
+  usersErrorSelector,
+  usersStatusSelector,
+} from 'src/store/state/domain/common/users/selectors';
+import {
   divisionSelector,
   divisionStatusSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
-import { memberDeletePermissionCheckSelector } from 'src/store/state/domain/division/members/selectors';
+import {
+  memberDeletePermissionCheckSelector,
+  memberUsersSelector,
+} from 'src/store/state/domain/division/members/selectors';
 import {
   memberErrorSelector,
   memberSelector,
@@ -30,6 +37,7 @@ import { membersActions } from 'src/store/state/domain/division/members/slice';
 import { MemberPath, divisionsPath } from 'src/view/routes/paths';
 import { BaseRouterState } from 'src/view/routes/types';
 import Form, { PermissionList } from '../components/Form';
+import { usersActions } from 'src/store/state/domain/common/users/slice';
 
 type ChildProps = ComponentProps<typeof Form>;
 
@@ -47,6 +55,9 @@ const selector = createSelector(
     divisionStatusSelector,
     memberRolesSelector,
     rolesStatusSelector,
+    memberUsersSelector,
+    usersStatusSelector,
+    usersErrorSelector,
     memberSelector,
     memberStatusSelector,
     memberErrorSelector,
@@ -57,16 +68,20 @@ const selector = createSelector(
     divisionStatus,
     memberRoles,
     rolesStatus,
+    memberUsers,
+    usersStatus,
+    usersError,
     member,
     memberStatus,
-    error,
+    memberError,
     permissions
   ) => ({
     division,
     memberRoles,
+    memberUsers,
     member,
-    statuses: [divisionStatus, rolesStatus, memberStatus],
-    error,
+    statuses: [divisionStatus, rolesStatus, memberStatus, usersStatus],
+    errors: [usersError, memberError],
     permissions,
   })
 );
@@ -97,7 +112,9 @@ const Container: FC<
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
-    dispatch(membersActions.fetchEntityIfNeeded({ pathParams, reset: true }));
+    const reset = true;
+    dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
+    dispatch(membersActions.fetchEntityIfNeeded({ pathParams, reset }));
   }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(

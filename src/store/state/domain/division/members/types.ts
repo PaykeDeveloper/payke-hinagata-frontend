@@ -6,7 +6,7 @@ import {
 
 export interface Member {
   id: number;
-  userId: string;
+  userId: number;
   createdAt: string | null;
   updatedAt: string | null;
   permissionNames: string[];
@@ -21,6 +21,17 @@ export interface MemberDetail {
   createdAt: string | null;
   updatedAt: string | null;
   permissionNames: string[];
+}
+
+export interface MemberUserDetail {
+  id: number;
+  userId: number;
+  name: string | null;
+  memberCreatedAt: string | null;
+  memberUpdatedAt: string | null;
+  userCreatedAt: string | null;
+  userUpdatedAt: string | null;
+  roleNames: string[];
 }
 
 type ModelType = 'member';

@@ -6,6 +6,8 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { usersStatusSelector } from 'src/store/state/domain/common/users/selectors';
+import { usersActions } from 'src/store/state/domain/common/users/slice';
 import {
   divisionErrorSelector,
   divisionSelector,
@@ -14,11 +16,11 @@ import {
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
-  membersSelector,
   membersStatusSelector,
   membersErrorSelector,
   memberUpdatePermissionCheckSelector,
   memberCreatePermissionCheckSelector,
+  memberUsersSelector,
 } from 'src/store/state/domain/division/members/selectors';
 import { membersActions } from 'src/store/state/domain/division/members/slice';
 import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
@@ -54,7 +56,8 @@ const selector = createSelector(
     divisionSelector,
     divisionStatusSelector,
     divisionErrorSelector,
-    membersSelector,
+    memberUsersSelector,
+    usersStatusSelector,
     membersStatusSelector,
     membersErrorSelector,
     permissionSelector,
@@ -63,14 +66,16 @@ const selector = createSelector(
     division,
     divisionStatus,
     divisionError,
-    members,
+    memberUsers,
+    usersStatus,
     membersStatus,
     membersError,
     permission
   ) => ({
     division,
     divisionStatus,
-    members,
+    memberUsers,
+    usersStatus,
     membersStatus,
     errors: [divisionError, membersError],
     permission,
@@ -97,6 +102,7 @@ const Show: FC<
     const reset = true;
     dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset }));
     dispatch(projectsActions.fetchEntitiesIfNeeded({ pathParams, reset }));
+    dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
     dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
   }, [dispatch, pathParams]);
 
