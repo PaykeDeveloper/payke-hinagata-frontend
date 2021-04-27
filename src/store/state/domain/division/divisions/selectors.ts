@@ -41,7 +41,7 @@ export const divisionUpdatePermissionCheckSelector = createSelector(
   (division) =>
     divisionOwnAllPermissionCheck(
       division,
-      PermissionFactory.CreateAll('project'),
-      PermissionFactory.CreateOwn('project')
+      PermissionFactory.UpdateAll('division'),
+      PermissionFactory.UpdateOwn('division')
     )
 );
