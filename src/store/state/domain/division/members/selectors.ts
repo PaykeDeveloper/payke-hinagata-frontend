@@ -48,6 +48,18 @@ export const memberCreatePermissionCheckSelector = createSelector(
     )
 );
 
+export const memberUpdatePermissionCheckSelector = createSelector(
+  divisionSelector,
+  permissionNamesSelector,
+  (division, permissionNames) =>
+    memberOwnAllPermissionCheck(
+      division,
+      permissionNames,
+      PermissionFactory.UpdateAll('member'),
+      PermissionFactory.UpdateOwn('member')
+    )
+);
+
 export const memberDeletePermissionCheckSelector = createSelector(
   divisionSelector,
   permissionNamesSelector,

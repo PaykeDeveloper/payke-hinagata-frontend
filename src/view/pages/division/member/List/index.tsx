@@ -17,16 +17,10 @@ import {
   membersSelector,
   membersStatusSelector,
   membersErrorSelector,
+  memberUpdatePermissionCheckSelector,
   memberCreatePermissionCheckSelector,
 } from 'src/store/state/domain/division/members/selectors';
 import { membersActions } from 'src/store/state/domain/division/members/slice';
-import {
-  projectsErrorSelector,
-  projectsSelector,
-  projectsStatusSelector,
-  projectCreatePermissionCheckSelector,
-  projectUpdatePermissionCheckSelector,
-} from 'src/store/state/domain/sample/projects/selectors';
 import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
 import { DivisionEditRouterState } from 'src/view/pages/division/division/Edit';
 import {
@@ -44,16 +38,14 @@ type ChildProps = ComponentProps<typeof Component>;
 const permissionSelector = createSelector(
   [
     divisionUpdatePermissionCheckSelector,
-    projectCreatePermissionCheckSelector,
-    projectUpdatePermissionCheckSelector,
     memberCreatePermissionCheckSelector,
+    memberUpdatePermissionCheckSelector,
   ],
-  (divisionUpdate, projectCreate, projectUpdate, memberCreate) =>
+  (divisionUpdate, memberCreate, memberUpdate) =>
     ({
       divisionUpdate,
-      projectCreate,
-      projectUpdate,
       memberCreate,
+      memberUpdate,
     } as PermissionList)
 );
 
@@ -62,9 +54,6 @@ const selector = createSelector(
     divisionSelector,
     divisionStatusSelector,
     divisionErrorSelector,
-    projectsSelector,
-    projectsStatusSelector,
-    projectsErrorSelector,
     membersSelector,
     membersStatusSelector,
     membersErrorSelector,
@@ -74,9 +63,6 @@ const selector = createSelector(
     division,
     divisionStatus,
     divisionError,
-    projects,
-    projectsStatus,
-    projectsError,
     members,
     membersStatus,
     membersError,
@@ -84,11 +70,9 @@ const selector = createSelector(
   ) => ({
     division,
     divisionStatus,
-    projects,
-    projectsStatus,
     members,
     membersStatus,
-    errors: [divisionError, projectsError, membersError],
+    errors: [divisionError, membersError],
     permission,
   })
 );

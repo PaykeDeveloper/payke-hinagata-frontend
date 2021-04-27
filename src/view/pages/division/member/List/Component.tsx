@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { Division } from 'src/store/state/domain/division/divisions/types';
 import { Member } from 'src/store/state/domain/division/members/types';
-import { Project } from 'src/store/state/domain/sample/projects/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
   RouterDataGrid,
@@ -29,16 +28,13 @@ import {
 
 export type PermissionList = {
   divisionUpdate: boolean;
-  projectCreate: boolean;
-  projectUpdate: boolean;
   memberCreate: boolean;
+  memberUpdate: boolean;
 };
 
 const Component: FC<{
   division: Division | undefined;
   divisionStatus: StoreStatus;
-  projects: Project[];
-  projectsStatus: StoreStatus;
   members: Member[];
   membersStatus: StoreStatus;
   errors: (StoreError | undefined)[];
@@ -72,7 +68,7 @@ const Component: FC<{
       filterable: false,
       renderCell: ({ row }) => (
         <>
-          {permission.projectUpdate ? (
+          {permission.memberUpdate ? (
             <Link onClick={() => onClickEditMember(row['id'] as string)}>
               {t('Edit')}
             </Link>
@@ -96,29 +92,6 @@ const Component: FC<{
     },
   ];
 
-  const leftButtons = [
-    <Button
-      onClick={onBack}
-      startIcon={<NavigateBeforeIcon />}
-      variant="outlined"
-    >
-      <Trans>Back</Trans>
-    </Button>,
-  ];
-  if (permission.memberCreate) {
-    leftButtons.push(
-      <Button
-        disabled={!permission.projectCreate}
-        onClick={onClickAddMember}
-        startIcon={<AddIcon />}
-        color="primary"
-        variant="outlined"
-      >
-        <Trans>Add</Trans>
-      </Button>
-    );
-  }
-
   return (
     <ContentWrapper>
       <ContentHeader
@@ -140,7 +113,26 @@ const Component: FC<{
               <Trans>Members</Trans>
             </Typography>
             <Box mt={1}>
-              <Buttons leftButtons={leftButtons} />
+              <Buttons
+                leftButtons={[
+                  <Button
+                    onClick={onBack}
+                    startIcon={<NavigateBeforeIcon />}
+                    variant="outlined"
+                  >
+                    <Trans>Back</Trans>
+                  </Button>,
+                  <Button
+                    disabled={!permission.memberCreate}
+                    onClick={onClickAddMember}
+                    startIcon={<AddIcon />}
+                    color="primary"
+                    variant="outlined"
+                  >
+                    <Trans>Add</Trans>
+                  </Button>,
+                ]}
+              />
               <Loader statuses={statuses}>
                 <RouterDataGrid columns={memberColumns} rows={members} />
               </Loader>
