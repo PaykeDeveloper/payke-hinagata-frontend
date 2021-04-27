@@ -1,6 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
 import { PermissionFactory } from '../../common/permissions/factories';
+import { permissionNamesSelector } from '../../common/user/selectors';
 import {
   DivisionAllPermission,
   DivisionDetail,
@@ -43,5 +44,21 @@ export const divisionUpdatePermissionCheckSelector = createSelector(
       division,
       PermissionFactory.UpdateAll('division'),
       PermissionFactory.UpdateOwn('division')
+    )
+);
+
+export const divisionsUpdatePermissionCheckSelector = createSelector(
+  permissionNamesSelector,
+  (permissionNames) =>
+    PermissionFactory.UpdateOwnAll('division').some((e) =>
+      permissionNames?.includes(e)
+    )
+);
+
+export const divisionsCreatePermissionCheckSelector = createSelector(
+  permissionNamesSelector,
+  (permissionNames) =>
+    PermissionFactory.CreateOwnAll('division').some((e) =>
+      permissionNames?.includes(e)
     )
 );

@@ -62,6 +62,14 @@ export const memberOwnAllPermissionCheck = (
       : permissionNames?.includes(e)
   );
 
+export const membersViewPermissionCheckSelector = createSelector(
+  permissionNamesSelector,
+  (permissionNames) =>
+    PermissionFactory.CreateOwnAll('member').some((e) =>
+      permissionNames?.includes(e)
+    )
+);
+
 export const memberCreatePermissionCheckSelector = createSelector(
   divisionSelector,
   permissionNamesSelector,

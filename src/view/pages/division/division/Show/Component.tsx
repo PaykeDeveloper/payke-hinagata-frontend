@@ -16,6 +16,7 @@ import { divisionsPath, rootPath } from 'src/view/routes/paths';
 
 export type PermissionList = {
   divisionUpdate: boolean;
+  usersView: boolean;
 };
 
 const Component: FC<{

@@ -4,6 +4,7 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { usersViewPermissionCheckSelector } from 'src/store/state/domain/common/users/selectors';
 import {
   divisionErrorSelector,
   divisionSelector,
@@ -25,10 +26,11 @@ import Component, { PermissionList } from './Component';
 type ChildProps = ComponentProps<typeof Component>;
 
 const permissionSelector = createSelector(
-  [divisionUpdatePermissionCheckSelector],
-  (divisionUpdate) =>
+  [divisionUpdatePermissionCheckSelector, usersViewPermissionCheckSelector],
+  (divisionUpdate, usersView) =>
     ({
       divisionUpdate,
+      usersView,
     } as PermissionList)
 );
 

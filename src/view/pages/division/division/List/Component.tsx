@@ -20,6 +20,13 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import { rootPath } from 'src/view/routes/paths';
 
+export type PermissionList = {
+  divisionCreate: boolean;
+  divisionUpdate: boolean;
+  usersView: boolean;
+  membersView: boolean;
+};
+
 const useStyles = makeStyles((theme) => ({
   showLink: {
     marginRight: theme.spacing(1),
@@ -30,8 +37,7 @@ const Component: FC<{
   divisions: Division[];
   status: StoreStatus;
   error: StoreError | undefined;
-  hasCreatePermission?: boolean;
-  hasUpdatePermission?: boolean;
+  permission: PermissionList;
 
   onClickAdd: () => void;
   onClickShow: (divisionId: number) => void;
@@ -43,8 +49,7 @@ const Component: FC<{
     divisions,
     status,
     error,
-    hasCreatePermission,
-    hasUpdatePermission,
+    permission,
     onClickAdd,
     onClickShow,
     onClickProjectsShow,
@@ -73,13 +78,15 @@ const Component: FC<{
           >
             {t('Projects')}
           </Link>
-          <Link
-            className={classes.showLink}
-            onClick={() => onClickMembersShow(row['id'] as number)}
-          >
-            {t('Members')}
-          </Link>
-          {hasUpdatePermission ? (
+          {permission.membersView && permission.usersView ? (
+            <Link
+              className={classes.showLink}
+              onClick={() => onClickMembersShow(row['id'] as number)}
+            >
+              {t('Members')}
+            </Link>
+          ) : null}
+          {permission.divisionUpdate ? (
             <Link onClick={() => onClickEdit(row['id'] as number)}>
               {t('Edit')}
             </Link>
@@ -116,7 +123,7 @@ const Component: FC<{
           <Buttons
             leftButtons={[
               <Button
-                disabled={!hasCreatePermission}
+                disabled={!permission.divisionCreate}
                 onClick={onClickAdd}
                 startIcon={<AddIcon />}
                 color="primary"

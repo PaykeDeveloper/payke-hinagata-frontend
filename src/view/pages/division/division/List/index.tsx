@@ -2,15 +2,17 @@ import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
-import { StoreState, useStoreDispatch, useStoreSelector } from 'src/store';
-import { PermissionFactory } from 'src/store/state/domain/common/permissions/factories';
-import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
+import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { usersViewPermissionCheckSelector } from 'src/store/state/domain/common/users/selectors';
 import {
+  divisionsCreatePermissionCheckSelector,
   divisionsErrorSelector,
   divisionsSelector,
   divisionsStatusSelector,
+  divisionsUpdatePermissionCheckSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
+import { membersViewPermissionCheckSelector } from 'src/store/state/domain/division/members/selectors';
 import {
   divisionNewPath,
   getDivisionEditPath,
@@ -23,20 +25,19 @@ import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 
-const updatePermissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (_: StoreState, params: { updatePermissionNames: string[] }) =>
-    params.updatePermissionNames,
-  (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.some((e) => permissionNames?.includes(e))
-);
-
-const createPermissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (_: StoreState, params: { createPermissionNames: string[] }) =>
-    params.createPermissionNames,
-  (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.some((e) => permissionNames?.includes(e))
+const permissionSelector = createSelector(
+  [
+    divisionsCreatePermissionCheckSelector,
+    divisionsUpdatePermissionCheckSelector,
+    usersViewPermissionCheckSelector,
+    membersViewPermissionCheckSelector,
+  ],
+  (divisionCreate, divisionUpdate, usersView, membersView) => ({
+    divisionCreate,
+    divisionUpdate,
+    usersView,
+    membersView,
+  })
 );
 
 const selector = createSelector(
@@ -44,15 +45,13 @@ const selector = createSelector(
     divisionsSelector,
     divisionsStatusSelector,
     divisionsErrorSelector,
-    createPermissionCheckSelector,
-    updatePermissionCheckSelector,
+    permissionSelector,
   ],
-  (divisions, status, error, hasCreatePermission, hasUpdatePermission) => ({
+  (divisions, status, error, permission) => ({
     divisions,
     status,
     error,
-    hasCreatePermission,
-    hasUpdatePermission,
+    permission,
   })
 );
 
@@ -67,12 +66,7 @@ const List: FC<RouteComponentProps> = (props) => {
     dispatch(divisionsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
 
-  const state = useStoreSelector((s) =>
-    selector(s, {
-      updatePermissionNames: PermissionFactory.UpdateOwnAll('division'),
-      createPermissionNames: PermissionFactory.CreateOwnAll('division'),
-    })
-  );
+  const state = useStoreSelector(selector);
 
   const path = joinString(pathname, search);
 
