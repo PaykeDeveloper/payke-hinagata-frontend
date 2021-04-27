@@ -3,6 +3,7 @@ import {
   AllPermission,
   OwnPermission,
 } from '../../common/permissions/types';
+
 export interface Member {
   id: number;
   userId: string;
@@ -20,7 +21,6 @@ export interface MemberDetail {
   createdAt: string | null;
   updatedAt: string | null;
   permissionNames: string[];
-  requestMemberId: number | null;
 }
 
 type ModelType = 'member';

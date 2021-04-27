@@ -3,7 +3,7 @@ import { StoreState } from 'src/store';
 import { PermissionFactory } from '../../common/permissions/factories';
 import { permissionNamesSelector } from '../../common/user/selectors';
 import { divisionSelector } from '../divisions/selectors';
-import { Division } from '../divisions/types';
+import { DivisionDetail } from '../divisions/types';
 import { MemberAllPermission, MemberOwnPermission } from './types';
 
 export const membersSelector = (state: StoreState) =>
@@ -25,7 +25,7 @@ export const memberErrorSelector = (state: StoreState) =>
   state.domain.division.members.meta.fetchEntity.error;
 
 export const memberOwnAllPermissionCheck = (
-  division: Division | undefined,
+  division: DivisionDetail | undefined,
   permissionNames: string[] | undefined,
   allPermissions: MemberAllPermission[],
   ownPermissions: MemberOwnPermission[]

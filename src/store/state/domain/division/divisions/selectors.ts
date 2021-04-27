@@ -2,8 +2,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
 import { PermissionFactory } from '../../common/permissions/factories';
 import {
-  Division,
   DivisionAllPermission,
+  DivisionDetail,
   DivisionOwnPermission,
 } from './types';
 
@@ -26,7 +26,7 @@ export const divisionErrorSelector = (state: StoreState) =>
   state.domain.division.divisions.meta.fetchEntity.error;
 
 export const divisionOwnAllPermissionCheck = (
-  division: Division | undefined,
+  division: DivisionDetail | undefined,
   allPermissions: DivisionAllPermission[],
   ownPermissions: DivisionOwnPermission[]
 ) =>
