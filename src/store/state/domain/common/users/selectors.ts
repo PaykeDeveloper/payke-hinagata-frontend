@@ -2,8 +2,13 @@
 
 import { createSelector } from 'reselect';
 import { StoreState } from 'src/store';
+import {
+  MemberAllPermission,
+  MemberOwnPermission,
+} from '../../division/members/types';
 import { PermissionFactory } from '../permissions/factories';
-import { permissionNamesSelector } from '../user/selectors';
+import { myUserIdSelector, permissionNamesSelector } from '../user/selectors';
+import { User } from '../user/types';
 
 export const usersSelector = (state: StoreState) =>
   state.domain.common.users.entities;
@@ -28,5 +33,54 @@ export const usersViewPermissionCheckSelector = createSelector(
   (permissionNames) =>
     PermissionFactory.ViewOwnAll('user').some((e) =>
       permissionNames?.includes(e)
+    )
+);
+
+export const usersUpdatePermissionCheckSelector = createSelector(
+  permissionNamesSelector,
+  (permissionNames) =>
+    PermissionFactory.UpdateAll('user').some((e) =>
+      permissionNames?.includes(e)
+    )
+);
+
+export const userOwnAllPermissionCheck = (
+  myUserId: number | undefined,
+  user: User | undefined,
+  permissionNames: string[] | undefined,
+  allPermissions: MemberAllPermission[],
+  ownPermissions: MemberOwnPermission[]
+) =>
+  [...ownPermissions, ...allPermissions].some((e) =>
+    (ownPermissions as string[]).includes(e)
+      ? myUserId && user?.id === myUserId && permissionNames?.includes(e)
+      : permissionNames?.includes(e)
+  );
+
+export const userUpdatePermissionCheckSelector = createSelector(
+  myUserIdSelector,
+  userSelector,
+  permissionNamesSelector,
+  (myUserId, user, permissionNames) =>
+    userOwnAllPermissionCheck(
+      myUserId,
+      user,
+      permissionNames,
+      PermissionFactory.UpdateAll('user'),
+      PermissionFactory.UpdateOwn('user')
+    )
+);
+
+export const userDeletePermissionCheckSelector = createSelector(
+  myUserIdSelector,
+  userSelector,
+  permissionNamesSelector,
+  (myUserId, user, permissionNames) =>
+    userOwnAllPermissionCheck(
+      myUserId,
+      user,
+      permissionNames,
+      PermissionFactory.DeleteAll('user'),
+      PermissionFactory.DeleteOwn('user')
     )
 );

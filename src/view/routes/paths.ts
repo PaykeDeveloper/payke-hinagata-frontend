@@ -65,7 +65,6 @@ export const getUserPath = ({ userId }: UserPath) => `${usersPath}${userId}/`;
 export const getUserEditPath = (params: UserPath) =>
   `${getUserPath(params)}edit/`;
 export const usersPath = `${rootPath}users/`;
-export const userNewPath = `${rootPath}users/new/`;
 export const userPath = getUserPath(userParams);
 export const userEditPath = getUserEditPath(userParams);
 

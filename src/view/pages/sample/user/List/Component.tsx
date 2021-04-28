@@ -1,6 +1,7 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
+import { Box } from '@material-ui/core';
 import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
@@ -10,6 +11,7 @@ import {
   RouterDataGrid,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
+import Link from 'src/view/base/material-ui/Link';
 import Loader from 'src/view/components/atoms/Loader';
 import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentHeader from 'src/view/components/molecules/ContentHeader';
@@ -17,19 +19,36 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import { rootPath } from 'src/view/routes/paths';
 
+export type PermissionList = {
+  usersUpdate: boolean;
+};
+
 const Component: FC<{
   users: User[];
-  status: StoreStatus;
-  error: StoreError | undefined;
+  statuses: StoreStatus[];
+  errors: (StoreError | undefined)[];
+  permission: PermissionList;
 
-  onClickAdd: () => void;
-  onClickShow: (bookId: number) => void;
-  onClickEdit: (bookId: number) => void;
+  onClickEdit: (userId: number) => void;
 }> = (props) => {
-  const { users, status, error } = props;
+  const { users, statuses, errors, permission, onClickEdit } = props;
   const { t } = useTranslation();
 
   const columns: GridColumns = [
+    {
+      field: ' ',
+      sortable: false,
+      filterable: false,
+      renderCell: ({ row }) => (
+        <Box>
+          {permission.usersUpdate ? (
+            <Link onClick={() => onClickEdit(row['id'] as number)}>
+              {t('Edit')}
+            </Link>
+          ) : null}
+        </Box>
+      ),
+    },
     {
       field: 'id',
       headerName: t('ID'),
@@ -55,8 +74,8 @@ const Component: FC<{
         <Trans>Users</Trans>
       </ContentHeader>
       <ContentBody>
-        <ErrorWrapper error={error}>
-          <Loader status={status}>
+        <ErrorWrapper errors={errors}>
+          <Loader statuses={statuses}>
             <RouterDataGrid columns={columns} rows={users} />
           </Loader>
         </ErrorWrapper>

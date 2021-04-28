@@ -11,6 +11,7 @@ import {
   usersErrorSelector,
   usersStatusSelector,
 } from 'src/store/state/domain/common/users/selectors';
+import { usersActions } from 'src/store/state/domain/common/users/slice';
 import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
@@ -22,7 +23,6 @@ import { membersActions } from 'src/store/state/domain/division/members/slice';
 import { DivisionPath, getDivisionPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Form from '../components/Form';
-import { usersActions } from 'src/store/state/domain/common/users/slice';
 
 type ChildProps = ComponentProps<typeof Form>;
 

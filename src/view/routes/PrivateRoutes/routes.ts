@@ -23,6 +23,7 @@ import BookCommentNew from 'src/view/pages/sample/bookComment/New';
 import ProjectEdit from 'src/view/pages/sample/project/Edit';
 import ProjectList from 'src/view/pages/sample/project/List';
 import ProjectNew from 'src/view/pages/sample/project/New';
+import UserEdit from 'src/view/pages/sample/user/Edit';
 import UserList from 'src/view/pages/sample/user/List';
 
 import {
@@ -50,6 +51,7 @@ import {
   changePasswordPath,
   projectsPath,
   membersPath,
+  userEditPath,
 } from 'src/view/routes/paths';
 
 const privateRoutes: RouteProps[] = [
@@ -61,10 +63,8 @@ const privateRoutes: RouteProps[] = [
   { path: bookPath, component: BookShow },
   { path: booksPath, component: BookList },
 
-  // { path: userNewPath, component: UserNew },
-  // { path: userEditPath, component: UserEdit },
-  // { path: userPath, component: UserShow },
   { path: usersPath, component: UserList },
+  { path: userEditPath, component: UserEdit },
 
   // divisions
   { path: divisionsPath, component: DivisionList },

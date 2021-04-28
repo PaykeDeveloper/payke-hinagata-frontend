@@ -1,5 +1,3 @@
-// FIXME: SAMPLE CODE
-
 import React, { FC } from 'react';
 import { Button, Card, Grid, MenuItem } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
@@ -18,7 +16,6 @@ import { BaseForm } from 'src/view/base/formik/Form';
 import { BaseMultiSelectField } from 'src/view/base/formik/MultiSelectField';
 import { BaseSelectField } from 'src/view/base/formik/SelectField';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
-import { BaseTextField } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
 import { DeleteIcon, NavigateBeforeIcon } from 'src/view/base/material-ui/Icon';
 import Loader from 'src/view/components/atoms/Loader';
@@ -46,7 +43,7 @@ const Form: FC<{
   object: MemberInput | undefined;
   statuses: StoreStatus[];
   errors: (StoreError | undefined)[];
-  permissions?: PermissionList;
+  permission?: PermissionList;
   division: Division | undefined;
   memberUsers: MemberUserDetail[];
   member: MemberDetail | undefined;
@@ -62,7 +59,7 @@ const Form: FC<{
     memberUsers,
     statuses,
     errors,
-    permissions,
+    permission,
     memberRoles: roles,
     division,
     onSubmit,
@@ -109,7 +106,7 @@ const Form: FC<{
             rightButtons={
               onDelete && [
                 <LoaderButton
-                  disabled={!permissions?.memberDelete}
+                  disabled={!permission?.memberDelete}
                   onClick={onDelete}
                   startIcon={<DeleteIcon />}
                   color="secondary"
@@ -151,7 +148,7 @@ const Form: FC<{
                         label={t('Role')}
                         required
                       >
-                        {roles.map(({ id, name, required }) => (
+                        {roles.map(({ id, name }) => (
                           <MenuItem key={id} value={name}>
                             {t(name)}
                           </MenuItem>

@@ -20,6 +20,7 @@ import {
   usersErrorSelector,
   usersStatusSelector,
 } from 'src/store/state/domain/common/users/selectors';
+import { usersActions } from 'src/store/state/domain/common/users/slice';
 import {
   divisionSelector,
   divisionStatusSelector,
@@ -37,7 +38,6 @@ import { membersActions } from 'src/store/state/domain/division/members/slice';
 import { MemberPath, divisionsPath } from 'src/view/routes/paths';
 import { BaseRouterState } from 'src/view/routes/types';
 import Form, { PermissionList } from '../components/Form';
-import { usersActions } from 'src/store/state/domain/common/users/slice';
 
 type ChildProps = ComponentProps<typeof Form>;
 

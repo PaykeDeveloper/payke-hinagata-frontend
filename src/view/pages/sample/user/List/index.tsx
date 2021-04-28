@@ -9,21 +9,28 @@ import {
   usersErrorSelector,
   usersSelector,
   usersStatusSelector,
+  usersUpdatePermissionCheckSelector,
 } from 'src/store/state/domain/common/users/selectors';
 import { usersActions } from 'src/store/state/domain/common/users/slice';
-import {
-  userNewPath,
-  getUserEditPath,
-  getUserPath,
-} from 'src/view/routes/paths';
+import { getUserEditPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 
+const permissionSelector = createSelector(
+  [usersUpdatePermissionCheckSelector],
+  (usersUpdate) => ({ usersUpdate })
+);
+
 const selector = createSelector(
-  [usersSelector, usersStatusSelector, usersErrorSelector],
-  (users, status, error) => ({ users, status, error })
+  [usersSelector, usersStatusSelector, usersErrorSelector, permissionSelector],
+  (users, status, error, permission) => ({
+    users,
+    statuses: [status],
+    errors: [error],
+    permission,
+  })
 );
 
 const List: FC<RouteComponentProps> = (props) => {
@@ -40,19 +47,6 @@ const List: FC<RouteComponentProps> = (props) => {
 
   const path = joinString(pathname, search);
 
-  const onClickAdd: ChildProps['onClickAdd'] = useCallback(
-    () => push(userNewPath, { path } as RouterState),
-    [push, path]
-  );
-
-  const onClickShow: ChildProps['onClickShow'] = useCallback(
-    (userId) =>
-      push(getUserPath({ userId: `${userId}` }), {
-        path,
-      } as RouterState),
-    [push, path]
-  );
-
   const onClickEdit: ChildProps['onClickEdit'] = useCallback(
     (userId) =>
       push(getUserEditPath({ userId: `${userId}` }), {
@@ -61,14 +55,7 @@ const List: FC<RouteComponentProps> = (props) => {
     [push, path]
   );
 
-  return (
-    <Component
-      {...state}
-      onClickAdd={onClickAdd}
-      onClickShow={onClickShow}
-      onClickEdit={onClickEdit}
-    />
-  );
+  return <Component {...state} onClickEdit={onClickEdit} />;
 };
 
 export default List;

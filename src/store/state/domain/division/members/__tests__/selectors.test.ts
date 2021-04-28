@@ -1,9 +1,9 @@
 import { PermissionFactory } from 'src/store/state/domain/common/permissions/factories';
-import { Division } from 'src/store/state/domain/division/divisions/types';
+import { DivisionDetail } from 'src/store/state/domain/division/divisions/types';
 import { memberOwnAllPermissionCheck } from '../selectors';
 
 test('memberOwnAllPermissionCheck: success: own', () => {
-  const division: Division = {
+  const division: DivisionDetail = {
     id: 0,
     name: 'test division',
     createdAt: null,
@@ -23,7 +23,7 @@ test('memberOwnAllPermissionCheck: success: own', () => {
 });
 
 test('memberOwnAllPermissionCheck: failure: own', () => {
-  const division: Division = {
+  const division: DivisionDetail = {
     id: 0,
     name: 'test division',
     createdAt: null,
@@ -44,7 +44,7 @@ test('memberOwnAllPermissionCheck: failure: own', () => {
 
 // Own の場合は requestMemberId がないと false
 test('memberOwnAllPermissionCheck: failure: own and all: requestMemberId is required', () => {
-  const division: Division = {
+  const division: DivisionDetail = {
     id: 0,
     name: 'test division',
     createdAt: null,
@@ -64,7 +64,7 @@ test('memberOwnAllPermissionCheck: failure: own and all: requestMemberId is requ
 });
 
 test('memberOwnAllPermissionCheck: failure: own: division undefined', () => {
-  const division: Division | undefined = undefined;
+  const division: DivisionDetail | undefined = undefined;
   expect(
     memberOwnAllPermissionCheck(
       division,
@@ -76,7 +76,7 @@ test('memberOwnAllPermissionCheck: failure: own: division undefined', () => {
 });
 
 test('memberOwnAllPermissionCheck: failure: own: permissionNames undefined', () => {
-  const division: Division = {
+  const division: DivisionDetail = {
     id: 0,
     name: 'test division',
     createdAt: null,
@@ -96,7 +96,7 @@ test('memberOwnAllPermissionCheck: failure: own: permissionNames undefined', () 
 });
 
 test('memberOwnAllPermissionCheck: failure: own: division and permisionNames undefined', () => {
-  const division: Division | undefined = undefined;
+  const division: DivisionDetail | undefined = undefined;
   const permissionNames: string[] | undefined = undefined;
   expect(
     memberOwnAllPermissionCheck(
@@ -109,7 +109,7 @@ test('memberOwnAllPermissionCheck: failure: own: division and permisionNames und
 });
 
 test('memberOwnAllPermissionCheck: success: all', () => {
-  const division: Division = {
+  const division: DivisionDetail = {
     id: 0,
     name: 'test division',
     createdAt: null,
@@ -130,7 +130,7 @@ test('memberOwnAllPermissionCheck: success: all', () => {
 });
 
 test('memberOwnAllPermissionCheck: failure: all', () => {
-  const division: Division = {
+  const division: DivisionDetail = {
     id: 0,
     name: 'test division',
     createdAt: null,
@@ -151,7 +151,7 @@ test('memberOwnAllPermissionCheck: failure: all', () => {
 });
 
 test('memberOwnAllPermissionCheck: success: all: division undefined', () => {
-  const division: Division | undefined = undefined;
+  const division: DivisionDetail | undefined = undefined;
   expect(
     memberOwnAllPermissionCheck(
       division,
@@ -163,7 +163,7 @@ test('memberOwnAllPermissionCheck: success: all: division undefined', () => {
 });
 
 test('memberOwnAllPermissionCheck: failure: all: permissionNames undefined', () => {
-  const division: Division = {
+  const division: DivisionDetail = {
     id: 0,
     name: 'test division',
     createdAt: null,
@@ -183,7 +183,7 @@ test('memberOwnAllPermissionCheck: failure: all: permissionNames undefined', () 
 });
 
 test('memberOwnAllPermissionCheck: failure: all: division and permisionNames undefined', () => {
-  const division: Division | undefined = undefined;
+  const division: DivisionDetail | undefined = undefined;
   const permissionNames: string[] | undefined = undefined;
   expect(
     memberOwnAllPermissionCheck(

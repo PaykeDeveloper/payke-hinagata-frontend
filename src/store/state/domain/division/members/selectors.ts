@@ -2,12 +2,10 @@ import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
 import { PermissionFactory } from '../../common/permissions/factories';
 import { permissionNamesSelector } from '../../common/user/selectors';
-import { User } from '../../common/user/types';
 import { usersSelector } from '../../common/users/selectors';
 import { divisionSelector } from '../divisions/selectors';
 import { DivisionDetail } from '../divisions/types';
 import {
-  Member,
   MemberAllPermission,
   MemberOwnPermission,
   MemberUserDetail,

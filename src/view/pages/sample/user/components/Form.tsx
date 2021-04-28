@@ -1,15 +1,15 @@
-// FIXME: SAMPLE CODE
-
 import React, { FC } from 'react';
-import { Button, Card, Grid } from '@material-ui/core';
+import { Button, Card, Grid, MenuItem } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
-import { BookInput } from 'src/store/state/domain/sample/books/types';
+import { Role } from 'src/store/state/domain/common/roles/types';
+import { UserInput } from 'src/store/state/domain/common/users/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
+import { BaseMultiSelectField } from 'src/view/base/formik/MultiSelectField';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
-import { BaseTextField, DateTextField } from 'src/view/base/formik/TextField';
+import { BaseTextField } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
 import { DeleteIcon, NavigateBeforeIcon } from 'src/view/base/material-ui/Icon';
 import Loader from 'src/view/components/atoms/Loader';
@@ -22,18 +22,36 @@ import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import { booksPath, rootPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
+export type PermissionList = {
+  userUpdate: boolean;
+  userDelete: boolean;
+};
+
 const Form: FC<{
   title: string;
-  object: BookInput | undefined;
-  status: StoreStatus;
-  error: StoreError | undefined;
+  object: UserInput | undefined;
+  statuses: StoreStatus[];
+  errors: (StoreError | undefined)[];
+  userRoles: Role[];
+  permission?: PermissionList;
 
-  onSubmit: OnSubmit<BookInput>;
+  onSubmit: OnSubmit<UserInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
-  const { title, object, status, error, onSubmit, onBack, onDelete } = props;
+  const {
+    title,
+    object,
+    statuses,
+    errors,
+    userRoles: roles,
+    permission,
+    onSubmit,
+    onBack,
+    onDelete,
+  } = props;
   const { t } = useTranslation();
+
   return (
     <ContentWrapper>
       <ContentHeader
@@ -45,7 +63,7 @@ const Form: FC<{
         {t(title)}
       </ContentHeader>
       <ContentBody>
-        <ErrorWrapper error={error}>
+        <ErrorWrapper errors={errors}>
           <Buttons
             leftButtons={[
               <Button
@@ -57,42 +75,46 @@ const Form: FC<{
               </Button>,
             ]}
             rightButtons={
-              onDelete && [
-                <LoaderButton
-                  onClick={onDelete}
-                  startIcon={<DeleteIcon />}
-                  color="secondary"
-                  variant="outlined"
-                >
-                  {t('Delete')}
-                </LoaderButton>,
-              ]
+              permission?.userDelete
+                ? onDelete && [
+                    <LoaderButton
+                      onClick={onDelete}
+                      startIcon={<DeleteIcon />}
+                      color="secondary"
+                      variant="outlined"
+                    >
+                      {t('Delete')}
+                    </LoaderButton>,
+                  ]
+                : undefined
             }
           />
           <BaseForm
             initialValues={object}
             onSubmit={onSubmit}
             validationSchema={yup.object({
-              title: yup.string().label(t('Title')).required().max(30),
-              author: yup.string().label(t('Author')).nullable(),
-              releaseDate: yup.date().label(t('Release date')).nullable(),
+              name: yup.string().label(t('Name')).required().max(255),
             })}
           >
-            <Loader status={status}>
+            <Loader statuses={statuses}>
               <Card>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid item xs={12} sm={6}>
-                      <BaseTextField name="title" label={t('Title')} required />
+                    <Grid item xs={12} sm={8}>
+                      <BaseTextField name="name" label={t('Name')} required />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <DateTextField
-                        name="releaseDate"
-                        label={t('Release date')}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <BaseTextField name="author" label={t('Author')} />
+                    <Grid item xs={12} sm={8}>
+                      <BaseMultiSelectField
+                        name="roleNames"
+                        label={t('Role')}
+                        required
+                      >
+                        {roles.map(({ id, name }) => (
+                          <MenuItem key={id} value={name}>
+                            {t(name)}
+                          </MenuItem>
+                        ))}
+                      </BaseMultiSelectField>
                     </Grid>
                   </Grid>
                 </CardContent>

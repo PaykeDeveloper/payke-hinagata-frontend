@@ -1,25 +1,67 @@
-// FIXME: SAMPLE CODE
-
-import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
+import React, {
+  ComponentProps,
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
+import { objectToInputs } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { usersActions } from 'src/store/state/domain/common/users/slice';
 import {
-  bookErrorSelector,
-  bookSelector,
-  bookStatusSelector,
-} from 'src/store/state/domain/sample/books/selectors';
+  rolesStatusSelector,
+  rolesErrorSelector,
+  userRolesSelector,
+} from 'src/store/state/domain/common/roles/selectors';
+import {
+  userDeletePermissionCheckSelector,
+  userErrorSelector,
+  userSelector,
+  userStatusSelector,
+  userUpdatePermissionCheckSelector,
+} from 'src/store/state/domain/common/users/selectors';
+import { usersActions } from 'src/store/state/domain/common/users/slice';
 import { UserPath, booksPath } from 'src/view/routes/paths';
 import { BaseRouterState } from 'src/view/routes/types';
 import Form from '../components/Form';
 
 type ChildProps = ComponentProps<typeof Form>;
 
+const rules = {} as const;
+
+const permissionSelector = createSelector(
+  userUpdatePermissionCheckSelector,
+  userDeletePermissionCheckSelector,
+  (userUpdate, userDelete) => ({ userUpdate, userDelete })
+);
+
 const selector = createSelector(
-  [bookSelector, bookStatusSelector, bookErrorSelector],
-  (object, status, error) => ({ object, status, error })
+  [
+    userSelector,
+    userStatusSelector,
+    userErrorSelector,
+    userRolesSelector,
+    rolesStatusSelector,
+    rolesErrorSelector,
+    permissionSelector,
+  ],
+  (
+    user,
+    userStatus,
+    userError,
+    userRoles,
+    rolesStatus,
+    rolesError,
+    permission
+  ) => ({
+    user,
+    statuses: [userStatus, rolesStatus],
+    errors: [userError, rolesError],
+    userRoles,
+    permission,
+  })
 );
 
 export type UserEditRouterState =
@@ -46,7 +88,8 @@ const Container: FC<
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
-    dispatch(usersActions.fetchEntityIfNeeded({ pathParams, reset: true }));
+    const reset = true;
+    dispatch(usersActions.fetchEntityIfNeeded({ pathParams, reset }));
   }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
@@ -62,7 +105,7 @@ const Container: FC<
     [dispatch, pathParams, onBack]
   );
 
-  const state = useStoreSelector(selector);
+  const { user, ...otherState } = useStoreSelector(selector);
 
   const fromShow = location.state?.fromShow;
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
@@ -77,10 +120,13 @@ const Container: FC<
     return action;
   }, [dispatch, pathParams, onBack, push, fromShow]);
 
+  const object = useMemo(() => user && objectToInputs(user, rules), [user]);
+
   return (
     <Form
-      {...state}
+      {...otherState}
       title="Edit user"
+      object={object}
       onSubmit={onSubmit}
       onBack={onBack}
       onDelete={onDelete}
