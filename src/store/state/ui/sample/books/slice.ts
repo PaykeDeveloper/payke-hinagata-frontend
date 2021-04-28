@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import { siteName } from 'src/base/constants';
 import { StoreDispatch } from 'src/store';
 import { RootState } from 'src/store/state';
@@ -63,28 +63,12 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
           delete state.importResults[key];
         });
       },
-      addImporter: (state, action: PayloadAction<BookInput>) => {
-        // FIXME: UUIDなどを自動で割り当てたい
-        const id: string = `${Date.now()}`;
-        state.importers.push({
-          id,
-          status: ImportStatus.Waiting,
-          book: action.payload,
-        });
-        state.importResults[id] = {
-          status: ImportStatus.Waiting,
-          error: undefined,
-        };
-        state.meta.total += 1;
-      },
       setImporters: (state, action: PayloadAction<BookInput[]>) => {
         const _books: BookImporter[] = [];
         action.payload.forEach((book, index) => {
-          // FIXME: UUIDなどを自動で割り当てたい
-          const id: string = `${index + 1}`;
+          const id: string = nanoid();
           _books.push({
             id,
-            status: ImportStatus.Waiting,
             book,
           });
           state.importResults[id] = {
@@ -116,6 +100,8 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
             state.importResults[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Failed;
             state.meta.finished += 1;
+            state.importResults[action.meta.arg.uniqueId!]!.error =
+              action.payload;
           }
         })
         .addCase(mergeEntity.pending, (state, action) => {
@@ -135,6 +121,8 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
           if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
             state.importResults[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Failed;
+            state.importResults[action.meta.arg.uniqueId!]!.error =
+              action.payload;
             state.meta.finished += 1;
           }
         });

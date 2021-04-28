@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 import React, { FC } from 'react';
 import { Box, Card, CardContent, CardActions } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +18,6 @@ export const CsvUploadForm: FC<{
   error: StoreError | undefined;
   onSubmit: OnSubmit<{ csv_file: File }>;
 }> = (props) => {
-  console.log('render CsvUploadForm!!');
   const { error, onSubmit } = props;
   const { t } = useTranslation();
 

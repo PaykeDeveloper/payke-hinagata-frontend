@@ -12,7 +12,6 @@ export enum ImportStatus {
 
 export type BookImporter = {
   id: string;
-  status: ImportStatus;
   book: BookInput;
 };
 

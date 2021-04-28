@@ -13,10 +13,13 @@ import { createSelector } from '@reduxjs/toolkit';
 import { useTranslation } from 'react-i18next';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { BookInput } from 'src/store/state/domain/sample/books/types';
-import { bookImportersSelector } from 'src/store/state/ui/sample/books/selectors';
+import {
+  bookImportersSelector,
+  filterErrorImporters,
+} from 'src/store/state/ui/sample/books/selectors';
 import { bookImportersActions } from 'src/store/state/ui/sample/books/slice';
 import { StoreError } from 'src/store/types';
-import { readCsv } from 'src/store/utils/csvParser';
+import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
 import { CloseIcon } from 'src/view/base/material-ui/Icon';
 import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
@@ -53,6 +56,8 @@ const Importer: FC = (): JSX.Element => {
   const { t } = useTranslation();
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const state = useStoreSelector(selector);
+  const error: StoreError | undefined = undefined;
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -73,8 +78,20 @@ const Importer: FC = (): JSX.Element => {
   const handleClear: ListProps['onReset'] = useCallback(async () => {
     dispatch(bookImportersActions.resetImporters());
   }, [dispatch]);
-  const error: StoreError | undefined = undefined;
-  const state = useStoreSelector(selector);
+  const results = useStoreSelector(filterErrorImporters);
+  const handlerDownloadErrors: ListProps['onDownloadErrors'] = useCallback(async () => {
+    exportToCsv(
+      'errors.csv',
+      results.map((result) => {
+        return {
+          book_id: result.book.id ?? '',
+          title: result.book.title ?? '',
+          author: result.book.author ?? '',
+          releaseDate: result.book.releaseDate ?? '',
+        };
+      })
+    );
+  }, [results]);
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -108,6 +125,7 @@ const Importer: FC = (): JSX.Element => {
               {...state}
               onStartImport={handleImport}
               onReset={handleClear}
+              onDownloadErrors={handlerDownloadErrors}
             />
           </ContentBody>
         </ContentWrapper>
