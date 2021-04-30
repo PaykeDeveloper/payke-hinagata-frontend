@@ -6,6 +6,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
 import MenuCollapse from './MenuCollapse';
+import { SelectableMenu } from './SelectableMenuLink';
 import { getExactMatch } from './utils';
 
 const useStyles = makeStyles((theme) => ({
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export type Menu = ItemMenu | CollapseMenu;
+export type Menu = ItemMenu | CollapseMenu | SelectableMenu;
 
 export interface ItemMenu {
   text: ReactElement;
@@ -43,13 +44,23 @@ interface Props {
   pathname: string;
   paths: string[];
   nested?: boolean;
+  permissionNames: string[] | undefined;
+  requiredPermissions?: string[];
   onClickMenu?: (event: unknown) => void;
 }
 
 const MenuLink: FC<Props> = (props) => {
-  const { menu, pathname, paths, nested, onClickMenu } = props;
+  const { menu, pathname, paths, nested, permissionNames, onClickMenu } = props;
   const classes = useStyles();
   const path = getExactMatch(paths, pathname)?.path;
+
+  if (
+    menu.requiredPermissions &&
+    !menu.requiredPermissions.some((e) => permissionNames?.includes(e))
+  ) {
+    return <></>;
+  }
+
   if ('menus' in menu) {
     return (
       <MenuCollapse
@@ -57,6 +68,7 @@ const MenuLink: FC<Props> = (props) => {
         pathname={pathname}
         paths={paths}
         onClickMenu={onClickMenu}
+        permissionNames={permissionNames}
       />
     );
   }
