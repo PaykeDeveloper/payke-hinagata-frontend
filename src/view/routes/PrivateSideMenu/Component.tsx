@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 export type MenuList = {
   subheader?: ReactElement;
   menus: Menu[];
+  requiredPermissions?: string[];
 };
 
 export interface Props<T> {
@@ -53,37 +54,42 @@ const SideMenu = <T extends object>(props: Props<T>) => {
   return (
     <>
       <div className={classes.toolbar} />
-      {menuLists.map(({ subheader, menus }, listIndex) => (
-        <Fragment key={listIndex}>
-          <Divider />
-          <List subheader={subheader}>
-            {menus.map((menu, index) =>
-              'selects' in menu ? (
-                <SelectableMenuLink
-                  menu={menu}
-                  pathname={pathname}
-                  paths={paths}
-                  onClickMenu={onClickMenu}
-                  selectName={menu.name}
-                  selectLabel={menu.label}
-                  initialValues={initialValues}
-                  onChange={onChange}
-                  permissionNames={permissionNames}
-                />
-              ) : (
-                <MenuLink
-                  key={index}
-                  menu={menu}
-                  pathname={pathname}
-                  paths={paths}
-                  onClickMenu={onClickMenu}
-                  permissionNames={permissionNames}
-                />
-              )
-            )}
-          </List>
-        </Fragment>
-      ))}
+      {menuLists.map(({ subheader, menus, requiredPermissions }, listIndex) =>
+        requiredPermissions &&
+        !requiredPermissions.some((e) => permissionNames?.includes(e)) ? (
+          <></>
+        ) : (
+          <Fragment key={listIndex}>
+            <Divider />
+            <List subheader={subheader}>
+              {menus.map((menu, index) =>
+                'selects' in menu ? (
+                  <SelectableMenuLink
+                    menu={menu}
+                    pathname={pathname}
+                    paths={paths}
+                    onClickMenu={onClickMenu}
+                    selectName={menu.name}
+                    selectLabel={menu.label}
+                    initialValues={initialValues}
+                    onChange={onChange}
+                    permissionNames={permissionNames}
+                  />
+                ) : (
+                  <MenuLink
+                    key={index}
+                    menu={menu}
+                    pathname={pathname}
+                    paths={paths}
+                    onClickMenu={onClickMenu}
+                    permissionNames={permissionNames}
+                  />
+                )
+              )}
+            </List>
+          </Fragment>
+        )
+      )}
     </>
   );
 };

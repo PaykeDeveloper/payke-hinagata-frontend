@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { siteName } from 'src/base/constants';
+import { authActions } from 'src/store/state/app/auth/slice';
 import { MenuState } from './types';
 
 const getInitialState = (): MenuState => ({
@@ -14,7 +15,8 @@ const slice = createSlice({
       state.divisionId = action.payload;
     },
   },
-  extraReducers: {},
+  extraReducers: (builder) =>
+    builder.addCase(authActions.resetAll, () => getInitialState()),
 });
 
 export const menuActions = slice.actions;

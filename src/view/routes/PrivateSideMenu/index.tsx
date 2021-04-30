@@ -117,6 +117,7 @@ const defaultSubMenu: MenuList = {
       ],
     },
   ],
+  requiredPermissions: PermissionFactory.ViewAll('user'),
 };
 
 const selector = createSelector(
