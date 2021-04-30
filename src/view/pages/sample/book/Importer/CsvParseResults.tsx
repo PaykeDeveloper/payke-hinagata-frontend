@@ -5,6 +5,7 @@ import { Box, Button, Card, CardContent, CardActions } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
+import { GridOverlay } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { useStoreSelector } from 'src/store';
 import { importResultSelector } from 'src/store/state/ui/sample/books/selectors';
@@ -19,16 +20,24 @@ import {
 } from 'src/store/utils';
 import { RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
 import { BlockIcon, CheckIcon } from 'src/view/base/material-ui/Icon';
-import { GridOverlay } from '@material-ui/data-grid';
+import { StoreStatus } from 'src/store/types';
 
 export const CsvParseResults: FC<{
   onStartImport: () => void;
   onReset: () => void;
   onDownloadErrors: () => void;
   importers: BookImporter[];
+  status: StoreStatus;
 }> = (props) => {
   console.log('render CsvParseResults');
-  const { onStartImport, onReset, onDownloadErrors, ...otherProps } = props;
+  const {
+    onStartImport,
+    onReset,
+    onDownloadErrors,
+    status,
+    importers,
+    ...otherProps
+  } = props;
   const { t } = useTranslation();
   return (
     <Box mt={3}>
@@ -40,6 +49,7 @@ export const CsvParseResults: FC<{
             color="primary"
             size="small"
             onClick={onStartImport}
+            disabled={importers.length === 0 || status !== StoreStatus.Initial}
           >
             {t('Start Import')}
           </Button>
@@ -49,6 +59,7 @@ export const CsvParseResults: FC<{
             color="primary"
             size="small"
             onClick={onReset}
+            disabled={importers.length === 0 || status === StoreStatus.Started}
           >
             {t('Clean')}
           </Button>
@@ -58,12 +69,13 @@ export const CsvParseResults: FC<{
             color="primary"
             size="small"
             onClick={onDownloadErrors}
+            disabled={status !== StoreStatus.Done}
           >
             {t('Error Rows Download')}
           </Button>
         </CardActions>
         <CardContent>
-          <ImportersTable {...otherProps} />
+          <ImportersTable {...otherProps} importers={importers} />
         </CardContent>
       </Card>
     </Box>

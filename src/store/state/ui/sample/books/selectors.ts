@@ -16,6 +16,9 @@ export const bookImporterFinishedSelecotr = (state: StoreState) =>
 export const bookImporterTotalSelecotr = (state: StoreState) =>
   state.ui.sample.bookImporters.meta.total;
 
+export const bookImporterStatusSelecotr = (state: StoreState) =>
+  state.ui.sample.bookImporters.meta.status;
+
 export const importResultSelector = createSelector(
   bookImporterResultsSelector,
   (_: StoreState, id: string) => id,

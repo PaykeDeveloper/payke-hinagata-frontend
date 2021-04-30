@@ -5,6 +5,7 @@ import { siteName } from 'src/base/constants';
 import { StoreDispatch } from 'src/store';
 import { RootState } from 'src/store/state';
 import { Book, BookInput } from 'src/store/state/domain/sample/books/types';
+import { StoreStatus } from 'src/store/types';
 import { BookApiUrl, getBookApiUrl, getBooksApiUrl } from 'src/store/urls';
 import {
   createBPatchAsyncThunk,
@@ -22,6 +23,7 @@ export interface BookImportersState {
     [id: string]: ImportResults;
   };
   meta: {
+    status: StoreStatus;
     finished: number | undefined;
     total: number | undefined;
   };
@@ -31,8 +33,9 @@ const initialState: BookImportersState = {
   importers: [],
   importResults: {},
   meta: {
-    finished: 0,
-    total: 0,
+    status: StoreStatus.Initial,
+    finished: undefined,
+    total: undefined,
   },
 };
 
@@ -57,6 +60,7 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
     reducers: {
       resetImporters: (state) => {
         state.importers = [];
+        state.meta.status = StoreStatus.Initial;
         state.meta.finished = undefined;
         state.meta.total = undefined;
         Object.keys(state.importResults).forEach((key) => {
@@ -86,6 +90,10 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
           if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
             state.importResults[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Prepareing;
+            state.meta.finished = (state.meta.finished ?? 0) + 0;
+          }
+          if (state.meta.status === StoreStatus.Initial) {
+            state.meta.status = StoreStatus.Started;
           }
         })
         .addCase(addEntity.fulfilled, (state, action) => {
@@ -93,6 +101,12 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
             state.importResults[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Success;
             state.meta.finished = (state.meta.finished ?? 0) + 1;
+          }
+          if (
+            state.meta.status === StoreStatus.Started &&
+            state.meta.total === state.meta.finished
+          ) {
+            state.meta.status = StoreStatus.Done;
           }
         })
         .addCase(addEntity.rejected, (state, action) => {
@@ -103,11 +117,21 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
             state.importResults[action.meta.arg.uniqueId!]!.error =
               action.payload;
           }
+          if (
+            state.meta.status === StoreStatus.Started &&
+            state.meta.total === state.meta.finished
+          ) {
+            state.meta.status = StoreStatus.Done;
+          }
         })
         .addCase(mergeEntity.pending, (state, action) => {
           if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
             state.importResults[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Prepareing;
+            state.meta.finished = (state.meta.finished ?? 0) + 0;
+          }
+          if (state.meta.status === StoreStatus.Initial) {
+            state.meta.status = StoreStatus.Started;
           }
         })
         .addCase(mergeEntity.fulfilled, (state, action) => {
@@ -115,6 +139,12 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
             state.importResults[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Success;
             state.meta.finished = (state.meta.finished ?? 0) + 1;
+          }
+          if (
+            state.meta.status === StoreStatus.Started &&
+            state.meta.total === state.meta.finished
+          ) {
+            state.meta.status = StoreStatus.Done;
           }
         })
         .addCase(mergeEntity.rejected, (state, action) => {
@@ -124,6 +154,12 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
             state.importResults[action.meta.arg.uniqueId!]!.error =
               action.payload;
             state.meta.finished = (state.meta.finished ?? 0) + 1;
+          }
+          if (
+            state.meta.status === StoreStatus.Started &&
+            state.meta.total === state.meta.finished
+          ) {
+            state.meta.status = StoreStatus.Done;
           }
         });
       return extraBuilder;

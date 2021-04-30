@@ -3,8 +3,10 @@
 import React, { ComponentProps, FC, useCallback } from 'react';
 import { Button, Typography } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
+import Container from '@material-ui/core/Container';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Slide from '@material-ui/core/Slide';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,17 +20,15 @@ import {
   filterErrorImporters,
   bookImporterFinishedSelecotr,
   bookImporterTotalSelecotr,
+  bookImporterStatusSelecotr,
 } from 'src/store/state/ui/sample/books/selectors';
 import { bookImportersActions } from 'src/store/state/ui/sample/books/slice';
 import { StoreError } from 'src/store/types';
+import { StoreStatus } from 'src/store/types';
 import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
 import { CloseIcon } from 'src/view/base/material-ui/Icon';
-import ContentBody from 'src/view/components/molecules/ContentBody';
-import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import { CsvParseResults } from './CsvParseResults';
 import { CsvUploadForm } from './CsvUploadForm';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,9 +52,13 @@ const Transition = React.forwardRef(function Transition(
 type FormProps = ComponentProps<typeof CsvUploadForm>;
 type ListProps = ComponentProps<typeof CsvParseResults>;
 
-const selector = createSelector([bookImportersSelector], (importers) => ({
-  importers,
-}));
+const selector = createSelector(
+  [bookImportersSelector, bookImporterStatusSelecotr],
+  (importers, status) => ({
+    importers,
+    status,
+  })
+);
 
 const progresSelector = createSelector(
   [bookImporterFinishedSelecotr, bookImporterTotalSelecotr],
@@ -64,14 +68,21 @@ const progresSelector = createSelector(
   })
 );
 
-const ImportProgress: FC = () => {
+const ImportProgress: FC<{
+  status: StoreStatus;
+}> = (props) => {
   console.log('render ImportProgress');
+  const { status } = props;
   const state = useStoreSelector(progresSelector);
   const { total, finished } = state;
   const [progress, setProgress] = React.useState<number | undefined>(undefined);
   React.useEffect(() => {
-    if (total !== undefined && finished !== undefined) {
-      setProgress((finished / total) * 100);
+    if (status !== StoreStatus.Initial) {
+      if (finished == 0) {
+        setProgress(1);
+      } else {
+        setProgress((finished! / total!) * 100);
+      }
     } else {
       setProgress(undefined);
     }
@@ -124,7 +135,7 @@ const Importer: FC = (): JSX.Element => {
       })
     );
   }, [results]);
-  const { importers } = state;
+  const { importers, status } = state;
   const enableParse = importers.length === 0;
   return (
     <div>
@@ -164,7 +175,7 @@ const Importer: FC = (): JSX.Element => {
             onReset={handleClear}
             onDownloadErrors={handlerDownloadErrors}
           >
-            <ImportProgress />
+            <ImportProgress status={status} />
           </CsvParseResults>
         </Container>
       </Dialog>
