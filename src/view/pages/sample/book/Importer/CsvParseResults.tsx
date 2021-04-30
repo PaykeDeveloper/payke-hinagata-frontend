@@ -19,6 +19,8 @@ import {
 } from 'src/store/utils';
 import { RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
 import { BlockIcon, CheckIcon } from 'src/view/base/material-ui/Icon';
+import { GridOverlay } from '@material-ui/data-grid';
+
 export const CsvParseResults: FC<{
   onStartImport: () => void;
   onReset: () => void;
@@ -69,6 +71,7 @@ export const CsvParseResults: FC<{
 };
 
 const StatusCell: FC<{ rowId: string }> = ({ rowId }) => {
+  console.log('render StatusCell:' + rowId);
   const result = useStoreSelector((s) => importResultSelector(s, rowId));
   if (result?.status === ImportStatus.Prepareing) {
     return <CircularProgress />;
@@ -81,6 +84,7 @@ const StatusCell: FC<{ rowId: string }> = ({ rowId }) => {
 };
 
 const ErrorCell: FC<{ rowId: string }> = ({ rowId }) => {
+  console.log('render ErrorCell:' + rowId);
   const result = useStoreSelector((s) => importResultSelector(s, rowId));
   if (result?.status === ImportStatus.Failed && result?.error !== undefined) {
     const error = result.error;
@@ -105,7 +109,8 @@ const ErrorCell: FC<{ rowId: string }> = ({ rowId }) => {
 const ImportersTable: FC<{
   importers: BookImporter[];
 }> = (props) => {
-  const { importers } = props;
+  console.log('render ImportersTable');
+  const { importers, children } = props;
   const { t } = useTranslation();
   const columns: GridColumns = [
     { field: 'id', hide: true },
@@ -156,8 +161,19 @@ const ImportersTable: FC<{
         pageSize={20}
         disableColumnMenu
         disableColumnSelector
+        disableColumnReorder
         disableExtendRowFullWidth
         disableSelectionOnClick
+        loading
+        components={{
+          LoadingOverlay: () => (
+            <GridOverlay>
+              <div style={{ position: 'absolute', top: 0, width: '100%' }}>
+                {children}
+              </div>
+            </GridOverlay>
+          ),
+        }}
       />
     </Box>
   );

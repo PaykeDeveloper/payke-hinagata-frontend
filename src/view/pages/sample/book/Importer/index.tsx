@@ -16,6 +16,8 @@ import { BookInput } from 'src/store/state/domain/sample/books/types';
 import {
   bookImportersSelector,
   filterErrorImporters,
+  bookImporterFinishedSelecotr,
+  bookImporterTotalSelecotr,
 } from 'src/store/state/ui/sample/books/selectors';
 import { bookImportersActions } from 'src/store/state/ui/sample/books/slice';
 import { StoreError } from 'src/store/types';
@@ -25,6 +27,8 @@ import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import { CsvParseResults } from './CsvParseResults';
 import { CsvUploadForm } from './CsvUploadForm';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,18 +56,46 @@ const selector = createSelector([bookImportersSelector], (importers) => ({
   importers,
 }));
 
+const progresSelector = createSelector(
+  [bookImporterFinishedSelecotr, bookImporterTotalSelecotr],
+  (finished, total) => ({
+    finished,
+    total,
+  })
+);
+
+const ImportProgress: FC = () => {
+  console.log('render ImportProgress');
+  const state = useStoreSelector(progresSelector);
+  const { total, finished } = state;
+  const [progress, setProgress] = React.useState<number | undefined>(undefined);
+  React.useEffect(() => {
+    if (total !== undefined && finished !== undefined) {
+      setProgress((finished / total) * 100);
+    } else {
+      setProgress(undefined);
+    }
+  }, [setProgress, total, finished]);
+  if (progress) {
+    return <LinearProgress variant="determinate" value={progress} />;
+  } else {
+    return <></>;
+  }
+};
+
 const Importer: FC = (): JSX.Element => {
+  console.log('render Importer');
   const { t } = useTranslation();
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const state = useStoreSelector(selector);
   const error: StoreError | undefined = undefined;
-  const handleClickOpen = () => {
+  const handleClickOpen = useCallback(() => {
     setOpen(true);
-  };
-  const handleClose = () => {
+  }, [setOpen]);
+  const handleClose = useCallback(() => {
     setOpen(false);
-  };
+  }, [setOpen]);
   const dispatch = useStoreDispatch();
   const handleSubmit: FormProps['onSubmit'] = useCallback(
     async (values) => {
@@ -92,6 +124,8 @@ const Importer: FC = (): JSX.Element => {
       })
     );
   }, [results]);
+  const { importers } = state;
+  const enableParse = importers.length === 0;
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -118,17 +152,21 @@ const Importer: FC = (): JSX.Element => {
             </Typography>
           </Toolbar>
         </AppBar>
-        <ContentWrapper>
-          <ContentBody>
-            <CsvUploadForm onSubmit={handleSubmit} error={error} />
-            <CsvParseResults
-              {...state}
-              onStartImport={handleImport}
-              onReset={handleClear}
-              onDownloadErrors={handlerDownloadErrors}
-            />
-          </ContentBody>
-        </ContentWrapper>
+        <Container>
+          <CsvUploadForm
+            onSubmit={handleSubmit}
+            error={error}
+            enableParse={enableParse}
+          />
+          <CsvParseResults
+            {...state}
+            onStartImport={handleImport}
+            onReset={handleClear}
+            onDownloadErrors={handlerDownloadErrors}
+          >
+            <ImportProgress />
+          </CsvParseResults>
+        </Container>
       </Dialog>
     </div>
   );

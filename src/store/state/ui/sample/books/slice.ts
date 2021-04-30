@@ -22,8 +22,8 @@ export interface BookImportersState {
     [id: string]: ImportResults;
   };
   meta: {
-    finished: number;
-    total: number;
+    finished: number | undefined;
+    total: number | undefined;
   };
 }
 
@@ -57,8 +57,8 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
     reducers: {
       resetImporters: (state) => {
         state.importers = [];
-        state.meta.finished = 0;
-        state.meta.total = 0;
+        state.meta.finished = undefined;
+        state.meta.total = undefined;
         Object.keys(state.importResults).forEach((key) => {
           delete state.importResults[key];
         });
@@ -75,7 +75,7 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
             status: ImportStatus.Waiting,
             error: undefined,
           };
-          state.meta.total += 1;
+          state.meta.total = (state.meta.total ?? 0) + 1;
         });
         state.importers = _books;
       },
@@ -92,14 +92,14 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
           if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
             state.importResults[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Success;
-            state.meta.finished += 1;
+            state.meta.finished = (state.meta.finished ?? 0) + 1;
           }
         })
         .addCase(addEntity.rejected, (state, action) => {
           if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
             state.importResults[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Failed;
-            state.meta.finished += 1;
+            state.meta.finished = (state.meta.finished ?? 0) + 1;
             state.importResults[action.meta.arg.uniqueId!]!.error =
               action.payload;
           }
@@ -114,7 +114,7 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
           if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
             state.importResults[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Success;
-            state.meta.finished += 1;
+            state.meta.finished = (state.meta.finished ?? 0) + 1;
           }
         })
         .addCase(mergeEntity.rejected, (state, action) => {
@@ -123,7 +123,7 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
               ImportStatus.Failed;
             state.importResults[action.meta.arg.uniqueId!]!.error =
               action.payload;
-            state.meta.finished += 1;
+            state.meta.finished = (state.meta.finished ?? 0) + 1;
           }
         });
       return extraBuilder;

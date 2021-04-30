@@ -17,8 +17,10 @@ export const SUPPORTED_FORMATS = ['text/csv'];
 export const CsvUploadForm: FC<{
   error: StoreError | undefined;
   onSubmit: OnSubmit<{ csv_file: File }>;
+  enableParse: boolean;
 }> = (props) => {
-  const { error, onSubmit } = props;
+  console.log('render CsvUploadForm');
+  const { error, enableParse, onSubmit } = props;
   const { t } = useTranslation();
 
   return (
@@ -49,7 +51,9 @@ export const CsvUploadForm: FC<{
               <BaseFileField name="csv_file" label={t('CsvFile')} />
             </CardContent>
             <CardActions>
-              <SubmitButton>{t('Parse CSV')}</SubmitButton>
+              <SubmitButton disabled={!enableParse}>
+                {t('Parse CSV')}
+              </SubmitButton>
             </CardActions>
           </Card>
         </BaseForm>
