@@ -6,7 +6,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
 import MenuCollapse from './MenuCollapse';
-import { SelectableMenu } from './SelectableMenuLink';
 import { getExactMatch } from './utils';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export type Menu = ItemMenu | CollapseMenu | SelectableMenu;
+export type Menu = ItemMenu | CollapseMenu;
 
 export interface ItemMenu {
   text: ReactElement;

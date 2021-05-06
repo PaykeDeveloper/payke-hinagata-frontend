@@ -1,11 +1,4 @@
-import React, {
-  ChangeEvent,
-  ComponentProps,
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { ChangeEvent, FC, useCallback, useEffect, useMemo } from 'react';
 import { ListSubheader } from '@material-ui/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { Trans } from 'react-i18next';
@@ -35,12 +28,12 @@ import {
   userPath,
   usersPath,
 } from '../paths';
-import Component, { MenuList } from './Component';
+import Component, { MenuList, SelectableMenuList } from './Component';
 
-type ChildProps = Omit<
-  ComponentProps<typeof Component>,
-  'menuLists' | 'permissionNames' | 'requiredPermissionNames'
->;
+type ChildProps = {
+  pathname: string;
+  onClickMenu?: (event: unknown) => void;
+};
 
 // Home Menu
 const defaultHomeMenu: MenuList = {
@@ -56,17 +49,25 @@ const defaultHomeMenu: MenuList = {
 
 // Divisions Menu
 const divisionsSelectMenuSelector = createSelector(
-  [divisionsSelector, menuDivisionIdSelector],
-  (divisions, menuDivisionId): MenuList => ({
+  [divisionsSelector, menuDivisionIdSelector, permissionNamesSelector],
+  (divisions, menuDivisionId, permissionNames): SelectableMenuList => ({
     menus: [
       {
         text: <Trans>Division</Trans>,
         name: 'divisionId',
         label: 'Division',
-        selects: divisions.map((division) => ({
-          text: division.name,
-          value: `${division.id}`,
-        })),
+        selects: [
+          ...[
+            {
+              text: 'Select',
+              value: '',
+            },
+          ],
+          ...divisions.map((division) => ({
+            text: division.name,
+            value: `${division.id}`,
+          })),
+        ],
         menus: menuDivisionId
           ? [
               {
@@ -85,6 +86,7 @@ const divisionsSelectMenuSelector = createSelector(
             ]
           : [],
         requiredPermissions: PermissionFactory.ViewOwnAll('division'),
+        permissionNames,
       },
     ],
   })
@@ -138,14 +140,7 @@ const selector = createSelector(
   })
 );
 
-interface DivisionSelectValue {
-  value: number | null;
-}
-
 const List: FC<ChildProps> = (props) => {
-  const [homeMenus] = useState(defaultHomeMenu);
-  const [subMenus] = useState(defaultSubMenu);
-
   const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(divisionsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
@@ -153,25 +148,59 @@ const List: FC<ChildProps> = (props) => {
 
   const state = useStoreSelector(selector);
 
-  const divisionSelectInitialValues: DivisionSelectValue = {
-    value: state.currentDivisionId,
-  };
-
   const onChange = useCallback(
-    (data: ChangeEvent<DivisionSelectValue>) => {
-      dispatch(menuActions.setDivisionId(data.target.value));
+    (data: ChangeEvent<HTMLInputElement>) => {
+      if (data.target.value === '') {
+        dispatch(menuActions.setDivisionId(null));
+      } else {
+        dispatch(menuActions.setDivisionId(parseInt(data.target.value, 10)));
+      }
     },
     [dispatch]
   );
 
-  const menuLists = [homeMenus, state.divisionsSelectMenu, subMenus];
+  const topMenuLists = useMemo(
+    () =>
+      defaultHomeMenu.requiredPermissions &&
+      !defaultHomeMenu.requiredPermissions.some((e) =>
+        state.permissionNames?.includes(e)
+      )
+        ? []
+        : [defaultHomeMenu],
+    [state.permissionNames]
+  );
+
+  const middleMenuLists = useMemo(
+    () =>
+      state.divisionsSelectMenu.requiredPermissions &&
+      !state.divisionsSelectMenu.requiredPermissions.some((e) =>
+        state.permissionNames?.includes(e)
+      )
+        ? []
+        : [state.divisionsSelectMenu],
+    [state.divisionsSelectMenu, state.permissionNames]
+  );
+
+  const bottomMenuLists = useMemo(
+    () =>
+      defaultSubMenu.requiredPermissions &&
+      !defaultSubMenu.requiredPermissions.some((e) =>
+        state.permissionNames?.includes(e)
+      )
+        ? []
+        : [defaultSubMenu],
+    [state.permissionNames]
+  );
+
   return (
     <Component
-      menuLists={menuLists}
-      {...props}
-      initialValues={divisionSelectInitialValues}
+      topMenuLists={topMenuLists}
+      middleMenuLists={middleMenuLists}
+      bottomMenuLists={bottomMenuLists}
+      initialValue={`${state.currentDivisionId || ''}`}
       onChange={onChange}
       permissionNames={state.permissionNames}
+      {...props}
     />
   );
 };

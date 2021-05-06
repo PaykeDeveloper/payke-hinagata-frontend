@@ -1,16 +1,27 @@
-import React, { ChangeEvent, Fragment, ReactElement } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  Fragment,
+  ReactElement,
+  useCallback,
+  useMemo,
+} from 'react';
 
-import { makeStyles } from '@material-ui/core';
+import { ListItem, makeStyles, MenuItem } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
+import { useTranslation } from 'react-i18next';
+import SelectField from 'src/view/base/material-ui/SelectField';
 import MenuLink, {
   Menu,
 } from 'src/view/components/molecules/SideMenu/MenuLink';
-import SelectableMenuLink from 'src/view/components/molecules/SideMenu/SelectableMenuLink';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     ...theme.mixins.toolbar,
+  },
+  selectForm: {
+    width: '100%',
   },
 }));
 
@@ -20,14 +31,38 @@ export type MenuList = {
   requiredPermissions?: string[];
 };
 
-export interface Props<T> {
+export interface SelectableMenu {
+  text: ReactElement;
+  name: string;
+  label: string;
+  selects: SelectableMenuSelect[];
+  menus: Menu[];
+  icon?: ReactElement;
+  permissionNames: string[] | undefined;
+  requiredPermissions?: string[];
+}
+
+export type SelectableMenuList = {
+  subheader?: ReactElement;
+  menus: SelectableMenu[];
+  requiredPermissions?: string[];
+};
+
+export interface SelectableMenuSelect {
+  text: string;
+  value: string;
+}
+
+export interface Props {
   pathname: string;
-  menuLists: MenuList[];
-  initialValues?: T | undefined;
+  topMenuLists: MenuList[];
+  middleMenuLists: SelectableMenuList[];
+  bottomMenuLists: MenuList[];
+  initialValue?: string;
   permissionNames: string[] | undefined;
 
   onClickMenu?: (event: unknown) => void;
-  onChange?: (data: ChangeEvent<T>) => void;
+  onChange?: (data: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const getPaths = (menu: Menu): string[] => {
@@ -37,59 +72,116 @@ const getPaths = (menu: Menu): string[] => {
   return menu.paths;
 };
 
-const SideMenu = <T extends object>(props: Props<T>) => {
+const SideMenu: FC<Props> = (props) => {
   const {
     pathname,
-    menuLists,
+    topMenuLists,
+    middleMenuLists,
+    bottomMenuLists,
     permissionNames,
-    initialValues,
+    initialValue,
     onClickMenu,
     onChange,
   } = props;
-  const paths = menuLists
-    .map((menuList) => menuList.menus.map((m) => getPaths(m)).flat())
-    .flat()
-    .reverse();
+  const paths = useMemo(
+    () =>
+      [...topMenuLists, ...middleMenuLists, ...bottomMenuLists]
+        .map((menuList) => menuList.menus.map((m) => getPaths(m)).flat())
+        .flat()
+        .reverse(),
+    [topMenuLists, middleMenuLists, bottomMenuLists]
+  );
   const classes = useStyles();
+  const { t } = useTranslation();
+
+  const selectOnChange = useCallback(
+    (data) => {
+      onChange && onChange(data);
+    },
+    [onChange]
+  );
+
+  console.log('🤔', middleMenuLists);
+  console.log('🤔', initialValue);
+
   return (
     <>
       <div className={classes.toolbar} />
-      {menuLists.map(({ subheader, menus, requiredPermissions }, listIndex) =>
-        requiredPermissions &&
-        !requiredPermissions.some((e) => permissionNames?.includes(e)) ? (
-          <></>
-        ) : (
-          <Fragment key={listIndex}>
-            <Divider />
-            <List subheader={subheader}>
-              {menus.map((menu, index) =>
-                'selects' in menu ? (
-                  <SelectableMenuLink
-                    menu={menu}
-                    pathname={pathname}
-                    paths={paths}
-                    onClickMenu={onClickMenu}
-                    selectName={menu.name}
-                    selectLabel={menu.label}
-                    initialValues={initialValues}
-                    onChange={onChange}
-                    permissionNames={permissionNames}
-                  />
-                ) : (
-                  <MenuLink
-                    key={index}
-                    menu={menu}
-                    pathname={pathname}
-                    paths={paths}
-                    onClickMenu={onClickMenu}
-                    permissionNames={permissionNames}
-                  />
-                )
-              )}
-            </List>
-          </Fragment>
-        )
-      )}
+      {topMenuLists.map(({ subheader, menus }, listIndex) => (
+        <Fragment key={listIndex}>
+          <Divider />
+          <List subheader={subheader}>
+            {menus.map((menu, index) => (
+              <MenuLink
+                key={index}
+                menu={menu}
+                pathname={pathname}
+                paths={paths}
+                onClickMenu={onClickMenu}
+                permissionNames={permissionNames}
+              />
+            ))}
+          </List>
+        </Fragment>
+      ))}
+      {middleMenuLists.map(({ subheader, menus }, listIndex) => (
+        <Fragment key={listIndex}>
+          <Divider />
+          <List subheader={subheader}>
+            {menus.map((menu, index) => (
+              <>
+                <ListItem>
+                  <SelectField
+                    label={t(menu.label)}
+                    formControlProps={{ className: classes.selectForm }}
+                    selectProps={{
+                      onChange: selectOnChange,
+                      defaultValue: initialValue,
+                    }}
+                    helperText=""
+                  >
+                    {menu.selects.map((option, i) => (
+                      <MenuItem key={i} value={option.value}>
+                        {option.text}
+                      </MenuItem>
+                    ))}
+                  </SelectField>
+                </ListItem>
+                <List disablePadding>
+                  {menu.menus?.map((m, i) => (
+                    <MenuLink
+                      key={i}
+                      menu={m}
+                      pathname={pathname}
+                      paths={paths}
+                      nested
+                      permissionNames={permissionNames}
+                      onClickMenu={onClickMenu}
+                    />
+                  ))}
+                </List>
+              </>
+            ))}
+          </List>
+        </Fragment>
+      ))}
+      {bottomMenuLists.map(({ subheader, menus }, listIndex) => (
+        <Fragment key={listIndex}>
+          <Divider />
+          <List subheader={subheader}>
+            {menus.map((menu, index) => (
+              <MenuLink
+                key={index}
+                menu={menu}
+                pathname={pathname}
+                paths={paths}
+                onClickMenu={onClickMenu}
+                permissionNames={permissionNames}
+              />
+            ))}
+          </List>
+        </Fragment>
+      ))}
     </>
   );
 };
