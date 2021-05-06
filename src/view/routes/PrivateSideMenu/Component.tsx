@@ -101,9 +101,6 @@ const SideMenu: FC<Props> = (props) => {
     [onChange]
   );
 
-  console.log('🤔', middleMenuLists);
-  console.log('🤔', initialValue);
-
   return (
     <>
       <div className={classes.toolbar} />
