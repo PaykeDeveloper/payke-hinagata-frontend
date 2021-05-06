@@ -26,6 +26,7 @@ export const PersonAddIcon = createIcon('person_add');
 export const PasswordIcon = createIcon('password');
 export const BlockIcon = createIcon('block');
 export const CheckIcon = createIcon('check');
+export const CallSplitIcon = createIcon('call_split');
 
 // FIXME: SAMPLE CODE
 export const HomeIcon = createIcon('home');

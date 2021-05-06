@@ -6,9 +6,15 @@ import { Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
 import { GridOverlay } from '@material-ui/data-grid';
+import { createSelector } from '@reduxjs/toolkit';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { useTranslation } from 'react-i18next';
 import { useStoreSelector } from 'src/store';
-import { importResultSelector } from 'src/store/state/ui/sample/books/selectors';
+import {
+  importResultSelector,
+  bookImporterFinishedSelecotr,
+  bookImporterTotalSelecotr,
+} from 'src/store/state/ui/sample/books/selectors';
 import {
   BookImporter,
   ImportStatus,
@@ -22,6 +28,37 @@ import { RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
 import { BlockIcon, CheckIcon } from 'src/view/base/material-ui/Icon';
 import { StoreStatus } from 'src/store/types';
 
+const progresSelector = createSelector(
+  [bookImporterFinishedSelecotr, bookImporterTotalSelecotr],
+  (finished, total) => ({
+    finished,
+    total,
+  })
+);
+
+const ImportProgress: FC<{
+  status: StoreStatus;
+}> = (props) => {
+  const { status } = props;
+  const state = useStoreSelector(progresSelector);
+  const { total, finished } = state;
+  let progress: number | undefined = undefined;
+  if (status !== StoreStatus.Initial) {
+    if (finished == 0) {
+      progress = 1;
+    } else {
+      progress = (finished! / total!) * 100;
+    }
+  } else {
+    progress = undefined;
+  }
+  if (progress) {
+    return <LinearProgress variant="determinate" value={progress} />;
+  } else {
+    return <></>;
+  }
+};
+
 export const CsvParseResults: FC<{
   onStartImport: () => void;
   onReset: () => void;
@@ -29,7 +66,6 @@ export const CsvParseResults: FC<{
   importers: BookImporter[];
   status: StoreStatus;
 }> = (props) => {
-  console.log('render CsvParseResults');
   const {
     onStartImport,
     onReset,
@@ -75,7 +111,11 @@ export const CsvParseResults: FC<{
           </Button>
         </CardActions>
         <CardContent>
-          <ImportersTable {...otherProps} importers={importers} />
+          <ImportersTable
+            {...otherProps}
+            importers={importers}
+            status={status}
+          />
         </CardContent>
       </Card>
     </Box>
@@ -83,7 +123,6 @@ export const CsvParseResults: FC<{
 };
 
 const StatusCell: FC<{ rowId: string }> = ({ rowId }) => {
-  console.log('render StatusCell:' + rowId);
   const result = useStoreSelector((s) => importResultSelector(s, rowId));
   if (result?.status === ImportStatus.Prepareing) {
     return <CircularProgress />;
@@ -96,92 +135,96 @@ const StatusCell: FC<{ rowId: string }> = ({ rowId }) => {
 };
 
 const ErrorCell: FC<{ rowId: string }> = ({ rowId }) => {
-  console.log('render ErrorCell:' + rowId);
   const result = useStoreSelector((s) => importResultSelector(s, rowId));
+  let message = '';
   if (result?.status === ImportStatus.Failed && result?.error !== undefined) {
     const error = result.error;
     if (isUnprocessableEntityError(error)) {
       const errors: object = error.data?.errors ?? {};
-      let message = '';
       Object.entries(errors).forEach(([key, error]) =>
-        error.forEach((value: any) => {
-          message += value;
+        error.forEach((errorMessage: string) => {
+          message += errorMessage;
         })
       );
-      return <Typography color="error">{message}</Typography>;
-    }
-    if (isStoreError(error)) {
-      const message = getErrorMessage(error);
-      return <Typography color="error">{message}</Typography>;
+    } else if (isStoreError(error)) {
+      message = getErrorMessage(error);
     }
   }
-  return <></>;
+  return (
+    <Typography variant="body2" color="error" noWrap>
+      {message}
+    </Typography>
+  );
 };
 
 const ImportersTable: FC<{
   importers: BookImporter[];
+  status: StoreStatus;
 }> = (props) => {
-  console.log('render ImportersTable');
-  const { importers, children } = props;
+  const { importers, status } = props;
   const { t } = useTranslation();
   const columns: GridColumns = [
     { field: 'id', hide: true },
     {
       field: 'status',
       type: 'number',
+      flex: 0.5,
       renderCell: ({ row }) => {
         return <StatusCell rowId={row['id'].toString()} />;
       },
     },
     {
       field: 'book_id',
-      width: 150,
+      flex: 0.5,
       valueGetter: (params: GridValueGetterParams) => params.row.book.id,
     },
     {
       field: 'title',
-      width: 200,
+      flex: 1,
       valueGetter: (params: GridValueGetterParams) => params.row.book.title,
     },
     {
       field: 'author',
-      width: 200,
+      flex: 1,
       valueGetter: (params: GridValueGetterParams) => params.row.book.author,
     },
     {
       field: 'releaseDate',
       headerName: t('Release date'),
       type: 'date',
-      width: 150,
+      flex: 1,
       valueGetter: (params: GridValueGetterParams) =>
         params.row.book.releaseDate,
     },
     {
       field: 'errorMessage',
       headerName: t('error message'),
-      width: 250,
+      flex: 3,
       renderCell: ({ row }) => {
         return <ErrorCell rowId={row['id'].toString()} />;
       },
     },
   ];
   return (
-    <Box mt={1}>
+    <Box mt={3}>
       <RouterDataGrid
         columns={columns}
         rows={importers}
-        pageSize={20}
         disableColumnMenu
         disableColumnSelector
         disableColumnReorder
         disableExtendRowFullWidth
         disableSelectionOnClick
         loading
+        pagination
+        autoPageSize={false}
+        pageSize={20}
+        rowsPerPageOptions={[5, 10, 20]}
         components={{
           LoadingOverlay: () => (
             <GridOverlay>
               <div style={{ position: 'absolute', top: 0, width: '100%' }}>
-                {children}
+                <ImportProgress status={status} />
               </div>
             </GridOverlay>
           ),

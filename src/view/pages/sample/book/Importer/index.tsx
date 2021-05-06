@@ -6,7 +6,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import Slide from '@material-ui/core/Slide';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,13 +17,10 @@ import { BookInput } from 'src/store/state/domain/sample/books/types';
 import {
   bookImportersSelector,
   filterErrorImporters,
-  bookImporterFinishedSelecotr,
-  bookImporterTotalSelecotr,
   bookImporterStatusSelecotr,
 } from 'src/store/state/ui/sample/books/selectors';
 import { bookImportersActions } from 'src/store/state/ui/sample/books/slice';
 import { StoreError } from 'src/store/types';
-import { StoreStatus } from 'src/store/types';
 import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
 import { CloseIcon } from 'src/view/base/material-ui/Icon';
 import { CsvParseResults } from './CsvParseResults';
@@ -51,92 +47,17 @@ const Transition = React.forwardRef(function Transition(
 
 type FormProps = ComponentProps<typeof CsvUploadForm>;
 type ListProps = ComponentProps<typeof CsvParseResults>;
+type ImporterComponentProps = FormProps &
+  ListProps & {
+    open: boolean;
+    handleClose: () => void;
+    handleClickOpen: () => void;
+  };
 
-const selector = createSelector(
-  [bookImportersSelector, bookImporterStatusSelecotr],
-  (importers, status) => ({
-    importers,
-    status,
-  })
-);
-
-const progresSelector = createSelector(
-  [bookImporterFinishedSelecotr, bookImporterTotalSelecotr],
-  (finished, total) => ({
-    finished,
-    total,
-  })
-);
-
-const ImportProgress: FC<{
-  status: StoreStatus;
-}> = (props) => {
-  console.log('render ImportProgress');
-  const { status } = props;
-  const state = useStoreSelector(progresSelector);
-  const { total, finished } = state;
-  const [progress, setProgress] = React.useState<number | undefined>(undefined);
-  React.useEffect(() => {
-    if (status !== StoreStatus.Initial) {
-      if (finished == 0) {
-        setProgress(1);
-      } else {
-        setProgress((finished! / total!) * 100);
-      }
-    } else {
-      setProgress(undefined);
-    }
-  }, [setProgress, total, finished]);
-  if (progress) {
-    return <LinearProgress variant="determinate" value={progress} />;
-  } else {
-    return <></>;
-  }
-};
-
-const Importer: FC = (): JSX.Element => {
-  console.log('render Importer');
-  const { t } = useTranslation();
+const Component: FC<ImporterComponentProps> = (props) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const state = useStoreSelector(selector);
-  const error: StoreError | undefined = undefined;
-  const handleClickOpen = useCallback(() => {
-    setOpen(true);
-  }, [setOpen]);
-  const handleClose = useCallback(() => {
-    setOpen(false);
-  }, [setOpen]);
-  const dispatch = useStoreDispatch();
-  const handleSubmit: FormProps['onSubmit'] = useCallback(
-    async (values) => {
-      const data = await readCsv<BookInput>(values.csv_file);
-      dispatch(bookImportersActions.setImporters(data));
-    },
-    [dispatch]
-  );
-  const handleImport: ListProps['onStartImport'] = useCallback(async () => {
-    dispatch(bookImportersActions.startImport());
-  }, [dispatch]);
-  const handleClear: ListProps['onReset'] = useCallback(async () => {
-    dispatch(bookImportersActions.resetImporters());
-  }, [dispatch]);
-  const results = useStoreSelector(filterErrorImporters);
-  const handlerDownloadErrors: ListProps['onDownloadErrors'] = useCallback(async () => {
-    exportToCsv(
-      'errors.csv',
-      results.map((result) => {
-        return {
-          book_id: result.book.id ?? '',
-          title: result.book.title ?? '',
-          author: result.book.author ?? '',
-          releaseDate: result.book.releaseDate ?? '',
-        };
-      })
-    );
-  }, [results]);
-  const { importers, status } = state;
-  const enableParse = importers.length === 0;
+  const { t } = useTranslation();
+  const { handleClose, handleClickOpen, open, ...otherProps } = props;
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -163,23 +84,76 @@ const Importer: FC = (): JSX.Element => {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Container>
-          <CsvUploadForm
-            onSubmit={handleSubmit}
-            error={error}
-            enableParse={enableParse}
-          />
-          <CsvParseResults
-            {...state}
-            onStartImport={handleImport}
-            onReset={handleClear}
-            onDownloadErrors={handlerDownloadErrors}
-          >
-            <ImportProgress status={status} />
-          </CsvParseResults>
+        <Container fixed>
+          <CsvUploadForm {...otherProps} />
+          <CsvParseResults {...otherProps} />
         </Container>
       </Dialog>
     </div>
+  );
+};
+
+const selector = createSelector(
+  [bookImportersSelector, bookImporterStatusSelecotr],
+  (importers, status) => ({
+    importers,
+    status,
+  })
+);
+
+const Importer: FC = (): JSX.Element => {
+  const [open, setOpen] = React.useState(false);
+  const state = useStoreSelector(selector);
+  const error: StoreError | undefined = undefined;
+  const handleClickOpen = useCallback(() => {
+    setOpen(true);
+  }, [setOpen]);
+  const handleClose = useCallback(() => {
+    setOpen(false);
+  }, [setOpen]);
+  const dispatch = useStoreDispatch();
+  const handleSubmit: FormProps['onSubmit'] = useCallback(
+    async (values) => {
+      const data = await readCsv<BookInput>(values.csv_file);
+      dispatch(bookImportersActions.setImporters(data));
+    },
+    [dispatch]
+  );
+  const handleImport: ListProps['onStartImport'] = useCallback(async () => {
+    dispatch(bookImportersActions.startImport());
+  }, [dispatch]);
+  const handleClear: ListProps['onReset'] = useCallback(async () => {
+    dispatch(bookImportersActions.resetImporters());
+  }, [dispatch]);
+  const errorResults = useStoreSelector(filterErrorImporters);
+  const handlerDownloadErrors: ListProps['onDownloadErrors'] = useCallback(async () => {
+    exportToCsv(
+      'errors.csv',
+      errorResults.map((result) => {
+        return {
+          book_id: result.book.id ?? '',
+          title: result.book.title ?? '',
+          author: result.book.author ?? '',
+          releaseDate: result.book.releaseDate ?? '',
+        };
+      })
+    );
+  }, [errorResults]);
+  const { importers } = state;
+  const enableParse = importers.length === 0;
+  return (
+    <Component
+      handleClickOpen={handleClickOpen}
+      handleClose={handleClose}
+      onSubmit={handleSubmit}
+      onStartImport={handleImport}
+      onReset={handleClear}
+      onDownloadErrors={handlerDownloadErrors}
+      open={open}
+      error={error}
+      enableParse={enableParse}
+      {...state}
+    />
   );
 };
 
