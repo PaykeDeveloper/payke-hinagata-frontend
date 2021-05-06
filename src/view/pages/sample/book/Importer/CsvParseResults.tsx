@@ -1,7 +1,7 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import { Box, Button, Card, CardContent, CardActions } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -26,7 +26,14 @@ import {
   isUnprocessableEntityError,
 } from 'src/store/utils';
 import { RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
-import { BlockIcon, CheckIcon } from 'src/view/base/material-ui/Icon';
+import {
+  SaveIcon,
+  DeleteIcon,
+  DownloadIcon,
+  BlockIcon,
+  CheckIcon,
+} from 'src/view/base/material-ui/Icon';
+import Buttons from 'src/view/components/molecules/Buttons';
 
 const progresSelector = createSelector(
   [finishedRowsSelecotr, totalRowsSelecotr],
@@ -77,47 +84,51 @@ export const CsvParseResults: FC<{
   const { t } = useTranslation();
   return (
     <Box mt={3}>
-      <Card>
-        <CardActions>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={onStartImport}
-            disabled={importers.length === 0 || status !== StoreStatus.Initial}
-          >
-            {t('Start Import')}
-          </Button>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={onReset}
-            disabled={importers.length === 0 || status === StoreStatus.Started}
-          >
-            {t('Clean')}
-          </Button>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={onDownloadErrors}
-            disabled={status !== StoreStatus.Done}
-          >
-            {t('Error Rows Download')}
-          </Button>
-        </CardActions>
-        <CardContent>
-          <ImportersTable
-            {...otherProps}
-            importers={importers}
-            status={status}
-          />
-        </CardContent>
-      </Card>
+      <Typography variant="h5">{t('Import Rows')}</Typography>
+      <Box mt={1}>
+        <Buttons
+          leftButtons={[
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+              size="large"
+              startIcon={<SaveIcon />}
+              onClick={onStartImport}
+              disabled={
+                importers.length === 0 || status !== StoreStatus.Initial
+              }
+            >
+              {t('Start Import')}
+            </Button>,
+            <Button
+              type="button"
+              variant="contained"
+              color="secondary"
+              size="large"
+              startIcon={<DeleteIcon />}
+              onClick={onReset}
+              disabled={
+                importers.length === 0 || status === StoreStatus.Started
+              }
+            >
+              {t('Clear')}
+            </Button>,
+            <Button
+              type="button"
+              variant="contained"
+              color="default"
+              size="large"
+              startIcon={<DownloadIcon />}
+              onClick={onDownloadErrors}
+              disabled={status !== StoreStatus.Done}
+            >
+              {t('Download Error Rows')}
+            </Button>,
+          ]}
+        />
+        <ImportersTable {...otherProps} importers={importers} status={status} />
+      </Box>
     </Box>
   );
 };
@@ -218,8 +229,8 @@ const ImportersTable: FC<{
         loading
         pagination
         autoPageSize={false}
-        pageSize={20}
-        rowsPerPageOptions={[5, 10, 20]}
+        pageSize={25}
+        rowsPerPageOptions={[5, 25, 50]}
         components={{
           LoadingOverlay: () => (
             <GridOverlay>

@@ -84,7 +84,7 @@ const Component: FC<ImporterComponentProps> = (props) => {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Container fixed>
+        <Container>
           <CsvUploadForm {...otherProps} />
           <CsvParseResults {...otherProps} />
         </Container>
