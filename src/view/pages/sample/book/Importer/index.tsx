@@ -15,9 +15,9 @@ import { useTranslation } from 'react-i18next';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { BookInput } from 'src/store/state/domain/sample/books/types';
 import {
-  bookImportersSelector,
+  importRowsSelector,
   filterErrorImporters,
-  bookImporterStatusSelecotr,
+  importerStatusSelecotr,
 } from 'src/store/state/ui/sample/importers/books/selectors';
 import { bookImportersActions } from 'src/store/state/ui/sample/importers/books/slice';
 import { StoreError } from 'src/store/types';
@@ -94,7 +94,7 @@ const Component: FC<ImporterComponentProps> = (props) => {
 };
 
 const selector = createSelector(
-  [bookImportersSelector, bookImporterStatusSelecotr],
+  [importRowsSelector, importerStatusSelecotr],
   (importers, status) => ({
     importers,
     status,

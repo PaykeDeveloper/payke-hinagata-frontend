@@ -2,43 +2,43 @@
 
 import { createSelector } from 'reselect';
 import { StoreState } from 'src/store';
-import { ImportResults, BookImporter, ImportStatus } from './types';
+import { ImportResult, BookImporter, ImportStatus } from './types';
 
-export const bookImportersSelector = (state: StoreState) =>
-  state.ui.sample.importers.books.importers;
+export const importRowsSelector = (state: StoreState) =>
+  state.ui.sample.importers.books.importRows;
 
-export const bookImporterResultsSelector = (state: StoreState) =>
-  state.ui.sample.importers.books.importResults;
+export const importerResultsSelector = (state: StoreState) =>
+  state.ui.sample.importers.books.meta.results;
 
-export const bookImporterFinishedSelecotr = (state: StoreState) =>
+export const finishedRowsSelecotr = (state: StoreState) =>
   state.ui.sample.importers.books.meta.finished;
 
-export const bookImporterTotalSelecotr = (state: StoreState) =>
+export const totalRowsSelecotr = (state: StoreState) =>
   state.ui.sample.importers.books.meta.total;
 
-export const bookImporterStatusSelecotr = (state: StoreState) =>
+export const importerStatusSelecotr = (state: StoreState) =>
   state.ui.sample.importers.books.meta.status;
 
 export const importResultSelector = createSelector(
-  bookImporterResultsSelector,
+  importerResultsSelector,
   (_: StoreState, id: string) => id,
-  (importResults, id) => importResults[id]
+  (results, id) => results[id]
 );
 
 export const filterImporters = (
   importers: BookImporter[],
-  importResults: { [id: string]: ImportResults },
+  results: { [id: string]: ImportResult },
   status: ImportStatus
 ) => {
-  const filterIds = Object.keys(importResults).filter(
-    (key: string) => importResults[key]?.status === status
+  const filterIds = Object.keys(results).filter(
+    (key: string) => results[key]?.status === status
   );
   return importers.filter((importer) => filterIds.includes(importer.id));
 };
 
 export const filterErrorImporters = createSelector(
-  bookImportersSelector,
-  bookImporterResultsSelector,
+  importRowsSelector,
+  importerResultsSelector,
   (importers, results) =>
     filterImporters(importers, results, ImportStatus.Failed)
 );

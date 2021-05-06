@@ -15,7 +15,7 @@ export type BookImporter = {
   book: BookInput;
 };
 
-export type ImportResults = {
+export type ImportResult = {
   status: ImportStatus;
   error: StoreError | undefined;
 };

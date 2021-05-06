@@ -15,14 +15,14 @@ import {
   BookImporter,
   BookImporterInput,
   ImportStatus,
-  ImportResults,
+  ImportResult,
 } from './types';
 export interface BookImportersState {
-  importers: BookImporter[];
-  importResults: {
-    [id: string]: ImportResults;
-  };
+  importRows: BookImporter[];
   meta: {
+    results: {
+      [id: string]: ImportResult;
+    };
     status: StoreStatus;
     finished: number | undefined;
     total: number | undefined;
@@ -30,9 +30,9 @@ export interface BookImportersState {
 }
 
 const initialState: BookImportersState = {
-  importers: [],
-  importResults: {},
+  importRows: [],
   meta: {
+    results: {},
     status: StoreStatus.Initial,
     finished: undefined,
     total: undefined,
@@ -59,12 +59,12 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
     initialState,
     reducers: {
       resetImporters: (state) => {
-        state.importers = [];
+        state.importRows = [];
         state.meta.status = StoreStatus.Initial;
         state.meta.finished = undefined;
         state.meta.total = undefined;
-        Object.keys(state.importResults).forEach((key) => {
-          delete state.importResults[key];
+        Object.keys(state.meta.results).forEach((key) => {
+          delete state.meta.results[key];
         });
       },
       setImporters: (state, action: PayloadAction<BookInput[]>) => {
@@ -75,20 +75,20 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
             id,
             book,
           });
-          state.importResults[id] = {
+          state.meta.results[id] = {
             status: ImportStatus.Waiting,
             error: undefined,
           };
           state.meta.total = (state.meta.total ?? 0) + 1;
         });
-        state.importers = _books;
+        state.importRows = _books;
       },
     },
     extraReducers: (builder) => {
       const extraBuilder = builder
         .addCase(addEntity.pending, (state, action) => {
-          if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
-            state.importResults[action.meta.arg.uniqueId!]!.status =
+          if (state.meta.results[action.meta.arg.uniqueId!] !== undefined) {
+            state.meta.results[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Prepareing;
             state.meta.finished = (state.meta.finished ?? 0) + 0;
           }
@@ -97,8 +97,8 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
           }
         })
         .addCase(addEntity.fulfilled, (state, action) => {
-          if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
-            state.importResults[action.meta.arg.uniqueId!]!.status =
+          if (state.meta.results[action.meta.arg.uniqueId!] !== undefined) {
+            state.meta.results[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Success;
             state.meta.finished = (state.meta.finished ?? 0) + 1;
           }
@@ -110,11 +110,11 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
           }
         })
         .addCase(addEntity.rejected, (state, action) => {
-          if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
-            state.importResults[action.meta.arg.uniqueId!]!.status =
+          if (state.meta.results[action.meta.arg.uniqueId!] !== undefined) {
+            state.meta.results[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Failed;
             state.meta.finished = (state.meta.finished ?? 0) + 1;
-            state.importResults[action.meta.arg.uniqueId!]!.error =
+            state.meta.results[action.meta.arg.uniqueId!]!.error =
               action.payload;
           }
           if (
@@ -125,8 +125,8 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
           }
         })
         .addCase(mergeEntity.pending, (state, action) => {
-          if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
-            state.importResults[action.meta.arg.uniqueId!]!.status =
+          if (state.meta.results[action.meta.arg.uniqueId!] !== undefined) {
+            state.meta.results[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Prepareing;
             state.meta.finished = (state.meta.finished ?? 0) + 0;
           }
@@ -135,8 +135,8 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
           }
         })
         .addCase(mergeEntity.fulfilled, (state, action) => {
-          if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
-            state.importResults[action.meta.arg.uniqueId!]!.status =
+          if (state.meta.results[action.meta.arg.uniqueId!] !== undefined) {
+            state.meta.results[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Success;
             state.meta.finished = (state.meta.finished ?? 0) + 1;
           }
@@ -148,10 +148,10 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
           }
         })
         .addCase(mergeEntity.rejected, (state, action) => {
-          if (state.importResults[action.meta.arg.uniqueId!] !== undefined) {
-            state.importResults[action.meta.arg.uniqueId!]!.status =
+          if (state.meta.results[action.meta.arg.uniqueId!] !== undefined) {
+            state.meta.results[action.meta.arg.uniqueId!]!.status =
               ImportStatus.Failed;
-            state.importResults[action.meta.arg.uniqueId!]!.error =
+            state.meta.results[action.meta.arg.uniqueId!]!.error =
               action.payload;
             state.meta.finished = (state.meta.finished ?? 0) + 1;
           }
@@ -195,7 +195,7 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
       });
     }
     const ui = domainSelector(getState());
-    importLoop(dispatch, ui.importers);
+    importLoop(dispatch, ui.importRows);
   };
   return {
     actions: {

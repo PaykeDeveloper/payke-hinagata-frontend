@@ -12,8 +12,8 @@ import { useTranslation } from 'react-i18next';
 import { useStoreSelector } from 'src/store';
 import {
   importResultSelector,
-  bookImporterFinishedSelecotr,
-  bookImporterTotalSelecotr,
+  finishedRowsSelecotr,
+  totalRowsSelecotr,
 } from 'src/store/state/ui/sample/importers/books/selectors';
 import {
   BookImporter,
@@ -29,7 +29,7 @@ import { RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
 import { BlockIcon, CheckIcon } from 'src/view/base/material-ui/Icon';
 
 const progresSelector = createSelector(
-  [bookImporterFinishedSelecotr, bookImporterTotalSelecotr],
+  [finishedRowsSelecotr, totalRowsSelecotr],
   (finished, total) => ({
     finished,
     total,
