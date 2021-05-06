@@ -5,19 +5,19 @@ import { StoreState } from 'src/store';
 import { ImportResults, BookImporter, ImportStatus } from './types';
 
 export const bookImportersSelector = (state: StoreState) =>
-  state.ui.sample.bookImporters.importers;
+  state.ui.sample.importers.books.importers;
 
 export const bookImporterResultsSelector = (state: StoreState) =>
-  state.ui.sample.bookImporters.importResults;
+  state.ui.sample.importers.books.importResults;
 
 export const bookImporterFinishedSelecotr = (state: StoreState) =>
-  state.ui.sample.bookImporters.meta.finished;
+  state.ui.sample.importers.books.meta.finished;
 
 export const bookImporterTotalSelecotr = (state: StoreState) =>
-  state.ui.sample.bookImporters.meta.total;
+  state.ui.sample.importers.books.meta.total;
 
 export const bookImporterStatusSelecotr = (state: StoreState) =>
-  state.ui.sample.bookImporters.meta.status;
+  state.ui.sample.importers.books.meta.status;
 
 export const importResultSelector = createSelector(
   bookImporterResultsSelector,

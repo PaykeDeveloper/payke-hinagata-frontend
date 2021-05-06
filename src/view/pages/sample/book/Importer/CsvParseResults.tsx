@@ -4,21 +4,22 @@ import React, { FC } from 'react';
 import { Box, Button, Card, CardContent, CardActions } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
 import { GridOverlay } from '@material-ui/data-grid';
 import { createSelector } from '@reduxjs/toolkit';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import { useTranslation } from 'react-i18next';
 import { useStoreSelector } from 'src/store';
 import {
   importResultSelector,
   bookImporterFinishedSelecotr,
   bookImporterTotalSelecotr,
-} from 'src/store/state/ui/sample/books/selectors';
+} from 'src/store/state/ui/sample/importers/books/selectors';
 import {
   BookImporter,
   ImportStatus,
-} from 'src/store/state/ui/sample/books/types';
+} from 'src/store/state/ui/sample/importers/books/types';
+import { StoreStatus } from 'src/store/types';
 import {
   getErrorMessage,
   isStoreError,
@@ -26,7 +27,6 @@ import {
 } from 'src/store/utils';
 import { RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
 import { BlockIcon, CheckIcon } from 'src/view/base/material-ui/Icon';
-import { StoreStatus } from 'src/store/types';
 
 const progresSelector = createSelector(
   [bookImporterFinishedSelecotr, bookImporterTotalSelecotr],
@@ -44,7 +44,7 @@ const ImportProgress: FC<{
   const { total, finished } = state;
   let progress: number | undefined = undefined;
   if (status !== StoreStatus.Initial) {
-    if (finished == 0) {
+    if (finished === 0) {
       progress = 1;
     } else {
       progress = (finished! / total!) * 100;

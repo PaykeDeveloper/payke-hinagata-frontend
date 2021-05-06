@@ -8,8 +8,8 @@ import { Book, BookInput } from 'src/store/state/domain/sample/books/types';
 import { StoreStatus } from 'src/store/types';
 import { BookApiUrl, getBookApiUrl, getBooksApiUrl } from 'src/store/urls';
 import {
-  createBPatchAsyncThunk,
-  createBPostAsyncThunk,
+  createPatchAsyncThunkWithOriginalUniqueId,
+  createPostAsyncThunkWithOriginalUniqueId,
 } from 'src/store/utils/createAsyncThunks';
 import {
   BookImporter,
@@ -43,17 +43,17 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
   domainName: string,
   domainSelector: (state: RootState) => DomainState
 ) => {
-  const addEntity = createBPostAsyncThunk<Book, {}, BookInput>(
-    `${domainName}/addEntity`,
-    getBooksApiUrl
-  );
-  const mergeEntity = createBPatchAsyncThunk<
+  const addEntity = createPostAsyncThunkWithOriginalUniqueId<
+    Book,
+    {},
+    BookInput
+  >(`${domainName}/addEntity`, getBooksApiUrl);
+  const mergeEntity = createPatchAsyncThunkWithOriginalUniqueId<
     BookImporterInput,
     BookApiUrl,
     BookImporterInput
   >(`${domainName}/mergeEntity`, getBookApiUrl);
   type GetState = () => RootState;
-
   const slice = createSlice({
     name: `${siteName}/${domainName}`,
     initialState,
@@ -208,7 +208,7 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
 
 const bookImportersSlice = createEntitiesSlice(
   'bookImporters',
-  (state) => state.ui.sample.bookImporters
+  (state) => state.ui.sample.importers.books
 );
 
 export const bookImportersActions = bookImportersSlice.actions;

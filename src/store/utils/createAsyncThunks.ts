@@ -230,8 +230,11 @@ export const createDeleteAsyncThunk = <Returned, PathParams>(
     }
   );
 
-// XXX: 関数名前検討中
-export const createBPostAsyncThunk = <Returned, PathParams, BodyParams>(
+export const createPostAsyncThunkWithOriginalUniqueId = <
+  Returned,
+  PathParams,
+  BodyParams
+>(
   name: string,
   getApiUrl: (_: PathParams) => string
 ) =>
@@ -266,8 +269,11 @@ export const createBPostAsyncThunk = <Returned, PathParams, BodyParams>(
     }
   );
 
-// XXX: 関数名前検討中
-export const createBPatchAsyncThunk = <Returned, PathParams, BodyParams>(
+export const createPatchAsyncThunkWithOriginalUniqueId = <
+  Returned,
+  PathParams,
+  BodyParams
+>(
   name: string,
   getApiUrl: (_: PathParams) => string
 ) =>

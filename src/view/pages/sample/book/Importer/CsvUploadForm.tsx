@@ -8,8 +8,8 @@ import { BaseFileField } from 'src/view/base/formik/FileField';
 import { BaseForm } from 'src/view/base/formik/Form';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
 import { OnSubmit } from 'src/view/base/formik/types';
-import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import { CallSplitIcon } from 'src/view/base/material-ui/Icon';
+import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import * as yup from 'yup';
 
 export const MAX_FILE_SIZE = 1024 * 1024;

@@ -18,8 +18,8 @@ import {
   bookImportersSelector,
   filterErrorImporters,
   bookImporterStatusSelecotr,
-} from 'src/store/state/ui/sample/books/selectors';
-import { bookImportersActions } from 'src/store/state/ui/sample/books/slice';
+} from 'src/store/state/ui/sample/importers/books/selectors';
+import { bookImportersActions } from 'src/store/state/ui/sample/importers/books/slice';
 import { StoreError } from 'src/store/types';
 import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
 import { CloseIcon } from 'src/view/base/material-ui/Icon';
