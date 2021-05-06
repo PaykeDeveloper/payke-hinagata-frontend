@@ -1,4 +1,4 @@
-import React, { Fragment, ReactElement } from 'react';
+import React, { ChangeEvent, Fragment, ReactElement } from 'react';
 
 import { makeStyles } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
@@ -27,7 +27,7 @@ export interface Props<T> {
   permissionNames: string[] | undefined;
 
   onClickMenu?: (event: unknown) => void;
-  onChange?: (data: T) => void;
+  onChange?: (data: ChangeEvent<T>) => void;
 }
 
 const getPaths = (menu: Menu): string[] => {

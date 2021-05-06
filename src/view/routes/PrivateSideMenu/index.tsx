@@ -1,4 +1,5 @@
 import React, {
+  ChangeEvent,
   ComponentProps,
   FC,
   useCallback,
@@ -138,7 +139,7 @@ const selector = createSelector(
 );
 
 interface DivisionSelectValue {
-  divisionId: number | null;
+  value: number | null;
 }
 
 const List: FC<ChildProps> = (props) => {
@@ -152,11 +153,13 @@ const List: FC<ChildProps> = (props) => {
 
   const state = useStoreSelector(selector);
 
-  const divisionSelectInitialValues = { divisionId: state.currentDivisionId };
+  const divisionSelectInitialValues: DivisionSelectValue = {
+    value: state.currentDivisionId,
+  };
 
   const onChange = useCallback(
-    (data: DivisionSelectValue) => {
-      dispatch(menuActions.setDivisionId(data.divisionId));
+    (data: ChangeEvent<DivisionSelectValue>) => {
+      dispatch(menuActions.setDivisionId(data.target.value));
     },
     [dispatch]
   );

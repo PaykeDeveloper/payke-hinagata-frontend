@@ -1,11 +1,16 @@
-import React, { useCallback, ReactElement } from 'react';
+import React, { useCallback, ReactElement, ChangeEvent } from 'react';
+import { makeStyles, MenuItem } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { useTranslation } from 'react-i18next';
-import { BaseForm } from 'src/view/base/formik/Form';
-import { BaseSelectField } from 'src/view/base/formik/SelectField';
-import Options from '../Options';
+import SelectField from 'src/view/base/material-ui/SelectField';
 import MenuLink, { Menu } from './MenuLink';
+
+const useStyles = makeStyles((theme) => ({
+  selectForm: {
+    width: '100%',
+  },
+}));
 
 interface Props<T extends object> {
   menu: SelectableMenu;
@@ -16,7 +21,7 @@ interface Props<T extends object> {
   selectName: string;
   selectLabel: string;
   initialValues?: T | undefined;
-  onChange?: (data: T) => void;
+  onChange?: (data: ChangeEvent<T>) => void;
   onClickMenu?: (event: unknown) => void;
 }
 
@@ -47,6 +52,7 @@ const SelectableMenuLink = <T extends object>(props: Props<T>) => {
     onChange,
   } = props;
   const { t } = useTranslation();
+  const classes = useStyles();
 
   const options = menu.selects.map((item) => ({
     value: item.value,
@@ -60,8 +66,6 @@ const SelectableMenuLink = <T extends object>(props: Props<T>) => {
     [onChange]
   );
 
-  const onSubmit = useCallback(() => {}, []);
-
   if (
     menu.requiredPermissions &&
     !menu.requiredPermissions.some((e) => permissionNames?.includes(e))
@@ -70,20 +74,25 @@ const SelectableMenuLink = <T extends object>(props: Props<T>) => {
   }
 
   return (
-    <BaseForm
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      validate={changeCb}
-    >
+    <>
       <ListItem>
-        <BaseSelectField
-          name={menu.name}
+        <SelectField
           label={t(menu.label)}
-          nullable
+          formControlProps={{ className: classes.selectForm }}
+          selectProps={{
+            onChange: (event, child) => {
+              changeCb(event);
+            },
+            defaultValue: initialValues,
+          }}
           helperText=""
         >
-          <Options objects={options} display="display" value="value"></Options>
-        </BaseSelectField>
+          {options.map((option, i) => (
+            <MenuItem key={i} value={`${option.value}`}>
+              {option.display}
+            </MenuItem>
+          ))}
+        </SelectField>
       </ListItem>
       <List disablePadding>
         {menu.menus?.map((m, i) => (
@@ -98,7 +107,7 @@ const SelectableMenuLink = <T extends object>(props: Props<T>) => {
           />
         ))}
       </List>
-    </BaseForm>
+    </>
   );
 };
 
