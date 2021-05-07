@@ -74,6 +74,10 @@ const Container: FC<
         divisionsActions.mergeEntity({ pathParams, bodyParams })
       );
       if (divisionsActions.mergeEntity.fulfilled.match(action)) {
+        // mergeEntity で削除されるので再取得
+        dispatch(
+          divisionsActions.fetchEntitiesIfNeeded({ pathParams, reset: true })
+        );
         onBack();
       }
       return action;
