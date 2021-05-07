@@ -3,9 +3,10 @@ import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { StoreState, useStoreDispatch, useStoreSelector } from 'src/store';
-import { PermissionFactory } from 'src/store/state/domain/common/permissions/factories';
 import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
 import {
+  divisionAllPermissionFactory,
+  divisionOwnPermissionFactory,
   divisionErrorSelector,
   divisionSelector,
   divisionStatusSelector,
@@ -82,7 +83,10 @@ const Container: FC<
 
   const state = useStoreSelector((s) =>
     selector(s, {
-      permissionNames: PermissionFactory.DeleteOwnAll('division'),
+      permissionNames: [
+        divisionOwnPermissionFactory.delete(),
+        divisionAllPermissionFactory.delete(),
+      ],
     })
   );
 

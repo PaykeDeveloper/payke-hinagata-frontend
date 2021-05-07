@@ -1,12 +1,23 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
-import { PermissionFactory } from '../../common/permissions/factories';
+import {
+  PermissionFactory,
+  AllPermissionFactory,
+  OwnPermissionFactory,
+} from '../../common/permissions/factories';
 import { permissionNamesSelector } from '../../common/user/selectors';
 import {
   DivisionAllPermission,
   DivisionDetail,
   DivisionOwnPermission,
 } from './types';
+
+export const divisionOwnPermissionFactory: PermissionFactory<'division'> = new OwnPermissionFactory(
+  'division'
+);
+export const divisionAllPermissionFactory: PermissionFactory<'division'> = new AllPermissionFactory(
+  'division'
+);
 
 export const divisionsSelector = (state: StoreState) =>
   state.domain.division.divisions.entities;
@@ -26,39 +37,20 @@ export const divisionStatusSelector = (state: StoreState) =>
 export const divisionErrorSelector = (state: StoreState) =>
   state.domain.division.divisions.meta.fetchEntity.error;
 
-export const divisionOwnAllPermissionCheck = (
-  division: DivisionDetail | undefined,
-  allPermissions: DivisionAllPermission[],
-  ownPermissions: DivisionOwnPermission[]
-) =>
-  [...ownPermissions, ...allPermissions].some((e) =>
-    (ownPermissions as string[]).includes(e)
-      ? division?.requestMemberId && division?.permissionNames?.includes(e)
-      : division?.permissionNames?.includes(e)
-  );
-
 export const divisionUpdatePermissionCheckSelector = createSelector(
   divisionSelector,
   (division) =>
-    divisionOwnAllPermissionCheck(
-      division,
-      PermissionFactory.UpdateAll('division'),
-      PermissionFactory.UpdateOwn('division')
-    )
+    division?.requestMemberId !== null
+      ? divisionOwnPermissionFactory.canUpdate(division?.permissionNames)
+      : divisionAllPermissionFactory.canUpdate(division?.permissionNames)
 );
 
 export const divisionsUpdatePermissionCheckSelector = createSelector(
   permissionNamesSelector,
-  (permissionNames) =>
-    PermissionFactory.UpdateOwnAll('division').some((e) =>
-      permissionNames?.includes(e)
-    )
+  (permissionNames) => divisionOwnPermissionFactory.canUpdate(permissionNames)
 );
 
 export const divisionsCreatePermissionCheckSelector = createSelector(
   permissionNamesSelector,
-  (permissionNames) =>
-    PermissionFactory.CreateOwnAll('division').some((e) =>
-      permissionNames?.includes(e)
-    )
+  (permissionNames) => divisionOwnPermissionFactory.canCreate(permissionNames)
 );

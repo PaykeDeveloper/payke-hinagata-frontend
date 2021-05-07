@@ -2,8 +2,19 @@
 
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
-import { PermissionFactory } from '../../common/permissions/factories';
+import {
+  PermissionFactory,
+  AllPermissionFactory,
+  OwnPermissionFactory,
+} from '../../common/permissions/factories';
 import { permissionNamesSelector } from '../../common/user/selectors';
+
+export const projectOwnPermissionFactory: PermissionFactory<'project'> = new OwnPermissionFactory(
+  'project'
+);
+export const projectAllPermissionFactory: PermissionFactory<'project'> = new AllPermissionFactory(
+  'project'
+);
 
 export const projectsSelector = (state: StoreState) =>
   state.domain.sample.projects.entities;
@@ -25,16 +36,10 @@ export const projectErrorSelector = (state: StoreState) =>
 
 export const projectCreatePermissionCheckSelector = createSelector(
   permissionNamesSelector,
-  (permissionNames) =>
-    PermissionFactory.CreateOwnAll('project').some((e) =>
-      permissionNames?.includes(e)
-    )
+  (permissionNames) => projectOwnPermissionFactory.canCreate(permissionNames)
 );
 
 export const projectUpdatePermissionCheckSelector = createSelector(
   permissionNamesSelector,
-  (permissionNames) =>
-    PermissionFactory.UpdateOwnAll('project').some((e) =>
-      permissionNames?.includes(e)
-    )
+  (permissionNames) => projectOwnPermissionFactory.canUpdate(permissionNames)
 );

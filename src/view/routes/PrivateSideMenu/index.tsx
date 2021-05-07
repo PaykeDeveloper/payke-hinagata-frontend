@@ -3,9 +3,12 @@ import { ListSubheader } from '@material-ui/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { Trans } from 'react-i18next';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { PermissionFactory } from 'src/store/state/domain/common/permissions/factories';
+import { invitationAllPermissionFactory } from 'src/store/state/domain/common/invitations/selectors';
 import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
+import { userAllPermissionFactory } from 'src/store/state/domain/common/users/selectors';
 import {
+  divisionAllPermissionFactory,
+  divisionOwnPermissionFactory,
   divisionsErrorSelector,
   divisionsSelector,
   divisionsStatusSelector,
@@ -81,11 +84,17 @@ const divisionsSelectMenuSelector = createSelector(
                 icon: <MenuUserIcon />,
                 to: getMembersPath({ divisionId: `${menuDivisionId}` }),
                 paths: [getMembersPath({ divisionId: `${menuDivisionId}` })],
-                requiredPermissions: PermissionFactory.CreateOwnAll('division'),
+                requiredPermissions: [
+                  divisionOwnPermissionFactory.create(),
+                  divisionAllPermissionFactory.create(),
+                ],
               },
             ]
           : [],
-        requiredPermissions: PermissionFactory.ViewOwnAll('division'),
+        requiredPermissions: [
+          divisionOwnPermissionFactory.view(),
+          divisionAllPermissionFactory.view(),
+        ],
         permissionNames,
       },
     ],
@@ -105,7 +114,7 @@ const defaultSubMenu: MenuList = {
       icon: <PersonAddIcon />,
       to: invitationsPath,
       paths: [invitationsPath, invitationNewPath],
-      requiredPermissions: PermissionFactory.ViewAll('invitation'),
+      requiredPermissions: [invitationAllPermissionFactory.view()],
     },
     {
       text: <Trans>Users</Trans>,
@@ -120,7 +129,7 @@ const defaultSubMenu: MenuList = {
       ],
     },
   ],
-  requiredPermissions: PermissionFactory.ViewAll('user'),
+  requiredPermissions: [userAllPermissionFactory.view()],
 };
 
 const selector = createSelector(

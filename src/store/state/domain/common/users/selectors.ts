@@ -6,9 +6,20 @@ import {
   MemberAllPermission,
   MemberOwnPermission,
 } from '../../division/members/types';
-import { PermissionFactory } from '../permissions/factories';
+import {
+  PermissionFactory,
+  AllPermissionFactory,
+  OwnPermissionFactory,
+} from '../permissions/factories';
 import { myUserIdSelector, permissionNamesSelector } from '../user/selectors';
 import { User } from '../user/types';
+
+export const userOwnPermissionFactory: PermissionFactory<'user'> = new OwnPermissionFactory(
+  'user'
+);
+export const userAllPermissionFactory: PermissionFactory<'user'> = new AllPermissionFactory(
+  'user'
+);
 
 export const usersSelector = (state: StoreState) =>
   state.domain.common.users.entities;
@@ -30,45 +41,22 @@ export const userErrorSelector = (state: StoreState) =>
 
 export const usersViewPermissionCheckSelector = createSelector(
   permissionNamesSelector,
-  (permissionNames) =>
-    PermissionFactory.ViewOwnAll('user').some((e) =>
-      permissionNames?.includes(e)
-    )
+  (permissionNames) => userOwnPermissionFactory.canView(permissionNames)
 );
 
 export const usersUpdatePermissionCheckSelector = createSelector(
   permissionNamesSelector,
-  (permissionNames) =>
-    PermissionFactory.UpdateAll('user').some((e) =>
-      permissionNames?.includes(e)
-    )
+  (permissionNames) => userAllPermissionFactory.canUpdate(permissionNames)
 );
-
-export const userOwnAllPermissionCheck = (
-  myUserId: number | undefined,
-  user: User | undefined,
-  permissionNames: string[] | undefined,
-  allPermissions: MemberAllPermission[],
-  ownPermissions: MemberOwnPermission[]
-) =>
-  [...ownPermissions, ...allPermissions].some((e) =>
-    (ownPermissions as string[]).includes(e)
-      ? myUserId && user?.id === myUserId && permissionNames?.includes(e)
-      : permissionNames?.includes(e)
-  );
 
 export const userUpdatePermissionCheckSelector = createSelector(
   myUserIdSelector,
   userSelector,
   permissionNamesSelector,
   (myUserId, user, permissionNames) =>
-    userOwnAllPermissionCheck(
-      myUserId,
-      user,
-      permissionNames,
-      PermissionFactory.UpdateAll('user'),
-      PermissionFactory.UpdateOwn('user')
-    )
+    myUserId && user?.id === myUserId
+      ? userOwnPermissionFactory.canUpdate(permissionNames)
+      : userAllPermissionFactory.canUpdate(permissionNames)
 );
 
 export const userDeletePermissionCheckSelector = createSelector(
@@ -76,11 +64,7 @@ export const userDeletePermissionCheckSelector = createSelector(
   userSelector,
   permissionNamesSelector,
   (myUserId, user, permissionNames) =>
-    userOwnAllPermissionCheck(
-      myUserId,
-      user,
-      permissionNames,
-      PermissionFactory.DeleteAll('user'),
-      PermissionFactory.DeleteOwn('user')
-    )
+    myUserId && user?.id === myUserId
+      ? userOwnPermissionFactory.canDelete(permissionNames)
+      : userAllPermissionFactory.canDelete(permissionNames)
 );
