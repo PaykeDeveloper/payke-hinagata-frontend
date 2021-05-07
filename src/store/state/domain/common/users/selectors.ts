@@ -3,16 +3,11 @@
 import { createSelector } from 'reselect';
 import { StoreState } from 'src/store';
 import {
-  MemberAllPermission,
-  MemberOwnPermission,
-} from '../../division/members/types';
-import {
   PermissionFactory,
   AllPermissionFactory,
   OwnPermissionFactory,
 } from '../permissions/factories';
 import { myUserIdSelector, permissionNamesSelector } from '../user/selectors';
-import { User } from '../user/types';
 
 export const userOwnPermissionFactory: PermissionFactory<'user'> = new OwnPermissionFactory(
   'user'

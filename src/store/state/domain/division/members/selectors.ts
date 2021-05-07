@@ -8,12 +8,7 @@ import {
 import { permissionNamesSelector } from '../../common/user/selectors';
 import { usersSelector } from '../../common/users/selectors';
 import { divisionSelector } from '../divisions/selectors';
-import { DivisionDetail } from '../divisions/types';
-import {
-  MemberAllPermission,
-  MemberOwnPermission,
-  MemberUserDetail,
-} from './types';
+import { MemberUserDetail } from './types';
 
 export const memberOwnPermissionFactory: PermissionFactory<'member'> = new OwnPermissionFactory(
   'member'

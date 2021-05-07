@@ -1,9 +1,3 @@
-import {
-  ModelPermission,
-  AllPermission,
-  OwnPermission,
-} from '../../common/permissions/types';
-
 export interface Member {
   id: number;
   userId: number;
@@ -33,11 +27,3 @@ export interface MemberUserDetail {
   userUpdatedAt: string | null;
   roleNames: string[];
 }
-
-type ModelType = 'member';
-export type MemberPermission = ModelPermission<
-  ModelType,
-  AllPermission | OwnPermission
->;
-export type MemberOwnPermission = ModelPermission<ModelType, OwnPermission>;
-export type MemberAllPermission = ModelPermission<ModelType, AllPermission>;

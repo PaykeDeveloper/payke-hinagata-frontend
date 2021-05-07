@@ -6,11 +6,6 @@ import {
   OwnPermissionFactory,
 } from '../../common/permissions/factories';
 import { permissionNamesSelector } from '../../common/user/selectors';
-import {
-  DivisionAllPermission,
-  DivisionDetail,
-  DivisionOwnPermission,
-} from './types';
 
 export const divisionOwnPermissionFactory: PermissionFactory<'division'> = new OwnPermissionFactory(
   'division'
