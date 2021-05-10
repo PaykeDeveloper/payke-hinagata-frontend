@@ -89,7 +89,7 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
         .addCase(addEntity.pending, (state, action) => {
           if (state.meta.results[action.meta.arg.uniqueId!] !== undefined) {
             state.meta.results[action.meta.arg.uniqueId!]!.status =
-              ImportStatus.Prepareing;
+              ImportStatus.Preparing;
             state.meta.finished = (state.meta.finished ?? 0) + 0;
           }
           if (state.meta.status === StoreStatus.Initial) {
@@ -127,7 +127,7 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
         .addCase(mergeEntity.pending, (state, action) => {
           if (state.meta.results[action.meta.arg.uniqueId!] !== undefined) {
             state.meta.results[action.meta.arg.uniqueId!]!.status =
-              ImportStatus.Prepareing;
+              ImportStatus.Preparing;
             state.meta.finished = (state.meta.finished ?? 0) + 0;
           }
           if (state.meta.status === StoreStatus.Initial) {

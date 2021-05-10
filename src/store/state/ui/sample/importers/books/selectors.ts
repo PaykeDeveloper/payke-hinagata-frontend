@@ -10,13 +10,13 @@ export const importRowsSelector = (state: StoreState) =>
 export const importerResultsSelector = (state: StoreState) =>
   state.ui.sample.importers.books.meta.results;
 
-export const finishedRowsSelecotr = (state: StoreState) =>
+export const finishedRowsSelector = (state: StoreState) =>
   state.ui.sample.importers.books.meta.finished;
 
-export const totalRowsSelecotr = (state: StoreState) =>
+export const totalRowsSelector = (state: StoreState) =>
   state.ui.sample.importers.books.meta.total;
 
-export const importerStatusSelecotr = (state: StoreState) =>
+export const importerStatusSelector = (state: StoreState) =>
   state.ui.sample.importers.books.meta.status;
 
 export const importResultSelector = createSelector(

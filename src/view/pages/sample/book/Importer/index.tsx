@@ -17,7 +17,7 @@ import { BookInput } from 'src/store/state/domain/sample/books/types';
 import {
   importRowsSelector,
   filterErrorImporters,
-  importerStatusSelecotr,
+  importerStatusSelector,
 } from 'src/store/state/ui/sample/importers/books/selectors';
 import { bookImportersActions } from 'src/store/state/ui/sample/importers/books/slice';
 import { StoreError } from 'src/store/types';
@@ -94,7 +94,7 @@ const Component: FC<ImporterComponentProps> = (props) => {
 };
 
 const selector = createSelector(
-  [importRowsSelector, importerStatusSelecotr],
+  [importRowsSelector, importerStatusSelector],
   (importers, status) => ({
     importers,
     status,

@@ -5,7 +5,7 @@ import { StoreError } from 'src/store/types';
 
 export enum ImportStatus {
   Waiting = 0,
-  Prepareing = 1,
+  Preparing = 1,
   Success = 2,
   Failed = -1,
 }

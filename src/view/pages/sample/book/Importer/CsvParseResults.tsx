@@ -12,8 +12,8 @@ import { useTranslation } from 'react-i18next';
 import { useStoreSelector } from 'src/store';
 import {
   importResultSelector,
-  finishedRowsSelecotr,
-  totalRowsSelecotr,
+  finishedRowsSelector,
+  totalRowsSelector,
 } from 'src/store/state/ui/sample/importers/books/selectors';
 import {
   BookImporter,
@@ -35,8 +35,8 @@ import {
 } from 'src/view/base/material-ui/Icon';
 import Buttons from 'src/view/components/molecules/Buttons';
 
-const progresSelector = createSelector(
-  [finishedRowsSelecotr, totalRowsSelecotr],
+const progressSelector = createSelector(
+  [finishedRowsSelector, totalRowsSelector],
   (finished, total) => ({
     finished,
     total,
@@ -47,7 +47,7 @@ const ImportProgress: FC<{
   status: StoreStatus;
 }> = (props) => {
   const { status } = props;
-  const state = useStoreSelector(progresSelector);
+  const state = useStoreSelector(progressSelector);
   const { total, finished } = state;
   let progress: number | undefined = undefined;
   if (status !== StoreStatus.Initial) {
@@ -135,7 +135,7 @@ export const CsvParseResults: FC<{
 
 const StatusCell: FC<{ rowId: string }> = ({ rowId }) => {
   const result = useStoreSelector((s) => importResultSelector(s, rowId));
-  if (result?.status === ImportStatus.Prepareing) {
+  if (result?.status === ImportStatus.Preparing) {
     return <CircularProgress />;
   } else if (result?.status === ImportStatus.Success) {
     return <CheckIcon color="primary" />;
