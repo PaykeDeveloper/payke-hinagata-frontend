@@ -1,21 +1,7 @@
 import { ModelPermission } from '../../common/permissions/types';
 import { PermissionType } from './types';
-export interface PermissionFactory<Model extends string> {
-  model: Model;
 
-  view(): string;
-  create(): string;
-  update(): string;
-  delete(): string;
-
-  canView: (permissionNames: string[] | undefined) => boolean;
-  canCreate: (permissionNames: string[] | undefined) => boolean;
-  canUpdate: (permissionNames: string[] | undefined) => boolean;
-  canDelete: (permissionNames: string[] | undefined) => boolean;
-}
-
-export class AllPermissionFactory<Model extends string>
-  implements PermissionFactory<Model> {
+class AllPermissionFactory<Model extends string> {
   readonly model: Model;
 
   readonly viewAll: ModelPermission<Model, PermissionType.ViewAll>;
@@ -89,9 +75,9 @@ export class AllPermissionFactory<Model extends string>
   }
 }
 
-export class OwnPermissionFactory<Model extends string>
-  extends AllPermissionFactory<Model>
-  implements PermissionFactory<Model> {
+export class OwnPermissionFactory<
+  Model extends string
+> extends AllPermissionFactory<Model> {
   readonly viewOwn: ModelPermission<Model, PermissionType.ViewOwn>;
   readonly createOwn: ModelPermission<Model, PermissionType.CreateOwn>;
   readonly updateOwn: ModelPermission<Model, PermissionType.UpdateOwn>;

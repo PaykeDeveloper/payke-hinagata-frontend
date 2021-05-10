@@ -3,12 +3,11 @@ import { ListSubheader } from '@material-ui/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { Trans } from 'react-i18next';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { invitationAllPermissionFactory } from 'src/store/state/domain/common/invitations/selectors';
+import { invitationOwnPermission } from 'src/store/state/domain/common/invitations/selectors';
 import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
-import { userAllPermissionFactory } from 'src/store/state/domain/common/users/selectors';
+import { userOwnPermission } from 'src/store/state/domain/common/users/selectors';
 import {
-  divisionAllPermissionFactory,
-  divisionOwnPermissionFactory,
+  divisionOwnPermission,
   divisionsErrorSelector,
   divisionsSelector,
   divisionsStatusSelector,
@@ -85,15 +84,15 @@ const divisionsSelectMenuSelector = createSelector(
                 to: getMembersPath({ divisionId: `${menuDivisionId}` }),
                 paths: [getMembersPath({ divisionId: `${menuDivisionId}` })],
                 requiredPermissions: [
-                  divisionOwnPermissionFactory.create(),
-                  divisionAllPermissionFactory.create(),
+                  divisionOwnPermission.createOwn,
+                  divisionOwnPermission.createAll,
                 ],
               },
             ]
           : [],
         requiredPermissions: [
-          divisionOwnPermissionFactory.view(),
-          divisionAllPermissionFactory.view(),
+          divisionOwnPermission.viewOwn,
+          divisionOwnPermission.viewAll,
         ],
         permissionNames,
       },
@@ -114,7 +113,7 @@ const defaultSubMenu: MenuList = {
       icon: <PersonAddIcon />,
       to: invitationsPath,
       paths: [invitationsPath, invitationNewPath],
-      requiredPermissions: [invitationAllPermissionFactory.view()],
+      requiredPermissions: [invitationOwnPermission.viewAll],
     },
     {
       text: <Trans>Users</Trans>,
@@ -129,7 +128,7 @@ const defaultSubMenu: MenuList = {
       ],
     },
   ],
-  requiredPermissions: [userAllPermissionFactory.view()],
+  requiredPermissions: [userOwnPermission.viewAll],
 };
 
 const selector = createSelector(

@@ -5,8 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { StoreState, useStoreDispatch, useStoreSelector } from 'src/store';
 import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
 import {
-  divisionAllPermissionFactory,
-  divisionOwnPermissionFactory,
+  divisionOwnPermission,
   divisionErrorSelector,
   divisionSelector,
   divisionStatusSelector,
@@ -88,8 +87,8 @@ const Container: FC<
   const state = useStoreSelector((s) =>
     selector(s, {
       permissionNames: [
-        divisionOwnPermissionFactory.delete(),
-        divisionAllPermissionFactory.delete(),
+        divisionOwnPermission.deleteOwn,
+        divisionOwnPermission.deleteAll,
       ],
     })
   );

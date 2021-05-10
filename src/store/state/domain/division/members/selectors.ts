@@ -1,21 +1,12 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
-import {
-  PermissionFactory,
-  AllPermissionFactory,
-  OwnPermissionFactory,
-} from '../../common/permissions/factories';
+import { OwnPermissionFactory } from '../../common/permissions/factories';
 import { permissionNamesSelector } from '../../common/user/selectors';
 import { usersSelector } from '../../common/users/selectors';
 import { divisionSelector } from '../divisions/selectors';
 import { MemberUserDetail } from './types';
 
-export const memberOwnPermissionFactory: PermissionFactory<'member'> = new OwnPermissionFactory(
-  'member'
-);
-export const memberAllPermissionFactory: PermissionFactory<'member'> = new AllPermissionFactory(
-  'member'
-);
+export const memberOwnPermission = new OwnPermissionFactory('member');
 
 export const membersSelector = (state: StoreState) =>
   state.domain.division.members.entities;
@@ -56,7 +47,7 @@ export const memberUsersSelector = createSelector(
 
 export const membersViewPermissionCheckSelector = createSelector(
   permissionNamesSelector,
-  (permissionNames) => memberOwnPermissionFactory.canCreate(permissionNames)
+  (permissionNames) => memberOwnPermission.canCreate(permissionNames)
 );
 
 export const memberCreatePermissionCheckSelector = createSelector(
@@ -64,8 +55,8 @@ export const memberCreatePermissionCheckSelector = createSelector(
   permissionNamesSelector,
   (division, permissionNames) =>
     division?.requestMemberId !== null
-      ? memberOwnPermissionFactory.canCreate(permissionNames)
-      : memberAllPermissionFactory.canCreate(permissionNames)
+      ? memberOwnPermission.canCreateOwn(permissionNames)
+      : memberOwnPermission.canCreateAll(permissionNames)
 );
 
 export const memberUpdatePermissionCheckSelector = createSelector(
@@ -73,8 +64,8 @@ export const memberUpdatePermissionCheckSelector = createSelector(
   permissionNamesSelector,
   (division, permissionNames) =>
     division?.requestMemberId !== null
-      ? memberOwnPermissionFactory.canUpdate(permissionNames)
-      : memberAllPermissionFactory.canUpdate(permissionNames)
+      ? memberOwnPermission.canUpdateOwn(permissionNames)
+      : memberOwnPermission.canUpdateAll(permissionNames)
 );
 
 export const memberDeletePermissionCheckSelector = createSelector(
@@ -82,6 +73,6 @@ export const memberDeletePermissionCheckSelector = createSelector(
   permissionNamesSelector,
   (division, permissionNames) =>
     division?.requestMemberId !== null
-      ? memberOwnPermissionFactory.canDelete(permissionNames)
-      : memberAllPermissionFactory.canDelete(permissionNames)
+      ? memberOwnPermission.canDeleteOwn(permissionNames)
+      : memberOwnPermission.canDeleteAll(permissionNames)
 );

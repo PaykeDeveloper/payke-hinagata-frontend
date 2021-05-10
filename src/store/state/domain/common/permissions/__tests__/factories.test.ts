@@ -1,13 +1,13 @@
-import { AllPermissionFactory, OwnPermissionFactory } from '../factories';
+import { OwnPermissionFactory } from '../factories';
 
-test('AllPermissionFactory can generate viewAll', () => {
-  const allPermissionFactory = new AllPermissionFactory('resource');
-  const permissions = allPermissionFactory.view();
+test('OwnPermissionFactory can generate viewAll', () => {
+  const allPermissionFactory = new OwnPermissionFactory('resource');
+  const permissions = allPermissionFactory.viewAll;
   expect(permissions).toEqual('resource_viewAll');
 });
 
 test('OwnPermissionFactory can generate viewOwn', () => {
   const ownPermissionFactory = new OwnPermissionFactory('resource');
-  const permissions = ownPermissionFactory.view();
+  const permissions = ownPermissionFactory.viewOwn;
   expect(permissions).toEqual('resource_viewOwn');
 });

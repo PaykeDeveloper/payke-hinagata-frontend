@@ -1,18 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
-import {
-  PermissionFactory,
-  AllPermissionFactory,
-  OwnPermissionFactory,
-} from '../../common/permissions/factories';
+import { OwnPermissionFactory } from '../../common/permissions/factories';
 import { permissionNamesSelector } from '../../common/user/selectors';
 
-export const divisionOwnPermissionFactory: PermissionFactory<'division'> = new OwnPermissionFactory(
-  'division'
-);
-export const divisionAllPermissionFactory: PermissionFactory<'division'> = new AllPermissionFactory(
-  'division'
-);
+export const divisionOwnPermission = new OwnPermissionFactory('division');
 
 export const divisionsSelector = (state: StoreState) =>
   state.domain.division.divisions.entities;
@@ -36,16 +27,16 @@ export const divisionUpdatePermissionCheckSelector = createSelector(
   divisionSelector,
   (division) =>
     division?.requestMemberId !== null
-      ? divisionOwnPermissionFactory.canUpdate(division?.permissionNames)
-      : divisionAllPermissionFactory.canUpdate(division?.permissionNames)
+      ? divisionOwnPermission.canUpdateOwn(division?.permissionNames)
+      : divisionOwnPermission.canUpdateAll(division?.permissionNames)
 );
 
 export const divisionsUpdatePermissionCheckSelector = createSelector(
   permissionNamesSelector,
-  (permissionNames) => divisionOwnPermissionFactory.canUpdate(permissionNames)
+  (permissionNames) => divisionOwnPermission.canUpdate(permissionNames)
 );
 
 export const divisionsCreatePermissionCheckSelector = createSelector(
   permissionNamesSelector,
-  (permissionNames) => divisionOwnPermissionFactory.canCreate(permissionNames)
+  (permissionNames) => divisionOwnPermission.canCreate(permissionNames)
 );
