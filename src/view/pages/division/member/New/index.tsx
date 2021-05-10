@@ -9,6 +9,7 @@ import {
 } from 'src/store/state/domain/common/roles/selectors';
 import {
   usersErrorSelector,
+  usersSelector,
   usersStatusSelector,
 } from 'src/store/state/domain/common/users/selectors';
 import { usersActions } from 'src/store/state/domain/common/users/slice';
@@ -17,7 +18,6 @@ import { divisionsActions } from 'src/store/state/domain/division/divisions/slic
 import {
   membersErrorSelector,
   membersStatusSelector,
-  memberUsersSelector,
 } from 'src/store/state/domain/division/members/selectors';
 import { membersActions } from 'src/store/state/domain/division/members/slice';
 import { DivisionPath, getDivisionPath } from 'src/view/routes/paths';
@@ -29,7 +29,7 @@ type ChildProps = ComponentProps<typeof Form>;
 const selector = createSelector(
   [
     divisionSelector,
-    memberUsersSelector,
+    usersSelector,
     memberRolesSelector,
     membersStatusSelector,
     usersStatusSelector,
@@ -39,7 +39,7 @@ const selector = createSelector(
   ],
   (
     division,
-    memberUsers,
+    users,
     memberRoles,
     memberStatus,
     usersStatus,
@@ -49,7 +49,7 @@ const selector = createSelector(
   ) => ({
     division,
     statuses: [memberStatus, rolesStatus, usersStatus],
-    memberUsers,
+    users,
     memberRoles,
     errors: [memberError, usersError],
   })

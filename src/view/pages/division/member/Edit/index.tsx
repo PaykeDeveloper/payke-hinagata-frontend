@@ -18,6 +18,7 @@ import {
 } from 'src/store/state/domain/common/roles/selectors';
 import {
   usersErrorSelector,
+  usersSelector,
   usersStatusSelector,
 } from 'src/store/state/domain/common/users/selectors';
 import { usersActions } from 'src/store/state/domain/common/users/slice';
@@ -25,10 +26,7 @@ import {
   divisionSelector,
   divisionStatusSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
-import {
-  memberDeletePermissionCheckSelector,
-  memberUsersSelector,
-} from 'src/store/state/domain/division/members/selectors';
+import { memberDeletePermissionCheckSelector } from 'src/store/state/domain/division/members/selectors';
 import {
   memberErrorSelector,
   memberSelector,
@@ -55,7 +53,7 @@ const selector = createSelector(
     divisionStatusSelector,
     memberRolesSelector,
     rolesStatusSelector,
-    memberUsersSelector,
+    usersSelector,
     usersStatusSelector,
     usersErrorSelector,
     memberSelector,
@@ -68,7 +66,7 @@ const selector = createSelector(
     divisionStatus,
     memberRoles,
     rolesStatus,
-    memberUsers,
+    users,
     usersStatus,
     usersError,
     member,
@@ -78,7 +76,7 @@ const selector = createSelector(
   ) => ({
     division,
     memberRoles,
-    memberUsers,
+    users,
     member,
     statuses: [divisionStatus, rolesStatus, memberStatus, usersStatus],
     errors: [usersError, memberError],

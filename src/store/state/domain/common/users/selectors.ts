@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import { StoreState } from 'src/store';
 import { OwnPermissionFactory } from '../permissions/factories';
 import { myUserIdSelector, permissionNamesSelector } from '../user/selectors';
+import { User } from '../user/types';
 
 export const userOwnPermission = new OwnPermissionFactory('user');
 
@@ -24,6 +25,15 @@ export const userStatusSelector = (state: StoreState) =>
 
 export const userErrorSelector = (state: StoreState) =>
   state.domain.common.users.meta.fetchEntity.error;
+
+export const userIdMapSelector = createSelector(
+  usersSelector,
+  (users): Record<number, User> =>
+    users.reduce((prev: Record<number, User>, cur) => {
+      prev[cur.id] = cur;
+      return prev;
+    }, {})
+);
 
 export const usersViewPermissionCheckSelector = createSelector(
   permissionNamesSelector,

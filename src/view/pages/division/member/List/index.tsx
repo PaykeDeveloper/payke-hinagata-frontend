@@ -6,7 +6,10 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { usersStatusSelector } from 'src/store/state/domain/common/users/selectors';
+import {
+  userIdMapSelector,
+  usersStatusSelector,
+} from 'src/store/state/domain/common/users/selectors';
 import { usersActions } from 'src/store/state/domain/common/users/slice';
 import {
   divisionErrorSelector,
@@ -20,7 +23,7 @@ import {
   membersErrorSelector,
   memberUpdatePermissionCheckSelector,
   memberCreatePermissionCheckSelector,
-  memberUsersSelector,
+  membersSelector,
 } from 'src/store/state/domain/division/members/selectors';
 import { membersActions } from 'src/store/state/domain/division/members/slice';
 import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
@@ -56,7 +59,8 @@ const selector = createSelector(
     divisionSelector,
     divisionStatusSelector,
     divisionErrorSelector,
-    memberUsersSelector,
+    membersSelector,
+    userIdMapSelector,
     usersStatusSelector,
     membersStatusSelector,
     membersErrorSelector,
@@ -66,7 +70,8 @@ const selector = createSelector(
     division,
     divisionStatus,
     divisionError,
-    memberUsers,
+    members,
+    userIdMap,
     usersStatus,
     membersStatus,
     membersError,
@@ -74,7 +79,8 @@ const selector = createSelector(
   ) => ({
     division,
     divisionStatus,
-    memberUsers,
+    members,
+    userIdMap,
     usersStatus,
     membersStatus,
     errors: [divisionError, membersError],

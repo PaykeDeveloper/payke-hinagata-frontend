@@ -4,11 +4,11 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { Trans, useTranslation } from 'react-i18next';
 import { Role } from 'src/store/state/domain/common/roles/types';
+import { User } from 'src/store/state/domain/common/user/types';
 import { Division } from 'src/store/state/domain/division/divisions/types';
 import {
   MemberDetail,
   MemberInput,
-  MemberUserDetail,
 } from 'src/store/state/domain/division/members/types';
 import { BookInput } from 'src/store/state/domain/sample/books/types';
 import { StoreError, StoreStatus } from 'src/store/types';
@@ -45,7 +45,7 @@ const Form: FC<{
   errors: (StoreError | undefined)[];
   permission?: PermissionList;
   division: Division | undefined;
-  memberUsers: MemberUserDetail[];
+  users: User[];
   member: MemberDetail | undefined;
   memberRoles: Role[];
 
@@ -56,7 +56,7 @@ const Form: FC<{
   const {
     title,
     object,
-    memberUsers,
+    users,
     statuses,
     errors,
     permission,
@@ -68,9 +68,9 @@ const Form: FC<{
   } = props;
   const { t } = useTranslation();
 
-  const userOptions = memberUsers.map((member) => ({
-    value: `${member.userId}`,
-    display: t(member.name || `${member.userId}`),
+  const userOptions = users.map((user) => ({
+    value: `${user.id}`,
+    display: user.name,
   }));
 
   return (

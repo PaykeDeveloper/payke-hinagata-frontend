@@ -6,8 +6,9 @@ import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { formatDate } from 'src/base/dateFormat';
+import { User } from 'src/store/state/domain/common/user/types';
 import { Division } from 'src/store/state/domain/division/divisions/types';
-import { MemberUserDetail } from 'src/store/state/domain/division/members/types';
+import { Member } from 'src/store/state/domain/division/members/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
   RouterDataGrid,
@@ -41,7 +42,8 @@ export type PermissionList = {
 const Component: FC<{
   division: Division | undefined;
   divisionStatus: StoreStatus;
-  memberUsers: MemberUserDetail[];
+  userIdMap: Record<number, User>;
+  members: Member[];
   usersStatus: StoreStatus;
   membersStatus: StoreStatus;
   errors: (StoreError | undefined)[];
@@ -55,7 +57,8 @@ const Component: FC<{
   const {
     division,
     divisionStatus,
-    memberUsers,
+    userIdMap,
+    members,
     usersStatus,
     membersStatus,
     errors,
@@ -86,8 +89,13 @@ const Component: FC<{
       ),
       width: 50,
     },
-    { field: 'name', headerName: t('Name'), width: 200 },
-    { field: 'id', headerName: t('UserID'), width: 100 },
+    {
+      field: 'name',
+      headerName: t('Name'),
+      width: 200,
+      renderCell: ({ row }) => <>{userIdMap[row['userId']]?.name}</>,
+    },
+    { field: 'id', headerName: t('Member ID'), width: 130 },
     { field: 'roleNames', headerName: t('Role Names'), width: 200 },
     {
       field: 'createdAt',
@@ -195,7 +203,7 @@ const Component: FC<{
                 ]}
               />
               <Loader statuses={statuses}>
-                <RouterDataGrid columns={memberColumns} rows={memberUsers} />
+                <RouterDataGrid columns={memberColumns} rows={members} />
               </Loader>
             </Box>
           </Box>
