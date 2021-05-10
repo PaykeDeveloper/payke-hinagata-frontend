@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
-import { isDevelopment } from 'src/base/constants';
+import { isDevelopment, isDebugTranslation } from 'src/base/constants';
 
 // FIXME: SAMPLE CODE
 import ja from './locales/ja.json';
@@ -17,7 +17,7 @@ const i18n = i18next
   .use(initReactI18next)
   .init({
     resources,
-    debug: isDevelopment,
+    debug: isDevelopment && isDebugTranslation,
     fallbackLng: 'ja',
     keySeparator: false,
     interpolation: {

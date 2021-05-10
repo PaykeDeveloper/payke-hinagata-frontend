@@ -48,6 +48,7 @@ jobs:
       - run: yarn build
         env:
           REACT_APP_BACKEND_ORIGIN: ${{ secrets.REACT_APP_BACKEND_ORIGIN }}
+          REACT_APP_DEBUG_TRANSLATION: ${{ secrets.REACT_APP_DEBUG_TRANSLATION }}
       - run: firebase deploy --project=$FIREBASE_PROJECT --token=$FIREBASE_TOKEN
         env:
           FIREBASE_PROJECT: ${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}
