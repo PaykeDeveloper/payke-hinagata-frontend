@@ -59,20 +59,6 @@ class AllPermissionFactory<Model extends string> {
   delete(): string {
     return this.deleteAll;
   }
-
-  generatePermission(type: PermissionType): string {
-    switch (type) {
-      case PermissionType.ViewAll:
-        return this.viewAll;
-      case PermissionType.CreateAll:
-        return this.createAll;
-      case PermissionType.UpdateAll:
-        return this.updateAll;
-      case PermissionType.DeleteAll:
-        return this.deleteAll;
-    }
-    return '';
-  }
 }
 
 export class OwnPermissionFactory<
