@@ -1,23 +1,25 @@
 import { parse, unparse, ParseResult } from 'papaparse';
 
-export const readCsv = <T>(input: File | string) =>
-  new Promise<T[]>((resolve, reject) => {
-    parse(input, {
+const parseCsv = <T>(input: File | string) =>
+  new Promise<ParseResult<T>>((resolve, reject) => {
+    parse<T>(input, {
       header: true,
       dynamicTyping: true,
       skipEmptyLines: true,
-      complete: (rows: ParseResult<T>) => {
-        resolve(rows.data);
+      complete: (rows) => {
+        resolve(rows);
       },
     });
   });
 
-export const toCsv = (rows: { [key: string]: unknown }[]) => unparse(rows);
+export const readCsv = async <T>(input: File | string) => {
+  const results = await parseCsv<T>(input);
+  return results.data;
+};
 
-export const exportToCsv = (
-  filename: string,
-  rows: { [key: string]: unknown }[]
-): void => {
+export const toCsv = (rows: Object[]) => unparse(rows);
+
+export const exportToCsv = (filename: string, rows: Object[]): void => {
   if (!rows || !rows.length) {
     return;
   }
