@@ -4,6 +4,9 @@ enum WebpackMode {
 }
 
 const webpackMode = process.env.NODE_ENV as WebpackMode;
+
+export const isDebugTranslation =
+  process.env.REACT_APP_DEBUG_TRANSLATION === 'true';
 export const isDevelopment = webpackMode === WebpackMode.Development;
 export const isProduction = webpackMode === WebpackMode.Production;
 
