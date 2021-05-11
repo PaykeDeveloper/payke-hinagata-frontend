@@ -1,6 +1,7 @@
 // FIXME: SAMPLE CODE
 
 import { createSelector } from 'reselect';
+import { convertListToObject } from 'src/base/utils';
 import { StoreState } from 'src/store';
 import { OwnPermissionFactory } from '../permissions/factories';
 import { myUserIdSelector, permissionNamesSelector } from '../user/selectors';
@@ -28,11 +29,7 @@ export const userErrorSelector = (state: StoreState) =>
 
 export const userIdMapSelector = createSelector(
   usersSelector,
-  (users): Record<number, User> =>
-    users.reduce((prev: Record<number, User>, cur) => {
-      prev[cur.id] = cur;
-      return prev;
-    }, {})
+  (users): Record<number, User> => convertListToObject(users, 'id')
 );
 
 export const usersViewPermissionCheckSelector = createSelector(

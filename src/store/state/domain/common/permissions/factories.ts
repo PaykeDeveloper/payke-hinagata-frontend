@@ -46,19 +46,6 @@ class AllPermissionFactory<Model extends string> {
   canDelete(permissionNames?: string[] | undefined) {
     return this.canDeleteAll(permissionNames);
   }
-
-  view(): string {
-    return this.viewAll;
-  }
-  create(): string {
-    return this.createAll;
-  }
-  update(): string {
-    return this.updateAll;
-  }
-  delete(): string {
-    return this.deleteAll;
-  }
 }
 
 export class OwnPermissionFactory<
@@ -106,18 +93,5 @@ export class OwnPermissionFactory<
     return (
       this.canDeleteOwn(permissionNames) || this.canDeleteAll(permissionNames)
     );
-  }
-
-  view(): string {
-    return this.viewOwn;
-  }
-  create(): string {
-    return this.createOwn;
-  }
-  update(): string {
-    return this.updateOwn;
-  }
-  delete(): string {
-    return this.deleteOwn;
   }
 }
