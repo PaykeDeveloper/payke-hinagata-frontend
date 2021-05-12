@@ -1,11 +1,11 @@
 // FIXME: SAMPLE CODE
 
 import React, { ComponentProps, FC, useCallback } from 'react';
-import { useSnackbar } from 'notistack';
-import { createSelector } from '@reduxjs/toolkit';
-import { RouteComponentProps } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { createSelector } from '@reduxjs/toolkit';
+import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
+import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { BookInput } from 'src/store/state/domain/sample/books/types';
 import {
@@ -16,9 +16,9 @@ import {
   totalRowsSelector,
 } from 'src/store/state/ui/sample/importers/books/selectors';
 import { bookImportersActions } from 'src/store/state/ui/sample/importers/books/slice';
-import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
-import Component from './Components/Component';
 import { StoreStatus } from 'src/store/types';
+import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
+import Component from './Component';
 
 const selector = createSelector(
   [importRowsSelector, importerStatusSelector],
@@ -63,10 +63,6 @@ export const SUPPORTED_FORMATS = ['text/csv'];
 type ChildProps = ComponentProps<typeof Component>;
 
 const Importer: FC<RouteComponentProps> = (props) => {
-  const {
-    history: { push },
-    location: { pathname, search },
-  } = props;
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const state = useStoreSelector(selector);

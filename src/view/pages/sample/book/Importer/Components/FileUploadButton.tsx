@@ -1,9 +1,9 @@
-import React, { FC, useRef, useCallback } from 'react';
+import React, { useRef, useCallback } from 'react';
+import { Trans } from 'react-i18next';
+import { AttachFileIcon } from 'src/view/base/material-ui/Icon';
 import SubmitButton, {
   SubmitButtonProps,
 } from 'src/view/base/material-ui/SubmitButton';
-import { Trans } from 'react-i18next';
-import { AttachFileIcon } from 'src/view/base/material-ui/Icon';
 
 export type FileUploadButtonProps = Omit<SubmitButtonProps, 'onClick'> & {
   accept?: string;

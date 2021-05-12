@@ -1,10 +1,6 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import ContentBody from 'src/view/components/molecules/ContentBody';
-import ContentHeader from 'src/view/components/molecules/ContentHeader';
-import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
-import { rootPath } from 'src/view/routes/paths';
 
 import { Box, Button } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
@@ -40,7 +36,11 @@ import {
   CheckIcon,
 } from 'src/view/base/material-ui/Icon';
 import Buttons from 'src/view/components/molecules/Buttons';
-import FileUploadButton from './FileUploadButton';
+import ContentBody from 'src/view/components/molecules/ContentBody';
+import ContentHeader from 'src/view/components/molecules/ContentHeader';
+import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
+import FileUploadButton from 'src/view/pages/sample/book/Importer/Components/FileUploadButton';
+import { rootPath } from 'src/view/routes/paths';
 
 const progressSelector = createSelector(
   [finishedRowsSelector, totalRowsSelector],
