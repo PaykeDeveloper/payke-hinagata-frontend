@@ -19,6 +19,7 @@ export type MenuList = {
 interface Props {
   pathname: string;
   onClickMenu?: (event: unknown) => void;
+  permissionNames: string[] | undefined;
   menuLists: MenuList[];
 }
 
@@ -30,7 +31,7 @@ const getPaths = (menu: Menu): string[] => {
 };
 
 const SideMenu: FC<Props> = (props) => {
-  const { pathname, menuLists, onClickMenu } = props;
+  const { pathname, menuLists, permissionNames, onClickMenu } = props;
   const paths = menuLists
     .map((menuList) => menuList.menus.map((m) => getPaths(m)).flat())
     .flat()
@@ -50,6 +51,7 @@ const SideMenu: FC<Props> = (props) => {
                 pathname={pathname}
                 paths={paths}
                 onClickMenu={onClickMenu}
+                permissionNames={permissionNames}
               />
             ))}
           </List>

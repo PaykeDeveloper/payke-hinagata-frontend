@@ -7,7 +7,6 @@ import ScrollToTop from 'src/view/components/atoms/ScrollToTop';
 import Footer from 'src/view/components/organisms/Footer';
 import Header from 'src/view/components/organisms/Header';
 import Sidebar, { drawerWidth } from 'src/view/components/organisms/Sidebar';
-import { privateMenuLists } from 'src/view/routes/menus';
 
 export const footerSpace = 8;
 
@@ -59,7 +58,6 @@ const PrivateLayout: FC = (props) => {
           open={open}
           setOpen={setOpen}
           pathname={pathname}
-          menuLists={privateMenuLists}
         />
         <main
           className={clsx(classes.content, {

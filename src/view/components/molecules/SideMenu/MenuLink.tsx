@@ -21,12 +21,14 @@ export interface ItemMenu {
   icon?: ReactElement;
   to: string;
   paths: string[];
+  requiredPermissions?: string[];
 }
 
 export interface CollapseMenu {
   text: ReactElement;
   menus: Menu[];
   icon?: ReactElement;
+  requiredPermissions?: string[];
 }
 
 export const exactMatchPath = (menu: Menu, path: string): boolean => {
@@ -41,13 +43,23 @@ interface Props {
   pathname: string;
   paths: string[];
   nested?: boolean;
+  permissionNames: string[] | undefined;
+  requiredPermissions?: string[];
   onClickMenu?: (event: unknown) => void;
 }
 
 const MenuLink: FC<Props> = (props) => {
-  const { menu, pathname, paths, nested, onClickMenu } = props;
+  const { menu, pathname, paths, nested, permissionNames, onClickMenu } = props;
   const classes = useStyles();
   const path = getExactMatch(paths, pathname)?.path;
+
+  if (
+    menu.requiredPermissions &&
+    !menu.requiredPermissions.some((e) => permissionNames?.includes(e))
+  ) {
+    return <></>;
+  }
+
   if ('menus' in menu) {
     return (
       <MenuCollapse
@@ -55,6 +67,7 @@ const MenuLink: FC<Props> = (props) => {
         pathname={pathname}
         paths={paths}
         onClickMenu={onClickMenu}
+        permissionNames={permissionNames}
       />
     );
   }

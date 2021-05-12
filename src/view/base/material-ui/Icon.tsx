@@ -28,4 +28,5 @@ export const PasswordIcon = createIcon('password');
 // FIXME: SAMPLE CODE
 export const HomeIcon = createIcon('home');
 export const MenuBookIcon = createIcon('menu_book');
+export const MenuUserIcon = createIcon('people');
 export const ListIcon = createIcon('list');

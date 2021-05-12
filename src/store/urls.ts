@@ -55,3 +55,36 @@ export const getBookCommentApiUrl = ({
   bookId,
   commentSlug,
 }: BookCommentApiUrl) => `${getBookCommentsApiUrl({ bookId })}${commentSlug}/`;
+
+export interface UserApiUrl {
+  userId: string;
+}
+export const getUsersApiUrl = () => `${getRootApiUrl()}users/`;
+export const getUserApiUrl = ({ userId }: UserApiUrl) =>
+  `${getUsersApiUrl()}${userId}/`;
+export const getMyUserApiUrl = () => `${getRootApiUrl()}user/`;
+
+export interface DivisionApiUrl {
+  divisionId: string;
+}
+export const getDivisionsApiUrl = () => `${getRootApiUrl()}divisions/`;
+export const getDivisionApiUrl = ({ divisionId }: DivisionApiUrl) =>
+  `${getDivisionsApiUrl()}${divisionId}/`;
+
+export interface ProjectApiUrl extends DivisionApiUrl {
+  divisionId: string;
+  projectId: string;
+}
+export const getProjectsApiUrl = ({ divisionId }: DivisionApiUrl) =>
+  `${getDivisionsApiUrl()}${divisionId}/projects/`;
+export const getProjectApiUrl = ({ divisionId, projectId }: ProjectApiUrl) =>
+  `${getProjectsApiUrl({ divisionId })}${projectId}/`;
+
+export interface MemberApiUrl extends DivisionApiUrl {
+  divisionId: string;
+  memberId: string;
+}
+export const getMembersApiUrl = ({ divisionId }: DivisionApiUrl) =>
+  `${getDivisionsApiUrl()}${divisionId}/members/`;
+export const getMemberApiUrl = ({ divisionId, memberId }: MemberApiUrl) =>
+  `${getMembersApiUrl({ divisionId })}${memberId}/`;

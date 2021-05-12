@@ -13,11 +13,12 @@ interface Props {
   menu: CollapseMenu;
   pathname: string;
   paths: string[];
+  permissionNames: string[] | undefined;
   onClickMenu?: (event: unknown) => void;
 }
 
 const MenuCollapse: FC<Props> = (props) => {
-  const { menu, pathname, paths, onClickMenu } = props;
+  const { menu, pathname, paths, permissionNames, onClickMenu } = props;
   const path = getExactMatch(paths, pathname)?.path;
   const selected = !!path && exactMatchPath(menu, path);
   const [open, setOpen] = useState(selected);
@@ -38,6 +39,7 @@ const MenuCollapse: FC<Props> = (props) => {
               pathname={pathname}
               paths={paths}
               nested
+              permissionNames={permissionNames}
               onClickMenu={onClickMenu}
             />
           ))}

@@ -55,3 +55,15 @@ export const inputsToObject = <T extends object>(
   }
   return obj;
 };
+
+export const convertListToObject = <K extends keyof any, T>(
+  values: T[],
+  key: keyof T
+) => {
+  const result = {} as any;
+  for (const value of values) {
+    const k = value[key];
+    result[k] = value;
+  }
+  return result as Record<K, T>;
+};
