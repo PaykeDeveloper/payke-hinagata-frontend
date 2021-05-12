@@ -34,6 +34,7 @@ import {
   CheckIcon,
 } from 'src/view/base/material-ui/Icon';
 import Buttons from 'src/view/components/molecules/Buttons';
+import FileUploadButton from './Components/FileUploadButton';
 
 const progressSelector = createSelector(
   [finishedRowsSelector, totalRowsSelector],
@@ -70,6 +71,7 @@ export const CsvParseResults: FC<{
   onStartImport: () => void;
   onReset: () => void;
   onDownloadErrors: () => void;
+  onInputChange: (value?: File) => void | Promise<unknown>;
   importers: BookImporter[];
   status: StoreStatus;
 }> = (props) => {
@@ -77,6 +79,7 @@ export const CsvParseResults: FC<{
     onStartImport,
     onReset,
     onDownloadErrors,
+    onInputChange,
     status,
     importers,
     ...otherProps
@@ -88,6 +91,14 @@ export const CsvParseResults: FC<{
       <Box mt={1}>
         <Buttons
           leftButtons={[
+            <FileUploadButton
+              color="primary"
+              onInputChange={onInputChange}
+              disabled={importers.length !== 0}
+              accept={'text/csv'}
+            >
+              {t('Parse Csv')}
+            </FileUploadButton>,
             <Button
               type="button"
               variant="contained"

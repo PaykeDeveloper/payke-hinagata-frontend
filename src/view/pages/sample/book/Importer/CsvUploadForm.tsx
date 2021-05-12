@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { Box, Card, CardContent, CardActions } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { StoreError } from 'src/store/types';
@@ -10,6 +10,7 @@ import SubmitButton from 'src/view/base/formik/SubmitButton';
 import { OnSubmit } from 'src/view/base/formik/types';
 import { CallSplitIcon } from 'src/view/base/material-ui/Icon';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
+import FileUploadButton from './Components/FileUploadButton';
 import * as yup from 'yup';
 
 export const MAX_FILE_SIZE = 1024 * 1024;
@@ -22,6 +23,9 @@ export const CsvUploadForm: FC<{
 }> = (props) => {
   const { error, enableParse, onSubmit } = props;
   const { t } = useTranslation();
+  const onInputChange = useCallback(async (value) => {
+    console.log(value);
+  }, []);
   return (
     <ErrorWrapper error={error}>
       <Box mt={3}>
@@ -50,6 +54,9 @@ export const CsvUploadForm: FC<{
               <BaseFileField name="csv_file" label={t('CsvFile')} />
             </CardContent>
             <CardActions>
+              <FileUploadButton onInputChange={onInputChange} accept="text/csv">
+                {t('Parse CSV')}
+              </FileUploadButton>
               <SubmitButton disabled={!enableParse} icon={CallSplitIcon}>
                 {t('Parse CSV')}
               </SubmitButton>

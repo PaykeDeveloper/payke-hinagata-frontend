@@ -1,13 +1,8 @@
 import { parse, unparse, ParseResult, ParseConfig } from 'papaparse';
 
-type ParseCsvConfig = ParseConfig & {
-  complete?: undefined;
-  error?: undefined;
-};
-
 const parseCsv = <T>(
   input: File | string,
-  config?: ParseCsvConfig
+  config?: Omit<ParseConfig, 'complete' | 'error'>
 ): Promise<ParseResult<T>> => {
   return new Promise<ParseResult<T>>((resolve, reject) => {
     parse<T>(input, {
