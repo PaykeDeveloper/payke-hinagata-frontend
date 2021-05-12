@@ -13,7 +13,9 @@ import BookNew from 'src/view/pages/sample/book/New';
 import BookShow from 'src/view/pages/sample/book/Show';
 import BookCommentEdit from 'src/view/pages/sample/bookComment/Edit';
 import BookCommentNew from 'src/view/pages/sample/bookComment/New';
+import ImporterBooksList from 'src/view/pages/sample/book/Importer';
 import {
+  importerBooksPath,
   bookCommentEditPath,
   bookCommentNewPath,
   bookEditPath,
@@ -31,6 +33,7 @@ import {
 
 const privateRoutes: RouteProps[] = [
   // FIXME: SAMPLE CODE
+  { path: importerBooksPath, component: ImporterBooksList },
   { path: bookCommentNewPath, component: BookCommentNew },
   { path: bookCommentEditPath, component: BookCommentEdit },
   { path: bookNewPath, component: BookNew },

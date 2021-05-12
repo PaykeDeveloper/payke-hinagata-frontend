@@ -1,79 +1,267 @@
-import React, { FC, ComponentProps } from 'react';
-import { Button, Typography } from '@material-ui/core';
-import AppBar from '@material-ui/core/AppBar';
-import Container from '@material-ui/core/Container';
-import Dialog from '@material-ui/core/Dialog';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import { useTranslation } from 'react-i18next';
-import { CloseIcon } from 'src/view/base/material-ui/Icon';
-import { CsvParseResults } from '../CsvParseResults';
-import Slide from '@material-ui/core/Slide';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { TransitionProps } from '@material-ui/core/transitions';
+// FIXME: SAMPLE CODE
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    appBar: {
-      position: 'relative',
-    },
-    title: {
-      marginLeft: theme.spacing(2),
-      flex: 1,
-    },
+import React, { FC } from 'react';
+import ContentBody from 'src/view/components/molecules/ContentBody';
+import ContentHeader from 'src/view/components/molecules/ContentHeader';
+import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
+import { rootPath } from 'src/view/routes/paths';
+
+import { Box, Button } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
+import { GridOverlay } from '@material-ui/data-grid';
+import { createSelector } from '@reduxjs/toolkit';
+import { useTranslation } from 'react-i18next';
+import { useStoreSelector } from 'src/store';
+import {
+  importResultSelector,
+  finishedRowsSelector,
+  totalRowsSelector,
+} from 'src/store/state/ui/sample/importers/books/selectors';
+import {
+  BookImporter,
+  ImportStatus,
+} from 'src/store/state/ui/sample/importers/books/types';
+import { StoreStatus } from 'src/store/types';
+import {
+  getErrorMessage,
+  isStoreError,
+  isUnprocessableEntityError,
+} from 'src/store/utils';
+import { RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
+import {
+  CallSplitIcon,
+  SaveIcon,
+  DeleteIcon,
+  DownloadIcon,
+  BlockIcon,
+  CheckIcon,
+} from 'src/view/base/material-ui/Icon';
+import Buttons from 'src/view/components/molecules/Buttons';
+import FileUploadButton from './FileUploadButton';
+
+const progressSelector = createSelector(
+  [finishedRowsSelector, totalRowsSelector],
+  (finished, total) => ({
+    finished,
+    total,
   })
 );
 
-const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & { children?: React.ReactElement },
-  ref: React.Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
-type ListProps = ComponentProps<typeof CsvParseResults>;
-export type ImporterComponentProps = ListProps & {
-  open: boolean;
-  handleClose: () => void;
-  handleClickOpen: () => void;
+const ImportProgress: FC<{
+  status: StoreStatus;
+}> = (props) => {
+  const { status } = props;
+  const state = useStoreSelector(progressSelector);
+  const { total, finished } = state;
+  let progress: number | undefined = undefined;
+  if (status !== StoreStatus.Initial) {
+    if (finished === 0) {
+      progress = 1;
+    } else {
+      progress = (finished! / total!) * 100;
+    }
+  } else {
+    progress = undefined;
+  }
+  if (progress) {
+    return <LinearProgress variant="determinate" value={progress} />;
+  } else {
+    return <></>;
+  }
 };
 
-const Component: FC<ImporterComponentProps> = (props) => {
-  const classes = useStyles();
+const Component: FC<{
+  onStartImport: () => void;
+  onReset: () => void;
+  onDownloadErrors: () => void;
+  onInputChange: (value?: File) => void | Promise<unknown>;
+  importers: BookImporter[];
+  status: StoreStatus;
+}> = (props) => {
+  const {
+    onStartImport,
+    onReset,
+    onDownloadErrors,
+    onInputChange,
+    status,
+    importers,
+    ...otherProps
+  } = props;
   const { t } = useTranslation();
-  const { handleClose, handleClickOpen, open, ...otherProps } = props;
   return (
-    <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+    <ContentWrapper>
+      <ContentHeader links={[{ children: t('Home'), to: rootPath }]}>
         {t('Books Importer')}
-      </Button>
-      <Dialog
-        fullScreen
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Transition}
-      >
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
+      </ContentHeader>
+      <ContentBody>
+        <Buttons
+          leftButtons={[
+            <FileUploadButton
+              color="primary"
+              onInputChange={onInputChange}
+              disabled={importers.length !== 0}
+              accept={'text/csv'}
+              icon={CallSplitIcon}
             >
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              {t('Books Importer')}
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Container>
-          <CsvParseResults {...otherProps} />
-        </Container>
-      </Dialog>
-    </div>
+              {t('Choose CSV')}
+            </FileUploadButton>,
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+              size="large"
+              startIcon={<SaveIcon />}
+              onClick={onStartImport}
+              disabled={
+                importers.length === 0 || status !== StoreStatus.Initial
+              }
+            >
+              {t('Start Import')}
+            </Button>,
+            <Button
+              type="button"
+              variant="contained"
+              color="secondary"
+              size="large"
+              startIcon={<DeleteIcon />}
+              onClick={onReset}
+              disabled={
+                importers.length === 0 || status === StoreStatus.Started
+              }
+            >
+              {t('Clear')}
+            </Button>,
+            <Button
+              type="button"
+              variant="contained"
+              color="default"
+              size="large"
+              startIcon={<DownloadIcon />}
+              onClick={onDownloadErrors}
+              disabled={status !== StoreStatus.Done}
+            >
+              {t('Download Error Rows')}
+            </Button>,
+          ]}
+        />
+        <ImportersTable {...otherProps} importers={importers} status={status} />
+      </ContentBody>
+    </ContentWrapper>
+  );
+};
+export default Component;
+
+const StatusCell: FC<{ rowId: string }> = ({ rowId }) => {
+  const result = useStoreSelector((s) => importResultSelector(s, rowId));
+  if (result?.status === ImportStatus.Preparing) {
+    return <CircularProgress />;
+  } else if (result?.status === ImportStatus.Success) {
+    return <CheckIcon color="primary" />;
+  } else if (result?.status === ImportStatus.Failed) {
+    return <BlockIcon color="error" />;
+  }
+  return <></>;
+};
+
+const ErrorCell: FC<{ rowId: string }> = ({ rowId }) => {
+  const result = useStoreSelector((s) => importResultSelector(s, rowId));
+  let message = '';
+  if (result?.status === ImportStatus.Failed && result?.error !== undefined) {
+    const error = result.error;
+    if (isUnprocessableEntityError(error)) {
+      const errors: object = error.data?.errors ?? {};
+      Object.entries(errors).forEach(([key, error]) =>
+        error.forEach((errorMessage: string) => {
+          message += errorMessage;
+        })
+      );
+    } else if (isStoreError(error)) {
+      message = getErrorMessage(error);
+    }
+  }
+  return (
+    <Typography variant="body2" color="error" noWrap>
+      {message}
+    </Typography>
   );
 };
 
-export default Component;
+const ImportersTable: FC<{
+  importers: BookImporter[];
+  status: StoreStatus;
+}> = (props) => {
+  const { importers, status } = props;
+  const { t } = useTranslation();
+  const columns: GridColumns = [
+    { field: 'id', hide: true },
+    {
+      field: 'status',
+      type: 'number',
+      flex: 0.5,
+      renderCell: ({ row }) => {
+        return <StatusCell rowId={row['id'].toString()} />;
+      },
+    },
+    {
+      field: 'book_id',
+      flex: 0.6,
+      valueGetter: (params: GridValueGetterParams) => params.row.book.id,
+    },
+    {
+      field: 'title',
+      flex: 1,
+      valueGetter: (params: GridValueGetterParams) => params.row.book.title,
+    },
+    {
+      field: 'author',
+      flex: 1,
+      valueGetter: (params: GridValueGetterParams) => params.row.book.author,
+    },
+    {
+      field: 'releaseDate',
+      headerName: t('Release date'),
+      type: 'date',
+      flex: 1,
+      valueGetter: (params: GridValueGetterParams) =>
+        params.row.book.releaseDate,
+    },
+    {
+      field: 'errorMessage',
+      headerName: t('error message'),
+      flex: 3,
+      renderCell: ({ row }) => {
+        return <ErrorCell rowId={row['id'].toString()} />;
+      },
+    },
+  ];
+  return (
+    <Box mt={3}>
+      <RouterDataGrid
+        columns={columns}
+        rows={importers}
+        disableColumnMenu
+        disableColumnSelector
+        disableColumnReorder
+        disableExtendRowFullWidth
+        disableSelectionOnClick
+        loading
+        pagination
+        autoPageSize={false}
+        pageSize={25}
+        rowsPerPageOptions={[5, 25, 50]}
+        components={{
+          LoadingOverlay: () => (
+            <GridOverlay>
+              <div style={{ position: 'absolute', top: 0, width: '100%' }}>
+                <ImportProgress status={status} />
+              </div>
+            </GridOverlay>
+          ),
+        }}
+      />
+    </Box>
+  );
+};

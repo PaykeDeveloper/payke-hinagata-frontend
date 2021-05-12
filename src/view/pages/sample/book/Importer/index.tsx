@@ -3,6 +3,7 @@
 import React, { ComponentProps, FC, useCallback } from 'react';
 import { useSnackbar } from 'notistack';
 import { createSelector } from '@reduxjs/toolkit';
+import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
@@ -61,17 +62,14 @@ export const SUPPORTED_FORMATS = ['text/csv'];
 
 type ChildProps = ComponentProps<typeof Component>;
 
-const Importer: FC = (): JSX.Element => {
-  const [open, setOpen] = React.useState(false);
+const Importer: FC<RouteComponentProps> = (props) => {
+  const {
+    history: { push },
+    location: { pathname, search },
+  } = props;
   const { t } = useTranslation();
-  const state = useStoreSelector(selector);
   const { enqueueSnackbar } = useSnackbar();
-  const handleClickOpen = useCallback(() => {
-    setOpen(true);
-  }, [setOpen]);
-  const handleClose = useCallback(() => {
-    setOpen(false);
-  }, [setOpen]);
+  const state = useStoreSelector(selector);
   const dispatch = useStoreDispatch();
   const handleSetCsvFile: ChildProps['onInputChange'] = useCallback(
     async (value) => {
@@ -119,13 +117,10 @@ const Importer: FC = (): JSX.Element => {
   return (
     <Component
       {...otherState}
-      handleClickOpen={handleClickOpen}
-      handleClose={handleClose}
       onStartImport={handleImport}
       onReset={handleClear}
       onDownloadErrors={handlerDownloadErrors}
       onInputChange={handleSetCsvFile}
-      open={open}
       importers={importers}
     />
   );

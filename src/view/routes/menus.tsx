@@ -1,6 +1,7 @@
 import { ListSubheader } from '@material-ui/core';
 import { Trans } from 'react-i18next';
 import {
+  CallSplitIcon,
   AddIcon,
   HomeIcon,
   ListIcon,
@@ -16,6 +17,7 @@ import {
   rootPath,
   bookCommentNewPath,
   bookCommentEditPath,
+  importerBooksPath,
   invitationsPath,
   invitationNewPath,
 } from 'src/view/routes/paths';
@@ -66,6 +68,12 @@ export const privateMenuLists: MenuList[] = [
             icon: <AddIcon />,
             to: bookNewPath,
             paths: [bookNewPath],
+          },
+          {
+            text: <Trans>Csv Importer</Trans>,
+            icon: <CallSplitIcon />,
+            to: importerBooksPath,
+            paths: [importerBooksPath],
           },
         ],
       },
