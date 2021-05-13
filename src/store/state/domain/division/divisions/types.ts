@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 export interface Division {
   id: number;
   name: string;

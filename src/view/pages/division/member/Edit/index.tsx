@@ -26,7 +26,7 @@ import {
   divisionSelector,
   divisionStatusSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
-import { memberDeletePermissionCheckSelector } from 'src/store/state/domain/division/members/selectors';
+import { checkDeleteMemberSelector } from 'src/store/state/domain/division/members/selectors';
 import {
   memberErrorSelector,
   memberSelector,
@@ -40,7 +40,7 @@ import Form, { PermissionList } from '../components/Form';
 type ChildProps = ComponentProps<typeof Form>;
 
 const permissionSelector = createSelector(
-  memberDeletePermissionCheckSelector,
+  checkDeleteMemberSelector,
   (memberDelete) =>
     ({
       memberDelete,

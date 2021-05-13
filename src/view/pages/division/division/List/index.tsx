@@ -12,7 +12,7 @@ import {
   divisionsUpdatePermissionCheckSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
-import { membersViewPermissionCheckSelector } from 'src/store/state/domain/division/members/selectors';
+import { checkViewMembersSelector } from 'src/store/state/domain/division/members/selectors';
 import {
   divisionNewPath,
   getDivisionEditPath,
@@ -30,7 +30,7 @@ const permissionSelector = createSelector(
     divisionsCreatePermissionCheckSelector,
     divisionsUpdatePermissionCheckSelector,
     usersViewPermissionCheckSelector,
-    membersViewPermissionCheckSelector,
+    checkViewMembersSelector,
   ],
   (divisionCreate, divisionUpdate, usersView, membersView) => ({
     divisionCreate,

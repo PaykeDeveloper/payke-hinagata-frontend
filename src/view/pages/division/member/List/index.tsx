@@ -21,8 +21,8 @@ import { divisionsActions } from 'src/store/state/domain/division/divisions/slic
 import {
   membersStatusSelector,
   membersErrorSelector,
-  memberUpdatePermissionCheckSelector,
-  memberCreatePermissionCheckSelector,
+  checkUpdateMembersSelector,
+  checkCreateMemberSelector,
   membersSelector,
 } from 'src/store/state/domain/division/members/selectors';
 import { membersActions } from 'src/store/state/domain/division/members/slice';
@@ -43,8 +43,8 @@ type ChildProps = ComponentProps<typeof Component>;
 const permissionSelector = createSelector(
   [
     divisionUpdatePermissionCheckSelector,
-    memberCreatePermissionCheckSelector,
-    memberUpdatePermissionCheckSelector,
+    checkCreateMemberSelector,
+    checkUpdateMembersSelector,
   ],
   (divisionUpdate, memberCreate, memberUpdate) =>
     ({

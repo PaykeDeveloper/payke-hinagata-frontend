@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 export interface Member {
   id: number;
   userId: number;

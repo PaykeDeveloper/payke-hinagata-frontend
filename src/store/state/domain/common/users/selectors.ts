@@ -4,10 +4,10 @@ import { createSelector } from 'reselect';
 import { convertListToObject } from 'src/base/utils';
 import { StoreState } from 'src/store';
 import { OwnPermissionFactory } from '../permissions/factories';
-import { myUserIdSelector, permissionNamesSelector } from '../user/selectors';
+import { myUserSelector, userPermissionNamesSelector } from '../user/selectors';
 import { User } from '../user/types';
 
-export const userOwnPermission = new OwnPermissionFactory('user');
+export const userPermission = new OwnPermissionFactory('user');
 
 export const usersSelector = (state: StoreState) =>
   state.domain.common.users.entities;
@@ -33,31 +33,31 @@ export const userIdMapSelector = createSelector(
 );
 
 export const usersViewPermissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (permissionNames) => userOwnPermission.canView(permissionNames)
+  userPermissionNamesSelector,
+  (permissionNames) => userPermission.canView(permissionNames)
 );
 
 export const usersUpdatePermissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (permissionNames) => userOwnPermission.canUpdate(permissionNames)
+  userPermissionNamesSelector,
+  (permissionNames) => userPermission.canUpdate(permissionNames)
 );
 
 export const userUpdatePermissionCheckSelector = createSelector(
-  myUserIdSelector,
+  myUserSelector,
   userSelector,
-  permissionNamesSelector,
-  (myUserId, user, permissionNames) =>
-    myUserId && user?.id === myUserId
-      ? userOwnPermission.canUpdateOwn(permissionNames)
-      : userOwnPermission.canUpdateAll(permissionNames)
+  userPermissionNamesSelector,
+  (myUser, user, permissionNames) =>
+    myUser && user?.id === myUser?.id
+      ? userPermission.canUpdateOwn(permissionNames)
+      : userPermission.canUpdateAll(permissionNames)
 );
 
 export const userDeletePermissionCheckSelector = createSelector(
-  myUserIdSelector,
+  myUserSelector,
   userSelector,
-  permissionNamesSelector,
-  (myUserId, user, permissionNames) =>
-    myUserId && user?.id === myUserId
-      ? userOwnPermission.canDeleteOwn(permissionNames)
-      : userOwnPermission.canDeleteAll(permissionNames)
+  userPermissionNamesSelector,
+  (myUser, user, permissionNames) =>
+    myUser && user?.id === myUser?.id
+      ? userPermission.canDeleteOwn(permissionNames)
+      : userPermission.canDeleteAll(permissionNames)
 );

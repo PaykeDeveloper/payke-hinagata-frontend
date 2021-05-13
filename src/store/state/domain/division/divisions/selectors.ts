@@ -1,9 +1,11 @@
+// FIXME: SAMPLE CODE
+
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
-import { OwnPermissionFactory } from '../../common/permissions/factories';
-import { permissionNamesSelector } from '../../common/user/selectors';
+import { OwnPermissionFactory } from 'src/store/state/domain/common/permissions/factories';
+import { userPermissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
 
-export const divisionOwnPermission = new OwnPermissionFactory('division');
+export const divisionPermission = new OwnPermissionFactory('division');
 
 export const divisionsSelector = (state: StoreState) =>
   state.domain.division.divisions.entities;
@@ -23,20 +25,32 @@ export const divisionStatusSelector = (state: StoreState) =>
 export const divisionErrorSelector = (state: StoreState) =>
   state.domain.division.divisions.meta.fetchEntity.error;
 
+export const requestMemberIdSelector = createSelector(
+  divisionSelector,
+  (division) => division?.requestMemberId
+);
+
+export const memberPermissionNamesSelector = createSelector(
+  divisionSelector,
+  (division) => division?.permissionNames
+);
+
 export const divisionUpdatePermissionCheckSelector = createSelector(
   divisionSelector,
-  (division) =>
+  memberPermissionNamesSelector,
+  userPermissionNamesSelector,
+  (division, memberPermissionNames, userPermissionNames) =>
     division?.requestMemberId !== null
-      ? divisionOwnPermission.canUpdateOwn(division?.permissionNames)
-      : divisionOwnPermission.canUpdateAll(division?.permissionNames)
+      ? divisionPermission.canUpdateOwn(memberPermissionNames)
+      : divisionPermission.canUpdateAll(userPermissionNames)
 );
 
 export const divisionsUpdatePermissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (permissionNames) => divisionOwnPermission.canUpdate(permissionNames)
+  userPermissionNamesSelector,
+  (permissionNames) => divisionPermission.canUpdate(permissionNames)
 );
 
 export const divisionsCreatePermissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (permissionNames) => divisionOwnPermission.canCreate(permissionNames)
+  userPermissionNamesSelector,
+  (permissionNames) => divisionPermission.canCreate(permissionNames)
 );

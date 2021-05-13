@@ -3,9 +3,9 @@ import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { StoreState, useStoreDispatch, useStoreSelector } from 'src/store';
-import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
+import { userPermissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
 import {
-  divisionOwnPermission,
+  divisionPermission,
   divisionErrorSelector,
   divisionSelector,
   divisionStatusSelector,
@@ -18,7 +18,7 @@ import Form from '../components/Form';
 type ChildProps = ComponentProps<typeof Form>;
 
 const permissionCheckSelector = createSelector(
-  permissionNamesSelector,
+  userPermissionNamesSelector,
   (_: StoreState, params: { permissionNames: string[] }) =>
     params.permissionNames,
   (permissionNames, selectedPermissionNames) =>
@@ -87,8 +87,8 @@ const Container: FC<
   const state = useStoreSelector((s) =>
     selector(s, {
       permissionNames: [
-        divisionOwnPermission.deleteOwn,
-        divisionOwnPermission.deleteAll,
+        divisionPermission.deleteOwn,
+        divisionPermission.deleteAll,
       ],
     })
   );

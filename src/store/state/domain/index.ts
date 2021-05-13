@@ -5,17 +5,16 @@ import sampleReducer, { SampleState } from './sample';
 
 export interface DomainState {
   common: CommonState;
-  division: DivisionState;
 
   // FIXME: SAMPLE CODE
+  division: DivisionState;
   sample: SampleState;
 }
 
 export default combineReducers({
   common: commonReducer,
 
-  division: divisionReducer,
-
   // FIXME: SAMPLE CODE
+  division: divisionReducer,
   sample: sampleReducer,
 });

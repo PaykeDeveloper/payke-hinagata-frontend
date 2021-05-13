@@ -1,7 +1,10 @@
+import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
 
-export const permissionNamesSelector = (state: StoreState) =>
-  state.domain.common.user.entity?.permissionNames;
+export const myUserSelector = (state: StoreState) =>
+  state.domain.common.user.entity;
 
-export const myUserIdSelector = (state: StoreState) =>
-  state.domain.common.user.entity?.id;
+export const userPermissionNamesSelector = createSelector(
+  myUserSelector,
+  (user) => user?.permissionNames
+);
