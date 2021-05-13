@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';

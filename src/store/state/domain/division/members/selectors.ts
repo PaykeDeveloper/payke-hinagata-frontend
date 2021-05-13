@@ -2,14 +2,12 @@
 
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
-import { userSelector } from 'src/store/state/domain/common/users/selectors';
-import { RootState } from 'src/store/state/index';
-import { OwnPermissionFactory } from 'src/store/utils';
-import { userPermissionNamesSelector } from '../../common/user/selectors';
+import { userPermissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
 import {
-  divisionSelector,
   memberPermissionNamesSelector,
-} from '../divisions/selectors';
+  requestMemberIdSelector,
+} from 'src/store/state/domain/division/divisions/selectors';
+import { OwnPermissionFactory } from 'src/store/utils';
 
 const memberPermission = new OwnPermissionFactory('member');
 
@@ -40,31 +38,31 @@ export const checkViewMembersSelector = createSelector(
 );
 
 export const checkCreateMemberSelector = createSelector(
-  divisionSelector,
+  requestMemberIdSelector,
   memberPermissionNamesSelector,
   userPermissionNamesSelector,
-  (division, memberPermissionNames, userPermissionNames) =>
-    division?.requestMemberId !== null
+  (requestMemberId, memberPermissionNames, userPermissionNames) =>
+    requestMemberId !== null
       ? memberPermission.canCreate(memberPermissionNames)
       : memberPermission.canCreateAll(userPermissionNames)
 );
 
 export const checkUpdateMembersSelector = createSelector(
-  divisionSelector,
+  requestMemberIdSelector,
   memberPermissionNamesSelector,
   userPermissionNamesSelector,
-  (division, memberPermissionNames, userPermissionNames) =>
-    division?.requestMemberId !== null
+  (requestMemberId, memberPermissionNames, userPermissionNames) =>
+    requestMemberId !== null
       ? memberPermission.canUpdate(memberPermissionNames)
       : memberPermission.canUpdateAll(userPermissionNames)
 );
 
 export const checkDeleteMemberSelector = createSelector(
-  divisionSelector,
+  requestMemberIdSelector,
   memberPermissionNamesSelector,
   userPermissionNamesSelector,
-  (division, memberPermissionNames, userPermissionNames) =>
-    division?.requestMemberId !== null
+  (requestMemberId, memberPermissionNames, userPermissionNames) =>
+    requestMemberId !== null
       ? memberPermission.canDelete(memberPermissionNames)
       : memberPermission.canDeleteAll(userPermissionNames)
 );

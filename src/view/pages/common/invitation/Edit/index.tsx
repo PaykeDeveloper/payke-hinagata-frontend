@@ -31,7 +31,7 @@ const selector = createSelector(
   (object, status, error, roles) => ({ object, status, error, roles })
 );
 
-const Container: FC<
+const Edit: FC<
   RouteComponentProps<InvitationPath, StaticContext, RouterState>
 > = (props) => {
   const {
@@ -98,4 +98,4 @@ const Container: FC<
   );
 };
 
-export default Container;
+export default Edit;

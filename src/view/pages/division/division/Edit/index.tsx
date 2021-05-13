@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
@@ -46,7 +48,7 @@ export type DivisionEditRouterState =
     })
   | undefined;
 
-const Container: FC<
+const Edit: FC<
   RouteComponentProps<DivisionPath, StaticContext, DivisionEditRouterState>
 > = (props) => {
   const {
@@ -119,4 +121,4 @@ const Container: FC<
   );
 };
 
-export default Container;
+export default Edit;

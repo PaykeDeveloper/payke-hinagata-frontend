@@ -72,7 +72,7 @@ const getPaths = (menu: Menu): string[] => {
   return menu.paths;
 };
 
-const SideMenu: FC<Props> = (props) => {
+const Component: FC<Props> = (props) => {
   const {
     pathname,
     topMenuLists,
@@ -183,4 +183,4 @@ const SideMenu: FC<Props> = (props) => {
   );
 };
 
-export default SideMenu;
+export default Component;

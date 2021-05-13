@@ -59,12 +59,10 @@ const divisionsSelectMenuSelector = createSelector(
         name: 'divisionId',
         label: 'Division',
         selects: [
-          ...[
-            {
-              text: 'Select',
-              value: '',
-            },
-          ],
+          {
+            text: 'Select',
+            value: '',
+          },
           ...divisions.map((division) => ({
             text: division.name,
             value: `${division.id}`,
@@ -148,7 +146,7 @@ const selector = createSelector(
   })
 );
 
-const List: FC<ChildProps> = (props) => {
+const PrivateSideMenu: FC<ChildProps> = (props) => {
   const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(divisionsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
@@ -213,4 +211,4 @@ const List: FC<ChildProps> = (props) => {
   );
 };
 
-export default List;
+export default PrivateSideMenu;

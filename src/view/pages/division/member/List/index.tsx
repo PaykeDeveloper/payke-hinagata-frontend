@@ -88,7 +88,7 @@ const selector = createSelector(
   })
 );
 
-const Show: FC<
+const List: FC<
   RouteComponentProps<DivisionPath, StaticContext, RouterState>
 > = (props) => {
   const {
@@ -152,4 +152,4 @@ const Show: FC<
   );
 };
 
-export default Show;
+export default List;

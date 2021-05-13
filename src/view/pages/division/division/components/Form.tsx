@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 import React, { FC } from 'react';
 import { Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';

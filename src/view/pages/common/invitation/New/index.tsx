@@ -31,7 +31,7 @@ const selector = createSelector(
   })
 );
 
-const Container: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
+const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
   props
 ) => {
   const {
@@ -74,4 +74,4 @@ const Container: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
   );
 };
 
-export default Container;
+export default New;

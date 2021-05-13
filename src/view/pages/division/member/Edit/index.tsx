@@ -92,7 +92,7 @@ export type DivisionEditRouterState =
 
 const rules = {} as const;
 
-const Container: FC<
+const Edit: FC<
   RouteComponentProps<MemberPath, StaticContext, DivisionEditRouterState>
 > = (props) => {
   const {
@@ -160,4 +160,4 @@ const Container: FC<
   );
 };
 
-export default Container;
+export default Edit;

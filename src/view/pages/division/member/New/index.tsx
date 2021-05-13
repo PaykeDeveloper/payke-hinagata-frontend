@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
@@ -55,9 +57,9 @@ const selector = createSelector(
   })
 );
 
-const Container: FC<
-  RouteComponentProps<DivisionPath, StaticContext, RouterState>
-> = (props) => {
+const New: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> = (
+  props
+) => {
   const {
     match: { params: pathParams },
     history: { push },
@@ -104,4 +106,4 @@ const Container: FC<
   );
 };
 
-export default Container;
+export default New;

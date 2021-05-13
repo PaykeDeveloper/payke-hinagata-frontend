@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 import React, { FC } from 'react';
 import { Box, Button, Card, CardContent, Typography } from '@material-ui/core';
 import { Trans } from 'react-i18next';
