@@ -171,11 +171,11 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
       dispatch: StoreDispatch,
       importers: BookImporter[]
     ) {
-      importers.forEach((importer) => {
+      for (const importer of importers) {
         let bodyParams = importer?.book;
         if (bodyParams !== undefined) {
           if (bodyParams.id) {
-            dispatch(
+            await dispatch(
               mergeEntity({
                 pathParams: { bookId: bodyParams.id.toString() },
                 bodyParams,
@@ -183,7 +183,7 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
               })
             );
           } else {
-            dispatch(
+            await dispatch(
               addEntity({
                 pathParams: {},
                 bodyParams,
@@ -192,10 +192,10 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
             );
           }
         }
-      });
+      }
     }
     const ui = domainSelector(getState());
-    importLoop(dispatch, ui.importRows);
+    return importLoop(dispatch, ui.importRows);
   };
   return {
     actions: {

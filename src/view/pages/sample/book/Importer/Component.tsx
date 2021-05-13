@@ -1,8 +1,6 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-
-import { Box, Button } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -36,6 +34,7 @@ import {
   CheckIcon,
 } from 'src/view/base/material-ui/Icon';
 import Buttons from 'src/view/components/molecules/Buttons';
+import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
@@ -72,87 +71,6 @@ const ImportProgress: FC<{
     return <></>;
   }
 };
-
-const Component: FC<{
-  onStartImport: () => void;
-  onReset: () => void;
-  onDownloadErrors: () => void;
-  onInputChange: (value?: File) => void | Promise<unknown>;
-  importers: BookImporter[];
-  status: StoreStatus;
-}> = (props) => {
-  const {
-    onStartImport,
-    onReset,
-    onDownloadErrors,
-    onInputChange,
-    status,
-    importers,
-    ...otherProps
-  } = props;
-  const { t } = useTranslation();
-  return (
-    <ContentWrapper>
-      <ContentHeader links={[{ children: t('Home'), to: rootPath }]}>
-        {t('Books Importer')}
-      </ContentHeader>
-      <ContentBody>
-        <Buttons
-          leftButtons={[
-            <FileUploadButton
-              color="primary"
-              onInputChange={onInputChange}
-              disabled={importers.length !== 0}
-              accept={'text/csv'}
-              icon={CallSplitIcon}
-            >
-              {t('Choose CSV')}
-            </FileUploadButton>,
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              size="large"
-              startIcon={<SaveIcon />}
-              onClick={onStartImport}
-              disabled={
-                importers.length === 0 || status !== StoreStatus.Initial
-              }
-            >
-              {t('Start Import')}
-            </Button>,
-            <Button
-              type="button"
-              variant="contained"
-              color="secondary"
-              size="large"
-              startIcon={<DeleteIcon />}
-              onClick={onReset}
-              disabled={
-                importers.length === 0 || status === StoreStatus.Started
-              }
-            >
-              {t('Clear')}
-            </Button>,
-            <Button
-              type="button"
-              variant="contained"
-              color="default"
-              size="large"
-              startIcon={<DownloadIcon />}
-              onClick={onDownloadErrors}
-              disabled={status !== StoreStatus.Done}
-            >
-              {t('Download Error Rows')}
-            </Button>,
-          ]}
-        />
-        <ImportersTable {...otherProps} importers={importers} status={status} />
-      </ContentBody>
-    </ContentWrapper>
-  );
-};
-export default Component;
 
 const StatusCell: FC<{ rowId: string }> = ({ rowId }) => {
   const result = useStoreSelector((s) => importResultSelector(s, rowId));
@@ -238,30 +156,109 @@ const ImportersTable: FC<{
     },
   ];
   return (
-    <Box mt={3}>
-      <RouterDataGrid
-        columns={columns}
-        rows={importers}
-        disableColumnMenu
-        disableColumnSelector
-        disableColumnReorder
-        disableExtendRowFullWidth
-        disableSelectionOnClick
-        loading
-        pagination
-        autoPageSize={false}
-        pageSize={25}
-        rowsPerPageOptions={[5, 25, 50]}
-        components={{
-          LoadingOverlay: () => (
-            <GridOverlay>
-              <div style={{ position: 'absolute', top: 0, width: '100%' }}>
-                <ImportProgress status={status} />
-              </div>
-            </GridOverlay>
-          ),
-        }}
-      />
-    </Box>
+    <RouterDataGrid
+      columns={columns}
+      rows={importers}
+      disableColumnMenu
+      disableColumnSelector
+      disableColumnReorder
+      disableExtendRowFullWidth
+      disableSelectionOnClick
+      loading
+      pagination
+      autoPageSize={false}
+      pageSize={25}
+      rowsPerPageOptions={[5, 25, 50]}
+      components={{
+        LoadingOverlay: () => (
+          <GridOverlay>
+            <div style={{ position: 'absolute', top: 0, width: '100%' }}>
+              <ImportProgress status={status} />
+            </div>
+          </GridOverlay>
+        ),
+      }}
+    />
   );
 };
+
+const Component: FC<{
+  onStartImport: () => void | Promise<unknown>;
+  onReset: () => void | Promise<unknown>;
+  onDownloadErrors: () => void | Promise<unknown>;
+  onInputChange: (value?: File | null) => void | Promise<unknown>;
+  importers: BookImporter[];
+  status: StoreStatus;
+}> = (props) => {
+  const {
+    onStartImport,
+    onReset,
+    onDownloadErrors,
+    onInputChange,
+    status,
+    importers,
+    ...otherProps
+  } = props;
+  const { t } = useTranslation();
+  return (
+    <ContentWrapper>
+      <ContentHeader links={[{ children: t('Home'), to: rootPath }]}>
+        {t('Books Importer')}
+      </ContentHeader>
+      <ContentBody>
+        <Buttons
+          leftButtons={[
+            <FileUploadButton
+              color="primary"
+              onChange={onInputChange}
+              disabled={importers.length !== 0}
+              accept={'text/csv'}
+              icon={CallSplitIcon}
+            >
+              {t('Choose CSV')}
+            </FileUploadButton>,
+            <LoaderButton
+              type="button"
+              variant="contained"
+              color="primary"
+              size="large"
+              startIcon={<SaveIcon />}
+              onClick={onStartImport}
+              disabled={
+                importers.length === 0 || status !== StoreStatus.Initial
+              }
+            >
+              {t('Start Import')}
+            </LoaderButton>,
+            <LoaderButton
+              type="button"
+              variant="contained"
+              color="secondary"
+              size="large"
+              startIcon={<DeleteIcon />}
+              onClick={onReset}
+              disabled={
+                importers.length === 0 || status === StoreStatus.Started
+              }
+            >
+              {t('Clear')}
+            </LoaderButton>,
+            <LoaderButton
+              type="button"
+              variant="contained"
+              color="default"
+              size="large"
+              startIcon={<DownloadIcon />}
+              onClick={onDownloadErrors}
+              disabled={status !== StoreStatus.Done}
+            >
+              {t('Download Error Rows')}
+            </LoaderButton>,
+          ]}
+        />
+        <ImportersTable {...otherProps} importers={importers} status={status} />
+      </ContentBody>
+    </ContentWrapper>
+  );
+};
+export default Component;

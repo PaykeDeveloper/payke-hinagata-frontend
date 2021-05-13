@@ -5,23 +5,28 @@ import SubmitButton, {
   SubmitButtonProps,
 } from 'src/view/base/material-ui/SubmitButton';
 
-export type FileUploadButtonProps = Omit<SubmitButtonProps, 'onClick'> & {
+export type FileUploadButtonProps = Omit<
+  SubmitButtonProps,
+  'onClick' | 'onChange'
+> & {
   accept?: string;
-  onInputChange: (value?: File) => void | Promise<unknown>;
+  onChange: (value?: File | null) => void | Promise<unknown>;
 };
 
 function FileUploadButton(props: FileUploadButtonProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { onInputChange, children, accept, ...otherProps } = props;
-  const onFileInputChange = useCallback(
+  const { onChange, children, accept, ...otherProps } = props;
+  const handleChange = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.currentTarget.files !== null) {
         const file = event.currentTarget.files[0];
-        await onInputChange(file);
+        await onChange(file);
         inputRef.current!.value = '';
+      } else {
+        await onChange(event.currentTarget.files);
       }
     },
-    [onInputChange, inputRef]
+    [onChange, inputRef]
   );
   const fileUpload = async () => {
     inputRef.current!.click();
@@ -36,7 +41,7 @@ function FileUploadButton(props: FileUploadButtonProps) {
         ref={inputRef}
         type="file"
         accept={accept}
-        onChange={onFileInputChange}
+        onChange={handleChange}
       />
     </>
   );

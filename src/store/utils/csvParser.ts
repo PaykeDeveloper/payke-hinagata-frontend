@@ -28,7 +28,7 @@ export const readCsv = async <T>(input: File | string) => {
 
 export const toCsv = (rows: Object[]) => unparse(rows);
 
-export const exportToCsv = (filename: string, rows: Object[]): void => {
+export const exportToCsv = (filename: string, rows: Object[]) => {
   if (!rows || !rows.length) {
     return;
   }

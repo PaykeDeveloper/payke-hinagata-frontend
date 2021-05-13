@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback } from 'react';
+import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { createSelector } from '@reduxjs/toolkit';
 import { useSnackbar } from 'notistack';
@@ -19,6 +19,7 @@ import { bookImportersActions } from 'src/store/state/ui/sample/importers/books/
 import { StoreStatus } from 'src/store/types';
 import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
 import Component from './Component';
+import { booksActions } from 'src/store/state/domain/sample/books/slice';
 
 const selector = createSelector(
   [importRowsSelector, importerStatusSelector],
@@ -65,11 +66,12 @@ type ChildProps = ComponentProps<typeof Component>;
 const Importer: FC<RouteComponentProps> = (props) => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
-  const state = useStoreSelector(selector);
   const dispatch = useStoreDispatch();
+  const state = useStoreSelector(selector);
+  const { status, ...otherState } = state;
   const handleSetCsvFile: ChildProps['onInputChange'] = useCallback(
     async (value) => {
-      if (value === undefined) {
+      if (!value) {
         return;
       }
       if (!SUPPORTED_FORMATS.includes(value.type)) {
@@ -90,8 +92,15 @@ const Importer: FC<RouteComponentProps> = (props) => {
     [dispatch, t, enqueueSnackbar]
   );
   const handleImport: ChildProps['onStartImport'] = useCallback(async () => {
-    dispatch(bookImportersActions.startImport());
-  }, [dispatch]);
+    try {
+      await dispatch(bookImportersActions.startImport());
+    } finally {
+      enqueueSnackbar(t('finished import.'), {
+        variant: 'success',
+      });
+      dispatch(booksActions.resetEntitiesIfNeeded());
+    }
+  }, [dispatch, enqueueSnackbar]);
   const handleClear: ChildProps['onReset'] = useCallback(async () => {
     dispatch(bookImportersActions.resetImporters());
   }, [dispatch]);
@@ -109,15 +118,14 @@ const Importer: FC<RouteComponentProps> = (props) => {
       })
     );
   }, [errorResults]);
-  const { importers, ...otherState } = state;
   return (
     <Component
       {...otherState}
+      status={status}
       onStartImport={handleImport}
       onReset={handleClear}
       onDownloadErrors={handlerDownloadErrors}
       onInputChange={handleSetCsvFile}
-      importers={importers}
     />
   );
 };
