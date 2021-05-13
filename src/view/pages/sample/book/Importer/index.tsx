@@ -1,12 +1,13 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
+import React, { ComponentProps, FC, useCallback } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { createSelector } from '@reduxjs/toolkit';
 import { useSnackbar } from 'notistack';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { booksActions } from 'src/store/state/domain/sample/books/slice';
 import { BookInput } from 'src/store/state/domain/sample/books/types';
 import {
   importRowsSelector,
@@ -18,8 +19,7 @@ import {
 import { bookImportersActions } from 'src/store/state/ui/sample/importers/books/slice';
 import { StoreStatus } from 'src/store/types';
 import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
-import Component from './Component';
-import { booksActions } from 'src/store/state/domain/sample/books/slice';
+import Component from 'src/view/pages/sample/book/Importer/Components/Component';
 
 const selector = createSelector(
   [importRowsSelector, importerStatusSelector],
@@ -44,7 +44,7 @@ const ImportProgress: FC = () => {
   let progress: number | undefined = undefined;
   if (status !== StoreStatus.Initial) {
     if (finished === 0) {
-      progress = 1;
+      progress = 0.01;
     } else {
       progress = (finished! / total!) * 100;
     }
@@ -64,7 +64,6 @@ export const SUPPORTED_FORMATS = ['text/csv'];
 type ChildProps = ComponentProps<typeof Component>;
 
 const Importer: FC<RouteComponentProps> = (props) => {
-  const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useStoreDispatch();
   const state = useStoreSelector(selector);
@@ -75,13 +74,13 @@ const Importer: FC<RouteComponentProps> = (props) => {
         return;
       }
       if (!SUPPORTED_FORMATS.includes(value.type)) {
-        enqueueSnackbar(t('Unsupported Format'), {
+        enqueueSnackbar(<Trans>Unsupported Format</Trans>, {
           variant: 'error',
         });
         return;
       }
       if (value.size > MAX_FILE_SIZE) {
-        enqueueSnackbar(t('File too large'), {
+        enqueueSnackbar(<Trans>File too large</Trans>, {
           variant: 'error',
         });
         return;
@@ -89,13 +88,13 @@ const Importer: FC<RouteComponentProps> = (props) => {
       const data = await readCsv<BookInput>(value);
       dispatch(bookImportersActions.setImporters(data));
     },
-    [dispatch, t, enqueueSnackbar]
+    [dispatch, enqueueSnackbar]
   );
   const handleImport: ChildProps['onStartImport'] = useCallback(async () => {
     try {
       await dispatch(bookImportersActions.startImport());
     } finally {
-      enqueueSnackbar(t('finished import.'), {
+      enqueueSnackbar(<Trans>finished import</Trans>, {
         variant: 'success',
       });
       dispatch(booksActions.resetEntitiesIfNeeded());
@@ -126,7 +125,9 @@ const Importer: FC<RouteComponentProps> = (props) => {
       onReset={handleClear}
       onDownloadErrors={handlerDownloadErrors}
       onInputChange={handleSetCsvFile}
-    />
+    >
+      <ImportProgress />
+    </Component>
   );
 };
 
