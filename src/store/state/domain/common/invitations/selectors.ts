@@ -1,5 +1,5 @@
 import { StoreState } from 'src/store';
-import { OwnPermissionFactory } from '../permissions/factories';
+import { OwnPermissionFactory } from 'src/store/utils';
 
 export const invitationPermission = new OwnPermissionFactory('invitation');
 

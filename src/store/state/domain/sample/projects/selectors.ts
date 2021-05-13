@@ -2,7 +2,7 @@
 
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
-import { OwnPermissionFactory } from '../../common/permissions/factories';
+import { OwnPermissionFactory } from 'src/store/utils';
 import { userPermissionNamesSelector } from '../../common/user/selectors';
 
 export const projectPermission = new OwnPermissionFactory('project');

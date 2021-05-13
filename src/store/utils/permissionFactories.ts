@@ -1,7 +1,16 @@
-import { ModelPermission } from '../../common/permissions/types';
-import { PermissionType } from './types';
+enum PermissionType {
+  ViewOwn = 'viewOwn',
+  ViewAll = 'viewAll',
+  CreateOwn = 'createOwn',
+  CreateAll = 'createAll',
+  UpdateOwn = 'updateOwn',
+  UpdateAll = 'updateAll',
+  DeleteOwn = 'deleteOwn',
+  DeleteAll = 'deleteAll',
+}
+type ModelPermission<M extends string, P extends PermissionType> = `${M}_${P}`;
 
-class AllPermissionFactory<Model extends string> {
+export class AllPermissionFactory<Model extends string> {
   readonly model: Model;
 
   readonly viewAll: ModelPermission<Model, PermissionType.ViewAll>;

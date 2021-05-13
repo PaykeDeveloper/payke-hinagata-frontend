@@ -3,7 +3,7 @@
 import { createSelector } from 'reselect';
 import { convertListToObject } from 'src/base/utils';
 import { StoreState } from 'src/store';
-import { OwnPermissionFactory } from '../permissions/factories';
+import { OwnPermissionFactory } from 'src/store/utils';
 import { myUserSelector, userPermissionNamesSelector } from '../user/selectors';
 import { User } from '../user/types';
 

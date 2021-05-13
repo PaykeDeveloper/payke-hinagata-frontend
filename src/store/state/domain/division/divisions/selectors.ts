@@ -2,8 +2,8 @@
 
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
-import { OwnPermissionFactory } from 'src/store/state/domain/common/permissions/factories';
 import { userPermissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
+import { OwnPermissionFactory } from 'src/store/utils';
 
 export const divisionPermission = new OwnPermissionFactory('division');
 

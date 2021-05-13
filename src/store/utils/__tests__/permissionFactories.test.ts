@@ -1,4 +1,4 @@
-import { OwnPermissionFactory } from '../factories';
+import { OwnPermissionFactory } from 'src/store/utils/index';
 
 test('OwnPermissionFactory can generate viewAll', () => {
   const allPermissionFactory = new OwnPermissionFactory('resource');

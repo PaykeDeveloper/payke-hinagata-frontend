@@ -4,7 +4,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
 import { userSelector } from 'src/store/state/domain/common/users/selectors';
 import { RootState } from 'src/store/state/index';
-import { OwnPermissionFactory } from '../../common/permissions/factories';
+import { OwnPermissionFactory } from 'src/store/utils';
 import { userPermissionNamesSelector } from '../../common/user/selectors';
 import {
   divisionSelector,
