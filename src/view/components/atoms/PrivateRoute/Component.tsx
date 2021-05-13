@@ -8,6 +8,7 @@ interface Props extends RouteProps {
 
 const Component: FC<Props> = (props) => {
   const { isAuthenticated, ...otherProps } = props;
+
   if (isAuthenticated) {
     return <Route {...otherProps} />;
   }

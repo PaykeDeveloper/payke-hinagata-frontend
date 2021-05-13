@@ -16,10 +16,9 @@ const RootRoutes: FC = () => {
   const state = useStoreSelector(selector);
 
   const dispatch = useStoreDispatch();
-  const onMounted: ChildProps['onMounted'] = useCallback(
-    () => dispatch(statusActions.fetchEntityIfNeeded({ pathParams: {} })),
-    [dispatch]
-  );
+  const onMounted: ChildProps['onMounted'] = useCallback(() => {
+    dispatch(statusActions.fetchEntityIfNeeded({ pathParams: {} }));
+  }, [dispatch]);
 
   return <Component {...state} onMounted={onMounted} />;
 };

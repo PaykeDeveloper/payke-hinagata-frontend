@@ -43,16 +43,29 @@ export type LoaderProps = { size?: number } & (
   | {
       loading: boolean;
     }
+  | {
+      statuses: StoreStatus[];
+    }
 );
 
-export const checkLoading = (status: StoreStatus) =>
+export const checkStatusLoading = (status: StoreStatus) =>
   status === StoreStatus.Started;
+
+export const checkStatusesLoading = (statuses: StoreStatus[]) =>
+  statuses.some((e) => e === StoreStatus.Started);
 
 const Loader: FC<LoaderProps> = (props) => {
   const { children, size } = props;
   const classes = useStyles();
-  const loading =
-    'status' in props ? checkLoading(props.status) : props.loading;
+  const loading = (() => {
+    if ('status' in props) {
+      return checkStatusLoading(props.status);
+    } else if ('loading' in props) {
+      return props.loading;
+    } else if ('statuses' in props) {
+      return checkStatusesLoading(props.statuses);
+    }
+  })();
   return (
     <div className={classes.wrapper}>
       {children}
