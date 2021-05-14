@@ -27,9 +27,8 @@ export const userStatusSelector = (state: StoreState) =>
 export const userErrorSelector = (state: StoreState) =>
   state.domain.common.users.meta.fetchEntity.error;
 
-export const userIdMapSelector = createSelector(
-  usersSelector,
-  (users): Record<number, User> => convertListToObject(users, 'id')
+export const userIdMapSelector = createSelector(usersSelector, (users) =>
+  convertListToObject<number, User>(users, 'id')
 );
 
 export const usersViewPermissionCheckSelector = createSelector(

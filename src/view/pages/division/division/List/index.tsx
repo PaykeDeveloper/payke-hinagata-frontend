@@ -7,14 +7,14 @@ import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { usersViewPermissionCheckSelector } from 'src/store/state/domain/common/users/selectors';
 import {
-  divisionsCreatePermissionCheckSelector,
+  canCreateDivisionsSelector,
   divisionsErrorSelector,
   divisionsSelector,
   divisionsStatusSelector,
-  divisionsUpdatePermissionCheckSelector,
+  canUpdateDivisionsSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
-import { checkViewMembersSelector } from 'src/store/state/domain/division/members/selectors';
+import { canViewMembersSelector } from 'src/store/state/domain/division/members/selectors';
 import {
   divisionNewPath,
   getDivisionEditPath,
@@ -29,10 +29,10 @@ type ChildProps = ComponentProps<typeof Component>;
 
 const permissionSelector = createSelector(
   [
-    divisionsCreatePermissionCheckSelector,
-    divisionsUpdatePermissionCheckSelector,
+    canCreateDivisionsSelector,
+    canUpdateDivisionsSelector,
     usersViewPermissionCheckSelector,
-    checkViewMembersSelector,
+    canViewMembersSelector,
   ],
   (divisionCreate, divisionUpdate, usersView, membersView) => ({
     divisionCreate,

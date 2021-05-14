@@ -35,17 +35,9 @@ import {
 import { membersActions } from 'src/store/state/domain/division/members/slice';
 import { MemberPath, divisionsPath } from 'src/view/routes/paths';
 import { BaseRouterState } from 'src/view/routes/types';
-import Form, { PermissionList } from '../components/Form';
+import Form from '../components/Form';
 
 type ChildProps = ComponentProps<typeof Form>;
-
-const permissionSelector = createSelector(
-  checkDeleteMemberSelector,
-  (memberDelete) =>
-    ({
-      memberDelete,
-    } as PermissionList)
-);
 
 const selector = createSelector(
   [
@@ -59,7 +51,7 @@ const selector = createSelector(
     memberSelector,
     memberStatusSelector,
     memberErrorSelector,
-    permissionSelector,
+    checkDeleteMemberSelector,
   ],
   (
     division,
@@ -72,7 +64,7 @@ const selector = createSelector(
     member,
     memberStatus,
     memberError,
-    permissions
+    checkDeleteMember
   ) => ({
     division,
     memberRoles,
@@ -80,7 +72,7 @@ const selector = createSelector(
     member,
     statuses: [divisionStatus, rolesStatus, memberStatus, usersStatus],
     errors: [usersError, memberError],
-    permissions,
+    canDelete: checkDeleteMember(member?.id),
   })
 );
 
@@ -128,7 +120,7 @@ const Edit: FC<
     [dispatch, pathParams, onBack]
   );
 
-  const { member, ...otherState } = useStoreSelector(selector);
+  const { member, canDelete, ...otherState } = useStoreSelector(selector);
 
   const fromShow = location.state?.fromShow;
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
@@ -155,7 +147,7 @@ const Edit: FC<
       member={member}
       onSubmit={onSubmit}
       onBack={onBack}
-      onDelete={onDelete}
+      onDelete={canDelete ? onDelete : undefined}
     />
   );
 };

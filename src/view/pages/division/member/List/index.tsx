@@ -15,14 +15,14 @@ import {
   divisionErrorSelector,
   divisionSelector,
   divisionStatusSelector,
-  divisionUpdatePermissionCheckSelector,
+  canUpdateDivisionsSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
   membersStatusSelector,
   membersErrorSelector,
-  checkUpdateMembersSelector,
-  checkCreateMemberSelector,
+  canUpdateMembersSelector,
+  canCreateMembersSelector,
   membersSelector,
 } from 'src/store/state/domain/division/members/selectors';
 import { membersActions } from 'src/store/state/domain/division/members/slice';
@@ -42,9 +42,9 @@ type ChildProps = ComponentProps<typeof Component>;
 
 const permissionSelector = createSelector(
   [
-    divisionUpdatePermissionCheckSelector,
-    checkCreateMemberSelector,
-    checkUpdateMembersSelector,
+    canUpdateDivisionsSelector,
+    canCreateMembersSelector,
+    canUpdateMembersSelector,
   ],
   (divisionUpdate, memberCreate, memberUpdate) =>
     ({

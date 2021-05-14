@@ -35,22 +35,23 @@ export const memberPermissionNamesSelector = createSelector(
   (division) => division?.permissionNames
 );
 
-export const divisionUpdatePermissionCheckSelector = createSelector(
-  divisionSelector,
+export const canCreateDivisionsSelector = createSelector(
+  userPermissionNamesSelector,
+  (userPermissionNames) => divisionPermission.canCreate(userPermissionNames)
+);
+
+export const canUpdateDivisionsSelector = createSelector(
+  userPermissionNamesSelector,
   memberPermissionNamesSelector,
-  userPermissionNamesSelector,
-  (division, memberPermissionNames, userPermissionNames) =>
-    division?.requestMemberId !== null
-      ? divisionPermission.canUpdateOwn(memberPermissionNames)
-      : divisionPermission.canUpdateAll(userPermissionNames)
+  (userPermissionNames, memberPermissionNames) =>
+    divisionPermission.canUpdateOwn(memberPermissionNames) ||
+    divisionPermission.canUpdateAll(userPermissionNames)
 );
 
-export const divisionsUpdatePermissionCheckSelector = createSelector(
+export const canDeleteDivisionsSelector = createSelector(
   userPermissionNamesSelector,
-  (permissionNames) => divisionPermission.canUpdate(permissionNames)
-);
-
-export const divisionsCreatePermissionCheckSelector = createSelector(
-  userPermissionNamesSelector,
-  (permissionNames) => divisionPermission.canCreate(permissionNames)
+  memberPermissionNamesSelector,
+  (userPermissionNames, memberPermissionNames) =>
+    divisionPermission.canDeleteOwn(memberPermissionNames) ||
+    divisionPermission.canDeleteAll(userPermissionNames)
 );

@@ -36,16 +36,11 @@ import {
 } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
-export type PermissionList = {
-  memberDelete: boolean;
-};
-
 const Form: FC<{
   title: string;
   object: MemberInput | undefined;
   statuses: StoreStatus[];
   errors: (StoreError | undefined)[];
-  permission?: PermissionList;
   division: Division | undefined;
   users: User[];
   member: MemberDetail | undefined;
@@ -61,7 +56,6 @@ const Form: FC<{
     users,
     statuses,
     errors,
-    permission,
     memberRoles: roles,
     division,
     onSubmit,
@@ -108,7 +102,6 @@ const Form: FC<{
             rightButtons={
               onDelete && [
                 <LoaderButton
-                  disabled={!permission?.memberDelete}
                   onClick={onDelete}
                   startIcon={<DeleteIcon />}
                   color="secondary"

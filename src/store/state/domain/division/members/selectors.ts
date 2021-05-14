@@ -29,40 +29,97 @@ export const memberStatusSelector = (state: StoreState) =>
 export const memberErrorSelector = (state: StoreState) =>
   state.domain.division.members.meta.fetchEntity.error;
 
-export const checkViewMembersSelector = createSelector(
-  memberPermissionNamesSelector,
+export const canViewMembersSelector = createSelector(
   userPermissionNamesSelector,
-  (memberPermissionNames, userPermissionNames) =>
+  memberPermissionNamesSelector,
+  (userPermissionNames, memberPermissionNames) =>
     memberPermission.canView(memberPermissionNames) ||
-    memberPermission.canView(userPermissionNames)
+    memberPermission.canViewAll(userPermissionNames)
 );
 
-export const checkCreateMemberSelector = createSelector(
-  requestMemberIdSelector,
-  memberPermissionNamesSelector,
+export const canCreateMembersSelector = createSelector(
   userPermissionNamesSelector,
-  (requestMemberId, memberPermissionNames, userPermissionNames) =>
-    requestMemberId !== null
-      ? memberPermission.canCreate(memberPermissionNames)
-      : memberPermission.canCreateAll(userPermissionNames)
+  memberPermissionNamesSelector,
+  (userPermissionNames, memberPermissionNames) =>
+    memberPermission.canCreate(memberPermissionNames) ||
+    memberPermission.canCreateAll(userPermissionNames)
 );
 
-export const checkUpdateMembersSelector = createSelector(
-  requestMemberIdSelector,
-  memberPermissionNamesSelector,
+export const canUpdateMembersSelector = createSelector(
   userPermissionNamesSelector,
-  (requestMemberId, memberPermissionNames, userPermissionNames) =>
-    requestMemberId !== null
-      ? memberPermission.canUpdate(memberPermissionNames)
-      : memberPermission.canUpdateAll(userPermissionNames)
+  memberPermissionNamesSelector,
+  (userPermissionNames, memberPermissionNames) =>
+    memberPermission.canUpdate(memberPermissionNames) ||
+    memberPermission.canUpdateAll(userPermissionNames)
+);
+
+export const canDeleteMembersSelector = createSelector(
+  userPermissionNamesSelector,
+  memberPermissionNamesSelector,
+  (userPermissionNames, memberPermissionNames) =>
+    memberPermission.canDelete(memberPermissionNames) ||
+    memberPermission.canDeleteAll(userPermissionNames)
+);
+
+export const checkViewMemberSelector = createSelector(
+  userPermissionNamesSelector,
+  memberPermissionNamesSelector,
+  requestMemberIdSelector,
+  (userPermissionNames, memberPermissionNames, requestMemberId) => (
+    memberId?: number
+  ) => {
+    if (memberPermission.canViewAll(memberPermissionNames)) {
+      return true;
+    }
+    if (
+      memberId &&
+      memberId === requestMemberId &&
+      memberPermission.canViewOwn(memberPermissionNames)
+    ) {
+      return true;
+    }
+    return memberPermission.canViewAll(userPermissionNames);
+  }
+);
+
+export const checkUpdateMemberSelector = createSelector(
+  userPermissionNamesSelector,
+  memberPermissionNamesSelector,
+  requestMemberIdSelector,
+  (userPermissionNames, memberPermissionNames, requestMemberId) => (
+    memberId?: number
+  ) => {
+    if (memberPermission.canUpdateAll(memberPermissionNames)) {
+      return true;
+    }
+    if (
+      memberId &&
+      memberId === requestMemberId &&
+      memberPermission.canUpdateOwn(memberPermissionNames)
+    ) {
+      return true;
+    }
+    return memberPermission.canUpdateAll(userPermissionNames);
+  }
 );
 
 export const checkDeleteMemberSelector = createSelector(
-  requestMemberIdSelector,
-  memberPermissionNamesSelector,
   userPermissionNamesSelector,
-  (requestMemberId, memberPermissionNames, userPermissionNames) =>
-    requestMemberId !== null
-      ? memberPermission.canDelete(memberPermissionNames)
-      : memberPermission.canDeleteAll(userPermissionNames)
+  memberPermissionNamesSelector,
+  requestMemberIdSelector,
+  (userPermissionNames, memberPermissionNames, requestMemberId) => (
+    memberId?: number
+  ) => {
+    if (memberPermission.canDeleteAll(memberPermissionNames)) {
+      return true;
+    }
+    if (
+      memberId &&
+      memberId === requestMemberId &&
+      memberPermission.canDeleteOwn(memberPermissionNames)
+    ) {
+      return true;
+    }
+    return memberPermission.canDeleteAll(userPermissionNames);
+  }
 );

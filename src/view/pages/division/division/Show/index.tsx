@@ -11,7 +11,7 @@ import {
   divisionErrorSelector,
   divisionSelector,
   divisionStatusSelector,
-  divisionUpdatePermissionCheckSelector,
+  canUpdateDivisionsSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import { membersActions } from 'src/store/state/domain/division/members/slice';
@@ -28,7 +28,7 @@ import Component, { PermissionList } from './Component';
 type ChildProps = ComponentProps<typeof Component>;
 
 const permissionSelector = createSelector(
-  [divisionUpdatePermissionCheckSelector, usersViewPermissionCheckSelector],
+  [canUpdateDivisionsSelector, usersViewPermissionCheckSelector],
   (divisionUpdate, usersView) =>
     ({
       divisionUpdate,
