@@ -47,8 +47,6 @@ const List: FC<RouteComponentProps> = (props) => {
     dispatch(divisionsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
 
-  const state = useStoreSelector(selector);
-
   const path = joinString(pathname, search);
 
   const onClickAdd: ChildProps['onClickAdd'] = useCallback(
@@ -63,6 +61,8 @@ const List: FC<RouteComponentProps> = (props) => {
       } as RouterState),
     [push, path]
   );
+
+  const state = useStoreSelector(selector);
 
   return (
     <Component {...state} onClickAdd={onClickAdd} onClickEdit={onClickEdit} />

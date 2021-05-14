@@ -80,11 +80,6 @@ const Edit: FC<
     [dispatch, pathParams, onBack]
   );
 
-  const { checkUpdate, checkDelete, ...otherState } =
-    useStoreSelector(selector);
-  const canUpdate = checkUpdate(otherState.object?.requestMemberId);
-  const canDelete = checkDelete(otherState.object?.requestMemberId);
-
   const fromShow = location.state?.fromShow;
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
     const action = await dispatch(
@@ -99,6 +94,11 @@ const Edit: FC<
     }
     return action;
   }, [dispatch, pathParams, onBack, push, fromShow]);
+
+  const { checkUpdate, checkDelete, ...otherState } =
+    useStoreSelector(selector);
+  const canUpdate = checkUpdate(otherState.object?.requestMemberId);
+  const canDelete = checkDelete(otherState.object?.requestMemberId);
 
   return (
     <Form

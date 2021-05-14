@@ -41,7 +41,6 @@ const List: FC<RouteComponentProps> = (props) => {
   useEffect(() => {
     dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
-  const state = useStoreSelector(selector);
 
   const path = joinString(pathname, search);
 
@@ -52,6 +51,8 @@ const List: FC<RouteComponentProps> = (props) => {
       } as RouterState),
     [push, path]
   );
+
+  const state = useStoreSelector(selector);
 
   return <Component {...state} onClickEdit={onClickEdit} />;
 };

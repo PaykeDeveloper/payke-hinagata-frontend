@@ -78,11 +78,6 @@ const Container: FC<
     [dispatch, pathParams, onBack]
   );
 
-  const { checkUpdate, checkDelete, ...otherState } =
-    useStoreSelector(selector);
-  const canUpdate = checkUpdate(otherState.object?.id);
-  const canDelete = checkDelete(otherState.object?.id);
-
   const fromShow = location.state?.fromShow;
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
     const action = await dispatch(usersActions.removeEntity({ pathParams }));
@@ -95,6 +90,11 @@ const Container: FC<
     }
     return action;
   }, [dispatch, pathParams, onBack, push, fromShow]);
+
+  const { checkUpdate, checkDelete, ...otherState } =
+    useStoreSelector(selector);
+  const canUpdate = checkUpdate(otherState.object?.id);
+  const canDelete = checkDelete(otherState.object?.id);
 
   return (
     <Component
