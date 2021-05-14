@@ -6,6 +6,7 @@ import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { userRolesSelector } from 'src/store/state/domain/common/roles/selectors';
 import {
   checkDeleteUserSelector,
+  checkUpdateUserSelector,
   userErrorSelector,
   userSelector,
   userStatusSelector,
@@ -13,9 +14,9 @@ import {
 import { usersActions } from 'src/store/state/domain/common/users/slice';
 import { UserPath, booksPath } from 'src/view/routes/paths';
 import { BaseRouterState } from 'src/view/routes/types';
-import Form from '../components/Form';
+import Component from './Component';
 
-type ChildProps = ComponentProps<typeof Form>;
+type ChildProps = ComponentProps<typeof Component>;
 
 const selector = createSelector(
   [
@@ -23,13 +24,15 @@ const selector = createSelector(
     userStatusSelector,
     userErrorSelector,
     userRolesSelector,
+    checkUpdateUserSelector,
     checkDeleteUserSelector,
   ],
-  (object, status, error, roles, checkDelete) => ({
+  (object, status, error, roles, checkUpdate, checkDelete) => ({
     object,
     status,
     error,
     roles,
+    checkUpdate,
     checkDelete,
   })
 );
@@ -75,7 +78,9 @@ const Container: FC<
     [dispatch, pathParams, onBack]
   );
 
-  const { checkDelete, ...otherState } = useStoreSelector(selector);
+  const { checkUpdate, checkDelete, ...otherState } =
+    useStoreSelector(selector);
+  const canUpdate = checkUpdate(otherState.object?.id);
   const canDelete = checkDelete(otherState.object?.id);
 
   const fromShow = location.state?.fromShow;
@@ -92,8 +97,9 @@ const Container: FC<
   }, [dispatch, pathParams, onBack, push, fromShow]);
 
   return (
-    <Form
+    <Component
       {...otherState}
+      disabled={!canUpdate}
       title="Edit user"
       onSubmit={onSubmit}
       onBack={onBack}

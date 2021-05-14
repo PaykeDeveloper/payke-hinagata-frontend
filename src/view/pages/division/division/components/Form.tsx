@@ -27,12 +27,14 @@ const Form: FC<{
   object: BookInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
+  disabled: boolean;
 
   onSubmit: OnSubmit<BookInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
-  const { title, object, status, error, onSubmit, onBack, onDelete } = props;
+  const { title, object, status, error, disabled, onSubmit, onBack, onDelete } =
+    props;
   const { t } = useTranslation();
   return (
     <ContentWrapper>
@@ -81,12 +83,17 @@ const Form: FC<{
                 <CardContent>
                   <Grid container spacing={1}>
                     <Grid item xs={12} lg={6}>
-                      <BaseTextField name="name" label={t('Name')} required />
+                      <BaseTextField
+                        name="name"
+                        label={t('Name')}
+                        required
+                        disabled={disabled}
+                      />
                     </Grid>
                   </Grid>
                 </CardContent>
                 <CardActions>
-                  <SubmitButton />
+                  <SubmitButton disabled={disabled} />
                 </CardActions>
               </Card>
             </Loader>

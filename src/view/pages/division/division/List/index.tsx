@@ -6,11 +6,11 @@ import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
-  canCreateDivisionsSelector,
+  canCreateDivisionSelector,
   divisionsErrorSelector,
   divisionsSelector,
   divisionsStatusSelector,
-  checkUpdateDivisionsSelector,
+  checkEditDivisionSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import { divisionNewPath, getDivisionEditPath } from 'src/view/routes/paths';
@@ -24,15 +24,15 @@ const selector = createSelector(
     divisionsSelector,
     divisionsStatusSelector,
     divisionsErrorSelector,
-    canCreateDivisionsSelector,
-    checkUpdateDivisionsSelector,
+    canCreateDivisionSelector,
+    checkEditDivisionSelector,
   ],
-  (divisions, status, error, canCreate, checkUpdate) => ({
+  (divisions, status, error, canCreate, checkEdit) => ({
     divisions,
     status,
     error,
     canCreate,
-    checkUpdate,
+    checkEdit,
   })
 );
 

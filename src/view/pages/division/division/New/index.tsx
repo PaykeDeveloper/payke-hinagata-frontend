@@ -6,6 +6,7 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
+  canCreateDivisionSelector,
   divisionsErrorSelector,
   divisionsStatusSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
@@ -17,10 +18,11 @@ import Form from '../components/Form';
 type ChildProps = ComponentProps<typeof Form>;
 
 const selector = createSelector(
-  [divisionsStatusSelector, divisionsErrorSelector],
-  (status, error) => ({
+  [divisionsStatusSelector, divisionsErrorSelector, canCreateDivisionSelector],
+  (status, error, canCreate) => ({
     status,
     error,
+    canCreate,
   })
 );
 
@@ -53,13 +55,14 @@ const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
     [dispatch, pathParams, onBack]
   );
 
-  const state = useStoreSelector(selector);
+  const { canCreate, ...otherState } = useStoreSelector(selector);
 
   return (
     <Form
-      {...state}
+      {...otherState}
       title="Add division"
       object={undefined}
+      disabled={!canCreate}
       onSubmit={onSubmit}
       onBack={onBack}
     />

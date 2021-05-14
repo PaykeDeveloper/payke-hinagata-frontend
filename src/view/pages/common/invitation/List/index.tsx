@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
-  canEditInvitationsSelector,
+  canEditInvitationSelector,
   invitationsErrorSelector,
   invitationsSelector,
   invitationsStatusSelector,
@@ -24,7 +24,7 @@ const selector = createSelector(
     invitationsSelector,
     invitationsStatusSelector,
     invitationsErrorSelector,
-    canEditInvitationsSelector,
+    canEditInvitationSelector,
   ],
   (invitations, status, error, canEdit) => ({
     invitations,

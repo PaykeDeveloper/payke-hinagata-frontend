@@ -26,14 +26,14 @@ const Component: FC<{
   object: InvitationUpdateInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
-  roles: Role[];
   disabled: boolean;
+  roles: Role[];
 
   onSubmit: OnSubmit<InvitationUpdateInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
-  const { object, status, error, roles, disabled, onSubmit, onBack, onDelete } =
+  const { object, status, error, disabled, roles, onSubmit, onBack, onDelete } =
     props;
   const { t } = useTranslation();
   return (

@@ -33,7 +33,7 @@ const Component: FC<{
   status: StoreStatus;
   error: StoreError | undefined;
   canCreate: boolean;
-  checkUpdate: (_: number | null | undefined) => boolean;
+  checkEdit: (_: number | null | undefined) => boolean;
 
   onClickAdd: () => void;
   onClickEdit: (divisionId: number) => void;
@@ -43,7 +43,7 @@ const Component: FC<{
     status,
     error,
     canCreate,
-    checkUpdate,
+    checkEdit,
     onClickAdd,
     onClickEdit,
   } = props;
@@ -54,7 +54,7 @@ const Component: FC<{
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => {
-        if (!checkUpdate(row['requestMemberId'])) {
+        if (!checkEdit(row['requestMemberId'])) {
           return <></>;
         }
         return <Link onClick={() => onClickEdit(row['id'])}>{t('Edit')}</Link>;

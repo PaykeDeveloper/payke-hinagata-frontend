@@ -22,19 +22,29 @@ import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import { booksPath, rootPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
-const Form: FC<{
+const Component: FC<{
   title: string;
   object: UserInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
+  disabled: boolean;
   roles: Role[];
 
   onSubmit: OnSubmit<UserInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
-  const { title, object, status, error, roles, onSubmit, onBack, onDelete } =
-    props;
+  const {
+    title,
+    object,
+    status,
+    error,
+    disabled,
+    roles,
+    onSubmit,
+    onBack,
+    onDelete,
+  } = props;
   const { t } = useTranslation();
 
   return (
@@ -83,14 +93,20 @@ const Form: FC<{
               <Card>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid item xs={12} sm={8}>
-                      <BaseTextField name="name" label={t('Name')} required />
+                    <Grid item xs={12} sm={6}>
+                      <BaseTextField
+                        name="name"
+                        label={t('Name')}
+                        required
+                        disabled={disabled}
+                      />
                     </Grid>
-                    <Grid item xs={12} sm={8}>
+                    <Grid item xs={12} sm={6}>
                       <BaseMultiSelectField
                         name="roleNames"
                         label={t('Role')}
                         required
+                        disabled={disabled}
                       >
                         {roles.map(({ id, name }) => (
                           <MenuItem key={id} value={name}>
@@ -102,7 +118,7 @@ const Form: FC<{
                   </Grid>
                 </CardContent>
                 <CardActions>
-                  <SubmitButton />
+                  <SubmitButton disabled={disabled} />
                 </CardActions>
               </Card>
             </Loader>
@@ -113,4 +129,4 @@ const Form: FC<{
   );
 };
 
-export default Form;
+export default Component;

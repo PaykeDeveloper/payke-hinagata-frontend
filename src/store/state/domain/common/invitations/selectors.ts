@@ -38,7 +38,7 @@ export const canDeleteInvitationSelector = createSelector(
   (permissionNames) => invitationPermission.canDelete(permissionNames)
 );
 
-export const canEditInvitationsSelector = createSelector(
+export const canEditInvitationSelector = createSelector(
   canUpdateInvitationSelector,
   canDeleteInvitationSelector,
   (canUpdate, canDelete) => canUpdate || canDelete

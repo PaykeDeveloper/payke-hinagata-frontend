@@ -4,6 +4,7 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
+  canCreateInvitationSelector,
   invitationsErrorSelector,
   invitationsStatusSelector,
 } from 'src/store/state/domain/common/invitations/selectors';
@@ -22,12 +23,14 @@ const selector = createSelector(
     invitationsErrorSelector,
     userRolesSelector,
     localesSelector,
+    canCreateInvitationSelector,
   ],
-  (status, error, roles, locales) => ({
+  (status, error, roles, locales, canCreate) => ({
     status,
     error,
     roles,
     locales,
+    canCreate,
   })
 );
 
@@ -60,8 +63,8 @@ const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
     [dispatch, pathParams, onBack]
   );
 
-  const state = useStoreSelector(selector);
-  const { roles, locales } = state;
+  const { canCreate, ...otherState } = useStoreSelector(selector);
+  const { roles, locales } = otherState;
   const object = useMemo(() => {
     const roleNames = roles
       .filter(({ required }) => required)
@@ -70,7 +73,13 @@ const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
   }, [roles, locales]);
 
   return (
-    <Component {...state} object={object} onSubmit={onSubmit} onBack={onBack} />
+    <Component
+      {...otherState}
+      object={object}
+      disabled={!canCreate}
+      onSubmit={onSubmit}
+      onBack={onBack}
+    />
   );
 };
 

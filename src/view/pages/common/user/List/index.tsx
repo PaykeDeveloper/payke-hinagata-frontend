@@ -7,7 +7,7 @@ import {
   usersErrorSelector,
   usersSelector,
   usersStatusSelector,
-  checkUpdateUserSelector,
+  checkEditUserSelector,
 } from 'src/store/state/domain/common/users/selectors';
 import { usersActions } from 'src/store/state/domain/common/users/slice';
 import { getUserEditPath } from 'src/view/routes/paths';
@@ -21,13 +21,13 @@ const selector = createSelector(
     usersSelector,
     usersStatusSelector,
     usersErrorSelector,
-    checkUpdateUserSelector,
+    checkEditUserSelector,
   ],
-  (users, status, error, checkUpdate) => ({
+  (users, status, error, checkEdit) => ({
     users,
     statuses: [status],
     errors: [error],
-    checkUpdate,
+    checkEdit,
   })
 );
 

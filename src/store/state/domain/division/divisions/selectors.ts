@@ -35,42 +35,12 @@ export const memberPermissionNamesSelector = createSelector(
   (division) => division?.permissionNames
 );
 
-export const canCreateDivisionsSelector = createSelector(
+export const canCreateDivisionSelector = createSelector(
   userPermissionNamesSelector,
   (userPermissionNames) => divisionPermission.canCreate(userPermissionNames)
 );
 
-export const canUpdateDivisionsSelector = createSelector(
-  userPermissionNamesSelector,
-  memberPermissionNamesSelector,
-  requestMemberIdSelector,
-  (userPermissionNames, memberPermissionNames, requestMemberId) => {
-    if (
-      requestMemberId &&
-      divisionPermission.canUpdateOwn(memberPermissionNames)
-    ) {
-      return true;
-    }
-    return divisionPermission.canUpdateAll(userPermissionNames);
-  }
-);
-
-export const canDeleteDivisionsSelector = createSelector(
-  userPermissionNamesSelector,
-  memberPermissionNamesSelector,
-  requestMemberIdSelector,
-  (userPermissionNames, memberPermissionNames, requestMemberId) => {
-    if (
-      requestMemberId &&
-      divisionPermission.canDeleteOwn(memberPermissionNames)
-    ) {
-      return true;
-    }
-    return divisionPermission.canDeleteAll(userPermissionNames);
-  }
-);
-
-export const checkUpdateDivisionsSelector = createSelector(
+export const checkUpdateDivisionSelector = createSelector(
   userPermissionNamesSelector,
   memberPermissionNamesSelector,
   (userPermissionNames, memberPermissionNames) =>
@@ -85,7 +55,7 @@ export const checkUpdateDivisionsSelector = createSelector(
     }
 );
 
-export const checkDeleteDivisionsSelector = createSelector(
+export const checkDeleteDivisionSelector = createSelector(
   userPermissionNamesSelector,
   memberPermissionNamesSelector,
   (userPermissionNames, memberPermissionNames) =>
@@ -98,4 +68,11 @@ export const checkDeleteDivisionsSelector = createSelector(
       }
       return divisionPermission.canDeleteAll(userPermissionNames);
     }
+);
+
+export const checkEditDivisionSelector = createSelector(
+  checkUpdateDivisionSelector,
+  checkDeleteDivisionSelector,
+  (checkUpdate, checkDelete) => (requestMemberId: number | null | undefined) =>
+    checkUpdate(requestMemberId) || checkDelete(requestMemberId)
 );

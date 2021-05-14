@@ -9,7 +9,8 @@ import {
   divisionErrorSelector,
   divisionSelector,
   divisionStatusSelector,
-  checkDeleteDivisionsSelector,
+  checkDeleteDivisionSelector,
+  checkUpdateDivisionSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import { DivisionPath, divisionsPath } from 'src/view/routes/paths';
@@ -23,12 +24,14 @@ const selector = createSelector(
     divisionSelector,
     divisionStatusSelector,
     divisionErrorSelector,
-    checkDeleteDivisionsSelector,
+    checkUpdateDivisionSelector,
+    checkDeleteDivisionSelector,
   ],
-  (object, status, error, checkDelete) => ({
+  (object, status, error, checkUpdate, checkDelete) => ({
     object,
     status,
     error,
+    checkUpdate,
     checkDelete,
   })
 );
@@ -77,7 +80,9 @@ const Edit: FC<
     [dispatch, pathParams, onBack]
   );
 
-  const { checkDelete, ...otherState } = useStoreSelector(selector);
+  const { checkUpdate, checkDelete, ...otherState } =
+    useStoreSelector(selector);
+  const canUpdate = checkUpdate(otherState.object?.requestMemberId);
   const canDelete = checkDelete(otherState.object?.requestMemberId);
 
   const fromShow = location.state?.fromShow;
@@ -99,6 +104,7 @@ const Edit: FC<
     <Form
       {...otherState}
       title="Edit division"
+      disabled={!canUpdate}
       onSubmit={onSubmit}
       onBack={onBack}
       onDelete={canDelete ? onDelete : undefined}

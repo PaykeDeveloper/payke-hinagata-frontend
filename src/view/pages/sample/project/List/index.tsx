@@ -10,7 +10,6 @@ import {
   divisionErrorSelector,
   divisionSelector,
   divisionStatusSelector,
-  canUpdateDivisionsSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
@@ -41,14 +40,10 @@ import Component, { PermissionList } from './Component';
 type ChildProps = ComponentProps<typeof Component>;
 
 const permissionSelector = createSelector(
-  [
-    canUpdateDivisionsSelector,
-    projectCreatePermissionCheckSelector,
-    projectUpdatePermissionCheckSelector,
-  ],
-  (divisionUpdate, projectCreate, projectUpdate) =>
+  [projectCreatePermissionCheckSelector, projectUpdatePermissionCheckSelector],
+  (projectCreate, projectUpdate) =>
     ({
-      divisionUpdate,
+      divisionUpdate: true,
       projectCreate,
       projectUpdate,
     } as PermissionList)

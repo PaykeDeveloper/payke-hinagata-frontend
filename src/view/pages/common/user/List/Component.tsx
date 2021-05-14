@@ -20,11 +20,11 @@ const Component: FC<{
   users: User[];
   statuses: StoreStatus[];
   errors: (StoreError | undefined)[];
-  checkUpdate: (userId: number | undefined) => boolean;
+  checkEdit: (userId: number | undefined) => boolean;
 
   onClickEdit: (userId: number) => void;
 }> = (props) => {
-  const { users, statuses, errors, checkUpdate, onClickEdit } = props;
+  const { users, statuses, errors, checkEdit, onClickEdit } = props;
   const { t } = useTranslation();
 
   const columns: GridColumns = [
@@ -34,7 +34,7 @@ const Component: FC<{
       filterable: false,
       renderCell: ({ row }) => {
         const userId = row['id'];
-        if (!checkUpdate(userId)) {
+        if (!checkEdit(userId)) {
           return <></>;
         }
         return <Link onClick={() => onClickEdit(userId)}>{t('Edit')}</Link>;

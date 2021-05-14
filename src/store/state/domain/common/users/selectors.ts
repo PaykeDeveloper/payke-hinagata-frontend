@@ -60,3 +60,10 @@ export const checkDeleteUserSelector = createSelector(
     return userPermission.canDeleteAll(permissionNames);
   }
 );
+
+export const checkEditUserSelector = createSelector(
+  checkUpdateUserSelector,
+  checkDeleteUserSelector,
+  (checkUpdate, checkDelete) => (userId: number | undefined) =>
+    checkUpdate(userId) || checkDelete(userId)
+);
