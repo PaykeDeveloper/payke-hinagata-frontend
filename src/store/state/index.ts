@@ -1,7 +1,6 @@
 import app, { AppState } from 'src/store/state/app';
 import domain, { DomainState } from 'src/store/state/domain';
-import ui, { UiState } from './ui';
-
+import ui, { UiState } from 'src/store/state/ui';
 export interface RootState {
   app: AppState;
   domain: DomainState;
