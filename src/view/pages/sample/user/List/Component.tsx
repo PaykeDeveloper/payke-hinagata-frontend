@@ -1,7 +1,4 @@
-// FIXME: SAMPLE CODE
-
 import React, { FC } from 'react';
-import { Box } from '@material-ui/core';
 import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
@@ -19,19 +16,15 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import { rootPath } from 'src/view/routes/paths';
 
-export type PermissionList = {
-  usersUpdate: boolean;
-};
-
 const Component: FC<{
   users: User[];
   statuses: StoreStatus[];
   errors: (StoreError | undefined)[];
-  permission: PermissionList;
+  checkUpdate: (userId: number | undefined) => boolean;
 
   onClickEdit: (userId: number) => void;
 }> = (props) => {
-  const { users, statuses, errors, permission, onClickEdit } = props;
+  const { users, statuses, errors, checkUpdate, onClickEdit } = props;
   const { t } = useTranslation();
 
   const columns: GridColumns = [
@@ -39,15 +32,13 @@ const Component: FC<{
       field: ' ',
       sortable: false,
       filterable: false,
-      renderCell: ({ row }) => (
-        <Box>
-          {permission.usersUpdate ? (
-            <Link onClick={() => onClickEdit(row['id'] as number)}>
-              {t('Edit')}
-            </Link>
-          ) : null}
-        </Box>
-      ),
+      renderCell: ({ row }) => {
+        const userId = row['id'];
+        if (!checkUpdate(userId)) {
+          return <></>;
+        }
+        return <Link onClick={() => onClickEdit(userId)}>{t('Edit')}</Link>;
+      },
     },
     {
       field: 'id',

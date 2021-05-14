@@ -22,34 +22,19 @@ import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import { booksPath, rootPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
-export type PermissionList = {
-  userUpdate: boolean;
-  userDelete: boolean;
-};
-
 const Form: FC<{
   title: string;
   object: UserInput | undefined;
-  statuses: StoreStatus[];
-  errors: (StoreError | undefined)[];
-  userRoles: Role[];
-  permission?: PermissionList;
+  status: StoreStatus;
+  error: StoreError | undefined;
+  roles: Role[];
 
   onSubmit: OnSubmit<UserInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
-  const {
-    title,
-    object,
-    statuses,
-    errors,
-    userRoles: roles,
-    permission,
-    onSubmit,
-    onBack,
-    onDelete,
-  } = props;
+  const { title, object, status, error, roles, onSubmit, onBack, onDelete } =
+    props;
   const { t } = useTranslation();
 
   return (
@@ -63,7 +48,7 @@ const Form: FC<{
         {t(title)}
       </ContentHeader>
       <ContentBody>
-        <ErrorWrapper errors={errors}>
+        <ErrorWrapper error={error}>
           <Buttons
             leftButtons={[
               <Button
@@ -74,20 +59,18 @@ const Form: FC<{
                 {t('Back')}
               </Button>,
             ]}
-            rightButtons={
-              permission?.userDelete
-                ? onDelete && [
-                    <LoaderButton
-                      onClick={onDelete}
-                      startIcon={<DeleteIcon />}
-                      color="secondary"
-                      variant="outlined"
-                    >
-                      {t('Delete')}
-                    </LoaderButton>,
-                  ]
-                : undefined
-            }
+            rightButtons={[
+              onDelete ? (
+                <LoaderButton
+                  onClick={onDelete}
+                  startIcon={<DeleteIcon />}
+                  color="secondary"
+                  variant="outlined"
+                >
+                  {t('Delete')}
+                </LoaderButton>
+              ) : undefined,
+            ]}
           />
           <BaseForm
             initialValues={object}
@@ -96,7 +79,7 @@ const Form: FC<{
               name: yup.string().label(t('Name')).required().max(255),
             })}
           >
-            <Loader statuses={statuses}>
+            <Loader status={status}>
               <Card>
                 <CardContent>
                   <Grid container spacing={1}>

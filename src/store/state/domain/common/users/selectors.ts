@@ -31,32 +31,37 @@ export const userIdMapSelector = createSelector(usersSelector, (users) =>
   convertListToObject<number, User>(users, 'id')
 );
 
-export const usersViewPermissionCheckSelector = createSelector(
-  userPermissionNamesSelector,
-  (permissionNames) => userPermission.canView(permissionNames)
-);
-
-export const usersUpdatePermissionCheckSelector = createSelector(
+export const canUpdateUsersSelector = createSelector(
   userPermissionNamesSelector,
   (permissionNames) => userPermission.canUpdate(permissionNames)
 );
 
-export const userUpdatePermissionCheckSelector = createSelector(
+export const checkUpdateUserSelector = createSelector(
   myUserSelector,
-  userSelector,
   userPermissionNamesSelector,
-  (myUser, user, permissionNames) =>
-    myUser && user?.id === myUser?.id
-      ? userPermission.canUpdateOwn(permissionNames)
-      : userPermission.canUpdateAll(permissionNames)
+  (user, permissionNames) => (userId: number | undefined) => {
+    if (
+      userId &&
+      userId === user?.id &&
+      userPermission.canUpdateOwn(permissionNames)
+    ) {
+      return true;
+    }
+    return userPermission.canUpdateAll(permissionNames);
+  }
 );
 
-export const userDeletePermissionCheckSelector = createSelector(
+export const checkDeleteUserSelector = createSelector(
   myUserSelector,
-  userSelector,
   userPermissionNamesSelector,
-  (myUser, user, permissionNames) =>
-    myUser && user?.id === myUser?.id
-      ? userPermission.canDeleteOwn(permissionNames)
-      : userPermission.canDeleteAll(permissionNames)
+  (user, permissionNames) => (userId: number | undefined) => {
+    if (
+      userId &&
+      userId === user?.id &&
+      userPermission.canDeleteOwn(permissionNames)
+    ) {
+      return true;
+    }
+    return userPermission.canDeleteAll(permissionNames);
+  }
 );

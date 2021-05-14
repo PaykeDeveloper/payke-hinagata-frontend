@@ -1,5 +1,3 @@
-// FIXME: SAMPLE CODE
-
 import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
@@ -9,7 +7,7 @@ import {
   usersErrorSelector,
   usersSelector,
   usersStatusSelector,
-  usersUpdatePermissionCheckSelector,
+  checkUpdateUserSelector,
 } from 'src/store/state/domain/common/users/selectors';
 import { usersActions } from 'src/store/state/domain/common/users/slice';
 import { getUserEditPath } from 'src/view/routes/paths';
@@ -18,18 +16,18 @@ import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 
-const permissionSelector = createSelector(
-  [usersUpdatePermissionCheckSelector],
-  (usersUpdate) => ({ usersUpdate })
-);
-
 const selector = createSelector(
-  [usersSelector, usersStatusSelector, usersErrorSelector, permissionSelector],
-  (users, status, error, permission) => ({
+  [
+    usersSelector,
+    usersStatusSelector,
+    usersErrorSelector,
+    checkUpdateUserSelector,
+  ],
+  (users, status, error, checkUpdate) => ({
     users,
     statuses: [status],
     errors: [error],
-    permission,
+    checkUpdate,
   })
 );
 
