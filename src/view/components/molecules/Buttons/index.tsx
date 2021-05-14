@@ -29,6 +29,7 @@ const Buttons: FC<Props> = (props) => {
       {leftButtons?.map((button, index) => (
         <Box
           display="inline-block"
+          key={`left-button-${index}`}
           className={clsx(classes.leftButton, {
             [classes.leftMargin]: index > 0,
           })}
@@ -39,6 +40,7 @@ const Buttons: FC<Props> = (props) => {
       {rightButtons?.map((button, index) => (
         <Box
           display="inline-block"
+          key={`right-button-${index}`}
           className={clsx(classes.rightButton, {
             [classes.rightMargin]: index > 0,
           })}

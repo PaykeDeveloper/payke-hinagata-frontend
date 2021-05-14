@@ -57,6 +57,7 @@ export const getBookCommentEditPath = (params: BookCommentPath) =>
 export const bookCommentNewPath = getBookCommentNewPath(bookParams);
 export const bookCommentEditPath = getBookCommentEditPath(bookCommentParams);
 
+export const importerBooksPath = `${rootPath}importer/books/`;
 export interface UserPath {
   userId: string;
 }
