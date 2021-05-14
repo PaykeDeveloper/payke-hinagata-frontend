@@ -43,16 +43,8 @@ const Form: FC<{
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
-  const {
-    title,
-    object,
-    status,
-    error,
-    division,
-    onSubmit,
-    onBack,
-    onDelete,
-  } = props;
+  const { title, object, status, error, division, onSubmit, onBack, onDelete } =
+    props;
   const { t } = useTranslation();
   return (
     <ContentWrapper>

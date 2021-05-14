@@ -88,68 +88,67 @@ const selector = createSelector(
   })
 );
 
-const List: FC<
-  RouteComponentProps<DivisionPath, StaticContext, RouterState>
-> = (props) => {
-  const {
-    history: { push },
-    match: { params: pathParams },
-    location,
-  } = props;
+const List: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> =
+  (props) => {
+    const {
+      history: { push },
+      match: { params: pathParams },
+      location,
+    } = props;
 
-  const backPath = location.state?.path || divisionsPath;
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+    const backPath = location.state?.path || divisionsPath;
+    const onBack: ChildProps['onBack'] = useCallback(
+      () => push(backPath),
+      [push, backPath]
+    );
 
-  const dispatch = useStoreDispatch();
-  useEffect(() => {
-    const reset = true;
-    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset }));
-    dispatch(projectsActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-    dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-    dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-  }, [dispatch, pathParams]);
+    const dispatch = useStoreDispatch();
+    useEffect(() => {
+      const reset = true;
+      dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset }));
+      dispatch(projectsActions.fetchEntitiesIfNeeded({ pathParams, reset }));
+      dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
+      dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
+    }, [dispatch, pathParams]);
 
-  const path = joinString(location.pathname, location.search);
+    const path = joinString(location.pathname, location.search);
 
-  const onClickEditDivision: ChildProps['onClickEditDivision'] = useCallback(
-    () =>
-      push(getDivisionEditPath(pathParams), {
-        path,
-        fromShow: true,
-      } as DivisionEditRouterState),
-    [push, pathParams, path]
-  );
+    const onClickEditDivision: ChildProps['onClickEditDivision'] = useCallback(
+      () =>
+        push(getDivisionEditPath(pathParams), {
+          path,
+          fromShow: true,
+        } as DivisionEditRouterState),
+      [push, pathParams, path]
+    );
 
-  const state = useStoreSelector(selector);
+    const state = useStoreSelector(selector);
 
-  const onClickAddMember: ChildProps['onClickAddMember'] = useCallback(
-    () =>
-      push(getMemberNewPath(pathParams), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
+    const onClickAddMember: ChildProps['onClickAddMember'] = useCallback(
+      () =>
+        push(getMemberNewPath(pathParams), {
+          path,
+        } as RouterState),
+      [push, pathParams, path]
+    );
 
-  const onClickEditMember: ChildProps['onClickEditMember'] = useCallback(
-    (memberId) =>
-      push(getMemberEditPath({ ...pathParams, memberId }), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
+    const onClickEditMember: ChildProps['onClickEditMember'] = useCallback(
+      (memberId) =>
+        push(getMemberEditPath({ ...pathParams, memberId }), {
+          path,
+        } as RouterState),
+      [push, pathParams, path]
+    );
 
-  return (
-    <Component
-      {...state}
-      onBack={onBack}
-      onClickEditDivision={onClickEditDivision}
-      onClickAddMember={onClickAddMember}
-      onClickEditMember={onClickEditMember}
-    />
-  );
-};
+    return (
+      <Component
+        {...state}
+        onBack={onBack}
+        onClickEditDivision={onClickEditDivision}
+        onClickAddMember={onClickAddMember}
+        onClickEditMember={onClickEditMember}
+      />
+    );
+  };
 
 export default List;

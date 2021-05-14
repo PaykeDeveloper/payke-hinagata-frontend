@@ -65,61 +65,58 @@ export const checkViewMemberSelector = createSelector(
   userPermissionNamesSelector,
   memberPermissionNamesSelector,
   requestMemberIdSelector,
-  (userPermissionNames, memberPermissionNames, requestMemberId) => (
-    memberId?: number
-  ) => {
-    if (memberPermission.canViewAll(memberPermissionNames)) {
-      return true;
+  (userPermissionNames, memberPermissionNames, requestMemberId) =>
+    (memberId?: number) => {
+      if (memberPermission.canViewAll(memberPermissionNames)) {
+        return true;
+      }
+      if (
+        memberId &&
+        memberId === requestMemberId &&
+        memberPermission.canViewOwn(memberPermissionNames)
+      ) {
+        return true;
+      }
+      return memberPermission.canViewAll(userPermissionNames);
     }
-    if (
-      memberId &&
-      memberId === requestMemberId &&
-      memberPermission.canViewOwn(memberPermissionNames)
-    ) {
-      return true;
-    }
-    return memberPermission.canViewAll(userPermissionNames);
-  }
 );
 
 export const checkUpdateMemberSelector = createSelector(
   userPermissionNamesSelector,
   memberPermissionNamesSelector,
   requestMemberIdSelector,
-  (userPermissionNames, memberPermissionNames, requestMemberId) => (
-    memberId?: number
-  ) => {
-    if (memberPermission.canUpdateAll(memberPermissionNames)) {
-      return true;
+  (userPermissionNames, memberPermissionNames, requestMemberId) =>
+    (memberId?: number) => {
+      if (memberPermission.canUpdateAll(memberPermissionNames)) {
+        return true;
+      }
+      if (
+        memberId &&
+        memberId === requestMemberId &&
+        memberPermission.canUpdateOwn(memberPermissionNames)
+      ) {
+        return true;
+      }
+      return memberPermission.canUpdateAll(userPermissionNames);
     }
-    if (
-      memberId &&
-      memberId === requestMemberId &&
-      memberPermission.canUpdateOwn(memberPermissionNames)
-    ) {
-      return true;
-    }
-    return memberPermission.canUpdateAll(userPermissionNames);
-  }
 );
 
 export const checkDeleteMemberSelector = createSelector(
   userPermissionNamesSelector,
   memberPermissionNamesSelector,
   requestMemberIdSelector,
-  (userPermissionNames, memberPermissionNames, requestMemberId) => (
-    memberId?: number
-  ) => {
-    if (memberPermission.canDeleteAll(memberPermissionNames)) {
-      return true;
+  (userPermissionNames, memberPermissionNames, requestMemberId) =>
+    (memberId?: number) => {
+      if (memberPermission.canDeleteAll(memberPermissionNames)) {
+        return true;
+      }
+      if (
+        memberId &&
+        memberId === requestMemberId &&
+        memberPermission.canDeleteOwn(memberPermissionNames)
+      ) {
+        return true;
+      }
+      return memberPermission.canDeleteAll(userPermissionNames);
     }
-    if (
-      memberId &&
-      memberId === requestMemberId &&
-      memberPermission.canDeleteOwn(memberPermissionNames)
-    ) {
-      return true;
-    }
-    return memberPermission.canDeleteAll(userPermissionNames);
-  }
 );

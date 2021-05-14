@@ -5,9 +5,10 @@ const Icon: FC<IconProps> = (props) => <MuiIcon {...props} />;
 
 export default Icon;
 
-const createIcon = (icon: string): FC<IconProps> => (props) => (
-  <Icon {...props}>{icon}</Icon>
-);
+const createIcon =
+  (icon: string): FC<IconProps> =>
+  (props) =>
+    <Icon {...props}>{icon}</Icon>;
 
 export const MenuIcon = createIcon('menu');
 export const MoreVertIcon = createIcon('more_vert');

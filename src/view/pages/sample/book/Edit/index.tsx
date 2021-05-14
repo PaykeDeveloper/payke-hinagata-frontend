@@ -38,10 +38,10 @@ const Container: FC<
   } = props;
 
   const backPath = location.state?.path || booksPath;
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+  const onBack: ChildProps['onBack'] = useCallback(
+    () => push(backPath),
+    [push, backPath]
+  );
 
   const dispatch = useStoreDispatch();
 

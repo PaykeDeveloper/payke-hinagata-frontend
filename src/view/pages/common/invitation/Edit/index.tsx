@@ -41,10 +41,10 @@ const Edit: FC<
   } = props;
 
   const backPath = location.state?.path || invitationsPath;
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+  const onBack: ChildProps['onBack'] = useCallback(
+    () => push(backPath),
+    [push, backPath]
+  );
 
   const dispatch = useStoreDispatch();
 

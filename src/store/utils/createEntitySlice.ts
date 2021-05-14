@@ -160,37 +160,33 @@ const createEntitySlice = <
     }
   };
 
-  const fetchEntityIfNeeded = (arg: FetchEntityArg) => (
-    dispatch: StoreDispatch,
-    getState: GetState
-  ) => {
-    const domain = domainSelector(getState());
-    if (!shouldFetchEntity(domain, arg)) {
-      return undefined;
-    }
+  const fetchEntityIfNeeded =
+    (arg: FetchEntityArg) => (dispatch: StoreDispatch, getState: GetState) => {
+      const domain = domainSelector(getState());
+      if (!shouldFetchEntity(domain, arg)) {
+        return undefined;
+      }
 
-    if (arg.reset) {
-      dispatch(resetEntityIfNeeded());
-    }
+      if (arg.reset) {
+        dispatch(resetEntityIfNeeded());
+      }
 
-    return dispatch(fetchEntity(arg));
-  };
+      return dispatch(fetchEntity(arg));
+    };
 
   const shouldResetEntity = (domain: DomainState) => {
     return domain.meta.fetchEntity.status !== StoreStatus.Initial;
   };
 
-  const resetEntityIfNeeded = () => (
-    dispatch: StoreDispatch,
-    getState: GetState
-  ) => {
-    const domain = domainSelector(getState());
-    if (!shouldResetEntity(domain)) {
-      return undefined;
-    }
+  const resetEntityIfNeeded =
+    () => (dispatch: StoreDispatch, getState: GetState) => {
+      const domain = domainSelector(getState());
+      if (!shouldResetEntity(domain)) {
+        return undefined;
+      }
 
-    return dispatch(actions.resetEntity());
-  };
+      return dispatch(actions.resetEntity());
+    };
 
   return {
     actions: {

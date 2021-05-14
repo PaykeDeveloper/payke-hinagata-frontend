@@ -94,10 +94,10 @@ const Edit: FC<
   } = props;
 
   const backPath = location.state?.path || divisionsPath;
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+  const onBack: ChildProps['onBack'] = useCallback(
+    () => push(backPath),
+    [push, backPath]
+  );
 
   const dispatch = useStoreDispatch();
 
@@ -135,9 +135,10 @@ const Edit: FC<
     return action;
   }, [dispatch, pathParams, onBack, push, fromShow]);
 
-  const object = useMemo(() => member && objectToInputs(member, rules), [
-    member,
-  ]);
+  const object = useMemo(
+    () => member && objectToInputs(member, rules),
+    [member]
+  );
 
   return (
     <Form

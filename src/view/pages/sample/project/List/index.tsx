@@ -90,67 +90,66 @@ const selector = createSelector(
   })
 );
 
-const Show: FC<
-  RouteComponentProps<DivisionPath, StaticContext, RouterState>
-> = (props) => {
-  const {
-    history: { push },
-    match: { params: pathParams },
-    location,
-  } = props;
+const Show: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> =
+  (props) => {
+    const {
+      history: { push },
+      match: { params: pathParams },
+      location,
+    } = props;
 
-  const backPath = location.state?.path || divisionsPath;
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+    const backPath = location.state?.path || divisionsPath;
+    const onBack: ChildProps['onBack'] = useCallback(
+      () => push(backPath),
+      [push, backPath]
+    );
 
-  const dispatch = useStoreDispatch();
-  useEffect(() => {
-    const reset = true;
-    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset }));
-    dispatch(projectsActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-    dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-  }, [dispatch, pathParams]);
+    const dispatch = useStoreDispatch();
+    useEffect(() => {
+      const reset = true;
+      dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset }));
+      dispatch(projectsActions.fetchEntitiesIfNeeded({ pathParams, reset }));
+      dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
+    }, [dispatch, pathParams]);
 
-  const path = joinString(location.pathname, location.search);
+    const path = joinString(location.pathname, location.search);
 
-  const onClickEditDivision: ChildProps['onClickEditDivision'] = useCallback(
-    () =>
-      push(getDivisionEditPath(pathParams), {
-        path,
-        fromShow: true,
-      } as DivisionEditRouterState),
-    [push, pathParams, path]
-  );
+    const onClickEditDivision: ChildProps['onClickEditDivision'] = useCallback(
+      () =>
+        push(getDivisionEditPath(pathParams), {
+          path,
+          fromShow: true,
+        } as DivisionEditRouterState),
+      [push, pathParams, path]
+    );
 
-  const state = useStoreSelector(selector);
+    const state = useStoreSelector(selector);
 
-  const onClickAddProject: ChildProps['onClickAddProject'] = useCallback(
-    () =>
-      push(getProjectNewPath(pathParams), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
+    const onClickAddProject: ChildProps['onClickAddProject'] = useCallback(
+      () =>
+        push(getProjectNewPath(pathParams), {
+          path,
+        } as RouterState),
+      [push, pathParams, path]
+    );
 
-  const onClickEditProject: ChildProps['onClickEditProject'] = useCallback(
-    (projectId) =>
-      push(getProjectEditPath({ ...pathParams, projectId }), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
+    const onClickEditProject: ChildProps['onClickEditProject'] = useCallback(
+      (projectId) =>
+        push(getProjectEditPath({ ...pathParams, projectId }), {
+          path,
+        } as RouterState),
+      [push, pathParams, path]
+    );
 
-  return (
-    <Component
-      {...state}
-      onBack={onBack}
-      onClickEditDivision={onClickEditDivision}
-      onClickAddProject={onClickAddProject}
-      onClickEditProject={onClickEditProject}
-    />
-  );
-};
+    return (
+      <Component
+        {...state}
+        onBack={onBack}
+        onClickEditDivision={onClickEditDivision}
+        onClickAddProject={onClickAddProject}
+        onClickEditProject={onClickEditProject}
+      />
+    );
+  };
 
 export default Show;

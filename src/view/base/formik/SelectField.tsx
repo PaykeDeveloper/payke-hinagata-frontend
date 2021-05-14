@@ -12,13 +12,8 @@ type Props = SelectFieldProps & {
 };
 
 const SelectField: FC<Props> = (props) => {
-  const {
-    name,
-    selectProps,
-    helperText,
-    formControlProps,
-    ...otherProps
-  } = props;
+  const { name, selectProps, helperText, formControlProps, ...otherProps } =
+    props;
   const { isSubmitting, submitCount } = useFormikContext();
   const [field, meta] = useField({ name });
   const { value, ...otherField } = field;

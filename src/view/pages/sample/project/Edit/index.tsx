@@ -52,10 +52,10 @@ const Container: FC<
     location,
   } = props;
   const backPath = location.state?.path || getDivisionPath(pathParams);
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+  const onBack: ChildProps['onBack'] = useCallback(
+    () => push(backPath),
+    [push, backPath]
+  );
 
   const dispatch = useStoreDispatch();
 
@@ -96,9 +96,10 @@ const Container: FC<
   }, [dispatch, pathParams, onBack]);
 
   const { project, ...otherState } = useStoreSelector(selector);
-  const object = useMemo(() => project && objectToInputs(project, rules), [
-    project,
-  ]);
+  const object = useMemo(
+    () => project && objectToInputs(project, rules),
+    [project]
+  );
 
   return (
     <Form

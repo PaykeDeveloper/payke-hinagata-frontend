@@ -66,10 +66,10 @@ const Show: FC<RouteComponentProps<BookPath, StaticContext, RouterState>> = (
   } = props;
 
   const backPath = location.state?.path || booksPath;
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+  const onBack: ChildProps['onBack'] = useCallback(
+    () => push(backPath),
+    [push, backPath]
+  );
 
   const dispatch = useStoreDispatch();
   useEffect(() => {
@@ -91,21 +91,23 @@ const Show: FC<RouteComponentProps<BookPath, StaticContext, RouterState>> = (
 
   const state = useStoreSelector(selector);
 
-  const onClickAddBookComment: ChildProps['onClickAddBookComment'] = useCallback(
-    () =>
-      push(getBookCommentNewPath(pathParams), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
+  const onClickAddBookComment: ChildProps['onClickAddBookComment'] =
+    useCallback(
+      () =>
+        push(getBookCommentNewPath(pathParams), {
+          path,
+        } as RouterState),
+      [push, pathParams, path]
+    );
 
-  const onClickEditBookComment: ChildProps['onClickEditBookComment'] = useCallback(
-    (commentSlug) =>
-      push(getBookCommentEditPath({ ...pathParams, commentSlug }), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
+  const onClickEditBookComment: ChildProps['onClickEditBookComment'] =
+    useCallback(
+      (commentSlug) =>
+        push(getBookCommentEditPath({ ...pathParams, commentSlug }), {
+          path,
+        } as RouterState),
+      [push, pathParams, path]
+    );
 
   return (
     <Component

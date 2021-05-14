@@ -104,19 +104,20 @@ const Importer: FC<RouteComponentProps> = (props) => {
     dispatch(bookImportersActions.resetImporters());
   }, [dispatch]);
   const errorResults = useStoreSelector(filterErrorImporters);
-  const handlerDownloadErrors: ChildProps['onDownloadErrors'] = useCallback(async () => {
-    exportToCsv(
-      'errors.csv',
-      errorResults.map((result) => {
-        return {
-          book_id: result.book.id ?? '',
-          title: result.book.title ?? '',
-          author: result.book.author ?? '',
-          releaseDate: result.book.releaseDate ?? '',
-        };
-      })
-    );
-  }, [errorResults]);
+  const handlerDownloadErrors: ChildProps['onDownloadErrors'] =
+    useCallback(async () => {
+      exportToCsv(
+        'errors.csv',
+        errorResults.map((result) => {
+          return {
+            book_id: result.book.id ?? '',
+            title: result.book.title ?? '',
+            author: result.book.author ?? '',
+            releaseDate: result.book.releaseDate ?? '',
+          };
+        })
+      );
+    }, [errorResults]);
   return (
     <Component
       {...otherState}

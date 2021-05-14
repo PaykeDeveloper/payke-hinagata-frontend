@@ -51,49 +51,48 @@ const selector = createSelector(
   })
 );
 
-const Show: FC<
-  RouteComponentProps<DivisionPath, StaticContext, RouterState>
-> = (props) => {
-  const {
-    history: { push },
-    match: { params: pathParams },
-    location,
-  } = props;
+const Show: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> =
+  (props) => {
+    const {
+      history: { push },
+      match: { params: pathParams },
+      location,
+    } = props;
 
-  const backPath = location.state?.path || divisionsPath;
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+    const backPath = location.state?.path || divisionsPath;
+    const onBack: ChildProps['onBack'] = useCallback(
+      () => push(backPath),
+      [push, backPath]
+    );
 
-  const dispatch = useStoreDispatch();
-  useEffect(() => {
-    const reset = true;
-    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset }));
-    dispatch(projectsActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-    dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-  }, [dispatch, pathParams]);
+    const dispatch = useStoreDispatch();
+    useEffect(() => {
+      const reset = true;
+      dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset }));
+      dispatch(projectsActions.fetchEntitiesIfNeeded({ pathParams, reset }));
+      dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
+    }, [dispatch, pathParams]);
 
-  const path = joinString(location.pathname, location.search);
+    const path = joinString(location.pathname, location.search);
 
-  const onClickEditDivision: ChildProps['onClickEditDivision'] = useCallback(
-    () =>
-      push(getDivisionEditPath(pathParams), {
-        path,
-        fromShow: true,
-      } as DivisionEditRouterState),
-    [push, pathParams, path]
-  );
+    const onClickEditDivision: ChildProps['onClickEditDivision'] = useCallback(
+      () =>
+        push(getDivisionEditPath(pathParams), {
+          path,
+          fromShow: true,
+        } as DivisionEditRouterState),
+      [push, pathParams, path]
+    );
 
-  const state = useStoreSelector(selector);
+    const state = useStoreSelector(selector);
 
-  return (
-    <Component
-      {...state}
-      onBack={onBack}
-      onClickEditDivision={onClickEditDivision}
-    />
-  );
-};
+    return (
+      <Component
+        {...state}
+        onBack={onBack}
+        onClickEditDivision={onClickEditDivision}
+      />
+    );
+  };
 
 export default Show;

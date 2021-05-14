@@ -33,16 +33,8 @@ const Component: FC<{
   onBack: () => void;
   onDelete: () => Promise<unknown>;
 }> = (props) => {
-  const {
-    object,
-    status,
-    error,
-    roles,
-    disabled,
-    onSubmit,
-    onBack,
-    onDelete,
-  } = props;
+  const { object, status, error, roles, disabled, onSubmit, onBack, onDelete } =
+    props;
   const { t } = useTranslation();
   return (
     <ContentWrapper>
