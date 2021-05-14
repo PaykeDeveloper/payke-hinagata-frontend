@@ -1,6 +1,7 @@
 import React, { FC, ReactElement } from 'react';
 import { Box, BoxProps, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
+import { notUndefined } from 'src/base/utils';
 
 const useStyles = makeStyles((theme) => ({
   leftButton: {},
@@ -17,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
 
 type Props = {
   boxProps?: BoxProps;
-  leftButtons?: ReactElement[];
-  rightButtons?: ReactElement[];
+  leftButtons?: (ReactElement | undefined)[];
+  rightButtons?: (ReactElement | undefined)[];
 };
 
 const Buttons: FC<Props> = (props) => {
@@ -26,7 +27,7 @@ const Buttons: FC<Props> = (props) => {
   const classes = useStyles();
   return (
     <Box {...boxProps}>
-      {leftButtons?.map((button, index) => (
+      {leftButtons?.filter(notUndefined).map((button, index) => (
         <Box
           display="inline-block"
           key={`left-button-${index}`}
@@ -37,7 +38,7 @@ const Buttons: FC<Props> = (props) => {
           {button}
         </Box>
       ))}
-      {rightButtons?.map((button, index) => (
+      {rightButtons?.filter(notUndefined).map((button, index) => (
         <Box
           display="inline-block"
           key={`right-button-${index}`}

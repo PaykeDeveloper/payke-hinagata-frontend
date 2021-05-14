@@ -5,6 +5,7 @@ export interface Division {
   name: string;
   createdAt: string | null;
   updatedAt: string | null;
+  requestMemberId: number | null;
 }
 
 export type DivisionInput = Partial<Division>;

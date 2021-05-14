@@ -73,13 +73,12 @@ export interface DivisionPath {
   divisionId: string;
 }
 const divisionParams = { divisionId: ':divisionId' };
-export const getDivisionPath = ({ divisionId }: DivisionPath) =>
+const getDivisionPath = ({ divisionId }: DivisionPath) =>
   `${divisionsPath}${divisionId}/`;
 export const getDivisionEditPath = (params: DivisionPath) =>
   `${getDivisionPath(params)}edit/`;
 export const divisionsPath = `${rootPath}divisions/`;
 export const divisionNewPath = `${rootPath}divisions/new/`;
-export const divisionPath = getDivisionPath(divisionParams);
 export const divisionEditPath = getDivisionEditPath(divisionParams);
 
 export interface ProjectPath extends DivisionPath {

@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     ...theme.mixins.toolbar,
   },
+  selectListItem: {
+    paddingTop: 0,
+  },
   selectForm: {
     width: '100%',
   },
@@ -126,8 +129,8 @@ const Component: FC<Props> = (props) => {
           <Divider />
           <List subheader={subheader}>
             {menus.map((menu, index) => (
-              <>
-                <ListItem>
+              <Fragment key={index}>
+                <ListItem className={classes.selectListItem}>
                   <SelectField
                     label={t(menu.label)}
                     formControlProps={{ className: classes.selectForm }}
@@ -157,7 +160,7 @@ const Component: FC<Props> = (props) => {
                     />
                   ))}
                 </List>
-              </>
+              </Fragment>
             ))}
           </List>
         </Fragment>

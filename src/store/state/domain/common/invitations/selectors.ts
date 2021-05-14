@@ -1,7 +1,7 @@
 import { StoreState } from 'src/store';
-import { OwnPermissionFactory } from 'src/store/utils';
+import { AllPermissionFactory } from 'src/store/utils';
 
-export const invitationPermission = new OwnPermissionFactory('invitation');
+export const invitationPermission = new AllPermissionFactory('invitation');
 
 export const invitationsSelector = (state: StoreState) =>
   state.domain.common.invitations.entities;

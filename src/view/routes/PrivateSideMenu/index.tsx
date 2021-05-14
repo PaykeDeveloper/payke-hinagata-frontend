@@ -16,12 +16,15 @@ import { divisionsActions } from 'src/store/state/domain/division/divisions/slic
 import { menuDivisionIdSelector } from 'src/store/state/ui/menu/selectors';
 import { menuActions } from 'src/store/state/ui/menu/slice';
 import {
+  DomainIcon,
   HomeIcon,
   ListIcon,
   MenuUserIcon,
   PersonAddIcon,
 } from 'src/view/base/material-ui/Icon';
 import {
+  divisionNewPath,
+  divisionsPath,
   getMembersPath,
   getProjectsPath,
   invitationNewPath,
@@ -53,6 +56,11 @@ const defaultHomeMenu: MenuList = {
 const divisionsSelectMenuSelector = createSelector(
   [divisionsSelector, menuDivisionIdSelector, userPermissionNamesSelector],
   (divisions, menuDivisionId, permissionNames): SelectableMenuList => ({
+    subheader: (
+      <ListSubheader>
+        <Trans>Division Menu</Trans>
+      </ListSubheader>
+    ),
     menus: [
       {
         text: <Trans>Division</Trans>,
@@ -102,28 +110,33 @@ const divisionsSelectMenuSelector = createSelector(
 const defaultSubMenu: MenuList = {
   subheader: (
     <ListSubheader>
-      <Trans>Menu</Trans>
+      <Trans>Sub Menu</Trans>
     </ListSubheader>
   ),
   menus: [
+    {
+      text: <Trans>Divisions</Trans>,
+      icon: <DomainIcon />,
+      to: divisionsPath,
+      paths: [divisionsPath, divisionNewPath],
+      requiredPermissions: [
+        divisionPermission.viewOwn,
+        divisionPermission.viewAll,
+      ],
+    },
+    {
+      text: <Trans>Users</Trans>,
+      icon: <MenuUserIcon />,
+      to: usersPath,
+      paths: [usersPath, userPath],
+      requiredPermissions: [userPermission.viewOwn, userPermission.viewAll],
+    },
     {
       text: <Trans>Invitations</Trans>,
       icon: <PersonAddIcon />,
       to: invitationsPath,
       paths: [invitationsPath, invitationNewPath],
       requiredPermissions: [invitationPermission.viewAll],
-    },
-    {
-      text: <Trans>Users</Trans>,
-      icon: <MenuUserIcon />,
-      menus: [
-        {
-          text: <Trans>List</Trans>,
-          icon: <ListIcon />,
-          to: usersPath,
-          paths: [usersPath, userPath],
-        },
-      ],
     },
   ],
   requiredPermissions: [userPermission.viewAll],

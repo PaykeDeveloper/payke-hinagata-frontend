@@ -27,11 +27,7 @@ import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
-import {
-  divisionsPath,
-  getDivisionPath,
-  rootPath,
-} from 'src/view/routes/paths';
+import { rootPath } from 'src/view/routes/paths';
 
 export type PermissionList = {
   divisionUpdate: boolean;
@@ -111,16 +107,7 @@ const Component: FC<{
 
   return (
     <ContentWrapper>
-      <ContentHeader
-        links={[
-          { children: <Trans>Home</Trans>, to: rootPath },
-          { children: <Trans>Divisions</Trans>, to: divisionsPath },
-          {
-            children: division?.name,
-            to: getDivisionPath({ divisionId: `${division?.id}` }),
-          },
-        ]}
-      >
+      <ContentHeader links={[{ children: <Trans>Home</Trans>, to: rootPath }]}>
         <Trans>Members</Trans>
       </ContentHeader>
       <ContentBody>

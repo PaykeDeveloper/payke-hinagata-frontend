@@ -4,13 +4,12 @@ import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
-import { StoreState, useStoreDispatch, useStoreSelector } from 'src/store';
-import { userPermissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
+import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
-  divisionPermission,
   divisionErrorSelector,
   divisionSelector,
   divisionStatusSelector,
+  checkDeleteDivisionsSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import { DivisionPath, divisionsPath } from 'src/view/routes/paths';
@@ -19,26 +18,18 @@ import Form from '../components/Form';
 
 type ChildProps = ComponentProps<typeof Form>;
 
-const permissionCheckSelector = createSelector(
-  userPermissionNamesSelector,
-  (_: StoreState, params: { permissionNames: string[] }) =>
-    params.permissionNames,
-  (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.some((e) => permissionNames?.includes(e))
-);
-
 const selector = createSelector(
   [
     divisionSelector,
     divisionStatusSelector,
     divisionErrorSelector,
-    permissionCheckSelector,
+    checkDeleteDivisionsSelector,
   ],
-  (object, status, error, hasDeletePermission) => ({
+  (object, status, error, checkDelete) => ({
     object,
     status,
     error,
-    hasDeletePermission,
+    checkDelete,
   })
 );
 
@@ -86,14 +77,8 @@ const Edit: FC<
     [dispatch, pathParams, onBack]
   );
 
-  const state = useStoreSelector((s) =>
-    selector(s, {
-      permissionNames: [
-        divisionPermission.deleteOwn,
-        divisionPermission.deleteAll,
-      ],
-    })
-  );
+  const { checkDelete, ...otherState } = useStoreSelector(selector);
+  const canDelete = checkDelete(otherState.object?.requestMemberId);
 
   const fromShow = location.state?.fromShow;
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
@@ -112,11 +97,11 @@ const Edit: FC<
 
   return (
     <Form
-      {...state}
+      {...otherState}
       title="Edit division"
       onSubmit={onSubmit}
       onBack={onBack}
-      onDelete={onDelete}
+      onDelete={canDelete ? onDelete : undefined}
     />
   );
 };

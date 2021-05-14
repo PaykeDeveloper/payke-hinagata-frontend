@@ -43,15 +43,59 @@ export const canCreateDivisionsSelector = createSelector(
 export const canUpdateDivisionsSelector = createSelector(
   userPermissionNamesSelector,
   memberPermissionNamesSelector,
-  (userPermissionNames, memberPermissionNames) =>
-    divisionPermission.canUpdateOwn(memberPermissionNames) ||
-    divisionPermission.canUpdateAll(userPermissionNames)
+  requestMemberIdSelector,
+  (userPermissionNames, memberPermissionNames, requestMemberId) => {
+    if (
+      requestMemberId &&
+      divisionPermission.canUpdateOwn(memberPermissionNames)
+    ) {
+      return true;
+    }
+    return divisionPermission.canUpdateAll(userPermissionNames);
+  }
 );
 
 export const canDeleteDivisionsSelector = createSelector(
   userPermissionNamesSelector,
   memberPermissionNamesSelector,
+  requestMemberIdSelector,
+  (userPermissionNames, memberPermissionNames, requestMemberId) => {
+    if (
+      requestMemberId &&
+      divisionPermission.canDeleteOwn(memberPermissionNames)
+    ) {
+      return true;
+    }
+    return divisionPermission.canDeleteAll(userPermissionNames);
+  }
+);
+
+export const checkUpdateDivisionsSelector = createSelector(
+  userPermissionNamesSelector,
+  memberPermissionNamesSelector,
   (userPermissionNames, memberPermissionNames) =>
-    divisionPermission.canDeleteOwn(memberPermissionNames) ||
-    divisionPermission.canDeleteAll(userPermissionNames)
+    (requestMemberId: number | null | undefined) => {
+      if (
+        requestMemberId &&
+        divisionPermission.canUpdateOwn(memberPermissionNames)
+      ) {
+        return true;
+      }
+      return divisionPermission.canUpdateAll(userPermissionNames);
+    }
+);
+
+export const checkDeleteDivisionsSelector = createSelector(
+  userPermissionNamesSelector,
+  memberPermissionNamesSelector,
+  (userPermissionNames, memberPermissionNames) =>
+    (requestMemberId: number | null | undefined) => {
+      if (
+        requestMemberId &&
+        divisionPermission.canDeleteOwn(memberPermissionNames)
+      ) {
+        return true;
+      }
+      return divisionPermission.canDeleteAll(userPermissionNames);
+    }
 );

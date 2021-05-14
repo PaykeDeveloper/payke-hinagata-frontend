@@ -27,22 +27,12 @@ const Form: FC<{
   object: BookInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
-  hasDeletePermission?: boolean;
 
   onSubmit: OnSubmit<BookInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
-  const {
-    title,
-    object,
-    status,
-    error,
-    hasDeletePermission,
-    onSubmit,
-    onBack,
-    onDelete,
-  } = props;
+  const { title, object, status, error, onSubmit, onBack, onDelete } = props;
   const { t } = useTranslation();
   return (
     <ContentWrapper>
@@ -66,19 +56,18 @@ const Form: FC<{
                 {t('Back')}
               </Button>,
             ]}
-            rightButtons={
-              onDelete && [
+            rightButtons={[
+              onDelete ? (
                 <LoaderButton
-                  disabled={!hasDeletePermission}
                   onClick={onDelete}
                   startIcon={<DeleteIcon />}
                   color="secondary"
                   variant="outlined"
                 >
                   {t('Delete')}
-                </LoaderButton>,
-              ]
-            }
+                </LoaderButton>
+              ) : undefined,
+            ]}
           />
           <BaseForm
             initialValues={object}
@@ -91,7 +80,7 @@ const Form: FC<{
               <Card>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid item xs={12} sm={8}>
+                    <Grid item xs={12} lg={6}>
                       <BaseTextField name="name" label={t('Name')} required />
                     </Grid>
                   </Grid>

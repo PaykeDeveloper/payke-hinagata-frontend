@@ -28,12 +28,7 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import Options from 'src/view/components/molecules/Options';
-import {
-  divisionsPath,
-  getMembersPath,
-  getDivisionPath,
-  rootPath,
-} from 'src/view/routes/paths';
+import { getMembersPath, rootPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
 const Form: FC<{
@@ -74,11 +69,6 @@ const Form: FC<{
       <ContentHeader
         links={[
           { children: t('Home'), to: rootPath },
-          { children: t('Divisions'), to: divisionsPath },
-          {
-            children: division?.name,
-            to: getDivisionPath({ divisionId: `${division?.id}` }),
-          },
           {
             children: <Trans>Members</Trans>,
             to: getMembersPath({ divisionId: `${division?.id}` }),

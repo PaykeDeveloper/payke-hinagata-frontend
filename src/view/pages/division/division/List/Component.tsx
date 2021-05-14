@@ -1,8 +1,7 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import { Box, Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
 import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
@@ -29,73 +28,37 @@ export type PermissionList = {
   membersView: boolean;
 };
 
-const useStyles = makeStyles((theme) => ({
-  showLink: {
-    marginRight: theme.spacing(1),
-  },
-}));
-
 const Component: FC<{
   divisions: Division[];
   status: StoreStatus;
   error: StoreError | undefined;
-  permission: PermissionList;
+  canCreate: boolean;
+  checkUpdate: (_: number | null | undefined) => boolean;
 
   onClickAdd: () => void;
-  onClickShow: (divisionId: number) => void;
-  onClickProjectsShow: (divisionId: number) => void;
-  onClickMembersShow: (divisionId: number) => void;
   onClickEdit: (divisionId: number) => void;
 }> = (props) => {
   const {
     divisions,
     status,
     error,
-    permission,
+    canCreate,
+    checkUpdate,
     onClickAdd,
-    onClickShow,
-    onClickProjectsShow,
-    onClickMembersShow,
     onClickEdit,
   } = props;
   const { t } = useTranslation();
-  const classes = useStyles();
-
   const columns: GridColumns = [
     {
       field: ' ',
       sortable: false,
       filterable: false,
-      renderCell: ({ row }) => (
-        <Box>
-          <Link
-            className={classes.showLink}
-            onClick={() => onClickShow(row['id'] as number)}
-          >
-            {t('Show')}
-          </Link>
-          <Link
-            className={classes.showLink}
-            onClick={() => onClickProjectsShow(row['id'] as number)}
-          >
-            {t('Projects')}
-          </Link>
-          {permission.membersView && permission.usersView ? (
-            <Link
-              className={classes.showLink}
-              onClick={() => onClickMembersShow(row['id'] as number)}
-            >
-              {t('Members')}
-            </Link>
-          ) : null}
-          {permission.divisionUpdate ? (
-            <Link onClick={() => onClickEdit(row['id'] as number)}>
-              {t('Edit')}
-            </Link>
-          ) : null}
-        </Box>
-      ),
-      width: 260,
+      renderCell: ({ row }) => {
+        if (!checkUpdate(row['requestMemberId'])) {
+          return <></>;
+        }
+        return <Link onClick={() => onClickEdit(row['id'])}>{t('Edit')}</Link>;
+      },
     },
     {
       field: 'id',
@@ -124,15 +87,16 @@ const Component: FC<{
         <ErrorWrapper error={error}>
           <Buttons
             leftButtons={[
-              <Button
-                disabled={!permission.divisionCreate}
-                onClick={onClickAdd}
-                startIcon={<AddIcon />}
-                color="primary"
-                variant="outlined"
-              >
-                <Trans>Add</Trans>
-              </Button>,
+              canCreate ? (
+                <Button
+                  onClick={onClickAdd}
+                  startIcon={<AddIcon />}
+                  color="primary"
+                  variant="outlined"
+                >
+                  <Trans>Add</Trans>
+                </Button>
+              ) : undefined,
             ]}
           />
           <Loader status={status}>

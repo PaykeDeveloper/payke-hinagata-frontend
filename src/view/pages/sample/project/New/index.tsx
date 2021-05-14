@@ -13,7 +13,7 @@ import {
   projectsStatusSelector,
 } from 'src/store/state/domain/sample/projects/selectors';
 import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
-import { DivisionPath, getDivisionPath } from 'src/view/routes/paths';
+import { DivisionPath, getProjectsPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Form from '../components/Form';
 
@@ -36,7 +36,7 @@ const Container: FC<
     history: { push },
     location,
   } = props;
-  const backPath = location.state?.path || getDivisionPath(pathParams);
+  const backPath = location.state?.path || getProjectsPath(pathParams);
   const onBack: ChildProps['onBack'] = useCallback(
     () => push(backPath),
     [push, backPath]

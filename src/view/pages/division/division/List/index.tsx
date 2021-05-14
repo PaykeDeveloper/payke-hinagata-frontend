@@ -5,55 +5,34 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { usersViewPermissionCheckSelector } from 'src/store/state/domain/common/users/selectors';
 import {
   canCreateDivisionsSelector,
   divisionsErrorSelector,
   divisionsSelector,
   divisionsStatusSelector,
-  canUpdateDivisionsSelector,
+  checkUpdateDivisionsSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
-import { canViewMembersSelector } from 'src/store/state/domain/division/members/selectors';
-import {
-  divisionNewPath,
-  getDivisionEditPath,
-  getProjectsPath,
-  getMembersPath,
-  getDivisionPath,
-} from 'src/view/routes/paths';
+import { divisionNewPath, getDivisionEditPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
-
-const permissionSelector = createSelector(
-  [
-    canCreateDivisionsSelector,
-    canUpdateDivisionsSelector,
-    usersViewPermissionCheckSelector,
-    canViewMembersSelector,
-  ],
-  (divisionCreate, divisionUpdate, usersView, membersView) => ({
-    divisionCreate,
-    divisionUpdate,
-    usersView,
-    membersView,
-  })
-);
 
 const selector = createSelector(
   [
     divisionsSelector,
     divisionsStatusSelector,
     divisionsErrorSelector,
-    permissionSelector,
+    canCreateDivisionsSelector,
+    checkUpdateDivisionsSelector,
   ],
-  (divisions, status, error, permission) => ({
+  (divisions, status, error, canCreate, checkUpdate) => ({
     divisions,
     status,
     error,
-    permission,
+    canCreate,
+    checkUpdate,
   })
 );
 
@@ -77,30 +56,6 @@ const List: FC<RouteComponentProps> = (props) => {
     [push, path]
   );
 
-  const onClickShow: ChildProps['onClickShow'] = useCallback(
-    (divisionId) =>
-      push(getDivisionPath({ divisionId: `${divisionId}` }), {
-        path,
-      } as RouterState),
-    [push, path]
-  );
-
-  const onClickProjectsShow: ChildProps['onClickProjectsShow'] = useCallback(
-    (divisionId) =>
-      push(getProjectsPath({ divisionId: `${divisionId}` }), {
-        path,
-      } as RouterState),
-    [push, path]
-  );
-
-  const onClickMembersShow: ChildProps['onClickMembersShow'] = useCallback(
-    (divisionId) =>
-      push(getMembersPath({ divisionId: `${divisionId}` }), {
-        path,
-      } as RouterState),
-    [push, path]
-  );
-
   const onClickEdit: ChildProps['onClickEdit'] = useCallback(
     (divisionId) =>
       push(getDivisionEditPath({ divisionId: `${divisionId}` }), {
@@ -110,14 +65,7 @@ const List: FC<RouteComponentProps> = (props) => {
   );
 
   return (
-    <Component
-      {...state}
-      onClickAdd={onClickAdd}
-      onClickShow={onClickShow}
-      onClickProjectsShow={onClickProjectsShow}
-      onClickMembersShow={onClickMembersShow}
-      onClickEdit={onClickEdit}
-    />
+    <Component {...state} onClickAdd={onClickAdd} onClickEdit={onClickEdit} />
   );
 };
 

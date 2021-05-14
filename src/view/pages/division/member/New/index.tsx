@@ -22,7 +22,7 @@ import {
   membersStatusSelector,
 } from 'src/store/state/domain/division/members/selectors';
 import { membersActions } from 'src/store/state/domain/division/members/slice';
-import { DivisionPath, getDivisionPath } from 'src/view/routes/paths';
+import { DivisionPath, getProjectsPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Form from '../components/Form';
 
@@ -65,7 +65,7 @@ const New: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> = (
     history: { push },
     location,
   } = props;
-  const backPath = location.state?.path || getDivisionPath(pathParams);
+  const backPath = location.state?.path || getProjectsPath(pathParams);
   const onBack: ChildProps['onBack'] = useCallback(
     () => push(backPath),
     [push, backPath]

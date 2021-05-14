@@ -10,7 +10,6 @@ import NotFound from 'src/view/pages/common/NotFound';
 import DivisionEdit from 'src/view/pages/division/division/Edit';
 import DivisionList from 'src/view/pages/division/division/List';
 import DivisionNew from 'src/view/pages/division/division/New';
-import DivisionShow from 'src/view/pages/division/division/Show';
 import MemberEdit from 'src/view/pages/division/member/Edit';
 import MemberList from 'src/view/pages/division/member/List';
 import MemberNew from 'src/view/pages/division/member/New';
@@ -38,7 +37,6 @@ import {
   otherPath,
   rootPath,
   usersPath,
-  divisionPath,
   divisionsPath,
   divisionNewPath,
   divisionEditPath,
@@ -73,7 +71,6 @@ const privateRoutes: RouteProps[] = [
   { path: divisionsPath, component: DivisionList },
   { path: divisionNewPath, component: DivisionNew },
   { path: divisionEditPath, component: DivisionEdit },
-  { path: divisionPath, component: DivisionShow },
   { path: projectsPath, component: ProjectList },
   { path: projectNewPath, component: ProjectNew },
   { path: projectEditPath, component: ProjectEdit },
