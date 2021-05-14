@@ -31,7 +31,7 @@ const Component: FC<{
 
   onSubmit: OnSubmit<InvitationUpdateInput>;
   onBack: () => void;
-  onDelete: () => Promise<unknown>;
+  onDelete?: () => Promise<unknown>;
 }> = (props) => {
   const { object, status, error, roles, disabled, onSubmit, onBack, onDelete } =
     props;
@@ -59,15 +59,16 @@ const Component: FC<{
               </Button>,
             ]}
             rightButtons={[
-              <LoaderButton
-                onClick={onDelete}
-                disabled={disabled}
-                startIcon={<DeleteIcon />}
-                color="secondary"
-                variant="outlined"
-              >
-                {t('Delete')}
-              </LoaderButton>,
+              onDelete ? (
+                <LoaderButton
+                  onClick={onDelete}
+                  startIcon={<DeleteIcon />}
+                  color="secondary"
+                  variant="outlined"
+                >
+                  {t('Delete')}
+                </LoaderButton>
+              ) : undefined,
             ]}
           />
           <BaseForm

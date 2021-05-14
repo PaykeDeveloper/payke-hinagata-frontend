@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
+  canEditInvitationsSelector,
   invitationsErrorSelector,
   invitationsSelector,
   invitationsStatusSelector,
@@ -19,8 +20,18 @@ import Component from './Component';
 type ChildProps = ComponentProps<typeof Component>;
 
 const selector = createSelector(
-  [invitationsSelector, invitationsStatusSelector, invitationsErrorSelector],
-  (invitations, status, error) => ({ invitations, status, error })
+  [
+    invitationsSelector,
+    invitationsStatusSelector,
+    invitationsErrorSelector,
+    canEditInvitationsSelector,
+  ],
+  (invitations, status, error, canEdit) => ({
+    invitations,
+    status,
+    error,
+    canEdit,
+  })
 );
 
 const List: FC<RouteComponentProps> = (props) => {
@@ -33,7 +44,6 @@ const List: FC<RouteComponentProps> = (props) => {
   useEffect(() => {
     dispatch(invitationsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
-  const status = useStoreSelector(selector);
 
   const path = joinString(pathname, search);
 
@@ -50,8 +60,10 @@ const List: FC<RouteComponentProps> = (props) => {
     [push, path]
   );
 
+  const state = useStoreSelector(selector);
+
   return (
-    <Component {...status} onClickAdd={onClickAdd} onClickEdit={onClickEdit} />
+    <Component {...state} onClickAdd={onClickAdd} onClickEdit={onClickEdit} />
   );
 };
 

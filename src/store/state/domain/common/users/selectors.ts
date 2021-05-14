@@ -31,11 +31,6 @@ export const userIdMapSelector = createSelector(usersSelector, (users) =>
   convertListToObject<number, User>(users, 'id')
 );
 
-export const canUpdateUsersSelector = createSelector(
-  userPermissionNamesSelector,
-  (permissionNames) => userPermission.canUpdate(permissionNames)
-);
-
 export const checkUpdateUserSelector = createSelector(
   myUserSelector,
   userPermissionNamesSelector,

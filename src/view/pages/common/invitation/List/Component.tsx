@@ -48,11 +48,13 @@ const Component: FC<{
   invitations: Invitation[];
   status: StoreStatus;
   error: StoreError | undefined;
+  canEdit: boolean;
 
   onClickAdd: () => void;
   onClickEdit: (invitationId: number) => void;
 }> = (props) => {
-  const { invitations, status, error, onClickAdd, onClickEdit } = props;
+  const { invitations, status, error, canEdit, onClickAdd, onClickEdit } =
+    props;
   const { t } = useTranslation();
 
   const columns: GridColumns = [
@@ -61,7 +63,7 @@ const Component: FC<{
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => {
-        if (row['status'] !== InvitationStatus.Pending) {
+        if (!canEdit || row['status'] !== InvitationStatus.Pending) {
           return <></>;
         }
         return (
