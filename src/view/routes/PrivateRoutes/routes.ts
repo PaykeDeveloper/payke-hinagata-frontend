@@ -7,6 +7,8 @@ import InvitationEdit from 'src/view/pages/common/invitation/Edit';
 import InvitationList from 'src/view/pages/common/invitation/List';
 import InvitationNew from 'src/view/pages/common/invitation/New';
 import NotFound from 'src/view/pages/common/NotFound';
+import UserEdit from 'src/view/pages/common/user/Edit';
+import UserList from 'src/view/pages/common/user/List';
 import DivisionEdit from 'src/view/pages/division/division/Edit';
 import DivisionList from 'src/view/pages/division/division/List';
 import DivisionNew from 'src/view/pages/division/division/New';
@@ -23,8 +25,6 @@ import BookCommentNew from 'src/view/pages/sample/bookComment/New';
 import ProjectEdit from 'src/view/pages/sample/project/Edit';
 import ProjectList from 'src/view/pages/sample/project/List';
 import ProjectNew from 'src/view/pages/sample/project/New';
-import UserEdit from 'src/view/pages/sample/user/Edit';
-import UserList from 'src/view/pages/sample/user/List';
 
 import {
   importerBooksPath,
@@ -63,21 +63,18 @@ const privateRoutes: RouteProps[] = [
   { path: bookEditPath, component: BookEdit },
   { path: bookPath, component: BookShow },
   { path: booksPath, component: BookList },
-
-  { path: usersPath, component: UserList },
-  { path: userEditPath, component: UserEdit },
-
-  // divisions
-  { path: divisionsPath, component: DivisionList },
-  { path: divisionNewPath, component: DivisionNew },
-  { path: divisionEditPath, component: DivisionEdit },
-  { path: projectsPath, component: ProjectList },
   { path: projectNewPath, component: ProjectNew },
   { path: projectEditPath, component: ProjectEdit },
-  { path: membersPath, component: MemberList },
+  { path: projectsPath, component: ProjectList },
   { path: memberNewPath, component: MemberNew },
   { path: memberEditPath, component: MemberEdit },
+  { path: membersPath, component: MemberList },
+  { path: divisionNewPath, component: DivisionNew },
+  { path: divisionEditPath, component: DivisionEdit },
+  { path: divisionsPath, component: DivisionList },
 
+  { path: userEditPath, component: UserEdit },
+  { path: usersPath, component: UserList },
   { path: invitationNewPath, component: InvitationNew },
   { path: invitationEditPath, component: InvitationEdit },
   { path: invitationsPath, component: InvitationList },
