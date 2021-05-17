@@ -6,151 +6,85 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import {
-  divisionErrorSelector,
-  divisionSelector,
-  divisionStatusSelector,
-  divisionUpdatePermissionCheckSelector,
-} from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
-import {
-  membersSelector,
-  membersStatusSelector,
-  membersErrorSelector,
-} from 'src/store/state/domain/division/members/selectors';
 import { membersActions } from 'src/store/state/domain/division/members/slice';
 import {
   projectsErrorSelector,
   projectsSelector,
   projectsStatusSelector,
-  projectCreatePermissionCheckSelector,
-  projectUpdatePermissionCheckSelector,
+  canCreateProjectSelector,
+  canEditProjectSelector,
 } from 'src/store/state/domain/sample/projects/selectors';
 import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
-import { DivisionEditRouterState } from 'src/view/pages/division/division/Edit';
 import {
   DivisionPath,
-  divisionsPath,
   getProjectEditPath,
   getProjectNewPath,
-  getDivisionEditPath,
 } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
-import Component, { PermissionList } from './Component';
+import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 
-const permissionSelector = createSelector(
-  [
-    divisionUpdatePermissionCheckSelector,
-    projectCreatePermissionCheckSelector,
-    projectUpdatePermissionCheckSelector,
-  ],
-  (divisionUpdate, projectCreate, projectUpdate) =>
-    ({
-      divisionUpdate,
-      projectCreate,
-      projectUpdate,
-    } as PermissionList)
-);
-
 const selector = createSelector(
   [
-    divisionSelector,
-    divisionStatusSelector,
-    divisionErrorSelector,
     projectsSelector,
     projectsStatusSelector,
     projectsErrorSelector,
-    membersSelector,
-    membersStatusSelector,
-    membersErrorSelector,
-    permissionSelector,
+    canCreateProjectSelector,
+    canEditProjectSelector,
   ],
-  (
-    division,
-    divisionStatus,
-    divisionError,
+  (projects, status, error, canCreate, canEdit) => ({
     projects,
-    projectsStatus,
-    projectsError,
-    members,
-    membersStatus,
-    membersError,
-    permission
-  ) => ({
-    division,
-    divisionStatus,
-    projects,
-    projectsStatus,
-    members,
-    membersStatus,
-    errors: [divisionError, projectsError, membersError],
-    permission,
+    status,
+    error,
+    canCreate,
+    canEdit,
   })
 );
 
-const Show: FC<
-  RouteComponentProps<DivisionPath, StaticContext, RouterState>
-> = (props) => {
-  const {
-    history: { push },
-    match: { params: pathParams },
-    location,
-  } = props;
+const Show: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> =
+  (props) => {
+    const {
+      history: { push },
+      match: { params: pathParams },
+      location,
+    } = props;
 
-  const backPath = location.state?.path || divisionsPath;
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+    const dispatch = useStoreDispatch();
+    useEffect(() => {
+      dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams }));
+      dispatch(projectsActions.fetchEntitiesIfNeeded({ pathParams }));
+      dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams }));
+    }, [dispatch, pathParams]);
 
-  const dispatch = useStoreDispatch();
-  useEffect(() => {
-    const reset = true;
-    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset }));
-    dispatch(projectsActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-    dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-  }, [dispatch, pathParams]);
+    const path = joinString(location.pathname, location.search);
 
-  const path = joinString(location.pathname, location.search);
+    const onClickAdd: ChildProps['onClickAdd'] = useCallback(
+      () =>
+        push(getProjectNewPath(pathParams), {
+          path,
+        } as RouterState),
+      [push, pathParams, path]
+    );
 
-  const onClickEditDivision: ChildProps['onClickEditDivision'] = useCallback(
-    () =>
-      push(getDivisionEditPath(pathParams), {
-        path,
-        fromShow: true,
-      } as DivisionEditRouterState),
-    [push, pathParams, path]
-  );
+    const onClickEdit: ChildProps['onClickEdit'] = useCallback(
+      (projectId) =>
+        push(getProjectEditPath({ ...pathParams, projectId }), {
+          path,
+        } as RouterState),
+      [push, pathParams, path]
+    );
 
-  const state = useStoreSelector(selector);
+    const { canCreate, canEdit, ...otherState } = useStoreSelector(selector);
 
-  const onClickAddProject: ChildProps['onClickAddProject'] = useCallback(
-    () =>
-      push(getProjectNewPath(pathParams), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
-
-  const onClickEditProject: ChildProps['onClickEditProject'] = useCallback(
-    (projectId) =>
-      push(getProjectEditPath({ ...pathParams, projectId }), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
-
-  return (
-    <Component
-      {...state}
-      onBack={onBack}
-      onClickEditDivision={onClickEditDivision}
-      onClickAddProject={onClickAddProject}
-      onClickEditProject={onClickEditProject}
-    />
-  );
-};
+    return (
+      <Component
+        {...otherState}
+        onClickAdd={canCreate ? onClickAdd : undefined}
+        onClickEdit={canEdit ? onClickEdit : undefined}
+      />
+    );
+  };
 
 export default Show;

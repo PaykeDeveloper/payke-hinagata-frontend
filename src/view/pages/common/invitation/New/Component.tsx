@@ -28,13 +28,15 @@ const Component: FC<{
   object: InvitationCreateInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
+  disabled: boolean;
   roles: Role[];
   locales: DomainLocale[];
 
   onSubmit: OnSubmit<InvitationCreateInput>;
   onBack: () => void;
 }> = (props) => {
-  const { object, status, error, roles, locales, onSubmit, onBack } = props;
+  const { object, status, error, disabled, roles, locales, onSubmit, onBack } =
+    props;
   const { t } = useTranslation();
   return (
     <ContentWrapper>
@@ -73,13 +75,19 @@ const Component: FC<{
                 <CardContent>
                   <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
-                      <BaseTextField name="name" label={t('Name')} required />
+                      <BaseTextField
+                        name="name"
+                        label={t('Name')}
+                        required
+                        disabled={disabled}
+                      />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <EmailTextField
                         name="email"
                         label={t('Email')}
                         required
+                        disabled={disabled}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -87,6 +95,7 @@ const Component: FC<{
                         name="locale"
                         label={t('Locale')}
                         required
+                        disabled={disabled}
                       >
                         <Options
                           objects={locales}
@@ -100,6 +109,7 @@ const Component: FC<{
                         name="roleNames"
                         label={t('Role')}
                         required
+                        disabled={disabled}
                       >
                         {roles.map(({ id, name, required }) => (
                           <MenuItem key={id} value={name} disabled={required}>
@@ -111,7 +121,7 @@ const Component: FC<{
                   </Grid>
                 </CardContent>
                 <CardActions>
-                  <SubmitButton />
+                  <SubmitButton disabled={disabled} />
                 </CardActions>
               </Card>
             </Loader>

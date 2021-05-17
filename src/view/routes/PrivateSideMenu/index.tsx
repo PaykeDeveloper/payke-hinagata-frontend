@@ -1,13 +1,14 @@
 import React, { ChangeEvent, FC, useCallback, useEffect, useMemo } from 'react';
 import { ListSubheader } from '@material-ui/core';
 import { createSelector } from '@reduxjs/toolkit';
+import toSafeInteger from 'lodash/toSafeInteger';
 import { Trans } from 'react-i18next';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { invitationOwnPermission } from 'src/store/state/domain/common/invitations/selectors';
-import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
-import { userOwnPermission } from 'src/store/state/domain/common/users/selectors';
+import { invitationPermission } from 'src/store/state/domain/common/invitations/selectors';
+import { userPermissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
+import { userPermission } from 'src/store/state/domain/common/users/selectors';
 import {
-  divisionOwnPermission,
+  divisionPermission,
   divisionsErrorSelector,
   divisionsSelector,
   divisionsStatusSelector,
@@ -16,12 +17,15 @@ import { divisionsActions } from 'src/store/state/domain/division/divisions/slic
 import { menuDivisionIdSelector } from 'src/store/state/ui/menu/selectors';
 import { menuActions } from 'src/store/state/ui/menu/slice';
 import {
+  DomainIcon,
   HomeIcon,
   ListIcon,
   MenuUserIcon,
   PersonAddIcon,
 } from 'src/view/base/material-ui/Icon';
 import {
+  divisionNewPath,
+  divisionsPath,
   getMembersPath,
   getProjectsPath,
   invitationNewPath,
@@ -51,20 +55,23 @@ const defaultHomeMenu: MenuList = {
 
 // Divisions Menu
 const divisionsSelectMenuSelector = createSelector(
-  [divisionsSelector, menuDivisionIdSelector, permissionNamesSelector],
+  [divisionsSelector, menuDivisionIdSelector, userPermissionNamesSelector],
   (divisions, menuDivisionId, permissionNames): SelectableMenuList => ({
+    subheader: (
+      <ListSubheader>
+        <Trans>Division Menu</Trans>
+      </ListSubheader>
+    ),
     menus: [
       {
         text: <Trans>Division</Trans>,
         name: 'divisionId',
         label: 'Division',
         selects: [
-          ...[
-            {
-              text: 'Select',
-              value: '',
-            },
-          ],
+          {
+            text: 'Select',
+            value: '',
+          },
           ...divisions.map((division) => ({
             text: division.name,
             value: `${division.id}`,
@@ -84,15 +91,15 @@ const divisionsSelectMenuSelector = createSelector(
                 to: getMembersPath({ divisionId: `${menuDivisionId}` }),
                 paths: [getMembersPath({ divisionId: `${menuDivisionId}` })],
                 requiredPermissions: [
-                  divisionOwnPermission.createOwn,
-                  divisionOwnPermission.createAll,
+                  divisionPermission.createOwn,
+                  divisionPermission.createAll,
                 ],
               },
             ]
           : [],
         requiredPermissions: [
-          divisionOwnPermission.viewOwn,
-          divisionOwnPermission.viewAll,
+          divisionPermission.viewOwn,
+          divisionPermission.viewAll,
         ],
         permissionNames,
       },
@@ -104,31 +111,36 @@ const divisionsSelectMenuSelector = createSelector(
 const defaultSubMenu: MenuList = {
   subheader: (
     <ListSubheader>
-      <Trans>Menu</Trans>
+      <Trans>Sub Menu</Trans>
     </ListSubheader>
   ),
   menus: [
+    {
+      text: <Trans>Divisions</Trans>,
+      icon: <DomainIcon />,
+      to: divisionsPath,
+      paths: [divisionsPath, divisionNewPath],
+      requiredPermissions: [
+        divisionPermission.viewOwn,
+        divisionPermission.viewAll,
+      ],
+    },
+    {
+      text: <Trans>Users</Trans>,
+      icon: <MenuUserIcon />,
+      to: usersPath,
+      paths: [usersPath, userPath],
+      requiredPermissions: [userPermission.viewOwn, userPermission.viewAll],
+    },
     {
       text: <Trans>Invitations</Trans>,
       icon: <PersonAddIcon />,
       to: invitationsPath,
       paths: [invitationsPath, invitationNewPath],
-      requiredPermissions: [invitationOwnPermission.viewAll],
-    },
-    {
-      text: <Trans>Users</Trans>,
-      icon: <MenuUserIcon />,
-      menus: [
-        {
-          text: <Trans>List</Trans>,
-          icon: <ListIcon />,
-          to: usersPath,
-          paths: [usersPath, userPath],
-        },
-      ],
+      requiredPermissions: [invitationPermission.viewAll],
     },
   ],
-  requiredPermissions: [userOwnPermission.viewAll],
+  requiredPermissions: [userPermission.viewAll],
 };
 
 const selector = createSelector(
@@ -137,7 +149,7 @@ const selector = createSelector(
     divisionsStatusSelector,
     divisionsErrorSelector,
     menuDivisionIdSelector,
-    permissionNamesSelector,
+    userPermissionNamesSelector,
   ],
   (divisionsSelectMenu, status, error, currentDivisionId, permissionNames) => ({
     divisionsSelectMenu,
@@ -148,7 +160,7 @@ const selector = createSelector(
   })
 );
 
-const List: FC<ChildProps> = (props) => {
+const PrivateSideMenu: FC<ChildProps> = (props) => {
   const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(divisionsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
@@ -161,7 +173,7 @@ const List: FC<ChildProps> = (props) => {
       if (data.target.value === '') {
         dispatch(menuActions.setDivisionId(null));
       } else {
-        dispatch(menuActions.setDivisionId(parseInt(data.target.value, 10)));
+        dispatch(menuActions.setDivisionId(toSafeInteger(data.target.value)));
       }
     },
     [dispatch]
@@ -213,4 +225,4 @@ const List: FC<ChildProps> = (props) => {
   );
 };
 
-export default List;
+export default PrivateSideMenu;

@@ -13,13 +13,8 @@ type Props = SelectFieldProps & {
 };
 
 const MultiSelectField: FC<Props> = (props) => {
-  const {
-    name,
-    selectProps,
-    helperText,
-    formControlProps,
-    ...otherProps
-  } = props;
+  const { name, selectProps, helperText, formControlProps, ...otherProps } =
+    props;
   const { isSubmitting, submitCount } = useFormikContext();
   const [field, meta] = useField({ name });
   const { value, ...otherField } = field;

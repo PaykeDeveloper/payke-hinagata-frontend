@@ -3,11 +3,11 @@
 import { createSelector } from 'reselect';
 import { convertListToObject } from 'src/base/utils';
 import { StoreState } from 'src/store';
-import { OwnPermissionFactory } from '../permissions/factories';
-import { myUserIdSelector, permissionNamesSelector } from '../user/selectors';
+import { OwnPermissionFactory } from 'src/store/utils';
+import { myUserSelector, userPermissionNamesSelector } from '../user/selectors';
 import { User } from '../user/types';
 
-export const userOwnPermission = new OwnPermissionFactory('user');
+export const userPermission = new OwnPermissionFactory('user');
 
 export const usersSelector = (state: StoreState) =>
   state.domain.common.users.entities;
@@ -27,37 +27,43 @@ export const userStatusSelector = (state: StoreState) =>
 export const userErrorSelector = (state: StoreState) =>
   state.domain.common.users.meta.fetchEntity.error;
 
-export const userIdMapSelector = createSelector(
-  usersSelector,
-  (users): Record<number, User> => convertListToObject(users, 'id')
+export const userIdMapSelector = createSelector(usersSelector, (users) =>
+  convertListToObject<number, User>(users, 'id')
 );
 
-export const usersViewPermissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (permissionNames) => userOwnPermission.canView(permissionNames)
+export const checkUpdateUserSelector = createSelector(
+  myUserSelector,
+  userPermissionNamesSelector,
+  (user, permissionNames) => (userId: number | undefined) => {
+    if (
+      userId &&
+      userId === user?.id &&
+      userPermission.canUpdateOwn(permissionNames)
+    ) {
+      return true;
+    }
+    return userPermission.canUpdateAll(permissionNames);
+  }
 );
 
-export const usersUpdatePermissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (permissionNames) => userOwnPermission.canUpdate(permissionNames)
+export const checkDeleteUserSelector = createSelector(
+  myUserSelector,
+  userPermissionNamesSelector,
+  (user, permissionNames) => (userId: number | undefined) => {
+    if (
+      userId &&
+      userId === user?.id &&
+      userPermission.canDeleteOwn(permissionNames)
+    ) {
+      return true;
+    }
+    return userPermission.canDeleteAll(permissionNames);
+  }
 );
 
-export const userUpdatePermissionCheckSelector = createSelector(
-  myUserIdSelector,
-  userSelector,
-  permissionNamesSelector,
-  (myUserId, user, permissionNames) =>
-    myUserId && user?.id === myUserId
-      ? userOwnPermission.canUpdateOwn(permissionNames)
-      : userOwnPermission.canUpdateAll(permissionNames)
-);
-
-export const userDeletePermissionCheckSelector = createSelector(
-  myUserIdSelector,
-  userSelector,
-  permissionNamesSelector,
-  (myUserId, user, permissionNames) =>
-    myUserId && user?.id === myUserId
-      ? userOwnPermission.canDeleteOwn(permissionNames)
-      : userOwnPermission.canDeleteAll(permissionNames)
+export const checkEditUserSelector = createSelector(
+  checkUpdateUserSelector,
+  checkDeleteUserSelector,
+  (checkUpdate, checkDelete) => (userId: number | undefined) =>
+    checkUpdate(userId) || checkDelete(userId)
 );

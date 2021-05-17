@@ -5,11 +5,7 @@ import { Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
-import { Division } from 'src/store/state/domain/division/divisions/types';
-import {
-  ProjectDetail,
-  ProjectInput,
-} from 'src/store/state/domain/sample/projects/types';
+import { ProjectInput } from 'src/store/state/domain/sample/projects/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
@@ -23,12 +19,7 @@ import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
-import {
-  divisionsPath,
-  getDivisionPath,
-  getProjectsPath,
-  rootPath,
-} from 'src/view/routes/paths';
+import { DivisionPath, getProjectsPath, rootPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
 const Form: FC<{
@@ -36,8 +27,8 @@ const Form: FC<{
   object: ProjectInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
-  division: Division | undefined;
-  project: ProjectDetail | undefined;
+  disabled: boolean;
+  divisionPath: DivisionPath;
 
   onSubmit: OnSubmit<ProjectInput>;
   onBack: () => void;
@@ -48,7 +39,8 @@ const Form: FC<{
     object,
     status,
     error,
-    division,
+    disabled,
+    divisionPath,
     onSubmit,
     onBack,
     onDelete,
@@ -59,14 +51,9 @@ const Form: FC<{
       <ContentHeader
         links={[
           { children: t('Home'), to: rootPath },
-          { children: t('Divisions'), to: divisionsPath },
-          {
-            children: division?.name,
-            to: getDivisionPath({ divisionId: `${division?.id}` }),
-          },
           {
             children: t('Projects'),
-            to: getProjectsPath({ divisionId: `${division?.id}` }),
+            to: getProjectsPath(divisionPath),
           },
         ]}
       >
@@ -109,12 +96,17 @@ const Form: FC<{
                 <CardContent>
                   <Grid container spacing={1}>
                     <Grid item xs={12} sm={8}>
-                      <BaseTextField name="name" label={t('Name')} required />
+                      <BaseTextField
+                        name="name"
+                        label={t('Name')}
+                        required
+                        disabled={disabled}
+                      />
                     </Grid>
                   </Grid>
                 </CardContent>
                 <CardActions>
-                  <SubmitButton />
+                  <SubmitButton disabled={disabled} />
                 </CardActions>
               </Card>
             </Loader>

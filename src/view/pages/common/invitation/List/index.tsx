@@ -4,6 +4,8 @@ import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
+  canCreateInvitationSelector,
+  canEditInvitationSelector,
   invitationsErrorSelector,
   invitationsSelector,
   invitationsStatusSelector,
@@ -19,8 +21,20 @@ import Component from './Component';
 type ChildProps = ComponentProps<typeof Component>;
 
 const selector = createSelector(
-  [invitationsSelector, invitationsStatusSelector, invitationsErrorSelector],
-  (invitations, status, error) => ({ invitations, status, error })
+  [
+    invitationsSelector,
+    invitationsStatusSelector,
+    invitationsErrorSelector,
+    canCreateInvitationSelector,
+    canEditInvitationSelector,
+  ],
+  (invitations, status, error, canCreate, canEdit) => ({
+    invitations,
+    status,
+    error,
+    canCreate,
+    canEdit,
+  })
 );
 
 const List: FC<RouteComponentProps> = (props) => {
@@ -33,7 +47,6 @@ const List: FC<RouteComponentProps> = (props) => {
   useEffect(() => {
     dispatch(invitationsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
-  const status = useStoreSelector(selector);
 
   const path = joinString(pathname, search);
 
@@ -50,8 +63,14 @@ const List: FC<RouteComponentProps> = (props) => {
     [push, path]
   );
 
+  const { canCreate, canEdit, ...otherState } = useStoreSelector(selector);
+
   return (
-    <Component {...status} onClickAdd={onClickAdd} onClickEdit={onClickEdit} />
+    <Component
+      {...otherState}
+      onClickAdd={canCreate ? onClickAdd : undefined}
+      onClickEdit={canEdit ? onClickEdit : undefined}
+    />
   );
 };
 

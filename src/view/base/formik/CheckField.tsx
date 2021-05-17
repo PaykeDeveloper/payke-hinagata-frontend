@@ -11,13 +11,8 @@ type Props = CheckFieldProps & {
 };
 
 const CheckField: FC<Props> = (props) => {
-  const {
-    name,
-    checkboxProps,
-    helperText,
-    formControlProps,
-    ...otherProps
-  } = props;
+  const { name, checkboxProps, helperText, formControlProps, ...otherProps } =
+    props;
   const { isSubmitting, submitCount } = useFormikContext();
   const [field, meta] = useField({ name });
   const { value, ...otherField } = field;

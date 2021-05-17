@@ -22,10 +22,10 @@ const VerifyEmail: FC<RouteComponentProps<VerifyEmailPath>> = (props) => {
   const urlSearchParams = new URLSearchParams(location.search);
   const expires = urlSearchParams.get('expires') || undefined;
   const signature = urlSearchParams.get('signature') || undefined;
-  const searchParams = useMemo(() => ({ expires, signature }), [
-    expires,
-    signature,
-  ]);
+  const searchParams = useMemo(
+    () => ({ expires, signature }),
+    [expires, signature]
+  );
 
   const dispatch = useStoreDispatch();
   const { t } = useTranslation();

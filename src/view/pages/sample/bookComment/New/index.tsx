@@ -28,55 +28,54 @@ const selector = createSelector(
   })
 );
 
-const Container: FC<
-  RouteComponentProps<BookPath, StaticContext, RouterState>
-> = (props) => {
-  const {
-    match: { params: pathParams },
-    history: { push },
-    location,
-  } = props;
-  const backPath = location.state?.path || getBookPath(pathParams);
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+const Container: FC<RouteComponentProps<BookPath, StaticContext, RouterState>> =
+  (props) => {
+    const {
+      match: { params: pathParams },
+      history: { push },
+      location,
+    } = props;
+    const backPath = location.state?.path || getBookPath(pathParams);
+    const onBack: ChildProps['onBack'] = useCallback(
+      () => push(backPath),
+      [push, backPath]
+    );
 
-  const dispatch = useStoreDispatch();
+    const dispatch = useStoreDispatch();
 
-  useEffect(() => {
-    dispatch(booksActions.fetchEntityIfNeeded({ pathParams, reset: true }));
-  }, [dispatch, pathParams]);
+    useEffect(() => {
+      dispatch(booksActions.fetchEntityIfNeeded({ pathParams, reset: true }));
+    }, [dispatch, pathParams]);
 
-  const onSubmit: ChildProps['onSubmit'] = useCallback(
-    async (params) => {
-      const action = await dispatch(
-        bookCommentsActions.addEntity({
-          pathParams,
-          bodyParams: inputsToObject(params, { approvedAt: 'dateTime' }),
-          useFormData: true,
-        })
-      );
-      if (bookCommentsActions.addEntity.fulfilled.match(action)) {
-        onBack();
-      }
-      return action;
-    },
-    [dispatch, pathParams, onBack]
-  );
+    const onSubmit: ChildProps['onSubmit'] = useCallback(
+      async (params) => {
+        const action = await dispatch(
+          bookCommentsActions.addEntity({
+            pathParams,
+            bodyParams: inputsToObject(params, { approvedAt: 'dateTime' }),
+            useFormData: true,
+          })
+        );
+        if (bookCommentsActions.addEntity.fulfilled.match(action)) {
+          onBack();
+        }
+        return action;
+      },
+      [dispatch, pathParams, onBack]
+    );
 
-  const state = useStoreSelector(selector);
+    const state = useStoreSelector(selector);
 
-  return (
-    <Form
-      {...state}
-      title="Add comment"
-      object={undefined}
-      bookComment={undefined}
-      onSubmit={onSubmit}
-      onBack={onBack}
-    />
-  );
-};
+    return (
+      <Form
+        {...state}
+        title="Add comment"
+        object={undefined}
+        bookComment={undefined}
+        onSubmit={onSubmit}
+        onBack={onBack}
+      />
+    );
+  };
 
 export default Container;

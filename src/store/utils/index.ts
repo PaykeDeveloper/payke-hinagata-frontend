@@ -25,6 +25,10 @@ export {
   default as createEntitiesSlice,
   getEntitiesInitialState,
 } from './createEntitiesSlice';
+export {
+  AllPermissionFactory,
+  OwnPermissionFactory,
+} from 'src/store/utils/permissionFactories';
 
 export const isStoreError = (error: unknown): error is StoreError =>
   !!(error && typeof error === 'object' && 'status' in error);

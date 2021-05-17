@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 import React, { FC } from 'react';
 import { Button, Card, Grid, MenuItem } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
@@ -5,11 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import { Trans, useTranslation } from 'react-i18next';
 import { Role } from 'src/store/state/domain/common/roles/types';
 import { User } from 'src/store/state/domain/common/user/types';
-import { Division } from 'src/store/state/domain/division/divisions/types';
-import {
-  MemberDetail,
-  MemberInput,
-} from 'src/store/state/domain/division/members/types';
+import { MemberInput } from 'src/store/state/domain/division/members/types';
 import { BookInput } from 'src/store/state/domain/sample/books/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
@@ -26,28 +24,18 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import Options from 'src/view/components/molecules/Options';
-import {
-  divisionsPath,
-  getMembersPath,
-  getDivisionPath,
-  rootPath,
-} from 'src/view/routes/paths';
+import { DivisionPath, getMembersPath, rootPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
-
-export type PermissionList = {
-  memberDelete: boolean;
-};
 
 const Form: FC<{
   title: string;
   object: MemberInput | undefined;
-  statuses: StoreStatus[];
-  errors: (StoreError | undefined)[];
-  permission?: PermissionList;
-  division: Division | undefined;
+  status: StoreStatus;
+  error: StoreError | undefined;
+  disabled: boolean;
   users: User[];
-  member: MemberDetail | undefined;
-  memberRoles: Role[];
+  roles: Role[];
+  divisionPath: DivisionPath;
 
   onSubmit: OnSubmit<BookInput>;
   onBack: () => void;
@@ -56,12 +44,12 @@ const Form: FC<{
   const {
     title,
     object,
+    status,
+    error,
+    disabled,
     users,
-    statuses,
-    errors,
-    permission,
-    memberRoles: roles,
-    division,
+    roles,
+    divisionPath,
     onSubmit,
     onBack,
     onDelete,
@@ -78,21 +66,16 @@ const Form: FC<{
       <ContentHeader
         links={[
           { children: t('Home'), to: rootPath },
-          { children: t('Divisions'), to: divisionsPath },
-          {
-            children: division?.name,
-            to: getDivisionPath({ divisionId: `${division?.id}` }),
-          },
           {
             children: <Trans>Members</Trans>,
-            to: getMembersPath({ divisionId: `${division?.id}` }),
+            to: getMembersPath(divisionPath),
           },
         ]}
       >
         {t(title)}
       </ContentHeader>
       <ContentBody>
-        <ErrorWrapper errors={errors}>
+        <ErrorWrapper error={error}>
           <Buttons
             leftButtons={[
               <Button
@@ -106,7 +89,6 @@ const Form: FC<{
             rightButtons={
               onDelete && [
                 <LoaderButton
-                  disabled={!permission?.memberDelete}
                   onClick={onDelete}
                   startIcon={<DeleteIcon />}
                   color="secondary"
@@ -124,7 +106,7 @@ const Form: FC<{
               userId: yup.string().label(t('User ID')).required().max(30),
             })}
           >
-            <Loader statuses={statuses}>
+            <Loader status={status}>
               <Card>
                 <CardContent>
                   <Grid container spacing={1}>
@@ -134,6 +116,7 @@ const Form: FC<{
                         label={t('User')}
                         required
                         nullable
+                        disabled={disabled}
                       >
                         <Options
                           objects={userOptions}
@@ -147,6 +130,7 @@ const Form: FC<{
                         name="roleNames"
                         label={t('Role')}
                         required
+                        disabled={disabled}
                       >
                         {roles.map(({ id, name }) => (
                           <MenuItem key={id} value={name}>
@@ -158,7 +142,7 @@ const Form: FC<{
                   </Grid>
                 </CardContent>
                 <CardActions>
-                  <SubmitButton />
+                  <SubmitButton disabled={disabled} />
                 </CardActions>
               </Card>
             </Loader>

@@ -8,6 +8,7 @@ import {
 } from '@material-ui/data-grid';
 import clsx from 'clsx';
 import isEqual from 'lodash/isEqual';
+import toSafeInteger from 'lodash/toSafeInteger';
 import qs from 'qs';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -77,7 +78,7 @@ export default BaseDataGrid;
 
 const parsePage = (page: unknown) => {
   if (page !== undefined && typeof page === 'string') {
-    return parseInt(page);
+    return toSafeInteger(page);
   }
   return undefined;
 };
@@ -121,27 +122,28 @@ export const RouterDataGrid: FC<BaseDataGridProps> = (props) => {
     },
     [onSortModelChange, replace, search]
   );
-  const handleFilterModelChange: DataGridProps['onFilterModelChange'] = useCallback(
-    (params) => {
-      onFilterModelChange && onFilterModelChange(params);
+  const handleFilterModelChange: DataGridProps['onFilterModelChange'] =
+    useCallback(
+      (params) => {
+        onFilterModelChange && onFilterModelChange(params);
 
-      // onFilterModelChangeが何度も呼び出されるのでその対応
-      const thisParams =
-        params.filterModel.items.filter((item: GridFilterItem) => item.value)
-          .length > 0
-          ? params
-          : { filterModel: undefined };
-      const filterModel = qs.parse(search, { ignoreQueryPrefix: true })[
-        'filterModel'
-      ];
-      if (isEqual(thisParams.filterModel, filterModel)) {
-        return;
-      }
+        // onFilterModelChangeが何度も呼び出されるのでその対応
+        const thisParams =
+          params.filterModel.items.filter((item: GridFilterItem) => item.value)
+            .length > 0
+            ? params
+            : { filterModel: undefined };
+        const filterModel = qs.parse(search, { ignoreQueryPrefix: true })[
+          'filterModel'
+        ];
+        if (isEqual(thisParams.filterModel, filterModel)) {
+          return;
+        }
 
-      replace({ search: mergeSearch(search, thisParams, 'filterModel') });
-    },
-    [onFilterModelChange, replace, search]
-  );
+        replace({ search: mergeSearch(search, thisParams, 'filterModel') });
+      },
+      [onFilterModelChange, replace, search]
+    );
 
   const params = qs.parse(search, { ignoreQueryPrefix: true });
   const thisPage = page !== undefined ? page : parsePage(params['page']);

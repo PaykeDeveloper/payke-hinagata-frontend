@@ -19,21 +19,16 @@ import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
-import { booksPath, rootPath } from 'src/view/routes/paths';
+import { rootPath, usersPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
-export type PermissionList = {
-  userUpdate: boolean;
-  userDelete: boolean;
-};
-
-const Form: FC<{
+const Component: FC<{
   title: string;
   object: UserInput | undefined;
-  statuses: StoreStatus[];
-  errors: (StoreError | undefined)[];
-  userRoles: Role[];
-  permission?: PermissionList;
+  status: StoreStatus;
+  error: StoreError | undefined;
+  disabled: boolean;
+  roles: Role[];
 
   onSubmit: OnSubmit<UserInput>;
   onBack: () => void;
@@ -42,10 +37,10 @@ const Form: FC<{
   const {
     title,
     object,
-    statuses,
-    errors,
-    userRoles: roles,
-    permission,
+    status,
+    error,
+    disabled,
+    roles,
     onSubmit,
     onBack,
     onDelete,
@@ -57,13 +52,13 @@ const Form: FC<{
       <ContentHeader
         links={[
           { children: t('Home'), to: rootPath },
-          { children: t('Books'), to: booksPath },
+          { children: t('Users'), to: usersPath },
         ]}
       >
         {t(title)}
       </ContentHeader>
       <ContentBody>
-        <ErrorWrapper errors={errors}>
+        <ErrorWrapper error={error}>
           <Buttons
             leftButtons={[
               <Button
@@ -74,20 +69,18 @@ const Form: FC<{
                 {t('Back')}
               </Button>,
             ]}
-            rightButtons={
-              permission?.userDelete
-                ? onDelete && [
-                    <LoaderButton
-                      onClick={onDelete}
-                      startIcon={<DeleteIcon />}
-                      color="secondary"
-                      variant="outlined"
-                    >
-                      {t('Delete')}
-                    </LoaderButton>,
-                  ]
-                : undefined
-            }
+            rightButtons={[
+              onDelete ? (
+                <LoaderButton
+                  onClick={onDelete}
+                  startIcon={<DeleteIcon />}
+                  color="secondary"
+                  variant="outlined"
+                >
+                  {t('Delete')}
+                </LoaderButton>
+              ) : undefined,
+            ]}
           />
           <BaseForm
             initialValues={object}
@@ -96,18 +89,24 @@ const Form: FC<{
               name: yup.string().label(t('Name')).required().max(255),
             })}
           >
-            <Loader statuses={statuses}>
+            <Loader status={status}>
               <Card>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid item xs={12} sm={8}>
-                      <BaseTextField name="name" label={t('Name')} required />
+                    <Grid item xs={12} sm={6}>
+                      <BaseTextField
+                        name="name"
+                        label={t('Name')}
+                        required
+                        disabled={disabled}
+                      />
                     </Grid>
-                    <Grid item xs={12} sm={8}>
+                    <Grid item xs={12} sm={6}>
                       <BaseMultiSelectField
                         name="roleNames"
                         label={t('Role')}
                         required
+                        disabled={disabled}
                       >
                         {roles.map(({ id, name }) => (
                           <MenuItem key={id} value={name}>
@@ -119,7 +118,7 @@ const Form: FC<{
                   </Grid>
                 </CardContent>
                 <CardActions>
-                  <SubmitButton />
+                  <SubmitButton disabled={disabled} />
                 </CardActions>
               </Card>
             </Loader>
@@ -130,4 +129,4 @@ const Form: FC<{
   );
 };
 
-export default Form;
+export default Component;

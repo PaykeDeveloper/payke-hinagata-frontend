@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 import { authActions } from 'src/store/state/app/auth/slice';
 import {
   DivisionApiUrl,

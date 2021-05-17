@@ -1,9 +1,12 @@
+// FIXME: SAMPLE CODE
+
 import React, { ComponentProps, FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
+  canCreateDivisionSelector,
   divisionsErrorSelector,
   divisionsStatusSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
@@ -15,14 +18,15 @@ import Form from '../components/Form';
 type ChildProps = ComponentProps<typeof Form>;
 
 const selector = createSelector(
-  [divisionsStatusSelector, divisionsErrorSelector],
-  (status, error) => ({
+  [divisionsStatusSelector, divisionsErrorSelector, canCreateDivisionSelector],
+  (status, error, canCreate) => ({
     status,
     error,
+    canCreate,
   })
 );
 
-const Container: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
+const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
   props
 ) => {
   const {
@@ -31,10 +35,10 @@ const Container: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
     location,
   } = props;
   const backPath = location.state?.path || divisionsPath;
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+  const onBack: ChildProps['onBack'] = useCallback(
+    () => push(backPath),
+    [push, backPath]
+  );
 
   const dispatch = useStoreDispatch();
 
@@ -51,17 +55,18 @@ const Container: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
     [dispatch, pathParams, onBack]
   );
 
-  const state = useStoreSelector(selector);
+  const { canCreate, ...otherState } = useStoreSelector(selector);
 
   return (
     <Form
-      {...state}
+      {...otherState}
       title="Add division"
       object={undefined}
+      disabled={!canCreate}
       onSubmit={onSubmit}
       onBack={onBack}
     />
   );
 };
 
-export default Container;
+export default New;

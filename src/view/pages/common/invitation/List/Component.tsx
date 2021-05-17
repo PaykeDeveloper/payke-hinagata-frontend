@@ -49,8 +49,8 @@ const Component: FC<{
   status: StoreStatus;
   error: StoreError | undefined;
 
-  onClickAdd: () => void;
-  onClickEdit: (invitationId: number) => void;
+  onClickAdd?: () => void;
+  onClickEdit?: (invitationId: number) => void;
 }> = (props) => {
   const { invitations, status, error, onClickAdd, onClickEdit } = props;
   const { t } = useTranslation();
@@ -61,7 +61,7 @@ const Component: FC<{
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => {
-        if (row['status'] !== InvitationStatus.Pending) {
+        if (!onClickEdit || row['status'] !== InvitationStatus.Pending) {
           return <></>;
         }
         return (

@@ -7,6 +7,8 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
+  canDeleteInvitationSelector,
+  canUpdateInvitationSelector,
   invitationErrorSelector,
   invitationSelector,
   invitationStatusSelector,
@@ -27,11 +29,20 @@ const selector = createSelector(
     invitationStatusSelector,
     invitationErrorSelector,
     userRolesSelector,
+    canUpdateInvitationSelector,
+    canDeleteInvitationSelector,
   ],
-  (object, status, error, roles) => ({ object, status, error, roles })
+  (object, status, error, roles, canUpdate, canDelete) => ({
+    object,
+    status,
+    error,
+    roles,
+    canUpdate,
+    canDelete,
+  })
 );
 
-const Container: FC<
+const Edit: FC<
   RouteComponentProps<InvitationPath, StaticContext, RouterState>
 > = (props) => {
   const {
@@ -41,10 +52,10 @@ const Container: FC<
   } = props;
 
   const backPath = location.state?.path || invitationsPath;
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+  const onBack: ChildProps['onBack'] = useCallback(
+    () => push(backPath),
+    [push, backPath]
+  );
 
   const dispatch = useStoreDispatch();
 
@@ -67,9 +78,7 @@ const Container: FC<
     [dispatch, pathParams, onBack]
   );
 
-  const state = useStoreSelector(selector);
   const { enqueueSnackbar } = useSnackbar();
-
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
     const action = await dispatch(
       invitationsActions.removeEntity({ pathParams })
@@ -82,20 +91,20 @@ const Container: FC<
         enqueueSnackbar(message, { variant: 'error' });
       }
     }
-
     return action;
   }, [dispatch, pathParams, onBack, enqueueSnackbar]);
 
-  const disabled = state.object?.status === InvitationStatus.Approved;
+  const { canUpdate, canDelete, ...otherState } = useStoreSelector(selector);
+  const isPending = otherState.object?.status === InvitationStatus.Pending;
   return (
     <Component
-      {...state}
-      disabled={disabled}
+      {...otherState}
+      disabled={!canUpdate || !isPending}
       onSubmit={onSubmit}
       onBack={onBack}
-      onDelete={onDelete}
+      onDelete={canDelete && isPending ? onDelete : undefined}
     />
   );
 };
 
-export default Container;
+export default Edit;

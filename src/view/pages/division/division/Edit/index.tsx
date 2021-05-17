@@ -1,14 +1,16 @@
+// FIXME: SAMPLE CODE
+
 import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
-import { StoreState, useStoreDispatch, useStoreSelector } from 'src/store';
-import { permissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
+import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
-  divisionOwnPermission,
   divisionErrorSelector,
   divisionSelector,
   divisionStatusSelector,
+  checkDeleteDivisionSelector,
+  checkUpdateDivisionSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import { DivisionPath, divisionsPath } from 'src/view/routes/paths';
@@ -17,26 +19,20 @@ import Form from '../components/Form';
 
 type ChildProps = ComponentProps<typeof Form>;
 
-const permissionCheckSelector = createSelector(
-  permissionNamesSelector,
-  (_: StoreState, params: { permissionNames: string[] }) =>
-    params.permissionNames,
-  (permissionNames, selectedPermissionNames) =>
-    selectedPermissionNames.some((e) => permissionNames?.includes(e))
-);
-
 const selector = createSelector(
   [
     divisionSelector,
     divisionStatusSelector,
     divisionErrorSelector,
-    permissionCheckSelector,
+    checkUpdateDivisionSelector,
+    checkDeleteDivisionSelector,
   ],
-  (object, status, error, hasDeletePermission) => ({
+  (object, status, error, checkUpdate, checkDelete) => ({
     object,
     status,
     error,
-    hasDeletePermission,
+    checkUpdate,
+    checkDelete,
   })
 );
 
@@ -46,7 +42,7 @@ export type DivisionEditRouterState =
     })
   | undefined;
 
-const Container: FC<
+const Edit: FC<
   RouteComponentProps<DivisionPath, StaticContext, DivisionEditRouterState>
 > = (props) => {
   const {
@@ -56,10 +52,10 @@ const Container: FC<
   } = props;
 
   const backPath = location.state?.path || divisionsPath;
-  const onBack: ChildProps['onBack'] = useCallback(() => push(backPath), [
-    push,
-    backPath,
-  ]);
+  const onBack: ChildProps['onBack'] = useCallback(
+    () => push(backPath),
+    [push, backPath]
+  );
 
   const dispatch = useStoreDispatch();
 
@@ -84,15 +80,6 @@ const Container: FC<
     [dispatch, pathParams, onBack]
   );
 
-  const state = useStoreSelector((s) =>
-    selector(s, {
-      permissionNames: [
-        divisionOwnPermission.deleteOwn,
-        divisionOwnPermission.deleteAll,
-      ],
-    })
-  );
-
   const fromShow = location.state?.fromShow;
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
     const action = await dispatch(
@@ -108,15 +95,21 @@ const Container: FC<
     return action;
   }, [dispatch, pathParams, onBack, push, fromShow]);
 
+  const { checkUpdate, checkDelete, ...otherState } =
+    useStoreSelector(selector);
+  const canUpdate = checkUpdate(otherState.object?.requestMemberId);
+  const canDelete = checkDelete(otherState.object?.requestMemberId);
+
   return (
     <Form
-      {...state}
+      {...otherState}
       title="Edit division"
+      disabled={!canUpdate}
       onSubmit={onSubmit}
       onBack={onBack}
-      onDelete={onDelete}
+      onDelete={canDelete ? onDelete : undefined}
     />
   );
 };
 
-export default Container;
+export default Edit;

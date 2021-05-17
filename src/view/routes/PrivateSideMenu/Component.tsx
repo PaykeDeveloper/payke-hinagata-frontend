@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     ...theme.mixins.toolbar,
   },
+  selectListItem: {
+    paddingTop: 0,
+  },
   selectForm: {
     width: '100%',
   },
@@ -72,7 +75,7 @@ const getPaths = (menu: Menu): string[] => {
   return menu.paths;
 };
 
-const SideMenu: FC<Props> = (props) => {
+const Component: FC<Props> = (props) => {
   const {
     pathname,
     topMenuLists,
@@ -126,8 +129,8 @@ const SideMenu: FC<Props> = (props) => {
           <Divider />
           <List subheader={subheader}>
             {menus.map((menu, index) => (
-              <>
-                <ListItem>
+              <Fragment key={index}>
+                <ListItem className={classes.selectListItem}>
                   <SelectField
                     label={t(menu.label)}
                     formControlProps={{ className: classes.selectForm }}
@@ -157,7 +160,7 @@ const SideMenu: FC<Props> = (props) => {
                     />
                   ))}
                 </List>
-              </>
+              </Fragment>
             ))}
           </List>
         </Fragment>
@@ -183,4 +186,4 @@ const SideMenu: FC<Props> = (props) => {
   );
 };
 
-export default SideMenu;
+export default Component;
