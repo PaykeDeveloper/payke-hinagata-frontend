@@ -8,6 +8,7 @@ import {
 } from '@material-ui/data-grid';
 import clsx from 'clsx';
 import isEqual from 'lodash/isEqual';
+import toSafeInteger from 'lodash/toSafeInteger';
 import qs from 'qs';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -77,7 +78,7 @@ export default BaseDataGrid;
 
 const parsePage = (page: unknown) => {
   if (page !== undefined && typeof page === 'string') {
-    return parseInt(page);
+    return toSafeInteger(page);
   }
   return undefined;
 };

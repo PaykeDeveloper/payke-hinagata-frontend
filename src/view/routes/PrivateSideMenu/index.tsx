@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, useCallback, useEffect, useMemo } from 'react';
 import { ListSubheader } from '@material-ui/core';
 import { createSelector } from '@reduxjs/toolkit';
+import toSafeInteger from 'lodash/toSafeInteger';
 import { Trans } from 'react-i18next';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { invitationPermission } from 'src/store/state/domain/common/invitations/selectors';
@@ -172,7 +173,7 @@ const PrivateSideMenu: FC<ChildProps> = (props) => {
       if (data.target.value === '') {
         dispatch(menuActions.setDivisionId(null));
       } else {
-        dispatch(menuActions.setDivisionId(parseInt(data.target.value, 10)));
+        dispatch(menuActions.setDivisionId(toSafeInteger(data.target.value)));
       }
     },
     [dispatch]
