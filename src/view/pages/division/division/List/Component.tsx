@@ -32,21 +32,13 @@ const Component: FC<{
   divisions: Division[];
   status: StoreStatus;
   error: StoreError | undefined;
-  canCreate: boolean;
   checkEdit: (_: number | null | undefined) => boolean;
 
-  onClickAdd: () => void;
+  onClickAdd?: () => void;
   onClickEdit: (divisionId: number) => void;
 }> = (props) => {
-  const {
-    divisions,
-    status,
-    error,
-    canCreate,
-    checkEdit,
-    onClickAdd,
-    onClickEdit,
-  } = props;
+  const { divisions, status, error, checkEdit, onClickAdd, onClickEdit } =
+    props;
   const { t } = useTranslation();
   const columns: GridColumns = [
     {
@@ -87,7 +79,7 @@ const Component: FC<{
         <ErrorWrapper error={error}>
           <Buttons
             leftButtons={[
-              canCreate ? (
+              onClickAdd ? (
                 <Button
                   onClick={onClickAdd}
                   startIcon={<AddIcon />}

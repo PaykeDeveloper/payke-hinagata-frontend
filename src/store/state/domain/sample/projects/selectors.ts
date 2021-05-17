@@ -2,10 +2,11 @@
 
 import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
-import { OwnPermissionFactory } from 'src/store/utils';
+import { memberPermissionNamesSelector } from 'src/store/state/domain/division/divisions/selectors';
+import { AllPermissionFactory } from 'src/store/utils';
 import { userPermissionNamesSelector } from '../../common/user/selectors';
 
-export const projectPermission = new OwnPermissionFactory('project');
+export const projectPermission = new AllPermissionFactory('project');
 
 export const projectsSelector = (state: StoreState) =>
   state.domain.sample.projects.entities;
@@ -25,12 +26,32 @@ export const projectStatusSelector = (state: StoreState) =>
 export const projectErrorSelector = (state: StoreState) =>
   state.domain.sample.projects.meta.fetchEntity.error;
 
-export const projectCreatePermissionCheckSelector = createSelector(
+export const canCreateProjectSelector = createSelector(
   userPermissionNamesSelector,
-  (permissionNames) => projectPermission.canCreate(permissionNames)
+  memberPermissionNamesSelector,
+  (userPermissionNames, memberPermissionNames) =>
+    projectPermission.canCreateAll(memberPermissionNames) ||
+    projectPermission.canCreateAll(userPermissionNames)
 );
 
-export const projectUpdatePermissionCheckSelector = createSelector(
+export const canUpdateProjectSelector = createSelector(
   userPermissionNamesSelector,
-  (permissionNames) => projectPermission.canUpdate(permissionNames)
+  memberPermissionNamesSelector,
+  (userPermissionNames, memberPermissionNames) =>
+    projectPermission.canUpdateAll(memberPermissionNames) ||
+    projectPermission.canUpdateAll(userPermissionNames)
+);
+
+export const canDeleteProjectSelector = createSelector(
+  userPermissionNamesSelector,
+  memberPermissionNamesSelector,
+  (userPermissionNames, memberPermissionNames) =>
+    projectPermission.canDeleteAll(memberPermissionNames) ||
+    projectPermission.canDeleteAll(userPermissionNames)
+);
+
+export const canEditProjectSelector = createSelector(
+  canUpdateProjectSelector,
+  canDeleteProjectSelector,
+  (canUpdate, canDelete) => canUpdate || canDelete
 );

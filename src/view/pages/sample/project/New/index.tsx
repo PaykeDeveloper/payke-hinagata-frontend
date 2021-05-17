@@ -6,9 +6,9 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { inputsToObject } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
+  canCreateProjectSelector,
   projectsErrorSelector,
   projectsStatusSelector,
 } from 'src/store/state/domain/sample/projects/selectors';
@@ -20,11 +20,11 @@ import Form from '../components/Form';
 type ChildProps = ComponentProps<typeof Form>;
 
 const selector = createSelector(
-  [divisionSelector, projectsStatusSelector, projectsErrorSelector],
-  (division, status, error) => ({
-    division,
+  [projectsStatusSelector, projectsErrorSelector, canCreateProjectSelector],
+  (status, error, canCreate) => ({
     status,
     error,
+    canCreate,
   })
 );
 
@@ -65,14 +65,15 @@ const Container: FC<
     [dispatch, pathParams, onBack]
   );
 
-  const state = useStoreSelector(selector);
+  const { canCreate, ...otherState } = useStoreSelector(selector);
 
   return (
     <Form
-      {...state}
+      {...otherState}
       title="Add project"
       object={undefined}
-      project={undefined}
+      disabled={!canCreate}
+      divisionPath={pathParams}
       onSubmit={onSubmit}
       onBack={onBack}
     />

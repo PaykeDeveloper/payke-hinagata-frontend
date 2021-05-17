@@ -1,20 +1,16 @@
 // FIXME: SAMPLE CODE
 
-import React, {
-  ComponentProps,
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-} from 'react';
+import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
-import { inputsToObject, objectToInputs } from 'src/base/utils';
+import { inputsToObject } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
+
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
+  canDeleteProjectSelector,
+  canUpdateProjectSelector,
   projectErrorSelector,
   projectSelector,
   projectStatusSelector,
@@ -28,16 +24,18 @@ type ChildProps = ComponentProps<typeof Form>;
 
 const selector = createSelector(
   [
-    divisionSelector,
     projectSelector,
     projectStatusSelector,
     projectErrorSelector,
+    canUpdateProjectSelector,
+    canDeleteProjectSelector,
   ],
-  (division, project, status, error) => ({
-    division,
-    project,
+  (object, status, error, canUpdate, canDelete) => ({
+    object,
     status,
     error,
+    canUpdate,
+    canDelete,
   })
 );
 
@@ -60,14 +58,8 @@ const Container: FC<
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
-    const reset = true;
-    dispatch(
-      divisionsActions.fetchEntityIfNeeded({
-        pathParams: { divisionId: pathParams.divisionId },
-        reset,
-      })
-    );
-    dispatch(projectsActions.fetchEntityIfNeeded({ pathParams, reset }));
+    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams }));
+    dispatch(projectsActions.fetchEntityIfNeeded({ pathParams, reset: true }));
   }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
@@ -95,20 +87,17 @@ const Container: FC<
     return action;
   }, [dispatch, pathParams, onBack]);
 
-  const { project, ...otherState } = useStoreSelector(selector);
-  const object = useMemo(
-    () => project && objectToInputs(project, rules),
-    [project]
-  );
+  const { canUpdate, canDelete, ...otherState } = useStoreSelector(selector);
 
+  console.log(pathParams);
   return (
     <Form
       {...otherState}
       title="Edit project"
-      object={object}
-      project={project}
+      disabled={!canUpdate}
+      divisionPath={pathParams}
       onSubmit={onSubmit}
-      onDelete={onDelete}
+      onDelete={canDelete ? onDelete : undefined}
       onBack={onBack}
     />
   );

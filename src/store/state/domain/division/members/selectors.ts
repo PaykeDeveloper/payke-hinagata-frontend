@@ -37,42 +37,6 @@ export const canCreateMemberSelector = createSelector(
     memberPermission.canCreateAll(userPermissionNames)
 );
 
-export const canUpdateMembersSelector = createSelector(
-  userPermissionNamesSelector,
-  memberPermissionNamesSelector,
-  (userPermissionNames, memberPermissionNames) =>
-    memberPermission.canUpdate(memberPermissionNames) ||
-    memberPermission.canUpdateAll(userPermissionNames)
-);
-
-export const canDeleteMembersSelector = createSelector(
-  userPermissionNamesSelector,
-  memberPermissionNamesSelector,
-  (userPermissionNames, memberPermissionNames) =>
-    memberPermission.canDelete(memberPermissionNames) ||
-    memberPermission.canDeleteAll(userPermissionNames)
-);
-
-export const checkViewMemberSelector = createSelector(
-  userPermissionNamesSelector,
-  memberPermissionNamesSelector,
-  requestMemberIdSelector,
-  (userPermissionNames, memberPermissionNames, requestMemberId) =>
-    (memberId?: number) => {
-      if (memberPermission.canViewAll(memberPermissionNames)) {
-        return true;
-      }
-      if (
-        memberId &&
-        memberId === requestMemberId &&
-        memberPermission.canViewOwn(memberPermissionNames)
-      ) {
-        return true;
-      }
-      return memberPermission.canViewAll(userPermissionNames);
-    }
-);
-
 export const checkUpdateMemberSelector = createSelector(
   userPermissionNamesSelector,
   memberPermissionNamesSelector,

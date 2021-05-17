@@ -27,10 +27,9 @@ const Component: FC<{
   status: StoreStatus;
   error: StoreError | undefined;
   userIdMap: Record<number, User>;
-  canCreate: boolean;
   checkEdit: (memberId: number) => boolean;
 
-  onClickAdd: () => void;
+  onClickAdd?: () => void;
   onClickEdit: (memberId: number) => void;
 }> = (props) => {
   const {
@@ -38,7 +37,6 @@ const Component: FC<{
     status,
     error,
     userIdMap,
-    canCreate,
     checkEdit,
     onClickAdd,
     onClickEdit,
@@ -88,7 +86,7 @@ const Component: FC<{
         <ErrorWrapper error={error}>
           <Buttons
             leftButtons={[
-              canCreate ? (
+              onClickAdd ? (
                 <Button
                   onClick={onClickAdd}
                   startIcon={<AddIcon />}

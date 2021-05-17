@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
+  canCreateInvitationSelector,
   canEditInvitationSelector,
   invitationsErrorSelector,
   invitationsSelector,
@@ -24,12 +25,14 @@ const selector = createSelector(
     invitationsSelector,
     invitationsStatusSelector,
     invitationsErrorSelector,
+    canCreateInvitationSelector,
     canEditInvitationSelector,
   ],
-  (invitations, status, error, canEdit) => ({
+  (invitations, status, error, canCreate, canEdit) => ({
     invitations,
     status,
     error,
+    canCreate,
     canEdit,
   })
 );
@@ -60,10 +63,14 @@ const List: FC<RouteComponentProps> = (props) => {
     [push, path]
   );
 
-  const state = useStoreSelector(selector);
+  const { canCreate, canEdit, ...otherState } = useStoreSelector(selector);
 
   return (
-    <Component {...state} onClickAdd={onClickAdd} onClickEdit={onClickEdit} />
+    <Component
+      {...otherState}
+      onClickAdd={canCreate ? onClickAdd : undefined}
+      onClickEdit={canEdit ? onClickEdit : undefined}
+    />
   );
 };
 

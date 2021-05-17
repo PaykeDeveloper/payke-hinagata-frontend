@@ -62,10 +62,14 @@ const List: FC<RouteComponentProps> = (props) => {
     [push, path]
   );
 
-  const state = useStoreSelector(selector);
+  const { canCreate, ...otherState } = useStoreSelector(selector);
 
   return (
-    <Component {...state} onClickAdd={onClickAdd} onClickEdit={onClickEdit} />
+    <Component
+      {...otherState}
+      onClickAdd={canCreate ? onClickAdd : undefined}
+      onClickEdit={onClickEdit}
+    />
   );
 };
 
