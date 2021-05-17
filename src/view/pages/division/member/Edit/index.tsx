@@ -1,32 +1,18 @@
 // FIXME: SAMPLE CODE
 
-import React, {
-  ComponentProps,
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-} from 'react';
+import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
-import { objectToInputs } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import {
-  memberRolesSelector,
-  rolesStatusSelector,
-} from 'src/store/state/domain/common/roles/selectors';
-import {
-  usersErrorSelector,
-  usersSelector,
-  usersStatusSelector,
-} from 'src/store/state/domain/common/users/selectors';
+import { memberRolesSelector } from 'src/store/state/domain/common/roles/selectors';
+import { usersSelector } from 'src/store/state/domain/common/users/selectors';
 import { usersActions } from 'src/store/state/domain/common/users/slice';
+import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
-  divisionSelector,
-  divisionStatusSelector,
-} from 'src/store/state/domain/division/divisions/selectors';
-import { checkDeleteMemberSelector } from 'src/store/state/domain/division/members/selectors';
+  checkDeleteMemberSelector,
+  checkUpdateMemberSelector,
+} from 'src/store/state/domain/division/members/selectors';
 import {
   memberErrorSelector,
   memberSelector,
@@ -41,38 +27,22 @@ type ChildProps = ComponentProps<typeof Form>;
 
 const selector = createSelector(
   [
-    divisionSelector,
-    divisionStatusSelector,
-    memberRolesSelector,
-    rolesStatusSelector,
-    usersSelector,
-    usersStatusSelector,
-    usersErrorSelector,
     memberSelector,
     memberStatusSelector,
     memberErrorSelector,
+    usersSelector,
+    memberRolesSelector,
+    checkUpdateMemberSelector,
     checkDeleteMemberSelector,
   ],
-  (
-    division,
-    divisionStatus,
-    memberRoles,
-    rolesStatus,
+  (object, status, error, users, roles, checkUpdate, checkDelete) => ({
+    object,
+    status,
+    error,
     users,
-    usersStatus,
-    usersError,
-    member,
-    memberStatus,
-    memberError,
-    checkDeleteMember
-  ) => ({
-    division,
-    memberRoles,
-    users,
-    member,
-    statuses: [divisionStatus, rolesStatus, memberStatus, usersStatus],
-    errors: [usersError, memberError],
-    canDelete: checkDeleteMember(member?.id),
+    roles,
+    canUpdate: checkUpdate(object?.id),
+    canDelete: checkDelete(object?.id),
   })
 );
 
@@ -81,8 +51,6 @@ export type DivisionEditRouterState =
       fromShow: boolean;
     })
   | undefined;
-
-const rules = {} as const;
 
 const Edit: FC<
   RouteComponentProps<MemberPath, StaticContext, DivisionEditRouterState>
@@ -102,9 +70,9 @@ const Edit: FC<
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
-    const reset = true;
-    dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-    dispatch(membersActions.fetchEntityIfNeeded({ pathParams, reset }));
+    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams }));
+    dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams }));
+    dispatch(membersActions.fetchEntityIfNeeded({ pathParams }));
   }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
@@ -120,8 +88,6 @@ const Edit: FC<
     [dispatch, pathParams, onBack]
   );
 
-  const { member, canDelete, ...otherState } = useStoreSelector(selector);
-
   const fromShow = location.state?.fromShow;
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
     const action = await dispatch(membersActions.removeEntity({ pathParams }));
@@ -135,17 +101,14 @@ const Edit: FC<
     return action;
   }, [dispatch, pathParams, onBack, push, fromShow]);
 
-  const object = useMemo(
-    () => member && objectToInputs(member, rules),
-    [member]
-  );
+  const { canUpdate, canDelete, ...otherState } = useStoreSelector(selector);
 
   return (
     <Form
       {...otherState}
+      divisionPath={pathParams}
       title="Edit member"
-      object={object}
-      member={member}
+      disabled={!canUpdate}
       onSubmit={onSubmit}
       onBack={onBack}
       onDelete={canDelete ? onDelete : undefined}

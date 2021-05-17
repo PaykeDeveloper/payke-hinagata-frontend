@@ -6,80 +6,43 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import {
-  userIdMapSelector,
-  usersStatusSelector,
-} from 'src/store/state/domain/common/users/selectors';
+import { userIdMapSelector } from 'src/store/state/domain/common/users/selectors';
 import { usersActions } from 'src/store/state/domain/common/users/slice';
-import {
-  divisionErrorSelector,
-  divisionSelector,
-  divisionStatusSelector,
-} from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
   membersStatusSelector,
   membersErrorSelector,
-  canUpdateMembersSelector,
-  canCreateMembersSelector,
+  canCreateMemberSelector,
   membersSelector,
+  checkEditMemberSelector,
 } from 'src/store/state/domain/division/members/selectors';
 import { membersActions } from 'src/store/state/domain/division/members/slice';
-import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
-import { DivisionEditRouterState } from 'src/view/pages/division/division/Edit';
 import {
   DivisionPath,
-  divisionsPath,
-  getDivisionEditPath,
   getMemberNewPath,
   getMemberEditPath,
 } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
-import Component, { PermissionList } from './Component';
+import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 
-const permissionSelector = createSelector(
-  [canCreateMembersSelector, canUpdateMembersSelector],
-  (memberCreate, memberUpdate) =>
-    ({
-      divisionUpdate: true,
-      memberCreate,
-      memberUpdate,
-    } as PermissionList)
-);
-
 const selector = createSelector(
   [
-    divisionSelector,
-    divisionStatusSelector,
-    divisionErrorSelector,
     membersSelector,
-    userIdMapSelector,
-    usersStatusSelector,
     membersStatusSelector,
     membersErrorSelector,
-    permissionSelector,
+    userIdMapSelector,
+    canCreateMemberSelector,
+    checkEditMemberSelector,
   ],
-  (
-    division,
-    divisionStatus,
-    divisionError,
+  (members, status, error, userIdMap, canCreate, checkEdit) => ({
     members,
+    status,
+    error,
     userIdMap,
-    usersStatus,
-    membersStatus,
-    membersError,
-    permission
-  ) => ({
-    division,
-    divisionStatus,
-    members,
-    userIdMap,
-    usersStatus,
-    membersStatus,
-    errors: [divisionError, membersError],
-    permission,
+    canCreate,
+    checkEdit,
   })
 );
 
@@ -91,35 +54,16 @@ const List: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> =
       location,
     } = props;
 
-    const backPath = location.state?.path || divisionsPath;
-    const onBack: ChildProps['onBack'] = useCallback(
-      () => push(backPath),
-      [push, backPath]
-    );
-
     const dispatch = useStoreDispatch();
     useEffect(() => {
-      const reset = true;
-      dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset }));
-      dispatch(projectsActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-      dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-      dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
+      dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams }));
+      dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams }));
+      dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams }));
     }, [dispatch, pathParams]);
 
     const path = joinString(location.pathname, location.search);
 
-    const onClickEditDivision: ChildProps['onClickEditDivision'] = useCallback(
-      () =>
-        push(getDivisionEditPath(pathParams), {
-          path,
-          fromShow: true,
-        } as DivisionEditRouterState),
-      [push, pathParams, path]
-    );
-
-    const state = useStoreSelector(selector);
-
-    const onClickAddMember: ChildProps['onClickAddMember'] = useCallback(
+    const onClickAdd: ChildProps['onClickAdd'] = useCallback(
       () =>
         push(getMemberNewPath(pathParams), {
           path,
@@ -127,22 +71,18 @@ const List: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> =
       [push, pathParams, path]
     );
 
-    const onClickEditMember: ChildProps['onClickEditMember'] = useCallback(
+    const onClickEdit: ChildProps['onClickEdit'] = useCallback(
       (memberId) =>
-        push(getMemberEditPath({ ...pathParams, memberId }), {
+        push(getMemberEditPath({ ...pathParams, memberId: `${memberId}` }), {
           path,
         } as RouterState),
       [push, pathParams, path]
     );
 
+    const state = useStoreSelector(selector);
+
     return (
-      <Component
-        {...state}
-        onBack={onBack}
-        onClickEditDivision={onClickEditDivision}
-        onClickAddMember={onClickAddMember}
-        onClickEditMember={onClickEditMember}
-      />
+      <Component {...state} onClickAdd={onClickAdd} onClickEdit={onClickEdit} />
     );
   };
 

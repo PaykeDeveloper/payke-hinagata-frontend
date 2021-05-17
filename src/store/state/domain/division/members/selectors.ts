@@ -29,15 +29,7 @@ export const memberStatusSelector = (state: StoreState) =>
 export const memberErrorSelector = (state: StoreState) =>
   state.domain.division.members.meta.fetchEntity.error;
 
-export const canViewMembersSelector = createSelector(
-  userPermissionNamesSelector,
-  memberPermissionNamesSelector,
-  (userPermissionNames, memberPermissionNames) =>
-    memberPermission.canView(memberPermissionNames) ||
-    memberPermission.canViewAll(userPermissionNames)
-);
-
-export const canCreateMembersSelector = createSelector(
+export const canCreateMemberSelector = createSelector(
   userPermissionNamesSelector,
   memberPermissionNamesSelector,
   (userPermissionNames, memberPermissionNames) =>
@@ -86,7 +78,7 @@ export const checkUpdateMemberSelector = createSelector(
   memberPermissionNamesSelector,
   requestMemberIdSelector,
   (userPermissionNames, memberPermissionNames, requestMemberId) =>
-    (memberId?: number) => {
+    (memberId?: number | undefined) => {
       if (memberPermission.canUpdateAll(memberPermissionNames)) {
         return true;
       }
@@ -106,7 +98,7 @@ export const checkDeleteMemberSelector = createSelector(
   memberPermissionNamesSelector,
   requestMemberIdSelector,
   (userPermissionNames, memberPermissionNames, requestMemberId) =>
-    (memberId?: number) => {
+    (memberId?: number | undefined) => {
       if (memberPermission.canDeleteAll(memberPermissionNames)) {
         return true;
       }
@@ -119,4 +111,11 @@ export const checkDeleteMemberSelector = createSelector(
       }
       return memberPermission.canDeleteAll(userPermissionNames);
     }
+);
+
+export const checkEditMemberSelector = createSelector(
+  checkUpdateMemberSelector,
+  checkDeleteMemberSelector,
+  (checkUpdate, checkDelete) => (memberId?: number | undefined) =>
+    checkUpdate(memberId) || checkDelete(memberId)
 );

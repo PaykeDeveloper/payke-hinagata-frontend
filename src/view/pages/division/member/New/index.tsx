@@ -5,19 +5,12 @@ import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import {
-  memberRolesSelector,
-  rolesStatusSelector,
-} from 'src/store/state/domain/common/roles/selectors';
-import {
-  usersErrorSelector,
-  usersSelector,
-  usersStatusSelector,
-} from 'src/store/state/domain/common/users/selectors';
+import { memberRolesSelector } from 'src/store/state/domain/common/roles/selectors';
+import { usersSelector } from 'src/store/state/domain/common/users/selectors';
 import { usersActions } from 'src/store/state/domain/common/users/slice';
-import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
+  canCreateMemberSelector,
   membersErrorSelector,
   membersStatusSelector,
 } from 'src/store/state/domain/division/members/selectors';
@@ -30,30 +23,18 @@ type ChildProps = ComponentProps<typeof Form>;
 
 const selector = createSelector(
   [
-    divisionSelector,
+    membersStatusSelector,
+    membersErrorSelector,
     usersSelector,
     memberRolesSelector,
-    membersStatusSelector,
-    usersStatusSelector,
-    rolesStatusSelector,
-    membersErrorSelector,
-    usersErrorSelector,
+    canCreateMemberSelector,
   ],
-  (
-    division,
+  (status, error, users, roles, canCreate) => ({
+    status,
+    error,
     users,
-    memberRoles,
-    memberStatus,
-    usersStatus,
-    rolesStatus,
-    memberError,
-    usersError
-  ) => ({
-    division,
-    statuses: [memberStatus, rolesStatus, usersStatus],
-    users,
-    memberRoles,
-    errors: [memberError, usersError],
+    roles,
+    canCreate,
   })
 );
 
@@ -74,9 +55,8 @@ const New: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> = (
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
-    const reset = true;
-    dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams, reset }));
-    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams, reset }));
+    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams }));
+    dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams }));
   }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
@@ -92,14 +72,15 @@ const New: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> = (
     [dispatch, pathParams, onBack]
   );
 
-  const state = useStoreSelector(selector);
+  const { canCreate, ...otherState } = useStoreSelector(selector);
 
   return (
     <Form
-      {...state}
+      {...otherState}
       title="Add member"
       object={undefined}
-      member={undefined}
+      disabled={!canCreate}
+      divisionPath={pathParams}
       onSubmit={onSubmit}
       onBack={onBack}
     />

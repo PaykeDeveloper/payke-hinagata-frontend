@@ -19,7 +19,7 @@ import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
-import { booksPath, rootPath } from 'src/view/routes/paths';
+import { rootPath, usersPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
 
 const Component: FC<{
@@ -52,7 +52,7 @@ const Component: FC<{
       <ContentHeader
         links={[
           { children: t('Home'), to: rootPath },
-          { children: t('Books'), to: booksPath },
+          { children: t('Users'), to: usersPath },
         ]}
       >
         {t(title)}
