@@ -61,8 +61,7 @@ const Container: FC<
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
-    const reset = true;
-    dispatch(usersActions.fetchEntityIfNeeded({ pathParams, reset }));
+    dispatch(usersActions.fetchEntityIfNeeded({ pathParams, reset: true }));
   }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(

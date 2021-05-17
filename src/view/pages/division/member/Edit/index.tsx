@@ -72,7 +72,7 @@ const Edit: FC<
   useEffect(() => {
     dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams }));
     dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams }));
-    dispatch(membersActions.fetchEntityIfNeeded({ pathParams }));
+    dispatch(membersActions.fetchEntityIfNeeded({ pathParams, reset: true }));
   }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
