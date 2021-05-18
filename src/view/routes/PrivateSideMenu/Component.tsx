@@ -42,7 +42,6 @@ export interface SelectableMenu extends CollapseMenu {
   name: string;
   label: string;
   selects: SelectableMenuSelect[];
-  permissionNames: string[] | undefined;
 }
 
 export interface Props {

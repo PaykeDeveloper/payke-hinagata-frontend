@@ -8,12 +8,12 @@ import {
   getMemberApiUrl,
 } from 'src/store/urls';
 import { createEntitiesSlice, getEntitiesInitialState } from 'src/store/utils';
-import { Member, MemberDetail, MemberInput } from './types';
+import { Member, MemberInput } from './types';
 
 const membersSlice = createEntitiesSlice<
   Member,
   DivisionApiUrl,
-  MemberDetail,
+  Member,
   MemberApiUrl,
   MemberInput
 >(

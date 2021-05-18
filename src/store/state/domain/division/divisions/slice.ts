@@ -7,12 +7,12 @@ import {
   getDivisionsApiUrl,
 } from 'src/store/urls';
 import { createEntitiesSlice, getEntitiesInitialState } from 'src/store/utils';
-import { Division, DivisionDetail, DivisionInput } from './types';
+import { Division, DivisionInput } from './types';
 
 const divisionsSlice = createEntitiesSlice<
   Division,
   {},
-  DivisionDetail,
+  Division,
   DivisionApiUrl,
   DivisionInput
 >(

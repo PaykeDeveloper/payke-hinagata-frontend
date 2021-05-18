@@ -10,9 +10,9 @@ import { userPermission } from 'src/store/state/domain/common/users/selectors';
 import {
   divisionPermission,
   divisionsSelector,
-  memberPermissionNamesSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
+import { Division } from 'src/store/state/domain/division/divisions/types';
 import { menuDivisionIdSelector } from 'src/store/state/ui/menu/selectors';
 import { menuActions } from 'src/store/state/ui/menu/slice';
 import {
@@ -55,60 +55,59 @@ const topMenuLists: MenuList[] = [
 ];
 
 // Divisions Menu
-const middleMenuListsSelector = createSelector(
-  [divisionsSelector, menuDivisionIdSelector, userPermissionNamesSelector],
-  (divisions, menuDivisionId, permissionNames): MenuList<SelectableMenu>[] => [
-    {
-      subheader: (
-        <ListSubheader>
-          <Trans>Division Menu</Trans>
-        </ListSubheader>
-      ),
-      menus: [
-        {
-          text: <Trans>Division</Trans>,
-          name: 'divisionId',
-          label: 'Division',
-          selects: [
-            {
-              text: 'Select',
-              value: '',
-            },
-            ...divisions.map((division) => ({
-              text: division.name,
-              value: `${division.id}`,
-            })),
-          ],
-          menus: menuDivisionId
-            ? [
-                {
-                  text: <Trans>Projects</Trans>,
-                  icon: <ListIcon />,
-                  to: getProjectsPath({ divisionId: `${menuDivisionId}` }),
-                  paths: [getProjectsPath({ divisionId: `${menuDivisionId}` })],
-                },
-                {
-                  text: <Trans>Members</Trans>,
-                  icon: <MenuUserIcon />,
-                  to: getMembersPath({ divisionId: `${menuDivisionId}` }),
-                  paths: [getMembersPath({ divisionId: `${menuDivisionId}` })],
-                  requiredPermissions: [
-                    divisionPermission.createOwn,
-                    divisionPermission.createAll,
-                  ],
-                },
-              ]
-            : [],
-          requiredPermissions: [
-            divisionPermission.viewOwn,
-            divisionPermission.viewAll,
-          ],
-          permissionNames,
-        },
-      ],
-    },
-  ]
-);
+const getMiddleMenuLists = (
+  divisions: Division[],
+  menuDivisionId: number | null
+): MenuList<SelectableMenu>[] => [
+  {
+    subheader: (
+      <ListSubheader>
+        <Trans>Division Menu</Trans>
+      </ListSubheader>
+    ),
+    menus: [
+      {
+        text: <Trans>Division</Trans>,
+        name: 'divisionId',
+        label: 'Division',
+        selects: [
+          {
+            text: 'Select',
+            value: '',
+          },
+          ...divisions.map((division) => ({
+            text: division.name,
+            value: `${division.id}`,
+          })),
+        ],
+        menus: menuDivisionId
+          ? [
+              {
+                text: <Trans>Projects</Trans>,
+                icon: <ListIcon />,
+                to: getProjectsPath({ divisionId: `${menuDivisionId}` }),
+                paths: [getProjectsPath({ divisionId: `${menuDivisionId}` })],
+              },
+              {
+                text: <Trans>Members</Trans>,
+                icon: <MenuUserIcon />,
+                to: getMembersPath({ divisionId: `${menuDivisionId}` }),
+                paths: [getMembersPath({ divisionId: `${menuDivisionId}` })],
+                requiredPermissions: [
+                  divisionPermission.createOwn,
+                  divisionPermission.createAll,
+                ],
+              },
+            ]
+          : [],
+        requiredPermissions: [
+          divisionPermission.viewOwn,
+          divisionPermission.viewAll,
+        ],
+      },
+    ],
+  },
+];
 
 // Sub Menu
 const bottomMenuLists: MenuList[] = [
@@ -148,22 +147,11 @@ const bottomMenuLists: MenuList[] = [
 ];
 
 const selector = createSelector(
-  [
-    middleMenuListsSelector,
-    menuDivisionIdSelector,
-    userPermissionNamesSelector,
-    memberPermissionNamesSelector,
-  ],
-  (
-    middleMenuLists,
-    currentDivisionId,
+  [divisionsSelector, menuDivisionIdSelector, userPermissionNamesSelector],
+  (divisions, menuDivisionId, userPermissionNames) => ({
+    divisions,
+    menuDivisionId,
     userPermissionNames,
-    memberPermissionNames
-  ) => ({
-    middleMenuLists,
-    currentDivisionId,
-    userPermissionNames,
-    memberPermissionNames,
   })
 );
 
@@ -173,17 +161,19 @@ const PrivateSideMenu: FC<ChildProps> = (props) => {
     dispatch(divisionsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
 
-  const {
-    middleMenuLists,
-    currentDivisionId,
-    userPermissionNames,
-    memberPermissionNames,
-  } = useStoreSelector(selector);
+  const { divisions, menuDivisionId, userPermissionNames } =
+    useStoreSelector(selector);
 
-  const permissionNames = useMemo(
-    () => [...(memberPermissionNames ?? []), ...(userPermissionNames ?? [])],
-    [userPermissionNames, memberPermissionNames]
+  const middleMenuLists = useMemo(
+    () => getMiddleMenuLists(divisions, menuDivisionId),
+    [divisions, menuDivisionId]
   );
+
+  const permissionNames = useMemo(() => {
+    const division = divisions.find((d) => d.id === menuDivisionId);
+    const memberPermissionNames = division?.permissionNames ?? [];
+    return [...memberPermissionNames, ...(userPermissionNames ?? [])];
+  }, [userPermissionNames, divisions, menuDivisionId]);
 
   const onChange = useCallback(
     (data: ChangeEvent<HTMLInputElement>) => {
@@ -201,7 +191,7 @@ const PrivateSideMenu: FC<ChildProps> = (props) => {
       topMenuLists={topMenuLists}
       middleMenuLists={middleMenuLists}
       bottomMenuLists={bottomMenuLists}
-      initialValue={`${currentDivisionId || ''}`}
+      initialValue={`${menuDivisionId || ''}`}
       onChange={onChange}
       permissionNames={permissionNames}
       {...props}

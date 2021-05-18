@@ -1,11 +1,6 @@
 // FIXME: SAMPLE CODE
 
 import { combineReducers } from '@reduxjs/toolkit';
-import {
-  BookComment,
-  BookCommentDetail,
-} from 'src/store/state/domain/sample/bookComments/types';
-import { Book } from 'src/store/state/domain/sample/books/types';
 import { EntitiesState } from 'src/store/types';
 import {
   BookApiUrl,
@@ -14,7 +9,9 @@ import {
   ProjectApiUrl,
 } from 'src/store/urls';
 import { bookCommentsReducer } from './bookComments/slice';
+import { BookComment, BookCommentDetail } from './bookComments/types';
 import { booksReducer } from './books/slice';
+import { Book } from './books/types';
 import { projectsReducer } from './projects/slice';
 import { Project, ProjectDetail } from './projects/types';
 
