@@ -7,6 +7,7 @@ import NotFound from 'src/view/pages/common/common/NotFound';
 import InvitationEdit from 'src/view/pages/common/invitations/Edit';
 import InvitationList from 'src/view/pages/common/invitations/List';
 import InvitationNew from 'src/view/pages/common/invitations/New';
+import MyUserEdit from 'src/view/pages/common/user/Edit';
 import UserEdit from 'src/view/pages/common/users/Edit';
 import UserList from 'src/view/pages/common/users/List';
 import DivisionEdit from 'src/view/pages/division/divisions/Edit';
@@ -52,6 +53,7 @@ import {
   projectsPath,
   membersPath,
   userEditPath,
+  myUserEditPath,
 } from 'src/view/routes/paths';
 
 const privateRoutes: RouteProps[] = [
@@ -75,6 +77,7 @@ const privateRoutes: RouteProps[] = [
 
   { path: userEditPath, component: UserEdit },
   { path: usersPath, component: UserList },
+  { path: myUserEditPath, component: MyUserEdit },
   { path: invitationNewPath, component: InvitationNew },
   { path: invitationEditPath, component: InvitationEdit },
   { path: invitationsPath, component: InvitationList },

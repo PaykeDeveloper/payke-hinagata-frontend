@@ -1,8 +1,9 @@
 import { authActions } from 'src/store/state/app/auth/slice';
 import { getMyUserApiUrl } from 'src/store/urls';
 import { createEntitySlice, getEntityInitialState } from 'src/store/utils';
+import { MyUser, MyUserInput } from './types';
 
-const userSlice = createEntitySlice(
+const userSlice = createEntitySlice<MyUser, {}, MyUserInput>(
   'user',
   getEntityInitialState(),
   getMyUserApiUrl,

@@ -6,7 +6,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { Trans, useTranslation } from 'react-i18next';
 import { Role } from 'src/store/state/domain/common/roles/types';
-import { User } from 'src/store/state/domain/common/user/types';
+import { User } from 'src/store/state/domain/common/users/types';
 import { MemberInput } from 'src/store/state/domain/division/members/types';
 import { BookInput } from 'src/store/state/domain/sample/books/types';
 import { StoreError, StoreStatus } from 'src/store/types';

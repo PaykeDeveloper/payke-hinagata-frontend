@@ -12,7 +12,7 @@ import {
   userStatusSelector,
 } from 'src/store/state/domain/common/users/selectors';
 import { usersActions } from 'src/store/state/domain/common/users/slice';
-import { UserPath, booksPath } from 'src/view/routes/paths';
+import { UserPath, usersPath } from 'src/view/routes/paths';
 import { BaseRouterState } from 'src/view/routes/types';
 import Component from './Component';
 
@@ -52,7 +52,7 @@ const Container: FC<
     location,
   } = props;
 
-  const backPath = location.state?.path || booksPath;
+  const backPath = location.state?.path || usersPath;
   const onBack: ChildProps['onBack'] = useCallback(
     () => push(backPath),
     [push, backPath]
@@ -82,7 +82,7 @@ const Container: FC<
     const action = await dispatch(usersActions.removeEntity({ pathParams }));
     if (usersActions.removeEntity.fulfilled.match(action)) {
       if (fromShow) {
-        push(booksPath);
+        push(usersPath);
       } else {
         onBack();
       }
