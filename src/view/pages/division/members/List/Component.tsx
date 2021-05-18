@@ -5,7 +5,7 @@ import { Button } from '@material-ui/core';
 import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
-import { User } from 'src/store/state/domain/common/user/types';
+import { User } from 'src/store/state/domain/common/users/types';
 import { Member } from 'src/store/state/domain/division/members/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {

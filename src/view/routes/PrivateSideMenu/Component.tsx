@@ -6,13 +6,13 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-
 import { ListItem, makeStyles, MenuItem } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import { useTranslation } from 'react-i18next';
 import SelectField from 'src/view/base/material-ui/SelectField';
 import MenuLink, {
+  CollapseMenu,
   Menu,
 } from 'src/view/components/molecules/SideMenu/MenuLink';
 
@@ -28,38 +28,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export type MenuList = {
+export type MenuList<T extends Menu = Menu> = {
   subheader?: ReactElement;
-  menus: Menu[];
-  requiredPermissions?: string[];
+  menus: T[];
 };
 
-export interface SelectableMenu {
-  text: ReactElement;
+interface SelectableMenuSelect {
+  text: string;
+  value: string;
+}
+
+export interface SelectableMenu extends CollapseMenu {
   name: string;
   label: string;
   selects: SelectableMenuSelect[];
-  menus: Menu[];
-  icon?: ReactElement;
-  permissionNames: string[] | undefined;
-  requiredPermissions?: string[];
-}
-
-export type SelectableMenuList = {
-  subheader?: ReactElement;
-  menus: SelectableMenu[];
-  requiredPermissions?: string[];
-};
-
-export interface SelectableMenuSelect {
-  text: string;
-  value: string;
 }
 
 export interface Props {
   pathname: string;
   topMenuLists: MenuList[];
-  middleMenuLists: SelectableMenuList[];
+  middleMenuLists: MenuList<SelectableMenu>[];
   bottomMenuLists: MenuList[];
   initialValue?: string;
   permissionNames: string[] | undefined;

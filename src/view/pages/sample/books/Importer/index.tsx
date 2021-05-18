@@ -19,7 +19,7 @@ import {
 import { bookImportersActions } from 'src/store/state/ui/sample/importers/books/slice';
 import { StoreStatus } from 'src/store/types';
 import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
-import Component from 'src/view/pages/sample/book/Importer/Components/Component';
+import Component from './Component';
 
 const selector = createSelector(
   [importRowsSelector, importerStatusSelector],

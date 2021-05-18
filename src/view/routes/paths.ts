@@ -17,6 +17,7 @@ export const verifyEmailPath = getVerifyEmailPath({
 });
 
 export const changePasswordPath = `${rootPath}user/password/`;
+export const myUserEditPath = `${rootPath}user/edit/`;
 
 export interface InvitationPath {
   invitationId: string;

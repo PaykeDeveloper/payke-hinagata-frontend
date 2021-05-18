@@ -18,7 +18,7 @@ import {
   bookStatusSelector,
 } from 'src/store/state/domain/sample/books/selectors';
 import { booksActions } from 'src/store/state/domain/sample/books/slice';
-import { BookEditRouterState } from 'src/view/pages/sample/book/Edit';
+import { BookEditRouterState } from 'src/view/pages/sample/books/Edit';
 import {
   BookPath,
   booksPath,

@@ -14,9 +14,9 @@ import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
-import FileUploadButton from 'src/view/pages/sample/book/Importer/Components/FileUploadButton';
-import List from 'src/view/pages/sample/book/Importer/Components/List';
 import { rootPath } from 'src/view/routes/paths';
+import FileUploadButton from './components/FileUploadButton';
+import List from './components/List';
 
 type ChildProps = ComponentProps<typeof List>;
 

@@ -1,10 +1,9 @@
 // FIXME: SAMPLE CODE
 
 import { authActions } from 'src/store/state/app/auth/slice';
-import { User } from 'src/store/state/domain/common/user/types';
 import { UserApiUrl, getUsersApiUrl, getUserApiUrl } from 'src/store/urls';
 import { createEntitiesSlice, getEntitiesInitialState } from 'src/store/utils';
-import { UserInput } from './types';
+import { User, UserInput } from './types';
 
 const usersSlice = createEntitiesSlice<User, {}, User, UserApiUrl, UserInput>(
   'users',

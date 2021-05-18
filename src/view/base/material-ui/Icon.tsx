@@ -30,6 +30,7 @@ export const CheckIcon = createIcon('check');
 export const AttachFileIcon = createIcon('attach_file');
 export const CallSplitIcon = createIcon('call_split');
 export const DownloadIcon = createIcon('get_app');
+export const SettingsIcon = createIcon('settings');
 
 // FIXME: SAMPLE CODE
 export const HomeIcon = createIcon('home');

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
-import { User } from 'src/store/state/domain/common/user/types';
+import { User } from 'src/store/state/domain/common/users/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
   RouterDataGrid,

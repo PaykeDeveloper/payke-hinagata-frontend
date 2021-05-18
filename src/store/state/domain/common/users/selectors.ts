@@ -3,9 +3,12 @@
 import { createSelector } from 'reselect';
 import { convertListToObject } from 'src/base/utils';
 import { StoreState } from 'src/store';
+import {
+  myUserSelector,
+  userPermissionNamesSelector,
+} from 'src/store/state/domain/common/user/selectors';
 import { OwnPermissionFactory } from 'src/store/utils';
-import { myUserSelector, userPermissionNamesSelector } from '../user/selectors';
-import { User } from '../user/types';
+import { User } from './types';
 
 export const userPermission = new OwnPermissionFactory('user');
 

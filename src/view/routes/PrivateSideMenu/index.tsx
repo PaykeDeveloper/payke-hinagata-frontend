@@ -9,11 +9,10 @@ import { userPermissionNamesSelector } from 'src/store/state/domain/common/user/
 import { userPermission } from 'src/store/state/domain/common/users/selectors';
 import {
   divisionPermission,
-  divisionsErrorSelector,
   divisionsSelector,
-  divisionsStatusSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
+import { Division } from 'src/store/state/domain/division/divisions/types';
 import { menuDivisionIdSelector } from 'src/store/state/ui/menu/selectors';
 import { menuActions } from 'src/store/state/ui/menu/slice';
 import {
@@ -34,7 +33,7 @@ import {
   userPath,
   usersPath,
 } from '../paths';
-import Component, { MenuList, SelectableMenuList } from './Component';
+import Component, { MenuList, SelectableMenu } from './Component';
 
 type ChildProps = {
   pathname: string;
@@ -42,21 +41,25 @@ type ChildProps = {
 };
 
 // Home Menu
-const defaultHomeMenu: MenuList = {
-  menus: [
-    {
-      text: <Trans>Home</Trans>,
-      icon: <HomeIcon />,
-      to: rootPath,
-      paths: [rootPath],
-    },
-  ],
-};
+const topMenuLists: MenuList[] = [
+  {
+    menus: [
+      {
+        text: <Trans>Home</Trans>,
+        icon: <HomeIcon />,
+        to: rootPath,
+        paths: [rootPath],
+      },
+    ],
+  },
+];
 
 // Divisions Menu
-const divisionsSelectMenuSelector = createSelector(
-  [divisionsSelector, menuDivisionIdSelector, userPermissionNamesSelector],
-  (divisions, menuDivisionId, permissionNames): SelectableMenuList => ({
+const getMiddleMenuLists = (
+  divisions: Division[],
+  menuDivisionId: number | null
+): MenuList<SelectableMenu>[] => [
+  {
     subheader: (
       <ListSubheader>
         <Trans>Division Menu</Trans>
@@ -101,62 +104,54 @@ const divisionsSelectMenuSelector = createSelector(
           divisionPermission.viewOwn,
           divisionPermission.viewAll,
         ],
-        permissionNames,
       },
     ],
-  })
-);
+  },
+];
 
 // Sub Menu
-const defaultSubMenu: MenuList = {
-  subheader: (
-    <ListSubheader>
-      <Trans>Sub Menu</Trans>
-    </ListSubheader>
-  ),
-  menus: [
-    {
-      text: <Trans>Divisions</Trans>,
-      icon: <DomainIcon />,
-      to: divisionsPath,
-      paths: [divisionsPath, divisionNewPath],
-      requiredPermissions: [
-        divisionPermission.viewOwn,
-        divisionPermission.viewAll,
-      ],
-    },
-    {
-      text: <Trans>Users</Trans>,
-      icon: <MenuUserIcon />,
-      to: usersPath,
-      paths: [usersPath, userPath],
-      requiredPermissions: [userPermission.viewOwn, userPermission.viewAll],
-    },
-    {
-      text: <Trans>Invitations</Trans>,
-      icon: <PersonAddIcon />,
-      to: invitationsPath,
-      paths: [invitationsPath, invitationNewPath],
-      requiredPermissions: [invitationPermission.viewAll],
-    },
-  ],
-  requiredPermissions: [userPermission.viewAll],
-};
+const bottomMenuLists: MenuList[] = [
+  {
+    subheader: (
+      <ListSubheader>
+        <Trans>Sub Menu</Trans>
+      </ListSubheader>
+    ),
+    menus: [
+      {
+        text: <Trans>Divisions</Trans>,
+        icon: <DomainIcon />,
+        to: divisionsPath,
+        paths: [divisionsPath, divisionNewPath],
+        requiredPermissions: [
+          divisionPermission.viewOwn,
+          divisionPermission.viewAll,
+        ],
+      },
+      {
+        text: <Trans>Users</Trans>,
+        icon: <MenuUserIcon />,
+        to: usersPath,
+        paths: [usersPath, userPath],
+        requiredPermissions: [userPermission.viewOwn, userPermission.viewAll],
+      },
+      {
+        text: <Trans>Invitations</Trans>,
+        icon: <PersonAddIcon />,
+        to: invitationsPath,
+        paths: [invitationsPath, invitationNewPath],
+        requiredPermissions: [invitationPermission.viewAll],
+      },
+    ],
+  },
+];
 
 const selector = createSelector(
-  [
-    divisionsSelectMenuSelector,
-    divisionsStatusSelector,
-    divisionsErrorSelector,
-    menuDivisionIdSelector,
-    userPermissionNamesSelector,
-  ],
-  (divisionsSelectMenu, status, error, currentDivisionId, permissionNames) => ({
-    divisionsSelectMenu,
-    status,
-    error,
-    currentDivisionId,
-    permissionNames,
+  [divisionsSelector, menuDivisionIdSelector, userPermissionNamesSelector],
+  (divisions, menuDivisionId, userPermissionNames) => ({
+    divisions,
+    menuDivisionId,
+    userPermissionNames,
   })
 );
 
@@ -166,7 +161,19 @@ const PrivateSideMenu: FC<ChildProps> = (props) => {
     dispatch(divisionsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
 
-  const state = useStoreSelector(selector);
+  const { divisions, menuDivisionId, userPermissionNames } =
+    useStoreSelector(selector);
+
+  const middleMenuLists = useMemo(
+    () => getMiddleMenuLists(divisions, menuDivisionId),
+    [divisions, menuDivisionId]
+  );
+
+  const permissionNames = useMemo(() => {
+    const division = divisions.find((d) => d.id === menuDivisionId);
+    const memberPermissionNames = division?.permissionNames ?? [];
+    return [...memberPermissionNames, ...(userPermissionNames ?? [])];
+  }, [userPermissionNames, divisions, menuDivisionId]);
 
   const onChange = useCallback(
     (data: ChangeEvent<HTMLInputElement>) => {
@@ -179,47 +186,14 @@ const PrivateSideMenu: FC<ChildProps> = (props) => {
     [dispatch]
   );
 
-  const topMenuLists = useMemo(
-    () =>
-      defaultHomeMenu.requiredPermissions &&
-      !defaultHomeMenu.requiredPermissions.some((e) =>
-        state.permissionNames?.includes(e)
-      )
-        ? []
-        : [defaultHomeMenu],
-    [state.permissionNames]
-  );
-
-  const middleMenuLists = useMemo(
-    () =>
-      state.divisionsSelectMenu.requiredPermissions &&
-      !state.divisionsSelectMenu.requiredPermissions.some((e) =>
-        state.permissionNames?.includes(e)
-      )
-        ? []
-        : [state.divisionsSelectMenu],
-    [state.divisionsSelectMenu, state.permissionNames]
-  );
-
-  const bottomMenuLists = useMemo(
-    () =>
-      defaultSubMenu.requiredPermissions &&
-      !defaultSubMenu.requiredPermissions.some((e) =>
-        state.permissionNames?.includes(e)
-      )
-        ? []
-        : [defaultSubMenu],
-    [state.permissionNames]
-  );
-
   return (
     <Component
       topMenuLists={topMenuLists}
       middleMenuLists={middleMenuLists}
       bottomMenuLists={bottomMenuLists}
-      initialValue={`${state.currentDivisionId || ''}`}
+      initialValue={`${menuDivisionId || ''}`}
       onChange={onChange}
-      permissionNames={state.permissionNames}
+      permissionNames={permissionNames}
       {...props}
     />
   );
