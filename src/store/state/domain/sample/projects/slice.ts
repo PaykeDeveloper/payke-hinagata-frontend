@@ -22,6 +22,9 @@ const projectsSlice = createEntitiesSlice<
   getProjectsApiUrl,
   getProjectApiUrl,
   (state) => state.domain.sample.projects,
+  { objectKey: 'id', pathKey: 'projectId' },
+  (entity) => entity,
+  (entity) => entity,
   undefined,
   (builder) =>
     builder.addCase(authActions.resetAll, () => getEntitiesInitialState())

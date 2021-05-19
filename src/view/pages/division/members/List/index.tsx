@@ -1,14 +1,12 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
+import React, { ComponentProps, FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
-import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { useStoreSelector } from 'src/store';
 import { userIdMapSelector } from 'src/store/state/domain/common/users/selectors';
-import { usersActions } from 'src/store/state/domain/common/users/slice';
-import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
   membersStatusSelector,
   membersErrorSelector,
@@ -16,7 +14,6 @@ import {
   membersSelector,
   checkEditMemberSelector,
 } from 'src/store/state/domain/division/members/selectors';
-import { membersActions } from 'src/store/state/domain/division/members/slice';
 import {
   DivisionPath,
   getMemberNewPath,
@@ -53,13 +50,6 @@ const List: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> =
       match: { params: pathParams },
       location,
     } = props;
-
-    const dispatch = useStoreDispatch();
-    useEffect(() => {
-      dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams }));
-      dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams }));
-      dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams }));
-    }, [dispatch, pathParams]);
 
     const path = joinString(location.pathname, location.search);
 

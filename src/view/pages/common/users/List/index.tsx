@@ -1,15 +1,14 @@
-import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
+import React, { ComponentProps, FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
-import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { useStoreSelector } from 'src/store';
 import {
   usersErrorSelector,
   usersSelector,
   usersStatusSelector,
   checkEditUserSelector,
 } from 'src/store/state/domain/common/users/selectors';
-import { usersActions } from 'src/store/state/domain/common/users/slice';
 import { getUserEditPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Component from './Component';
@@ -36,11 +35,6 @@ const List: FC<RouteComponentProps> = (props) => {
     history: { push },
     location: { pathname, search },
   } = props;
-
-  const dispatch = useStoreDispatch();
-  useEffect(() => {
-    dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams: {} }));
-  }, [dispatch]);
 
   const path = joinString(pathname, search);
 

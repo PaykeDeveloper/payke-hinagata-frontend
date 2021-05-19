@@ -24,6 +24,9 @@ const invitationsSlice = createEntitiesSlice<
   getInvitationsApiUrl,
   getInvitationApiUrl,
   (state) => state.domain.common.invitations,
+  { objectKey: 'id', pathKey: 'invitationId' },
+  (entity) => entity,
+  (entity) => entity,
   undefined,
   (builder) =>
     builder.addCase(authActions.resetAll, () => getEntitiesInitialState())

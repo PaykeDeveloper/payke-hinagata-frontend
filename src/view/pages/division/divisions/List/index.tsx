@@ -1,10 +1,10 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
+import React, { ComponentProps, FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
-import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { useStoreSelector } from 'src/store';
 import {
   canCreateDivisionSelector,
   divisionsErrorSelector,
@@ -12,7 +12,6 @@ import {
   divisionsStatusSelector,
   checkEditDivisionSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
-import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import { divisionNewPath, getDivisionEditPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Component from './Component';
@@ -41,11 +40,6 @@ const List: FC<RouteComponentProps> = (props) => {
     history: { push },
     location: { pathname, search },
   } = props;
-
-  const dispatch = useStoreDispatch();
-  useEffect(() => {
-    dispatch(divisionsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
-  }, [dispatch]);
 
   const path = joinString(pathname, search);
 

@@ -35,6 +35,11 @@ export const memberPermissionNamesSelector = createSelector(
   (division) => division?.permissionNames
 );
 
+export const canViewDivisionsSelector = createSelector(
+  userPermissionNamesSelector,
+  (userPermissionNames) => divisionPermission.canView(userPermissionNames)
+);
+
 export const canCreateDivisionSelector = createSelector(
   userPermissionNamesSelector,
   (userPermissionNames) => divisionPermission.canCreate(userPermissionNames)

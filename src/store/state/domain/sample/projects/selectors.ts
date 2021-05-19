@@ -26,6 +26,14 @@ export const projectStatusSelector = (state: StoreState) =>
 export const projectErrorSelector = (state: StoreState) =>
   state.domain.sample.projects.meta.fetchEntity.error;
 
+export const canViewProjectsSelector = createSelector(
+  userPermissionNamesSelector,
+  memberPermissionNamesSelector,
+  (userPermissionNames, memberPermissionNames) =>
+    projectPermission.canViewAll(memberPermissionNames) ||
+    projectPermission.canViewAll(userPermissionNames)
+);
+
 export const canCreateProjectSelector = createSelector(
   userPermissionNamesSelector,
   memberPermissionNamesSelector,
