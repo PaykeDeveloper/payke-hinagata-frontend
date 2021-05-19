@@ -82,7 +82,6 @@ const Container: FC<
 
   const { canUpdate, canDelete, ...otherState } = useStoreSelector(selector);
 
-  console.log(pathParams);
   return (
     <Form
       {...otherState}

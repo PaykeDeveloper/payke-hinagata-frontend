@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FC, useCallback, useEffect, useMemo } from 'react';
+import React, {
+  ComponentProps,
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react';
 import { ListSubheader } from '@material-ui/core';
 import { createSelector } from '@reduxjs/toolkit';
 import toSafeInteger from 'lodash/toSafeInteger';
@@ -9,9 +15,9 @@ import { userPermissionNamesSelector } from 'src/store/state/domain/common/user/
 import { userPermission } from 'src/store/state/domain/common/users/selectors';
 import {
   divisionPermission,
+  divisionSelector,
   divisionsSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
-import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import { Division } from 'src/store/state/domain/division/divisions/types';
 import { menuDivisionIdSelector } from 'src/store/state/ui/menu/selectors';
 import { menuActions } from 'src/store/state/ui/menu/slice';
@@ -35,10 +41,7 @@ import {
 } from '../paths';
 import Component, { MenuList, SelectableMenu } from './Component';
 
-type ChildProps = {
-  pathname: string;
-  onClickMenu?: (event: unknown) => void;
-};
+type ChildProps = ComponentProps<typeof Component>;
 
 // Home Menu
 const topMenuLists: MenuList[] = [
@@ -70,16 +73,10 @@ const getMiddleMenuLists = (
         text: <Trans>Division</Trans>,
         name: 'divisionId',
         label: 'Division',
-        selects: [
-          {
-            text: 'Select',
-            value: '',
-          },
-          ...divisions.map((division) => ({
-            text: division.name,
-            value: `${division.id}`,
-          })),
-        ],
+        selects: divisions.map((division) => ({
+          text: division.name,
+          value: division.id,
+        })),
         menus: menuDivisionId
           ? [
               {
@@ -147,22 +144,43 @@ const bottomMenuLists: MenuList[] = [
 ];
 
 const selector = createSelector(
-  [divisionsSelector, menuDivisionIdSelector, userPermissionNamesSelector],
-  (divisions, menuDivisionId, userPermissionNames) => ({
+  [
+    divisionsSelector,
+    divisionSelector,
+    menuDivisionIdSelector,
+    userPermissionNamesSelector,
+  ],
+  (divisions, division, menuDivisionId, userPermissionNames) => ({
     divisions,
+    division,
     menuDivisionId,
     userPermissionNames,
   })
 );
 
-const PrivateSideMenu: FC<ChildProps> = (props) => {
+const PrivateSideMenu: FC<{
+  pathname: string;
+  onClickMenu?: (event: unknown) => void;
+}> = (props) => {
   const dispatch = useStoreDispatch();
-  useEffect(() => {
-    dispatch(divisionsActions.fetchEntitiesIfNeeded({ pathParams: {} }));
-  }, [dispatch]);
 
-  const { divisions, menuDivisionId, userPermissionNames } =
+  const { divisions, division, menuDivisionId, userPermissionNames } =
     useStoreSelector(selector);
+
+  const currentDivisionId = division?.id;
+  useEffect(() => {
+    if (!menuDivisionId && currentDivisionId) {
+      dispatch(menuActions.setDivisionId(currentDivisionId));
+    }
+  }, [dispatch, menuDivisionId, currentDivisionId]);
+
+  const onChangeDivisionId: ChildProps['onChangeDivisionId'] = useCallback(
+    (value) => {
+      const id = value ? toSafeInteger(value) : null;
+      dispatch(menuActions.setDivisionId(id));
+    },
+    [dispatch]
+  );
 
   const middleMenuLists = useMemo(
     () => getMiddleMenuLists(divisions, menuDivisionId),
@@ -175,25 +193,14 @@ const PrivateSideMenu: FC<ChildProps> = (props) => {
     return [...memberPermissionNames, ...(userPermissionNames ?? [])];
   }, [userPermissionNames, divisions, menuDivisionId]);
 
-  const onChange = useCallback(
-    (data: ChangeEvent<HTMLInputElement>) => {
-      if (data.target.value === '') {
-        dispatch(menuActions.setDivisionId(null));
-      } else {
-        dispatch(menuActions.setDivisionId(toSafeInteger(data.target.value)));
-      }
-    },
-    [dispatch]
-  );
-
   return (
     <Component
       topMenuLists={topMenuLists}
       middleMenuLists={middleMenuLists}
       bottomMenuLists={bottomMenuLists}
-      initialValue={`${menuDivisionId || ''}`}
-      onChange={onChange}
+      menuDivisionId={menuDivisionId}
       permissionNames={permissionNames}
+      onChangeDivisionId={onChangeDivisionId}
       {...props}
     />
   );

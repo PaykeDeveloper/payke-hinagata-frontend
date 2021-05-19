@@ -1,12 +1,5 @@
-import React, {
-  ChangeEvent,
-  FC,
-  Fragment,
-  ReactElement,
-  useCallback,
-  useMemo,
-} from 'react';
-import { ListItem, makeStyles, MenuItem } from '@material-ui/core';
+import React, { FC, Fragment, ReactElement, useMemo } from 'react';
+import { ListItem, makeStyles } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import { useTranslation } from 'react-i18next';
@@ -35,7 +28,7 @@ export type MenuList<T extends Menu = Menu> = {
 
 interface SelectableMenuSelect {
   text: string;
-  value: string;
+  value: number;
 }
 
 export interface SelectableMenu extends CollapseMenu {
@@ -49,11 +42,11 @@ export interface Props {
   topMenuLists: MenuList[];
   middleMenuLists: MenuList<SelectableMenu>[];
   bottomMenuLists: MenuList[];
-  initialValue?: string;
+  menuDivisionId: number | null;
   permissionNames: string[] | undefined;
 
+  onChangeDivisionId: (value: number) => void;
   onClickMenu?: (event: unknown) => void;
-  onChange?: (data: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const getPaths = (menu: Menu): string[] => {
@@ -70,9 +63,9 @@ const Component: FC<Props> = (props) => {
     middleMenuLists,
     bottomMenuLists,
     permissionNames,
-    initialValue,
+    menuDivisionId,
+    onChangeDivisionId,
     onClickMenu,
-    onChange,
   } = props;
   const paths = useMemo(
     () =>
@@ -82,15 +75,9 @@ const Component: FC<Props> = (props) => {
         .reverse(),
     [topMenuLists, middleMenuLists, bottomMenuLists]
   );
+
   const classes = useStyles();
   const { t } = useTranslation();
-
-  const selectOnChange = useCallback(
-    (data) => {
-      onChange && onChange(data);
-    },
-    [onChange]
-  );
 
   return (
     <>
@@ -123,15 +110,19 @@ const Component: FC<Props> = (props) => {
                     label={t(menu.label)}
                     formControlProps={{ className: classes.selectForm }}
                     selectProps={{
-                      onChange: selectOnChange,
-                      defaultValue: initialValue,
+                      native: true,
+                      value: menuDivisionId ?? '',
+                      onChange: (data) => {
+                        onChangeDivisionId(data.target.value as number);
+                      },
                     }}
                     helperText=""
                   >
+                    {!menuDivisionId && <option />}
                     {menu.selects.map((option, i) => (
-                      <MenuItem key={i} value={option.value}>
+                      <option key={i} value={option.value}>
                         {option.text}
-                      </MenuItem>
+                      </option>
                     ))}
                   </SelectField>
                 </ListItem>
