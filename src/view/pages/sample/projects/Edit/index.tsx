@@ -1,13 +1,11 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
+import React, { ComponentProps, FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { inputsToObject } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-
-import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
   canDeleteProjectSelector,
   canUpdateProjectSelector,
@@ -57,11 +55,6 @@ const Container: FC<
 
   const dispatch = useStoreDispatch();
 
-  useEffect(() => {
-    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams }));
-    dispatch(projectsActions.fetchEntityIfNeeded({ pathParams, reset: true }));
-  }, [dispatch, pathParams]);
-
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (params) => {
       const action = await dispatch(
@@ -89,7 +82,6 @@ const Container: FC<
 
   const { canUpdate, canDelete, ...otherState } = useStoreSelector(selector);
 
-  console.log(pathParams);
   return (
     <Form
       {...otherState}

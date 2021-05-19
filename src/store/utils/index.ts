@@ -9,6 +9,7 @@ import {
   UnknownError,
   ConnectionError,
   MethodNotAllowedError,
+  StoreStatus,
 } from 'src/store/types';
 export {
   createGetAsyncThunk,
@@ -101,3 +102,6 @@ const getDefaultErrorMessage = (error: StoreError) => {
 export const getErrorMessage = (error: StoreError) =>
   // getResponseErrorMessage(error) || getDefaultErrorMessage(error);
   getDefaultErrorMessage(error);
+
+export const checkProcessed = (status: StoreStatus) =>
+  status === StoreStatus.Done || status === StoreStatus.Failed;

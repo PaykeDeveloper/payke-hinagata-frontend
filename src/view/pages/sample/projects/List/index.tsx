@@ -1,13 +1,11 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
+import React, { ComponentProps, FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
-import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
-import { membersActions } from 'src/store/state/domain/division/members/slice';
+import { useStoreSelector } from 'src/store';
 import {
   projectsErrorSelector,
   projectsSelector,
@@ -15,7 +13,6 @@ import {
   canCreateProjectSelector,
   canEditProjectSelector,
 } from 'src/store/state/domain/sample/projects/selectors';
-import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
 import {
   DivisionPath,
   getProjectEditPath,
@@ -50,13 +47,6 @@ const Show: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> =
       match: { params: pathParams },
       location,
     } = props;
-
-    const dispatch = useStoreDispatch();
-    useEffect(() => {
-      dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams }));
-      dispatch(projectsActions.fetchEntitiesIfNeeded({ pathParams }));
-      dispatch(membersActions.fetchEntitiesIfNeeded({ pathParams }));
-    }, [dispatch, pathParams]);
 
     const path = joinString(location.pathname, location.search);
 

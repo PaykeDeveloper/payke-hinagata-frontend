@@ -22,6 +22,9 @@ const bookCommentsSlice = createEntitiesSlice<
   getBookCommentsApiUrl,
   getBookCommentApiUrl,
   (state) => state.domain.sample.bookComments,
+  { objectKey: 'id', pathKey: 'bookId' },
+  undefined,
+  undefined,
   undefined,
   (builder) =>
     builder.addCase(authActions.resetAll, () => getEntitiesInitialState())

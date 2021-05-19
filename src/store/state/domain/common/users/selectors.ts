@@ -1,5 +1,3 @@
-// FIXME: SAMPLE CODE
-
 import { createSelector } from 'reselect';
 import { convertListToObject } from 'src/base/utils';
 import { StoreState } from 'src/store';
@@ -32,6 +30,11 @@ export const userErrorSelector = (state: StoreState) =>
 
 export const userIdMapSelector = createSelector(usersSelector, (users) =>
   convertListToObject<number, User>(users, 'id')
+);
+
+export const canViewUsersSelector = createSelector(
+  userPermissionNamesSelector,
+  (userPermissionNames) => userPermission.canView(userPermissionNames)
 );
 
 export const checkUpdateUserSelector = createSelector(

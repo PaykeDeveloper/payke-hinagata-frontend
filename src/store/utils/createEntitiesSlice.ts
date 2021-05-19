@@ -22,6 +22,11 @@ import {
   getMetaInitialState,
 } from './createEntitySlice';
 
+interface KeyMapping<DomainObject, PathParams> {
+  objectKey: keyof DomainObject;
+  pathKey: keyof PathParams;
+}
+
 export const getEntitiesInitialState = () => ({
   entity: undefined,
   entities: [],
@@ -50,6 +55,9 @@ const createEntitiesSlice = <
   entitiesUrl: (e: EntitiesPath) => string,
   entityUrl: (e: EntityPath) => string,
   domainSelector: (state: RootState) => DomainState,
+  keyMapping?: KeyMapping<Entity, EntityPath>,
+  detailToList?: (e: EntityDetail) => Entity,
+  listToDetail?: (e: Entity) => EntityDetail,
   reducers?: ValidateSliceCaseReducers<
     DomainState,
     SliceCaseReducers<DomainState>
@@ -168,10 +176,15 @@ const createEntitiesSlice = <
             state.meta.fetchEntity.error = action.payload;
           }
         })
-        .addCase(addEntity.fulfilled, (state) => {
-          if (state.meta.fetchEntities.status === StoreStatus.Done) {
-            state.entities = [];
-            state.meta.fetchEntities = getMetaInitialState();
+        .addCase(addEntity.fulfilled, (state, action) => {
+          if (
+            state.meta.fetchEntities.status === StoreStatus.Done &&
+            detailToList
+          ) {
+            state.entities = [
+              ...state.entities,
+              castDraft(detailToList(action.payload)),
+            ];
           }
         })
         .addCase(mergeEntity.fulfilled, (state, action) => {
@@ -180,20 +193,37 @@ const createEntitiesSlice = <
             state.meta.fetchEntity.timestamp = Date.now();
           }
 
-          if (state.meta.fetchEntities.status === StoreStatus.Done) {
-            state.entities = [];
-            state.meta.fetchEntities = getMetaInitialState();
+          if (
+            state.meta.fetchEntities.status === StoreStatus.Done &&
+            detailToList &&
+            keyMapping
+          ) {
+            const entitiesEntity = detailToList(action.payload);
+            const objectKeyValue = entitiesEntity[keyMapping.objectKey];
+            state.entities = state.entities.map((entity) => {
+              if ((entity as Entity)[keyMapping.objectKey] === objectKeyValue) {
+                return castDraft(entitiesEntity);
+              }
+              return entity;
+            });
           }
         })
-        .addCase(removeEntity.fulfilled, (state) => {
+        .addCase(removeEntity.fulfilled, (state, action) => {
           if (state.meta.fetchEntity.status === StoreStatus.Done) {
             state.entity = undefined;
             state.meta.fetchEntity = getMetaInitialState();
           }
 
-          if (state.meta.fetchEntities.status === StoreStatus.Done) {
-            state.entities = [];
-            state.meta.fetchEntities = getMetaInitialState();
+          if (
+            state.meta.fetchEntities.status === StoreStatus.Done &&
+            keyMapping
+          ) {
+            const urlKeyValue: unknown =
+              action.meta.arg.pathParams[keyMapping.pathKey];
+            state.entities = state.entities.filter(
+              (entity) =>
+                (entity as Entity)[keyMapping.objectKey] !== urlKeyValue
+            );
           }
         });
       return extraReducers ? extraReducers(extraBuilder) : extraBuilder;
@@ -267,6 +297,25 @@ const createEntitiesSlice = <
 
       if (arg.reset) {
         dispatch(resetEntityIfNeeded());
+      }
+
+      const urlValue: unknown =
+        keyMapping && keyMapping.pathKey && arg.pathParams[keyMapping.pathKey];
+      const { timestamp } = domain.meta.fetchEntities;
+      if (
+        listToDetail &&
+        keyMapping &&
+        urlValue &&
+        timestamp &&
+        checkInActivePeriod(timestamp)
+      ) {
+        const entitiesEntity = domain.entities.find(
+          (entity) => `${entity[keyMapping.objectKey]}` === `${urlValue}`
+        );
+        if (entitiesEntity) {
+          const entity = listToDetail(entitiesEntity);
+          return dispatch(actions.setEntity({ entity, timestamp, arg }));
+        }
       }
 
       return dispatch(fetchEntity(arg));

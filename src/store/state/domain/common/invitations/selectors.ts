@@ -23,6 +23,11 @@ export const invitationStatusSelector = (state: StoreState) =>
 export const invitationErrorSelector = (state: StoreState) =>
   state.domain.common.invitations.meta.fetchEntity.error;
 
+export const canViewInvitationsSelector = createSelector(
+  userPermissionNamesSelector,
+  (permissionNames) => invitationPermission.canView(permissionNames)
+);
+
 export const canCreateInvitationSelector = createSelector(
   userPermissionNamesSelector,
   (permissionNames) => invitationPermission.canCreate(permissionNames)

@@ -1,14 +1,12 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback, useEffect } from 'react';
+import React, { ComponentProps, FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { memberRolesSelector } from 'src/store/state/domain/common/roles/selectors';
 import { usersSelector } from 'src/store/state/domain/common/users/selectors';
-import { usersActions } from 'src/store/state/domain/common/users/slice';
-import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import {
   canCreateMemberSelector,
   membersErrorSelector,
@@ -53,11 +51,6 @@ const New: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> = (
   );
 
   const dispatch = useStoreDispatch();
-
-  useEffect(() => {
-    dispatch(divisionsActions.fetchEntityIfNeeded({ pathParams }));
-    dispatch(usersActions.fetchEntitiesIfNeeded({ pathParams }));
-  }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {

@@ -29,6 +29,14 @@ export const memberStatusSelector = (state: StoreState) =>
 export const memberErrorSelector = (state: StoreState) =>
   state.domain.division.members.meta.fetchEntity.error;
 
+export const canViewMembersSelector = createSelector(
+  userPermissionNamesSelector,
+  memberPermissionNamesSelector,
+  (userPermissionNames, memberPermissionNames) =>
+    memberPermission.canView(memberPermissionNames) ||
+    memberPermission.canViewAll(userPermissionNames)
+);
+
 export const canCreateMemberSelector = createSelector(
   userPermissionNamesSelector,
   memberPermissionNamesSelector,

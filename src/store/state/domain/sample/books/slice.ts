@@ -11,6 +11,9 @@ const booksSlice = createEntitiesSlice<Book, {}, Book, BookApiUrl, BookInput>(
   getBooksApiUrl,
   getBookApiUrl,
   (state) => state.domain.sample.books,
+  { objectKey: 'id', pathKey: 'bookId' },
+  (entity) => entity,
+  (entity) => entity,
   undefined,
   (builder) =>
     builder.addCase(authActions.resetAll, () => getEntitiesInitialState())

@@ -22,6 +22,9 @@ const membersSlice = createEntitiesSlice<
   getMembersApiUrl,
   getMemberApiUrl,
   (state) => state.domain.division.members,
+  { objectKey: 'id', pathKey: 'memberId' },
+  (entity) => entity,
+  (entity) => entity,
   undefined,
   (builder) =>
     builder.addCase(authActions.resetAll, () => getEntitiesInitialState())

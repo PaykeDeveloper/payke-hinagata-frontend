@@ -21,6 +21,9 @@ const divisionsSlice = createEntitiesSlice<
   getDivisionsApiUrl,
   getDivisionApiUrl,
   (state) => state.domain.division.divisions,
+  { objectKey: 'id', pathKey: 'divisionId' },
+  (entity) => entity,
+  (entity) => entity,
   undefined,
   (builder) =>
     builder.addCase(authActions.resetAll, () => getEntitiesInitialState())
