@@ -29,36 +29,6 @@ export const invitationsPath = `${rootPath}invitations/`;
 export const invitationNewPath = `${rootPath}invitations/new/`;
 export const invitationEditPath = getInvitationEditPath(invitationParams);
 
-// FIXME: SAMPLE CODE
-
-export interface BookPath {
-  bookId: string;
-}
-const bookParams = { bookId: ':bookId' };
-export const getBookPath = ({ bookId }: BookPath) => `${booksPath}${bookId}/`;
-export const getBookEditPath = (params: BookPath) =>
-  `${getBookPath(params)}edit/`;
-export const booksPath = `${rootPath}books/`;
-export const bookNewPath = `${rootPath}books/new/`;
-export const bookPath = getBookPath(bookParams);
-export const bookEditPath = getBookEditPath(bookParams);
-
-export interface BookCommentPath extends BookPath {
-  commentSlug: string;
-}
-const bookCommentParams = { ...bookParams, commentSlug: ':commentSlug' };
-const getBookCommentsPath = (params: BookPath) =>
-  `${getBookPath(params)}comments/`;
-export const getBookCommentNewPath = (params: BookPath) =>
-  `${getBookCommentsPath(params)}new/`;
-const getBookCommentPath = ({ commentSlug, ...otherPrams }: BookCommentPath) =>
-  `${getBookCommentsPath(otherPrams)}${commentSlug}/`;
-export const getBookCommentEditPath = (params: BookCommentPath) =>
-  `${getBookCommentPath(params)}edit/`;
-export const bookCommentNewPath = getBookCommentNewPath(bookParams);
-export const bookCommentEditPath = getBookCommentEditPath(bookCommentParams);
-
-export const importerBooksPath = `${rootPath}importer/books/`;
 export interface UserPath {
   userId: string;
 }
@@ -69,6 +39,8 @@ export const getUserEditPath = (params: UserPath) =>
 export const usersPath = `${rootPath}users/`;
 export const userPath = getUserPath(userParams);
 export const userEditPath = getUserEditPath(userParams);
+
+// FIXME: SAMPLE CODE
 
 export interface DivisionPath {
   divisionId: string;
@@ -83,20 +55,24 @@ export const divisionNewPath = `${rootPath}divisions/new/`;
 export const divisionEditPath = getDivisionEditPath(divisionParams);
 
 export interface ProjectPath extends DivisionPath {
-  projectId: string;
+  projectSlug: string;
 }
-const projectParams = { ...divisionParams, projectId: ':projectId' };
+const projectParams = { ...divisionParams, projectSlug: ':projectSlug' };
 export const getProjectsPath = (params: DivisionPath) =>
   `${getDivisionPath(params)}projects/`;
 export const getProjectNewPath = (params: DivisionPath) =>
   `${getProjectsPath(params)}new/`;
-const getProjectPath = ({ projectId, ...otherPrams }: ProjectPath) =>
-  `${getProjectsPath(otherPrams)}${projectId}/`;
+const getProjectPath = ({ projectSlug, ...otherPrams }: ProjectPath) =>
+  `${getProjectsPath(otherPrams)}${projectSlug}/`;
 export const getProjectEditPath = (params: ProjectPath) =>
   `${getProjectPath(params)}edit/`;
 export const projectsPath = getProjectsPath(divisionParams);
 export const projectNewPath = getProjectNewPath(divisionParams);
 export const projectEditPath = getProjectEditPath(projectParams);
+
+export const getProjectImportPath = (params: DivisionPath) =>
+  `${getProjectsPath(params)}import/`;
+export const projectImportPath = getProjectImportPath(divisionParams);
 
 export interface MemberPath extends DivisionPath {
   memberId: string;

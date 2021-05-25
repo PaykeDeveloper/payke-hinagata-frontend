@@ -2,22 +2,22 @@
 
 import { createSelector } from 'reselect';
 import { StoreState } from 'src/store';
-import { ImportResult, BookImporter, ImportStatus } from './types';
+import { ImportResult, ProjectImporter, ImportStatus } from './types';
 
 export const importRowsSelector = (state: StoreState) =>
-  state.ui.sample.importers.books.importRows;
+  state.ui.sample.importers.projects.importRows;
 
 export const importerResultsSelector = (state: StoreState) =>
-  state.ui.sample.importers.books.meta.results;
+  state.ui.sample.importers.projects.meta.results;
 
 export const finishedRowsSelector = (state: StoreState) =>
-  state.ui.sample.importers.books.meta.finished;
+  state.ui.sample.importers.projects.meta.finished;
 
 export const totalRowsSelector = (state: StoreState) =>
-  state.ui.sample.importers.books.meta.total;
+  state.ui.sample.importers.projects.meta.total;
 
 export const importerStatusSelector = (state: StoreState) =>
-  state.ui.sample.importers.books.meta.status;
+  state.ui.sample.importers.projects.meta.status;
 
 export const importResultSelector = createSelector(
   importerResultsSelector,
@@ -26,7 +26,7 @@ export const importResultSelector = createSelector(
 );
 
 export const filterImporters = (
-  importers: BookImporter[],
+  importers: ProjectImporter[],
   results: { [id: string]: ImportResult },
   status: ImportStatus
 ) => {

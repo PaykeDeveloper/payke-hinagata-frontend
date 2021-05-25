@@ -18,13 +18,13 @@ import { rootPath } from 'src/view/routes/paths';
 
 const Component: FC<{
   users: User[];
-  statuses: StoreStatus[];
-  errors: (StoreError | undefined)[];
+  status: StoreStatus;
+  error: StoreError | undefined;
   checkEdit: (userId: number | undefined) => boolean;
 
   onClickEdit: (userId: number) => void;
 }> = (props) => {
-  const { users, statuses, errors, checkEdit, onClickEdit } = props;
+  const { users, status, error, checkEdit, onClickEdit } = props;
   const { t } = useTranslation();
 
   const columns: GridColumns = [
@@ -65,8 +65,8 @@ const Component: FC<{
         <Trans>Users</Trans>
       </ContentHeader>
       <ContentBody>
-        <ErrorWrapper errors={errors}>
-          <Loader statuses={statuses}>
+        <ErrorWrapper error={error}>
+          <Loader status={status}>
             <RouterDataGrid columns={columns} rows={users} />
           </Loader>
         </ErrorWrapper>

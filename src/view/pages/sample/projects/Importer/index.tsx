@@ -7,19 +7,20 @@ import { useSnackbar } from 'notistack';
 import { Trans } from 'react-i18next';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { booksActions } from 'src/store/state/domain/sample/books/slice';
-import { BookInput } from 'src/store/state/domain/sample/books/types';
+import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
+import { ProjectInput } from 'src/store/state/domain/sample/projects/types';
 import {
   importRowsSelector,
   filterErrorImporters,
   importerStatusSelector,
   finishedRowsSelector,
   totalRowsSelector,
-} from 'src/store/state/ui/sample/importers/books/selectors';
-import { bookImportersActions } from 'src/store/state/ui/sample/importers/books/slice';
+} from 'src/store/state/ui/sample/importers/projects/selectors';
+import { projectImportersActions } from 'src/store/state/ui/sample/importers/projects/slice';
 import { StoreStatus } from 'src/store/types';
 import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
-import Component from './Component';
+import Component from 'src/view/pages/sample/projects/Importer/Component';
+import { DivisionPath } from 'src/view/routes/paths';
 
 const selector = createSelector(
   [importRowsSelector, importerStatusSelector],
@@ -41,7 +42,7 @@ const progressSelector = createSelector(
 const ImportProgress: FC = () => {
   const state = useStoreSelector(progressSelector);
   const { status, total, finished } = state;
-  let progress: number | undefined = undefined;
+  let progress: number | undefined;
   if (status !== StoreStatus.Initial) {
     if (finished === 0) {
       progress = 0.01;
@@ -63,7 +64,10 @@ export const SUPPORTED_FORMATS = ['text/csv'];
 
 type ChildProps = ComponentProps<typeof Component>;
 
-const Importer: FC<RouteComponentProps> = (props) => {
+const Importer: FC<RouteComponentProps<DivisionPath>> = (props) => {
+  const {
+    match: { params: pathParams },
+  } = props;
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useStoreDispatch();
   const state = useStoreSelector(selector);
@@ -85,23 +89,23 @@ const Importer: FC<RouteComponentProps> = (props) => {
         });
         return;
       }
-      const data = await readCsv<BookInput>(value);
-      dispatch(bookImportersActions.setImporters(data));
+      const data = await readCsv<ProjectInput>(value);
+      dispatch(projectImportersActions.setImporters(data));
     },
     [dispatch, enqueueSnackbar]
   );
   const handleImport: ChildProps['onStartImport'] = useCallback(async () => {
     try {
-      await dispatch(bookImportersActions.startImport());
+      await dispatch(projectImportersActions.startImport(pathParams));
     } finally {
       enqueueSnackbar(<Trans>finished import</Trans>, {
         variant: 'success',
       });
-      dispatch(booksActions.resetEntitiesIfNeeded());
+      dispatch(projectsActions.fetchEntities({ pathParams }));
     }
-  }, [dispatch, enqueueSnackbar]);
+  }, [dispatch, pathParams, enqueueSnackbar]);
   const handleClear: ChildProps['onReset'] = useCallback(async () => {
-    dispatch(bookImportersActions.resetImporters());
+    dispatch(projectImportersActions.resetImporters());
   }, [dispatch]);
   const errorResults = useStoreSelector(filterErrorImporters);
   const handlerDownloadErrors: ChildProps['onDownloadErrors'] =
@@ -110,10 +114,9 @@ const Importer: FC<RouteComponentProps> = (props) => {
         'errors.csv',
         errorResults.map((result) => {
           return {
-            book_id: result.book.id ?? '',
-            title: result.book.title ?? '',
-            author: result.book.author ?? '',
-            releaseDate: result.book.releaseDate ?? '',
+            project_id: result.project.id ?? '',
+            division_id: result.project.divisionId ?? '',
+            name: result.project.name ?? '',
           };
         })
       );

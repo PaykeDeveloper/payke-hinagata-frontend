@@ -69,6 +69,7 @@ const Container: FC<
       object={undefined}
       disabled={!canCreate}
       divisionPath={pathParams}
+      project={undefined}
       onSubmit={onSubmit}
       onBack={onBack}
     />

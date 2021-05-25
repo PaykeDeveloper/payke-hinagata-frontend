@@ -49,6 +49,7 @@ const Component: FC<
           leftButtons={[
             <FileUploadButton
               color="primary"
+              variant="outlined"
               onChange={onInputChange}
               disabled={importers.length !== 0}
               accept={'text/csv'}
@@ -58,7 +59,7 @@ const Component: FC<
             </FileUploadButton>,
             <LoaderButton
               type="button"
-              variant="contained"
+              variant="outlined"
               color="primary"
               size="large"
               startIcon={<SaveIcon />}
@@ -71,7 +72,7 @@ const Component: FC<
             </LoaderButton>,
             <LoaderButton
               type="button"
-              variant="contained"
+              variant="outlined"
               color="secondary"
               size="large"
               startIcon={<DeleteIcon />}
@@ -84,7 +85,7 @@ const Component: FC<
             </LoaderButton>,
             <LoaderButton
               type="button"
-              variant="contained"
+              variant="outlined"
               color="default"
               size="large"
               startIcon={<DownloadIcon />}

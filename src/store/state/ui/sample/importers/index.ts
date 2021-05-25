@@ -1,11 +1,14 @@
 // FIXME: SAMPLE CODE
 
 import { combineReducers } from '@reduxjs/toolkit';
-import { bookImportersReducer, BookImportersState } from './books/slice';
+import {
+  projectImportersReducer,
+  ProjectImportersState,
+} from './projects/slice';
 export interface ImporterState {
-  books: BookImportersState;
+  projects: ProjectImportersState;
 }
 
 export default combineReducers({
-  books: bookImportersReducer,
+  projects: projectImportersReducer,
 });

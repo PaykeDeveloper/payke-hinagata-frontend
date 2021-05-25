@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import { BookInput } from 'src/store/state/domain/sample/books/types';
+import { ProjectInput } from 'src/store/state/domain/sample/projects/types';
 import { StoreError } from 'src/store/types';
 
 export enum ImportStatus {
@@ -10,9 +10,9 @@ export enum ImportStatus {
   Failed = -1,
 }
 
-export type BookImporter = {
+export type ProjectImporter = {
   id: string;
-  book: BookInput;
+  project: ProjectInput;
 };
 
 export type ImportResult = {
@@ -20,4 +20,4 @@ export type ImportResult = {
   error: StoreError | undefined;
 };
 
-export type BookImporterInput = Partial<BookInput>;
+export type ProjectImporterInput = Partial<ProjectInput>;

@@ -5,11 +5,23 @@ import { Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
-import { ProjectInput } from 'src/store/state/domain/sample/projects/types';
+import {
+  Project,
+  ProjectInput,
+} from 'src/store/state/domain/sample/projects/types';
 import { StoreError, StoreStatus } from 'src/store/types';
+import { BaseCheckField } from 'src/view/base/formik/CheckField';
 import { BaseForm } from 'src/view/base/formik/Form';
+import { BaseImageField } from 'src/view/base/formik/ImageField';
+import { BaseSelectField } from 'src/view/base/formik/SelectField';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
-import { BaseTextField } from 'src/view/base/formik/TextField';
+import {
+  BaseTextField,
+  DateTextField,
+  DateTimeTextField,
+  MultiLineTextField,
+  NumberTextField,
+} from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
 import { DeleteIcon, NavigateBeforeIcon } from 'src/view/base/material-ui/Icon';
 import Loader from 'src/view/components/atoms/Loader';
@@ -21,6 +33,7 @@ import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import { DivisionPath, getProjectsPath, rootPath } from 'src/view/routes/paths';
 import * as yup from 'yup';
+import PriorityOptions from './PriorityOptions';
 
 const Form: FC<{
   title: string;
@@ -29,6 +42,7 @@ const Form: FC<{
   error: StoreError | undefined;
   disabled: boolean;
   divisionPath: DivisionPath;
+  project: Project | undefined;
 
   onSubmit: OnSubmit<ProjectInput>;
   onBack: () => void;
@@ -41,6 +55,7 @@ const Form: FC<{
     error,
     disabled,
     divisionPath,
+    project,
     onSubmit,
     onBack,
     onDelete,
@@ -95,11 +110,80 @@ const Form: FC<{
               <Card>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid item xs={12} sm={8}>
+                    <Grid item xs={12} sm={6}>
                       <BaseTextField
                         name="name"
                         label={t('Name')}
                         required
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <BaseSelectField
+                        name="priority"
+                        label={t('Priority')}
+                        nullable
+                        disabled={disabled}
+                      >
+                        <PriorityOptions />
+                      </BaseSelectField>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <BaseCheckField
+                        name="approved"
+                        label={t('Approved')}
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <DateTextField
+                        name="startDate"
+                        label={t('Start date')}
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <DateTimeTextField
+                        name="finishedAt"
+                        label={t('Finished at')}
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <NumberTextField
+                        name="difficulty"
+                        label={t('Difficulty')}
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <NumberTextField
+                        name="coefficient"
+                        label={t('Coefficient')}
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <NumberTextField
+                        name="productivity"
+                        label={t('Productivity')}
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <MultiLineTextField
+                        name="description"
+                        label={t('Description')}
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <BaseImageField
+                        name="cover"
+                        label={t('Cover')}
+                        defaultImage={project?.coverUrl}
+                        maxWidth={150}
+                        height={150}
                         disabled={disabled}
                       />
                     </Grid>

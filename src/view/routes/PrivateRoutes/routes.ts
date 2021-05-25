@@ -16,25 +16,13 @@ import DivisionNew from 'src/view/pages/division/divisions/New';
 import MemberEdit from 'src/view/pages/division/members/Edit';
 import MemberList from 'src/view/pages/division/members/List';
 import MemberNew from 'src/view/pages/division/members/New';
-import BookCommentEdit from 'src/view/pages/sample/bookComments/Edit';
-import BookCommentNew from 'src/view/pages/sample/bookComments/New';
-import BookEdit from 'src/view/pages/sample/books/Edit';
-import ImporterBooksList from 'src/view/pages/sample/books/Importer';
-import BookList from 'src/view/pages/sample/books/List';
-import BookNew from 'src/view/pages/sample/books/New';
-import BookShow from 'src/view/pages/sample/books/Show';
 import ProjectEdit from 'src/view/pages/sample/projects/Edit';
+import ImporterProjectsList from 'src/view/pages/sample/projects/Importer';
 import ProjectList from 'src/view/pages/sample/projects/List';
 import ProjectNew from 'src/view/pages/sample/projects/New';
 
 import {
-  importerBooksPath,
-  bookCommentEditPath,
-  bookCommentNewPath,
-  bookEditPath,
-  bookPath,
-  bookNewPath,
-  booksPath,
+  projectImportPath,
   otherPath,
   rootPath,
   usersPath,
@@ -58,13 +46,7 @@ import {
 
 const privateRoutes: RouteProps[] = [
   // FIXME: SAMPLE CODE
-  { path: importerBooksPath, component: ImporterBooksList },
-  { path: bookCommentNewPath, component: BookCommentNew },
-  { path: bookCommentEditPath, component: BookCommentEdit },
-  { path: bookNewPath, component: BookNew },
-  { path: bookEditPath, component: BookEdit },
-  { path: bookPath, component: BookShow },
-  { path: booksPath, component: BookList },
+  { path: projectImportPath, component: ImporterProjectsList },
   { path: projectNewPath, component: ProjectNew },
   { path: projectEditPath, component: ProjectEdit },
   { path: projectsPath, component: ProjectList },
