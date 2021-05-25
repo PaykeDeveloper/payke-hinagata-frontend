@@ -101,7 +101,7 @@ const Importer: FC<RouteComponentProps<DivisionPath>> = (props) => {
       enqueueSnackbar(<Trans>finished import</Trans>, {
         variant: 'success',
       });
-      dispatch(projectsActions.fetchEntitiesIfNeeded({ pathParams }));
+      dispatch(projectsActions.fetchEntities({ pathParams }));
     }
   }, [dispatch, pathParams, enqueueSnackbar]);
   const handleClear: ChildProps['onReset'] = useCallback(async () => {
