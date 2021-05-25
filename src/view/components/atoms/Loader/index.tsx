@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { StoreStatus } from 'src/store/types';
+import { checkProcessed } from 'src/store/utils';
 
 const useStyles = makeStyles((theme) => {
   const backgroundColor =
@@ -48,22 +49,16 @@ export type LoaderProps = { size?: number } & (
     }
 );
 
-export const checkStatusLoading = (status: StoreStatus) =>
-  status === StoreStatus.Started;
-
-export const checkStatusesLoading = (statuses: StoreStatus[]) =>
-  statuses.some((e) => e === StoreStatus.Started);
-
 const Loader: FC<LoaderProps> = (props) => {
   const { children, size } = props;
   const classes = useStyles();
   const loading = (() => {
     if ('status' in props) {
-      return checkStatusLoading(props.status);
+      return !checkProcessed(props.status);
     } else if ('loading' in props) {
       return props.loading;
     } else if ('statuses' in props) {
-      return checkStatusesLoading(props.statuses);
+      return !props.statuses.every((s) => checkProcessed(s));
     }
   })();
   return (

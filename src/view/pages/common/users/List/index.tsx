@@ -24,8 +24,8 @@ const selector = createSelector(
   ],
   (users, status, error, checkEdit) => ({
     users,
-    statuses: [status],
-    errors: [error],
+    status,
+    error,
     checkEdit,
   })
 );
