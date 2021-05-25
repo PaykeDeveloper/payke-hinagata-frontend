@@ -110,7 +110,7 @@ const Form: FC<{
               <Card>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid item xs={12} sm={8}>
+                    <Grid item xs={12} sm={6}>
                       <BaseTextField
                         name="name"
                         label={t('Name')}
@@ -119,43 +119,63 @@ const Form: FC<{
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <DateTextField
-                        name="publishDate"
-                        label={t('Publish date')}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <DateTimeTextField
-                        name="approvedAt"
-                        label={t('Approved at')}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <NumberTextField name="amount" label={t('Amount')} />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <NumberTextField name="column" label={t('Column')} />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
                       <BaseSelectField
-                        name="choices"
-                        label={t('Choices')}
+                        name="priority"
+                        label={t('Priority')}
                         nullable
+                        disabled={disabled}
                       >
                         <PriorityOptions />
                       </BaseSelectField>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <NumberTextField name="votes" label={t('Votes')} />
+                      <BaseCheckField
+                        name="approved"
+                        label={t('Approved')}
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <DateTextField
+                        name="startDate"
+                        label={t('Start date')}
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <DateTimeTextField
+                        name="finishedAt"
+                        label={t('Finished at')}
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <NumberTextField
+                        name="difficulty"
+                        label={t('Difficulty')}
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <NumberTextField
+                        name="coefficient"
+                        label={t('Coefficient')}
+                        disabled={disabled}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <NumberTextField
+                        name="productivity"
+                        label={t('Productivity')}
+                        disabled={disabled}
+                      />
                     </Grid>
                     <Grid item xs={12}>
                       <MultiLineTextField
                         name="description"
                         label={t('Description')}
+                        disabled={disabled}
                       />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <BaseCheckField name="confirmed" label={t('Confirmed')} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <BaseImageField
@@ -164,6 +184,7 @@ const Form: FC<{
                         defaultImage={project?.coverUrl}
                         maxWidth={150}
                         height={150}
+                        disabled={disabled}
                       />
                     </Grid>
                   </Grid>

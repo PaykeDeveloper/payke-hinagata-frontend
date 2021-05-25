@@ -27,9 +27,11 @@ const Component: FC<{
   error: StoreError | undefined;
 
   onClickAdd?: () => void;
-  onClickEdit?: (projectId: string) => void;
+  onClickEdit?: (projectSlug: string) => void;
+  onClickImport?: () => void;
 }> = (props) => {
-  const { projects, status, error, onClickAdd, onClickEdit } = props;
+  const { projects, status, error, onClickAdd, onClickEdit, onClickImport } =
+    props;
   const { t } = useTranslation();
 
   const projectColumns: GridColumns = [
@@ -39,7 +41,7 @@ const Component: FC<{
       filterable: false,
       renderCell: ({ row }) =>
         onClickEdit ? (
-          <Link onClick={() => onClickEdit(row['id'])}>{t('Edit')}</Link>
+          <Link onClick={() => onClickEdit(row['slug'])}>{t('Edit')}</Link>
         ) : (
           <></>
         ),
@@ -76,6 +78,15 @@ const Component: FC<{
                   variant="outlined"
                 >
                   <Trans>Add</Trans>
+                </Button>
+              ) : undefined,
+              onClickAdd ? (
+                <Button
+                  onClick={onClickImport}
+                  color="primary"
+                  variant="outlined"
+                >
+                  <Trans>Import</Trans>
                 </Button>
               ) : undefined,
             ]}

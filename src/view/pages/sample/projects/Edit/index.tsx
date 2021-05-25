@@ -1,10 +1,10 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback } from 'react';
+import React, { ComponentProps, FC, useCallback, useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
-import { inputsToObject } from 'src/base/utils';
+import { inputsToObject, objectToInputs } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
   canDeleteProjectSelector,
@@ -28,8 +28,8 @@ const selector = createSelector(
     canUpdateProjectSelector,
     canDeleteProjectSelector,
   ],
-  (object, status, error, canUpdate, canDelete) => ({
-    object,
+  (project, status, error, canUpdate, canDelete) => ({
+    project,
     status,
     error,
     canUpdate,
@@ -80,15 +80,22 @@ const Container: FC<
     return action;
   }, [dispatch, pathParams, onBack]);
 
-  const { canUpdate, canDelete, ...otherState } = useStoreSelector(selector);
+  const { canUpdate, canDelete, project, ...otherState } =
+    useStoreSelector(selector);
+
+  const object = useMemo(
+    () => project && objectToInputs(project, rules),
+    [project]
+  );
 
   return (
     <Form
       {...otherState}
       title="Edit project"
+      object={object}
       disabled={!canUpdate}
       divisionPath={pathParams}
-      project={otherState.object}
+      project={project}
       onSubmit={onSubmit}
       onDelete={canDelete ? onDelete : undefined}
       onBack={onBack}

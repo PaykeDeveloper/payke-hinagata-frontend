@@ -22,7 +22,7 @@ import ProjectList from 'src/view/pages/sample/projects/List';
 import ProjectNew from 'src/view/pages/sample/projects/New';
 
 import {
-  importerProjectsPath,
+  projectImportPath,
   otherPath,
   rootPath,
   usersPath,
@@ -46,7 +46,7 @@ import {
 
 const privateRoutes: RouteProps[] = [
   // FIXME: SAMPLE CODE
-  { path: importerProjectsPath, component: ImporterProjectsList },
+  { path: projectImportPath, component: ImporterProjectsList },
   { path: projectNewPath, component: ProjectNew },
   { path: projectEditPath, component: ProjectEdit },
   { path: projectsPath, component: ProjectList },

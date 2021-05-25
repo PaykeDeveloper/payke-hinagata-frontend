@@ -32,7 +32,7 @@ const {
 
 const SyncProjects: FC<Props> = (props) => {
   const {
-    params: { divisionId, projectId },
+    params: { divisionId, projectSlug },
     children,
   } = props;
   const { processed, canView } = useStoreSelector(selector);
@@ -48,17 +48,17 @@ const SyncProjects: FC<Props> = (props) => {
   }, [dispatch, canView, divisionId]);
 
   useEffect(() => {
-    if (processed && canView && divisionId && projectId) {
+    if (processed && canView && divisionId && projectSlug) {
       dispatch(
         fetchEntityIfNeeded({
-          pathParams: { divisionId, projectId },
+          pathParams: { divisionId, projectSlug },
           reset: true,
         })
       );
     } else {
       dispatch(resetEntityIfNeeded());
     }
-  }, [dispatch, processed, canView, divisionId, projectId]);
+  }, [dispatch, processed, canView, divisionId, projectSlug]);
 
   return <>{children}</>;
 };

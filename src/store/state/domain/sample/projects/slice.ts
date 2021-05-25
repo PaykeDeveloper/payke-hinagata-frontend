@@ -22,7 +22,7 @@ const projectsSlice = createEntitiesSlice<
   getProjectsApiUrl,
   getProjectApiUrl,
   (state) => state.domain.sample.projects,
-  { objectKey: 'slug', pathKey: 'projectId' },
+  { objectKey: 'slug', pathKey: 'projectSlug' },
   (entity) => entity,
   (entity) => entity,
   undefined,
