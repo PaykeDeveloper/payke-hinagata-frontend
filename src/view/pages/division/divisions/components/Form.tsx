@@ -5,7 +5,7 @@ import { Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
-import { BookInput } from 'src/store/state/domain/sample/books/types';
+import { DivisionInput } from 'src/store/state/domain/division/divisions/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
@@ -24,12 +24,12 @@ import * as yup from 'yup';
 
 const Form: FC<{
   title: string;
-  object: BookInput | undefined;
+  object: DivisionInput | undefined;
   status: StoreStatus;
   error: StoreError | undefined;
   disabled: boolean;
 
-  onSubmit: OnSubmit<BookInput>;
+  onSubmit: OnSubmit<DivisionInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {

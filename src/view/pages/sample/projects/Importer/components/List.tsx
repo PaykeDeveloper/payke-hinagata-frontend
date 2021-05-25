@@ -5,11 +5,11 @@ import { GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
 import { GridOverlay } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { useStoreSelector } from 'src/store';
-import { importResultSelector } from 'src/store/state/ui/sample/importers/books/selectors';
+import { importResultSelector } from 'src/store/state/ui/sample/importers/projects/selectors';
 import {
-  BookImporter,
+  ProjectImporter,
   ImportStatus,
-} from 'src/store/state/ui/sample/importers/books/types';
+} from 'src/store/state/ui/sample/importers/projects/types';
 import {
   getErrorMessage,
   isStoreError,
@@ -52,7 +52,7 @@ const ErrorCell: FC<{ rowId: string }> = ({ rowId }) => {
   );
 };
 export const List: FC<{
-  importers: BookImporter[];
+  importers: ProjectImporter[];
   children?: React.ReactNode;
 }> = (props) => {
   const { importers, children } = props;

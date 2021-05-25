@@ -8,7 +8,6 @@ import { Trans, useTranslation } from 'react-i18next';
 import { Role } from 'src/store/state/domain/common/roles/types';
 import { User } from 'src/store/state/domain/common/users/types';
 import { MemberInput } from 'src/store/state/domain/division/members/types';
-import { BookInput } from 'src/store/state/domain/sample/books/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
 import { BaseMultiSelectField } from 'src/view/base/formik/MultiSelectField';
@@ -37,7 +36,7 @@ const Form: FC<{
   roles: Role[];
   divisionPath: DivisionPath;
 
-  onSubmit: OnSubmit<BookInput>;
+  onSubmit: OnSubmit<MemberInput>;
   onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {

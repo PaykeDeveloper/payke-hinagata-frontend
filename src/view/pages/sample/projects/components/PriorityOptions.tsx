@@ -2,23 +2,27 @@
 
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FooBarType } from 'src/store/state/domain/sample/bookComments/types';
+import { Priority } from 'src/store/state/domain/sample/projects/types';
 import Options from 'src/view/components/molecules/Options';
 
-const FooBarOptions: FC = () => {
+const PriorityOptions: FC = () => {
   const { t } = useTranslation();
   const objects = [
     {
-      value: FooBarType.Foo,
-      display: t('Foo'),
+      value: Priority.High,
+      display: t('High'),
     },
     {
-      value: FooBarType.Bar,
-      display: t('Bar'),
+      value: Priority.Middle,
+      display: t('Middle'),
+    },
+    {
+      value: Priority.Low,
+      display: t('Low'),
     },
   ];
 
   return <Options objects={objects} display="display" value="value" />;
 };
 
-export default FooBarOptions;
+export default PriorityOptions;

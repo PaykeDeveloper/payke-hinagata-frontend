@@ -88,6 +88,7 @@ const Container: FC<
       title="Edit project"
       disabled={!canUpdate}
       divisionPath={pathParams}
+      project={otherState.object}
       onSubmit={onSubmit}
       onDelete={canDelete ? onDelete : undefined}
       onBack={onBack}

@@ -8,12 +8,12 @@ import {
   getProjectsApiUrl,
 } from 'src/store/urls';
 import { createEntitiesSlice, getEntitiesInitialState } from 'src/store/utils';
-import { Project, ProjectDetail, ProjectInput } from './types';
+import { Project, ProjectInput } from './types';
 
 const projectsSlice = createEntitiesSlice<
   Project,
   DivisionApiUrl,
-  ProjectDetail,
+  Project,
   ProjectApiUrl,
   ProjectInput
 >(
@@ -22,7 +22,7 @@ const projectsSlice = createEntitiesSlice<
   getProjectsApiUrl,
   getProjectApiUrl,
   (state) => state.domain.sample.projects,
-  { objectKey: 'id', pathKey: 'projectId' },
+  { objectKey: 'slug', pathKey: 'projectId' },
   (entity) => entity,
   (entity) => entity,
   undefined,

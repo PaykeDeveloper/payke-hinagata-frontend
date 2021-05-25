@@ -37,25 +37,6 @@ export const getRolesApiUrl = () => `${getRootApiUrl()}roles/`;
 
 export const getLocalesApiUrl = () => `${getRootApiUrl()}locales/`;
 
-// FIXME: SAMPLE CODE
-
-export interface BookApiUrl {
-  bookId: string;
-}
-export const getBooksApiUrl = () => `${getRootApiUrl()}books/`;
-export const getBookApiUrl = ({ bookId }: BookApiUrl) =>
-  `${getBooksApiUrl()}${bookId}/`;
-
-export interface BookCommentApiUrl extends BookApiUrl {
-  commentSlug: string;
-}
-export const getBookCommentsApiUrl = ({ bookId }: BookApiUrl) =>
-  `${getBooksApiUrl()}${bookId}/comments/`;
-export const getBookCommentApiUrl = ({
-  bookId,
-  commentSlug,
-}: BookCommentApiUrl) => `${getBookCommentsApiUrl({ bookId })}${commentSlug}/`;
-
 export interface UserApiUrl {
   userId: string;
 }
@@ -63,6 +44,8 @@ export const getUsersApiUrl = () => `${getRootApiUrl()}users/`;
 export const getUserApiUrl = ({ userId }: UserApiUrl) =>
   `${getUsersApiUrl()}${userId}/`;
 export const getMyUserApiUrl = () => `${getRootApiUrl()}user/`;
+
+// FIXME: SAMPLE CODE
 
 export interface DivisionApiUrl {
   divisionId: string;

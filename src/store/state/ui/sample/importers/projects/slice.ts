@@ -4,21 +4,30 @@ import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import { siteName } from 'src/base/constants';
 import { StoreDispatch } from 'src/store';
 import { RootState } from 'src/store/state';
-import { Book, BookInput } from 'src/store/state/domain/sample/books/types';
+import {
+  Project,
+  ProjectInput,
+} from 'src/store/state/domain/sample/projects/types';
 import { StoreStatus } from 'src/store/types';
-import { BookApiUrl, getBookApiUrl, getBooksApiUrl } from 'src/store/urls';
+import {
+  ProjectApiUrl,
+  getProjectApiUrl,
+  getProjectsApiUrl,
+  DivisionApiUrl,
+} from 'src/store/urls';
 import {
   createPatchAsyncThunkWithOriginalUniqueId,
   createPostAsyncThunkWithOriginalUniqueId,
 } from 'src/store/utils/createAsyncThunks';
+import { DivisionPath } from 'src/view/routes/paths';
 import {
-  BookImporter,
-  BookImporterInput,
+  ProjectImporter,
+  ProjectImporterInput,
   ImportStatus,
   ImportResult,
 } from './types';
-export interface BookImportersState {
-  importRows: BookImporter[];
+export interface ProjectImportersState {
+  importRows: ProjectImporter[];
   meta: {
     results: {
       [id: string]: ImportResult;
@@ -29,7 +38,7 @@ export interface BookImportersState {
   };
 }
 
-const initialState: BookImportersState = {
+const initialState: ProjectImportersState = {
   importRows: [],
   meta: {
     results: {},
@@ -39,20 +48,20 @@ const initialState: BookImportersState = {
   },
 };
 
-const createEntitiesSlice = <DomainState extends BookImportersState>(
+const createEntitiesSlice = <DomainState extends ProjectImportersState>(
   domainName: string,
   domainSelector: (state: RootState) => DomainState
 ) => {
   const addEntity = createPostAsyncThunkWithOriginalUniqueId<
-    Book,
-    {},
-    BookInput
-  >(`${domainName}/addEntity`, getBooksApiUrl);
+    Project,
+    DivisionApiUrl,
+    ProjectInput
+  >(`${domainName}/addEntity`, getProjectsApiUrl);
   const mergeEntity = createPatchAsyncThunkWithOriginalUniqueId<
-    BookImporterInput,
-    BookApiUrl,
-    BookImporterInput
-  >(`${domainName}/mergeEntity`, getBookApiUrl);
+    ProjectImporterInput,
+    ProjectApiUrl,
+    ProjectImporterInput
+  >(`${domainName}/mergeEntity`, getProjectApiUrl);
   type GetState = () => RootState;
   const slice = createSlice({
     name: `${siteName}/${domainName}`,
@@ -67,13 +76,13 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
           delete state.meta.results[key];
         });
       },
-      setImporters: (state, action: PayloadAction<BookInput[]>) => {
-        const _books: BookImporter[] = [];
-        action.payload.forEach((book, index) => {
+      setImporters: (state, action: PayloadAction<ProjectInput[]>) => {
+        const _projects: ProjectImporter[] = [];
+        action.payload.forEach((project, index) => {
           const id: string = nanoid();
-          _books.push({
+          _projects.push({
             id,
-            book,
+            project,
           });
           state.meta.results[id] = {
             status: ImportStatus.Waiting,
@@ -81,7 +90,7 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
           };
           state.meta.total = (state.meta.total ?? 0) + 1;
         });
-        state.importRows = _books;
+        state.importRows = _projects;
       },
     },
     extraReducers: (builder) => {
@@ -166,37 +175,42 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
     },
   });
   const { actions, reducer } = slice;
-  const startImport = () => (dispatch: StoreDispatch, getState: GetState) => {
-    async function importLoop(
-      dispatch: StoreDispatch,
-      importers: BookImporter[]
-    ) {
-      for (const importer of importers) {
-        let bodyParams = importer?.book;
-        if (bodyParams !== undefined) {
-          if (bodyParams.id) {
-            await dispatch(
-              mergeEntity({
-                pathParams: { bookId: bodyParams.id.toString() },
-                bodyParams,
-                uniqueId: importer!.id,
-              })
-            );
-          } else {
-            await dispatch(
-              addEntity({
-                pathParams: {},
-                bodyParams,
-                uniqueId: importer!.id,
-              })
-            );
+  const startImport =
+    ({ divisionId }: DivisionPath) =>
+    (dispatch: StoreDispatch, getState: GetState) => {
+      async function importLoop(
+        dispatch: StoreDispatch,
+        importers: ProjectImporter[]
+      ) {
+        for (const importer of importers) {
+          let bodyParams = importer?.project;
+          if (bodyParams !== undefined) {
+            if (bodyParams.id) {
+              await dispatch(
+                mergeEntity({
+                  pathParams: {
+                    divisionId,
+                    projectId: `${importer.project.id}`,
+                  },
+                  bodyParams,
+                  uniqueId: importer!.id,
+                })
+              );
+            } else {
+              await dispatch(
+                addEntity({
+                  pathParams: { divisionId },
+                  bodyParams,
+                  uniqueId: importer!.id,
+                })
+              );
+            }
           }
         }
       }
-    }
-    const ui = domainSelector(getState());
-    return importLoop(dispatch, ui.importRows);
-  };
+      const ui = domainSelector(getState());
+      return importLoop(dispatch, ui.importRows);
+    };
   return {
     actions: {
       ...actions,
@@ -206,10 +220,10 @@ const createEntitiesSlice = <DomainState extends BookImportersState>(
   };
 };
 
-const bookImportersSlice = createEntitiesSlice(
-  'bookImporters',
-  (state) => state.ui.sample.importers.books
+const projectImportersSlice = createEntitiesSlice(
+  'projectImporters',
+  (state) => state.ui.sample.importers.projects
 );
 
-export const bookImportersActions = bookImportersSlice.actions;
-export const bookImportersReducer = bookImportersSlice.reducer;
+export const projectImportersActions = projectImportersSlice.actions;
+export const projectImportersReducer = projectImportersSlice.reducer;
