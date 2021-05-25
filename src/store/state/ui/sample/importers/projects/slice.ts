@@ -78,7 +78,7 @@ const createEntitiesSlice = <DomainState extends ProjectImportersState>(
       },
       setImporters: (state, action: PayloadAction<ProjectInput[]>) => {
         const _projects: ProjectImporter[] = [];
-        action.payload.forEach((project, index) => {
+        action.payload.forEach((project) => {
           const id: string = nanoid();
           _projects.push({
             id,
@@ -94,7 +94,7 @@ const createEntitiesSlice = <DomainState extends ProjectImportersState>(
       },
     },
     extraReducers: (builder) => {
-      const extraBuilder = builder
+      return builder
         .addCase(addEntity.pending, (state, action) => {
           if (state.meta.results[action.meta.arg.uniqueId!] !== undefined) {
             state.meta.results[action.meta.arg.uniqueId!]!.status =
@@ -171,7 +171,6 @@ const createEntitiesSlice = <DomainState extends ProjectImportersState>(
             state.meta.status = StoreStatus.Done;
           }
         });
-      return extraBuilder;
     },
   });
   const { actions, reducer } = slice;

@@ -42,7 +42,7 @@ const progressSelector = createSelector(
 const ImportProgress: FC = () => {
   const state = useStoreSelector(progressSelector);
   const { status, total, finished } = state;
-  let progress: number | undefined = undefined;
+  let progress: number | undefined;
   if (status !== StoreStatus.Initial) {
     if (finished === 0) {
       progress = 0.01;
