@@ -190,7 +190,7 @@ const createEntitiesSlice = <DomainState extends ProjectImportersState>(
                 mergeEntity({
                   pathParams: {
                     divisionId,
-                    projectSlug: `${importer.project.id}`,
+                    projectSlug: `${importer.project.slug}`,
                   },
                   bodyParams,
                   uniqueId: importer!.id,

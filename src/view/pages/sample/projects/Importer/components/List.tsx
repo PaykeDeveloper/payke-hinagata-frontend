@@ -61,6 +61,7 @@ export const List: FC<{
     { field: 'id', hide: true },
     {
       field: 'status',
+      headerName: t('Status'),
       type: 'number',
       flex: 0.5,
       renderCell: ({ row }) => {
@@ -68,27 +69,14 @@ export const List: FC<{
       },
     },
     {
-      field: 'book_id',
+      field: 'slug',
       flex: 0.6,
-      valueGetter: (params: GridValueGetterParams) => params.row.book.id,
+      valueGetter: (params: GridValueGetterParams) => params.row.project.slug,
     },
     {
-      field: 'title',
+      field: 'name',
       flex: 1,
-      valueGetter: (params: GridValueGetterParams) => params.row.book.title,
-    },
-    {
-      field: 'author',
-      flex: 1,
-      valueGetter: (params: GridValueGetterParams) => params.row.book.author,
-    },
-    {
-      field: 'releaseDate',
-      headerName: t('Release date'),
-      type: 'date',
-      flex: 1,
-      valueGetter: (params: GridValueGetterParams) =>
-        params.row.book.releaseDate,
+      valueGetter: (params: GridValueGetterParams) => params.row.project.name,
     },
     {
       field: 'errorMessage',
