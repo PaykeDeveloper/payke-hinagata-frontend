@@ -60,13 +60,13 @@ const Component: FC<{
       },
       width: 50,
     },
+    { field: 'id', headerName: t('ID'), width: 100 },
     {
       field: 'name',
       headerName: t('Name'),
-      width: 200,
+      width: 300,
       renderCell: ({ row }) => <>{userIdMap[row['userId']]?.name}</>,
     },
-    { field: 'id', headerName: t('Member ID'), width: 130 },
     { field: 'roleNames', headerName: t('Role Names'), width: 200 },
     {
       field: 'createdAt',

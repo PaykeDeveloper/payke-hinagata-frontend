@@ -57,7 +57,7 @@ const Component: FC<{
       headerName: t('ID'),
       width: 100,
     },
-    { field: 'name', headerName: t('name'), width: 200 },
+    { field: 'name', headerName: t('name'), width: 300 },
     {
       field: 'createdAt',
       headerName: t('Created at'),
