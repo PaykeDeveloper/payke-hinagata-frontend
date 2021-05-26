@@ -5,6 +5,7 @@ import { Button } from '@material-ui/core';
 import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
+import { Division } from 'src/store/state/domain/division/divisions/types';
 import { Project } from 'src/store/state/domain/sample/projects/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
@@ -30,6 +31,7 @@ const Component: FC<{
   status: StoreStatus;
   error: StoreError | undefined;
   exportUrl: string;
+  division: Division | undefined;
 
   onClickAdd?: () => void;
   onClickEdit?: (projectSlug: string) => void;
@@ -40,6 +42,7 @@ const Component: FC<{
     status,
     error,
     exportUrl,
+    division,
     onClickAdd,
     onClickEdit,
     onClickImport,
@@ -75,7 +78,12 @@ const Component: FC<{
 
   return (
     <ContentWrapper>
-      <ContentHeader links={[{ children: <Trans>Home</Trans>, to: rootPath }]}>
+      <ContentHeader
+        links={[
+          { children: <Trans>Home</Trans>, to: rootPath },
+          { children: division?.name },
+        ]}
+      >
         <Trans>Projects</Trans>
       </ContentHeader>
       <ContentBody>

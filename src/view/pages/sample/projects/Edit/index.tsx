@@ -6,6 +6,7 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { inputsToObject, objectToInputs } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import {
   canDeleteProjectSelector,
   canUpdateProjectSelector,
@@ -25,13 +26,15 @@ const selector = createSelector(
     projectSelector,
     projectStatusSelector,
     projectErrorSelector,
+    divisionSelector,
     canUpdateProjectSelector,
     canDeleteProjectSelector,
   ],
-  (project, status, error, canUpdate, canDelete) => ({
+  (project, status, error, division, canUpdate, canDelete) => ({
     project,
     status,
     error,
+    division,
     canUpdate,
     canDelete,
   })

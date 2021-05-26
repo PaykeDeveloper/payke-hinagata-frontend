@@ -6,6 +6,7 @@ import { GridColumns } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { User } from 'src/store/state/domain/common/users/types';
+import { Division } from 'src/store/state/domain/division/divisions/types';
 import { Member } from 'src/store/state/domain/division/members/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
@@ -27,6 +28,7 @@ const Component: FC<{
   status: StoreStatus;
   error: StoreError | undefined;
   userIdMap: Record<number, User>;
+  division: Division | undefined;
   checkEdit: (memberId: number) => boolean;
 
   onClickAdd?: () => void;
@@ -37,6 +39,7 @@ const Component: FC<{
     status,
     error,
     userIdMap,
+    division,
     checkEdit,
     onClickAdd,
     onClickEdit,
@@ -79,7 +82,12 @@ const Component: FC<{
 
   return (
     <ContentWrapper>
-      <ContentHeader links={[{ children: <Trans>Home</Trans>, to: rootPath }]}>
+      <ContentHeader
+        links={[
+          { children: <Trans>Home</Trans>, to: rootPath },
+          { children: division?.name },
+        ]}
+      >
         <Trans>Members</Trans>
       </ContentHeader>
       <ContentBody>

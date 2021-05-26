@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import { Trans, useTranslation } from 'react-i18next';
 import { Role } from 'src/store/state/domain/common/roles/types';
 import { User } from 'src/store/state/domain/common/users/types';
+import { Division } from 'src/store/state/domain/division/divisions/types';
 import { MemberInput } from 'src/store/state/domain/division/members/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
@@ -35,6 +36,7 @@ const Form: FC<{
   users: User[];
   roles: Role[];
   divisionPath: DivisionPath;
+  division: Division | undefined;
 
   onSubmit: OnSubmit<MemberInput>;
   onBack: () => void;
@@ -49,6 +51,7 @@ const Form: FC<{
     users,
     roles,
     divisionPath,
+    division,
     onSubmit,
     onBack,
     onDelete,
@@ -65,6 +68,7 @@ const Form: FC<{
       <ContentHeader
         links={[
           { children: t('Home'), to: rootPath },
+          { children: division?.name },
           {
             children: <Trans>Members</Trans>,
             to: getMembersPath(divisionPath),

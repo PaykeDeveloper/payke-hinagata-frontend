@@ -7,6 +7,7 @@ import { useSnackbar } from 'notistack';
 import { Trans } from 'react-i18next';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
 import { ProjectInput } from 'src/store/state/domain/sample/projects/types';
 import {
@@ -23,8 +24,9 @@ import Component from 'src/view/pages/sample/projects/Importer/Component';
 import { DivisionPath, getProjectsPath } from 'src/view/routes/paths';
 
 const selector = createSelector(
-  [importRowsSelector, importerStatusSelector],
-  (importers, status) => ({
+  [divisionSelector, importRowsSelector, importerStatusSelector],
+  (division, importers, status) => ({
+    division,
     importers,
     status,
   })

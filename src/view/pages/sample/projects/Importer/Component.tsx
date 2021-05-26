@@ -3,6 +3,7 @@
 import React, { FC, ComponentProps } from 'react';
 import { Button } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import { Division } from 'src/store/state/domain/division/divisions/types';
 import { StoreStatus } from 'src/store/types';
 import {
   TaskIcon,
@@ -26,6 +27,7 @@ const Component: FC<
   ChildProps & {
     status: StoreStatus;
     divisionPath: DivisionPath;
+    division: Division | undefined;
     onBack: () => void;
     onStartImport: () => void | Promise<unknown>;
     onReset: () => void | Promise<unknown>;
@@ -36,6 +38,7 @@ const Component: FC<
   const {
     status,
     divisionPath,
+    division,
     onBack,
     onStartImport,
     onReset,
@@ -50,6 +53,7 @@ const Component: FC<
       <ContentHeader
         links={[
           { children: t('Home'), to: rootPath },
+          { children: division?.name },
           {
             children: t('Projects'),
             to: getProjectsPath(divisionPath),
