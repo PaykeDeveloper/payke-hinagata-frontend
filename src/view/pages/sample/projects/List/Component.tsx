@@ -60,7 +60,6 @@ const Component: FC<{
         ) : (
           <></>
         ),
-      width: 50,
     },
     { field: 'id', headerName: t('ID'), width: 100 },
     { field: 'name', headerName: t('Name'), width: 300 },

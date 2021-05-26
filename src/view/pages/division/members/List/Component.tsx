@@ -58,7 +58,6 @@ const Component: FC<{
         }
         return <Link onClick={() => onClickEdit(memberId)}>{t('Edit')}</Link>;
       },
-      width: 50,
     },
     { field: 'id', headerName: t('ID'), width: 100 },
     {
