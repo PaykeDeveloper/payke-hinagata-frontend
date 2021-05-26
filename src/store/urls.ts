@@ -61,6 +61,8 @@ export const getProjectsApiUrl = ({ divisionId }: DivisionApiUrl) =>
   `${getDivisionsApiUrl()}${divisionId}/projects/`;
 export const getProjectApiUrl = ({ divisionId, projectSlug }: ProjectApiUrl) =>
   `${getProjectsApiUrl({ divisionId })}${projectSlug}/`;
+export const getProjectsExportApiUrl = ({ divisionId }: DivisionApiUrl) =>
+  `${getProjectsApiUrl({ divisionId })}export/`;
 
 export interface MemberApiUrl extends DivisionApiUrl {
   memberId: string;

@@ -37,7 +37,7 @@ const selector = createSelector(
   })
 );
 
-const rules = {} as const;
+const rules = { finishedAt: 'dateTime' } as const;
 
 const Container: FC<
   RouteComponentProps<ProjectPath, StaticContext, RouterState>

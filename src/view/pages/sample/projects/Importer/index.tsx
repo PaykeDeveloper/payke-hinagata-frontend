@@ -20,7 +20,7 @@ import { projectImportersActions } from 'src/store/state/ui/sample/importers/pro
 import { StoreStatus } from 'src/store/types';
 import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
 import Component from 'src/view/pages/sample/projects/Importer/Component';
-import { DivisionPath } from 'src/view/routes/paths';
+import { DivisionPath, getProjectsPath } from 'src/view/routes/paths';
 
 const selector = createSelector(
   [importRowsSelector, importerStatusSelector],
@@ -67,7 +67,14 @@ type ChildProps = ComponentProps<typeof Component>;
 const Importer: FC<RouteComponentProps<DivisionPath>> = (props) => {
   const {
     match: { params: pathParams },
+    history: { push },
   } = props;
+
+  const onBack: ChildProps['onBack'] = useCallback(
+    () => push(getProjectsPath(pathParams)),
+    [push, pathParams]
+  );
+
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useStoreDispatch();
   const state = useStoreSelector(selector);
@@ -125,6 +132,8 @@ const Importer: FC<RouteComponentProps<DivisionPath>> = (props) => {
     <Component
       {...otherState}
       status={status}
+      divisionPath={pathParams}
+      onBack={onBack}
       onStartImport={handleImport}
       onReset={handleClear}
       onDownloadErrors={handlerDownloadErrors}
