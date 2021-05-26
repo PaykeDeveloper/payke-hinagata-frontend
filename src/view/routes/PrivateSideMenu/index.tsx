@@ -23,27 +23,28 @@ import { menuDivisionIdSelector } from 'src/store/state/ui/menu/selectors';
 import { menuActions } from 'src/store/state/ui/menu/slice';
 import {
   DomainIcon,
+  GroupsIcon,
   HomeIcon,
-  ListIcon,
-  MenuUserIcon,
+  FolderIcon,
+  PeopleIcon,
   PersonAddIcon,
 } from 'src/view/base/material-ui/Icon';
 import {
   divisionEditPath,
   divisionNewPath,
   divisionsPath,
+  getMemberEditPath,
+  getMemberNewPath,
   getMembersPath,
+  getProjectEditPath,
+  getProjectImportPath,
+  getProjectNewPath,
   getProjectsPath,
   invitationEditPath,
   invitationNewPath,
   invitationsPath,
-  memberEditPath,
-  memberNewPath,
-  membersPath,
-  projectEditPath,
-  projectImportPath,
-  projectNewPath,
-  projectsPath,
+  memberParams,
+  projectParams,
   rootPath,
   userEditPath,
   usersPath,
@@ -70,55 +71,62 @@ const topMenuLists: MenuList[] = [
 const getMiddleMenuLists = (
   divisions: Division[],
   menuDivisionId: number | null
-): MenuList<SelectableMenu>[] => [
-  {
-    subheader: (
-      <ListSubheader>
-        <Trans>Division Menu</Trans>
-      </ListSubheader>
-    ),
-    menus: [
-      {
-        text: <Trans>Division</Trans>,
-        name: 'divisionId',
-        label: 'Division',
-        selects: divisions.map((division) => ({
-          text: division.name,
-          value: division.id,
-        })),
-        menus: menuDivisionId
-          ? [
-              {
-                text: <Trans>Projects</Trans>,
-                icon: <ListIcon />,
-                to: getProjectsPath({ divisionId: `${menuDivisionId}` }),
-                paths: [
-                  projectsPath,
-                  projectNewPath,
-                  projectEditPath,
-                  projectImportPath,
-                ],
-              },
-              {
-                text: <Trans>Members</Trans>,
-                icon: <MenuUserIcon />,
-                to: getMembersPath({ divisionId: `${menuDivisionId}` }),
-                paths: [membersPath, memberNewPath, memberEditPath],
-                requiredPermissions: [
-                  divisionPermission.createOwn,
-                  divisionPermission.createAll,
-                ],
-              },
-            ]
-          : [],
-        requiredPermissions: [
-          divisionPermission.viewOwn,
-          divisionPermission.viewAll,
-        ],
-      },
-    ],
-  },
-];
+): MenuList<SelectableMenu>[] => {
+  const divisionId = menuDivisionId != null ? `${menuDivisionId}` : null;
+  return [
+    {
+      subheader: (
+        <ListSubheader>
+          <Trans>Division Menu</Trans>
+        </ListSubheader>
+      ),
+      menus: [
+        {
+          text: <Trans>Division</Trans>,
+          name: 'divisionId',
+          label: 'Division',
+          selects: divisions.map((division) => ({
+            text: division.name,
+            value: division.id,
+          })),
+          menus: divisionId
+            ? [
+                {
+                  text: <Trans>Projects</Trans>,
+                  icon: <FolderIcon />,
+                  to: getProjectsPath({ divisionId }),
+                  paths: [
+                    getProjectsPath({ divisionId }),
+                    getProjectNewPath({ divisionId }),
+                    getProjectEditPath({ ...projectParams, divisionId }),
+                    getProjectImportPath({ divisionId }),
+                  ],
+                },
+                {
+                  text: <Trans>Members</Trans>,
+                  icon: <PeopleIcon />,
+                  to: getMembersPath({ divisionId }),
+                  paths: [
+                    getMembersPath({ ...projectParams, divisionId }),
+                    getMemberNewPath({ ...projectParams, divisionId }),
+                    getMemberEditPath({ ...memberParams, divisionId }),
+                  ],
+                  requiredPermissions: [
+                    divisionPermission.createOwn,
+                    divisionPermission.createAll,
+                  ],
+                },
+              ]
+            : [],
+          requiredPermissions: [
+            divisionPermission.viewOwn,
+            divisionPermission.viewAll,
+          ],
+        },
+      ],
+    },
+  ];
+};
 
 // Sub Menu
 const bottomMenuLists: MenuList[] = [
@@ -141,7 +149,7 @@ const bottomMenuLists: MenuList[] = [
       },
       {
         text: <Trans>Users</Trans>,
-        icon: <MenuUserIcon />,
+        icon: <GroupsIcon />,
         to: usersPath,
         paths: [usersPath, userEditPath],
         requiredPermissions: [userPermission.viewOwn, userPermission.viewAll],

@@ -6,6 +6,7 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreSelector } from 'src/store';
+import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import {
   projectsErrorSelector,
   projectsSelector,
@@ -13,6 +14,7 @@ import {
   canCreateProjectSelector,
   canEditProjectSelector,
 } from 'src/store/state/domain/sample/projects/selectors';
+import { getProjectsExportApiUrl } from 'src/store/urls';
 import {
   DivisionPath,
   getProjectEditPath,
@@ -29,13 +31,15 @@ const selector = createSelector(
     projectsSelector,
     projectsStatusSelector,
     projectsErrorSelector,
+    divisionSelector,
     canCreateProjectSelector,
     canEditProjectSelector,
   ],
-  (projects, status, error, canCreate, canEdit) => ({
+  (projects, status, error, division, canCreate, canEdit) => ({
     projects,
     status,
     error,
+    division,
     canCreate,
     canEdit,
   })
@@ -81,6 +85,7 @@ const Container: FC<
   return (
     <Component
       {...otherState}
+      exportUrl={getProjectsExportApiUrl(pathParams)}
       onClickAdd={canCreate ? onClickAdd : undefined}
       onClickEdit={canEdit ? onClickEdit : undefined}
       onClickImport={canCreate ? onClickImport : undefined}

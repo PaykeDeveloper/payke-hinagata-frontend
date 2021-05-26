@@ -6,6 +6,7 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { inputsToObject } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import {
   canCreateProjectSelector,
   projectsErrorSelector,
@@ -19,10 +20,16 @@ import Form from '../components/Form';
 type ChildProps = ComponentProps<typeof Form>;
 
 const selector = createSelector(
-  [projectsStatusSelector, projectsErrorSelector, canCreateProjectSelector],
-  (status, error, canCreate) => ({
+  [
+    projectsStatusSelector,
+    projectsErrorSelector,
+    divisionSelector,
+    canCreateProjectSelector,
+  ],
+  (status, error, division, canCreate) => ({
     status,
     error,
+    division,
     canCreate,
   })
 );

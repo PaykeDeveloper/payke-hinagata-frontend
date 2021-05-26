@@ -7,6 +7,7 @@ import { useSnackbar } from 'notistack';
 import { Trans } from 'react-i18next';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
+import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
 import { ProjectInput } from 'src/store/state/domain/sample/projects/types';
 import {
@@ -20,11 +21,12 @@ import { projectImportersActions } from 'src/store/state/ui/sample/importers/pro
 import { StoreStatus } from 'src/store/types';
 import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
 import Component from 'src/view/pages/sample/projects/Importer/Component';
-import { DivisionPath } from 'src/view/routes/paths';
+import { DivisionPath, getProjectsPath } from 'src/view/routes/paths';
 
 const selector = createSelector(
-  [importRowsSelector, importerStatusSelector],
-  (importers, status) => ({
+  [divisionSelector, importRowsSelector, importerStatusSelector],
+  (division, importers, status) => ({
+    division,
     importers,
     status,
   })
@@ -67,7 +69,14 @@ type ChildProps = ComponentProps<typeof Component>;
 const Importer: FC<RouteComponentProps<DivisionPath>> = (props) => {
   const {
     match: { params: pathParams },
+    history: { push },
   } = props;
+
+  const onBack: ChildProps['onBack'] = useCallback(
+    () => push(getProjectsPath(pathParams)),
+    [push, pathParams]
+  );
+
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useStoreDispatch();
   const state = useStoreSelector(selector);
@@ -125,6 +134,8 @@ const Importer: FC<RouteComponentProps<DivisionPath>> = (props) => {
     <Component
       {...otherState}
       status={status}
+      divisionPath={pathParams}
+      onBack={onBack}
       onStartImport={handleImport}
       onReset={handleClear}
       onDownloadErrors={handlerDownloadErrors}

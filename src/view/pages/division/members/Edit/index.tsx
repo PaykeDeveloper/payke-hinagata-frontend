@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { memberRolesSelector } from 'src/store/state/domain/common/roles/selectors';
 import { usersSelector } from 'src/store/state/domain/common/users/selectors';
+import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import {
   checkDeleteMemberSelector,
   checkUpdateMemberSelector,
@@ -30,15 +31,26 @@ const selector = createSelector(
     memberErrorSelector,
     usersSelector,
     memberRolesSelector,
+    divisionSelector,
     checkUpdateMemberSelector,
     checkDeleteMemberSelector,
   ],
-  (object, status, error, users, roles, checkUpdate, checkDelete) => ({
+  (
     object,
     status,
     error,
     users,
     roles,
+    division,
+    checkUpdate,
+    checkDelete
+  ) => ({
+    object,
+    status,
+    error,
+    users,
+    roles,
+    division,
     canUpdate: checkUpdate(object?.id),
     canDelete: checkDelete(object?.id),
   })

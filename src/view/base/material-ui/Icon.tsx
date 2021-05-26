@@ -28,12 +28,14 @@ export const PasswordIcon = createIcon('password');
 export const BlockIcon = createIcon('block');
 export const CheckIcon = createIcon('check');
 export const AttachFileIcon = createIcon('attach_file');
-export const CallSplitIcon = createIcon('call_split');
-export const DownloadIcon = createIcon('get_app');
+export const TaskIcon = createIcon('task');
+export const FileDownloadIcon = createIcon('file_download');
+export const FileUploadIcon = createIcon('file_upload');
 export const SettingsIcon = createIcon('settings');
 
 // FIXME: SAMPLE CODE
 export const HomeIcon = createIcon('home');
-export const MenuUserIcon = createIcon('people');
-export const ListIcon = createIcon('list');
+export const GroupsIcon = createIcon('groups');
+export const PeopleIcon = createIcon('people');
+export const FolderIcon = createIcon('folder');
 export const DomainIcon = createIcon('domain');

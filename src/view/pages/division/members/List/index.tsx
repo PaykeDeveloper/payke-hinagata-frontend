@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreSelector } from 'src/store';
 import { userIdMapSelector } from 'src/store/state/domain/common/users/selectors';
+import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import {
   membersStatusSelector,
   membersErrorSelector,
@@ -30,14 +31,16 @@ const selector = createSelector(
     membersStatusSelector,
     membersErrorSelector,
     userIdMapSelector,
+    divisionSelector,
     canCreateMemberSelector,
     checkEditMemberSelector,
   ],
-  (members, status, error, userIdMap, canCreate, checkEdit) => ({
+  (members, status, error, userIdMap, division, canCreate, checkEdit) => ({
     members,
     status,
     error,
     userIdMap,
+    division,
     canCreate,
     checkEdit,
   })

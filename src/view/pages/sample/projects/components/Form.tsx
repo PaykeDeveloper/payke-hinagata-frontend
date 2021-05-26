@@ -5,6 +5,7 @@ import { Button, Card, Grid } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
+import { Division } from 'src/store/state/domain/division/divisions/types';
 import {
   Project,
   ProjectInput,
@@ -43,6 +44,7 @@ const Form: FC<{
   disabled: boolean;
   divisionPath: DivisionPath;
   project: Project | undefined;
+  division: Division | undefined;
 
   onSubmit: OnSubmit<ProjectInput>;
   onBack: () => void;
@@ -56,6 +58,7 @@ const Form: FC<{
     disabled,
     divisionPath,
     project,
+    division,
     onSubmit,
     onBack,
     onDelete,
@@ -66,6 +69,7 @@ const Form: FC<{
       <ContentHeader
         links={[
           { children: t('Home'), to: rootPath },
+          { children: division?.name },
           {
             children: t('Projects'),
             to: getProjectsPath(divisionPath),

@@ -57,7 +57,7 @@ export const divisionEditPath = getDivisionEditPath(divisionParams);
 export interface ProjectPath extends DivisionPath {
   projectSlug: string;
 }
-const projectParams = { ...divisionParams, projectSlug: ':projectSlug' };
+export const projectParams = { ...divisionParams, projectSlug: ':projectSlug' };
 export const getProjectsPath = (params: DivisionPath) =>
   `${getDivisionPath(params)}projects/`;
 export const getProjectNewPath = (params: DivisionPath) =>
@@ -77,7 +77,7 @@ export const projectImportPath = getProjectImportPath(divisionParams);
 export interface MemberPath extends DivisionPath {
   memberId: string;
 }
-const memberParams = { ...divisionParams, memberId: ':memberId' };
+export const memberParams = { ...divisionParams, memberId: ':memberId' };
 export const getMembersPath = (params: DivisionPath) =>
   `${getDivisionPath(params)}members/`;
 export const getMemberNewPath = (params: DivisionPath) =>

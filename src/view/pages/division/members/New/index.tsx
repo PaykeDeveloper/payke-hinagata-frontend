@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { memberRolesSelector } from 'src/store/state/domain/common/roles/selectors';
 import { usersSelector } from 'src/store/state/domain/common/users/selectors';
+import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import {
   canCreateMemberSelector,
   membersErrorSelector,
@@ -25,13 +26,15 @@ const selector = createSelector(
     membersErrorSelector,
     usersSelector,
     memberRolesSelector,
+    divisionSelector,
     canCreateMemberSelector,
   ],
-  (status, error, users, roles, canCreate) => ({
+  (status, error, users, roles, division, canCreate) => ({
     status,
     error,
     users,
     roles,
+    division,
     canCreate,
   })
 );
