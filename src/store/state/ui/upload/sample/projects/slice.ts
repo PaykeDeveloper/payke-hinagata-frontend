@@ -26,6 +26,7 @@ import {
   ImportStatus,
   ImportResult,
 } from './types';
+
 export interface ProjectImportersState {
   importRows: ProjectImporter[];
   meta: {
@@ -221,7 +222,7 @@ const createEntitiesSlice = <DomainState extends ProjectImportersState>(
 
 const projectImportersSlice = createEntitiesSlice(
   'projectImporters',
-  (state) => state.ui.sample.importers.projects
+  (state) => state.ui.upload.sample.projects
 );
 
 export const projectImportersActions = projectImportersSlice.actions;

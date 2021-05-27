@@ -5,11 +5,11 @@ import { GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
 import { GridOverlay } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { useStoreSelector } from 'src/store';
-import { importResultSelector } from 'src/store/state/ui/sample/importers/projects/selectors';
+import { importResultSelector } from 'src/store/state/ui/upload/sample/projects/selectors';
 import {
   ProjectImporter,
   ImportStatus,
-} from 'src/store/state/ui/sample/importers/projects/types';
+} from 'src/store/state/ui/upload/sample/projects/types';
 import {
   getErrorMessage,
   isStoreError,

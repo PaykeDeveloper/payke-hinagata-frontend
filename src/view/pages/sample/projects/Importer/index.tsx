@@ -6,6 +6,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { useSnackbar } from 'notistack';
 import { Trans } from 'react-i18next';
 import { RouteComponentProps } from 'react-router-dom';
+import { parseCSV } from 'src/base/csvParser';
+import { toCamelCaseKeys } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
@@ -16,10 +18,10 @@ import {
   importerStatusSelector,
   finishedRowsSelector,
   totalRowsSelector,
-} from 'src/store/state/ui/sample/importers/projects/selectors';
-import { projectImportersActions } from 'src/store/state/ui/sample/importers/projects/slice';
+} from 'src/store/state/ui/upload/sample/projects/selectors';
+import { projectImportersActions } from 'src/store/state/ui/upload/sample/projects/slice';
 import { StoreStatus } from 'src/store/types';
-import { readCsv, exportToCsv } from 'src/store/utils/csvParser';
+import { exportToCsv } from 'src/view/base/utils';
 import Component from 'src/view/pages/sample/projects/Importer/Component';
 import { DivisionPath, getProjectsPath } from 'src/view/routes/paths';
 
@@ -98,8 +100,9 @@ const Importer: FC<RouteComponentProps<DivisionPath>> = (props) => {
         });
         return;
       }
-      const data = await readCsv<ProjectInput>(value);
-      dispatch(projectImportersActions.setImporters(data));
+      const data = await parseCSV(value);
+      const convertedData = toCamelCaseKeys<ProjectInput[]>(data);
+      dispatch(projectImportersActions.setImporters(convertedData));
     },
     [dispatch, enqueueSnackbar]
   );
@@ -120,14 +123,14 @@ const Importer: FC<RouteComponentProps<DivisionPath>> = (props) => {
   const handlerDownloadErrors: ChildProps['onDownloadErrors'] =
     useCallback(async () => {
       exportToCsv(
-        'errors.csv',
         errorResults.map((result) => {
           return {
             project_id: result.project.id ?? '',
             division_id: result.project.divisionId ?? '',
             name: result.project.name ?? '',
           };
-        })
+        }),
+        'errors.csv'
       );
     }, [errorResults]);
   return (

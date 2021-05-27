@@ -5,7 +5,7 @@ import {
   projectImportersReducer,
   ProjectImportersState,
 } from './projects/slice';
-export interface ImporterState {
+export interface SampleState {
   projects: ProjectImportersState;
 }
 

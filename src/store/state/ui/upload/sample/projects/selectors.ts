@@ -5,19 +5,19 @@ import { StoreState } from 'src/store';
 import { ImportResult, ProjectImporter, ImportStatus } from './types';
 
 export const importRowsSelector = (state: StoreState) =>
-  state.ui.sample.importers.projects.importRows;
+  state.ui.upload.sample.projects.importRows;
 
 export const importerResultsSelector = (state: StoreState) =>
-  state.ui.sample.importers.projects.meta.results;
+  state.ui.upload.sample.projects.meta.results;
 
 export const finishedRowsSelector = (state: StoreState) =>
-  state.ui.sample.importers.projects.meta.finished;
+  state.ui.upload.sample.projects.meta.finished;
 
 export const totalRowsSelector = (state: StoreState) =>
-  state.ui.sample.importers.projects.meta.total;
+  state.ui.upload.sample.projects.meta.total;
 
 export const importerStatusSelector = (state: StoreState) =>
-  state.ui.sample.importers.projects.meta.status;
+  state.ui.upload.sample.projects.meta.status;
 
 export const importResultSelector = createSelector(
   importerResultsSelector,
