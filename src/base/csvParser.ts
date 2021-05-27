@@ -20,7 +20,12 @@ const parseCsvWithConfig = <T>(
 export const parseCSV = async <T>(input: File | string) => {
   const results = await parseCsvWithConfig<T>(input, {
     header: true,
-    dynamicTyping: true,
+    dynamicTyping: (field) => {
+      if (typeof field === 'string') {
+        return !field.endsWith('_at');
+      }
+      return true;
+    },
     skipEmptyLines: true,
   });
   return results.data;
