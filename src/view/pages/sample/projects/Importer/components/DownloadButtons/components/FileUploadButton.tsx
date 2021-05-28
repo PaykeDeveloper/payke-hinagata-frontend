@@ -1,3 +1,5 @@
+// FIXME: SAMPLE CODE
+
 import React, { useRef, useCallback } from 'react';
 import { Trans } from 'react-i18next';
 import { AttachFileIcon } from 'src/view/base/material-ui/Icon';

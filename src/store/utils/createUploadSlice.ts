@@ -3,32 +3,14 @@ import { siteName } from 'src/base/constants';
 import { castDrafts, notUndefined } from 'src/base/utils';
 import { StoreDispatch } from 'src/store/index';
 import { RootState } from 'src/store/state';
-import { StoreError } from 'src/store/types';
-
-enum UploadStatus {
-  Initial,
-  Waiting,
-  Uploading,
-  Done,
-  Failed,
-  Stopped,
-}
-
-interface UploadMeta {
-  status: UploadStatus;
-  error: StoreError | null;
-}
-
-interface UploadState<Row> {
-  rows: Row[];
-  metas: UploadMeta[];
-}
-
-enum UploadMethod {
-  Add,
-  Merge,
-  Remove,
-}
+import {
+  StoreError,
+  UploadMeta,
+  UploadMethod,
+  UploadMethods,
+  UploadState,
+  UploadStatus,
+} from 'src/store/types';
 
 const createUploadSlice = <Row>({
   domainName,
@@ -47,6 +29,9 @@ const createUploadSlice = <Row>({
     name: `${siteName}/upload/${domainName}`,
     initialState,
     reducers: {
+      reset() {
+        return initialState;
+      },
       addRows(state, action: PayloadAction<{ rows: Row[] }>) {
         const {
           payload: { rows },
@@ -57,16 +42,6 @@ const createUploadSlice = <Row>({
           error: null,
         });
         state.metas = state.metas.concat(metas);
-      },
-      removeRow(state, action: PayloadAction<{ index: number }>) {
-        const {
-          payload: { index },
-        } = action;
-        state.rows.slice(index);
-        state.metas.slice(index);
-      },
-      reset() {
-        return initialState;
       },
       updateMeta(
         state,
@@ -90,20 +65,41 @@ const createUploadSlice = <Row>({
           state.metas[index]!.error = error;
         }
       },
+      removeRow(state, action: PayloadAction<{ index: number }>) {
+        const {
+          payload: { index },
+        } = action;
+        const meta = state.metas[index];
+        if (
+          !meta ||
+          [UploadStatus.Waiting, UploadStatus.Uploading].includes(meta.status)
+        ) {
+          return;
+        }
+
+        state.rows.slice(index);
+        state.metas.slice(index);
+      },
       setRowsToWaiting(state, action: PayloadAction<{ indexes: number[] }>) {
         const {
           payload: { indexes },
         } = action;
         for (const index of indexes) {
-          if (!state.metas[index]) {
+          const meta = state.metas[index];
+          if (
+            !meta ||
+            [UploadStatus.Waiting, UploadStatus.Uploading].includes(meta.status)
+          ) {
             continue;
           }
 
-          if (
-            ![UploadStatus.Waiting, UploadStatus.Uploading].includes(
-              state.metas[index]!.status
-            )
-          ) {
+          state.metas[index]!.status = UploadStatus.Waiting;
+        }
+      },
+      setRowsWaitingToStopped(state) {
+        const indexes = state.metas.map((m, i) => i);
+        for (const index of indexes) {
+          if (state.metas[index]?.status === UploadStatus.Waiting) {
             state.metas[index]!.status = UploadStatus.Waiting;
           }
         }
@@ -112,14 +108,12 @@ const createUploadSlice = <Row>({
   });
 
   type GetState = () => RootState;
-  interface Methods {
-    addMethod: (dispatch: StoreDispatch, row: Row) => Promise<UploadMeta>;
-    mergeMethod: (dispatch: StoreDispatch, row: Row) => Promise<UploadMeta>;
-    removeMethod: (dispatch: StoreDispatch, row: Row) => Promise<UploadMeta>;
-  }
 
   const uploadRow =
-    (index: number, { addMethod, mergeMethod, removeMethod }: Methods) =>
+    (
+      index: number,
+      { addMethod, mergeMethod, removeMethod }: UploadMethods<Row>
+    ) =>
     async (dispatch: StoreDispatch, getState: GetState) => {
       const { rows, metas } = domainSelector(getState());
       const row = rows[index];
@@ -164,22 +158,24 @@ const createUploadSlice = <Row>({
     };
 
   const uploadRows =
-    (indexes: number[], methods: Methods) =>
+    (indexes: number[], methods: UploadMethods<Row>) =>
     async (dispatch: StoreDispatch) => {
       for (const index of indexes) {
         await dispatch(uploadRow(index, methods));
       }
     };
 
-  const uploadWaitingRows =
-    (methods: Methods) =>
+  const uploadInitialRows =
+    (methods: UploadMethods<Row>) =>
     async (dispatch: StoreDispatch, getState: GetState) => {
       const { metas } = domainSelector(getState());
       const indexes = metas
         .map((meta, index) =>
-          meta.status === UploadStatus.Waiting ? index : undefined
+          meta.status === UploadStatus.Initial ? index : undefined
         )
         .filter(notUndefined);
+
+      await dispatch(actions.setRowsToWaiting({ indexes }));
 
       const evenIndexes = indexes.filter((i) => i % 2 === 0);
       const oddIndexes = indexes.filter((i) => i % 2 === 1);
@@ -191,7 +187,7 @@ const createUploadSlice = <Row>({
 
   return {
     ...otherSlice,
-    actions: { ...actions, uploadWaitingRows },
+    actions: { ...actions, uploadInitialRows },
     reducer,
   };
 };

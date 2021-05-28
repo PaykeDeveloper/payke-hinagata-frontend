@@ -1,52 +1,20 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC, ComponentProps } from 'react';
-import { Button } from '@material-ui/core';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Division } from 'src/store/state/domain/division/divisions/types';
-import { StoreStatus } from 'src/store/types';
-import {
-  TaskIcon,
-  DeleteIcon,
-  FileDownloadIcon,
-  FileUploadIcon,
-  NavigateBeforeIcon,
-} from 'src/view/base/material-ui/Icon';
-import Buttons from 'src/view/components/molecules/Buttons';
 import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
-import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import { DivisionPath, getProjectsPath, rootPath } from 'src/view/routes/paths';
-import FileUploadButton from './components/FileUploadButton';
-import List from './components/List';
+import DownloadButtons from './components/DownloadButtons';
+import UploadDataGrid from './components/UploadDataGrid';
 
-type ChildProps = ComponentProps<typeof List>;
-
-const Component: FC<
-  ChildProps & {
-    status: StoreStatus;
-    divisionPath: DivisionPath;
-    division: Division | undefined;
-    onBack: () => void;
-    onStartImport: () => void | Promise<unknown>;
-    onReset: () => void | Promise<unknown>;
-    onDownloadErrors: () => void | Promise<unknown>;
-    onInputChange: (value?: File | null) => void | Promise<unknown>;
-  }
-> = (props) => {
-  const {
-    status,
-    divisionPath,
-    division,
-    onBack,
-    onStartImport,
-    onReset,
-    onDownloadErrors,
-    onInputChange,
-    importers,
-    ...otherProps
-  } = props;
+const Component: FC<{
+  divisionPath: DivisionPath;
+  division: Division | undefined;
+}> = (props) => {
+  const { divisionPath, division } = props;
   const { t } = useTranslation();
   return (
     <ContentWrapper>
@@ -63,62 +31,8 @@ const Component: FC<
         {t('Upload CSV')}
       </ContentHeader>
       <ContentBody>
-        <Buttons
-          leftButtons={[
-            <Button
-              onClick={onBack}
-              startIcon={<NavigateBeforeIcon />}
-              variant="outlined"
-            >
-              {t('Back')}
-            </Button>,
-            <FileUploadButton
-              color="primary"
-              variant="outlined"
-              onChange={onInputChange}
-              disabled={importers.length !== 0}
-              accept={'text/csv'}
-              icon={TaskIcon}
-            >
-              {t('Choose CSV')}
-            </FileUploadButton>,
-            <LoaderButton
-              type="button"
-              variant="outlined"
-              color="primary"
-              startIcon={<FileUploadIcon />}
-              onClick={onStartImport}
-              disabled={
-                importers.length === 0 || status !== StoreStatus.Initial
-              }
-            >
-              {t('Start Upload')}
-            </LoaderButton>,
-            <LoaderButton
-              type="button"
-              variant="outlined"
-              color="secondary"
-              startIcon={<DeleteIcon />}
-              onClick={onReset}
-              disabled={
-                importers.length === 0 || status === StoreStatus.Started
-              }
-            >
-              {t('Clear')}
-            </LoaderButton>,
-            <LoaderButton
-              type="button"
-              variant="outlined"
-              color="default"
-              startIcon={<FileDownloadIcon />}
-              onClick={onDownloadErrors}
-              disabled={status !== StoreStatus.Done}
-            >
-              {t('Download Error Rows')}
-            </LoaderButton>,
-          ]}
-        />
-        <List {...otherProps} importers={importers} />
+        <DownloadButtons divisionPath={divisionPath} />
+        <UploadDataGrid />
       </ContentBody>
     </ContentWrapper>
   );

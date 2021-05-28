@@ -32,6 +32,7 @@ export const TaskIcon = createIcon('task');
 export const FileDownloadIcon = createIcon('file_download');
 export const FileUploadIcon = createIcon('file_upload');
 export const SettingsIcon = createIcon('settings');
+export const StopIcon = createIcon('stop');
 
 // FIXME: SAMPLE CODE
 export const HomeIcon = createIcon('home');

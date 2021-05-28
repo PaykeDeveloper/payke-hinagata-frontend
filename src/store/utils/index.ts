@@ -26,6 +26,7 @@ export {
   default as createEntitiesSlice,
   getEntitiesInitialState,
 } from './createEntitiesSlice';
+export { default as createUploadSlice } from './createUploadSlice';
 export {
   AllPermissionFactory,
   OwnPermissionFactory,

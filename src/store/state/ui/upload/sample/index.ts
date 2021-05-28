@@ -1,14 +1,14 @@
 // FIXME: SAMPLE CODE
 
 import { combineReducers } from '@reduxjs/toolkit';
-import {
-  projectImportersReducer,
-  ProjectImportersState,
-} from './projects/slice';
+import { UploadState } from 'src/store/types';
+import { uploadProjectsReducer } from './projects/slice';
+import { UploadProjectInput } from './projects/types';
+
 export interface SampleState {
-  projects: ProjectImportersState;
+  projects: UploadState<UploadProjectInput>;
 }
 
 export default combineReducers({
-  projects: projectImportersReducer,
+  projects: uploadProjectsReducer,
 });

@@ -1,44 +1,16 @@
 // FIXME: SAMPLE CODE
 
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
 import { StoreState } from 'src/store';
-import { ImportResult, ProjectImporter, ImportStatus } from './types';
 
-export const importRowsSelector = (state: StoreState) =>
-  state.ui.upload.sample.projects.importRows;
+export const uploadProjectsSelector = (state: StoreState) =>
+  state.ui.upload.sample.projects.rows;
 
-export const importerResultsSelector = (state: StoreState) =>
-  state.ui.upload.sample.projects.meta.results;
+export const uploadProjectMetasSelector = (state: StoreState) =>
+  state.ui.upload.sample.projects.metas;
 
-export const finishedRowsSelector = (state: StoreState) =>
-  state.ui.upload.sample.projects.meta.finished;
-
-export const totalRowsSelector = (state: StoreState) =>
-  state.ui.upload.sample.projects.meta.total;
-
-export const importerStatusSelector = (state: StoreState) =>
-  state.ui.upload.sample.projects.meta.status;
-
-export const importResultSelector = createSelector(
-  importerResultsSelector,
-  (_: StoreState, id: string) => id,
-  (results, id) => results[id]
-);
-
-export const filterImporters = (
-  importers: ProjectImporter[],
-  results: { [id: string]: ImportResult },
-  status: ImportStatus
-) => {
-  const filterIds = Object.keys(results).filter(
-    (key: string) => results[key]?.status === status
-  );
-  return importers.filter((importer) => filterIds.includes(importer.id));
-};
-
-export const filterErrorImporters = createSelector(
-  importRowsSelector,
-  importerResultsSelector,
-  (importers, results) =>
-    filterImporters(importers, results, ImportStatus.Failed)
+export const uploadProjectMetaSelector = createSelector(
+  uploadProjectMetasSelector,
+  (_: StoreState, index: number) => index,
+  (metas, index) => metas[index]
 );

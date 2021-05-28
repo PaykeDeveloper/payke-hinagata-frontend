@@ -178,8 +178,12 @@ const createEntitiesSlice = <
         })
         .addCase(addEntity.fulfilled, (state, action) => {
           if (
+            detailToList &&
             state.meta.fetchEntities.status === StoreStatus.Done &&
-            detailToList
+            isEqual(
+              action.meta.arg.pathParams,
+              state.meta.fetchEntities.arg?.pathParams
+            )
           ) {
             state.entities = [
               ...state.entities,
@@ -194,9 +198,9 @@ const createEntitiesSlice = <
           }
 
           if (
-            state.meta.fetchEntities.status === StoreStatus.Done &&
+            keyMapping &&
             detailToList &&
-            keyMapping
+            state.meta.fetchEntities.status === StoreStatus.Done
           ) {
             const entitiesEntity = detailToList(action.payload);
             const objectKeyValue = entitiesEntity[keyMapping.objectKey];
@@ -215,8 +219,8 @@ const createEntitiesSlice = <
           }
 
           if (
-            state.meta.fetchEntities.status === StoreStatus.Done &&
-            keyMapping
+            keyMapping &&
+            state.meta.fetchEntities.status === StoreStatus.Done
           ) {
             const urlKeyValue: unknown =
               action.meta.arg.pathParams[keyMapping.pathKey];

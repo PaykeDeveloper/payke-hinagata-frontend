@@ -1,3 +1,5 @@
+import { StoreDispatch } from 'src/store/index';
+
 export enum ErrorStatus {
   Unknown = -1,
   Connection = -2,
@@ -85,4 +87,35 @@ export interface EntitiesState<EntitiesEntity, EntitiesArg, Entity, EntityArg>
     fetchEntity: StoreMeta<FetchEntityArg<EntityArg>>;
     fetchEntities: StoreMeta<FetchEntitiesArg<EntitiesArg>>;
   };
+}
+
+export enum UploadStatus {
+  Initial,
+  Waiting,
+  Uploading,
+  Done,
+  Failed,
+  Stopped,
+}
+
+export interface UploadMeta {
+  status: UploadStatus;
+  error: StoreError | null;
+}
+
+export interface UploadState<Row> {
+  rows: Row[];
+  metas: UploadMeta[];
+}
+
+export enum UploadMethod {
+  Add,
+  Merge,
+  Remove,
+}
+
+export interface UploadMethods<Row> {
+  addMethod: (dispatch: StoreDispatch, row: Row) => Promise<UploadMeta>;
+  mergeMethod: (dispatch: StoreDispatch, row: Row) => Promise<UploadMeta>;
+  removeMethod: (dispatch: StoreDispatch, row: Row) => Promise<UploadMeta>;
 }
