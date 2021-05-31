@@ -1,14 +1,10 @@
 // FIXME: SAMPLE CODE
 
 import React, { useRef, useCallback } from 'react';
-import { Trans } from 'react-i18next';
-import { AttachFileIcon } from 'src/view/base/material-ui/Icon';
-import SubmitButton, {
-  SubmitButtonProps,
-} from 'src/view/base/material-ui/SubmitButton';
+import Button, { ButtonProps } from '@material-ui/core/Button';
 
 export type FileUploadButtonProps = Omit<
-  SubmitButtonProps,
+  ButtonProps,
   'onClick' | 'onChange'
 > & {
   accept?: string;
@@ -35,9 +31,9 @@ function FileUploadButton(props: FileUploadButtonProps) {
   };
   return (
     <>
-      <SubmitButton onClick={fileUpload} {...otherProps}>
+      <Button onClick={fileUpload} {...otherProps}>
         {children}
-      </SubmitButton>
+      </Button>
       <input
         hidden
         ref={inputRef}
@@ -48,13 +44,5 @@ function FileUploadButton(props: FileUploadButtonProps) {
     </>
   );
 }
-FileUploadButton.defaultProps = {
-  type: 'button',
-  variant: 'contained',
-  size: 'medium',
-  color: 'primary',
-  children: <Trans>File Upload</Trans>,
-  icon: AttachFileIcon,
-};
 
 export default FileUploadButton;

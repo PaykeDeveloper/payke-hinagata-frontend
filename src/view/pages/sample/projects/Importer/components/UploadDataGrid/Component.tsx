@@ -6,7 +6,7 @@ import { GridOverlay } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { UploadProjectInput } from 'src/store/state/ui/upload/sample/projects/types';
 import { UploadRow } from 'src/store/types';
-import { RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
+import BaseDataGrid from 'src/view/base/material-ui/DataGrid';
 import ErrorCell from './components/ErrorCell';
 import ImportProgress from './components/ImportProgress';
 import StatusCell from './components/StatusCell';
@@ -18,49 +18,137 @@ export const Component: FC<{
   const { rows } = props;
   const { t } = useTranslation();
   const columns: GridColumns = [
-    { field: 'id', hide: true },
     {
       field: 'status',
       headerName: t('Status'),
-      type: 'number',
-      flex: 0.5,
+      align: 'right',
       renderCell: ({ row }) => <StatusCell id={row['id']} />,
     },
     {
       field: 'slug',
-      flex: 0.6,
+      headerName: t('Slug'),
+      width: 310,
       renderCell: ({ row }) => (
         <ValueCell row={row as UploadRow<UploadProjectInput>} name="slug" />
       ),
     },
     {
       field: 'name',
-      flex: 1,
+      headerName: t('Name'),
+      width: 200,
       renderCell: ({ row }) => (
         <ValueCell row={row as UploadRow<UploadProjectInput>} name="name" />
       ),
     },
     {
+      field: 'description',
+      headerName: t('Description'),
+      width: 300,
+      renderCell: ({ row }) => (
+        <ValueCell
+          row={row as UploadRow<UploadProjectInput>}
+          name="description"
+        />
+      ),
+    },
+    {
+      field: 'priority',
+      headerName: t('Priority'),
+      renderCell: ({ row }) => (
+        <ValueCell row={row as UploadRow<UploadProjectInput>} name="priority" />
+      ),
+    },
+    {
+      field: 'approved',
+      headerName: t('Approved'),
+      renderCell: ({ row }) => (
+        <ValueCell
+          row={row as UploadRow<UploadProjectInput>}
+          name="approved"
+          type="boolean"
+        />
+      ),
+    },
+    {
+      field: 'startDate',
+      headerName: t('Start Date'),
+      renderCell: ({ row }) => (
+        <ValueCell
+          row={row as UploadRow<UploadProjectInput>}
+          name="startDate"
+          type="date"
+        />
+      ),
+    },
+    {
+      field: 'finishedAt',
+      headerName: t('Finished At'),
+      width: 150,
+      renderCell: ({ row }) => (
+        <ValueCell
+          row={row as UploadRow<UploadProjectInput>}
+          name="finishedAt"
+          type="datetime"
+        />
+      ),
+    },
+    {
+      field: 'difficulty',
+      headerName: t('Difficulty'),
+      type: 'number',
+      renderCell: ({ row }) => (
+        <ValueCell
+          row={row as UploadRow<UploadProjectInput>}
+          name="difficulty"
+        />
+      ),
+    },
+    {
+      field: 'coefficient',
+      headerName: t('Coefficient'),
+      type: 'number',
+      renderCell: ({ row }) => (
+        <ValueCell
+          row={row as UploadRow<UploadProjectInput>}
+          name="coefficient"
+        />
+      ),
+    },
+    {
+      field: 'productivity',
+      headerName: t('Productivity'),
+      type: 'number',
+      renderCell: ({ row }) => (
+        <ValueCell
+          row={row as UploadRow<UploadProjectInput>}
+          name="productivity"
+        />
+      ),
+    },
+    {
+      field: 'lockVersion',
+      headerName: t('Lock Version'),
+      type: 'number',
+      renderCell: ({ row }) => (
+        <ValueCell
+          row={row as UploadRow<UploadProjectInput>}
+          name="lockVersion"
+        />
+      ),
+    },
+    {
       field: 'errorMessage',
-      headerName: t('error message'),
-      flex: 3,
+      width: 300,
+      headerName: t('Error Message'),
       renderCell: ({ row }) => <ErrorCell id={row['id']} />,
     },
   ];
   return (
-    <RouterDataGrid
+    <BaseDataGrid
       columns={columns}
       rows={rows}
       disableColumnMenu
-      disableColumnSelector
-      disableColumnReorder
-      disableExtendRowFullWidth
-      disableSelectionOnClick
       loading
-      pagination
-      autoPageSize={false}
-      pageSize={25}
-      rowsPerPageOptions={[5, 25, 50]}
       components={{
         LoadingOverlay: () => (
           <GridOverlay>

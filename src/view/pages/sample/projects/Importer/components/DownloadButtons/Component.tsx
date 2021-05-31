@@ -17,10 +17,10 @@ import FileUploadButton from './components/FileUploadButton';
 
 const Component: FC<{
   onBack: () => void;
-  onAddCsv: (value?: File | null) => Promise<unknown>;
+  onAddCsv: ((value?: File | null) => Promise<unknown>) | undefined;
   onStartUpload: (() => Promise<unknown>) | undefined;
   onStopUpload: (() => Promise<unknown>) | undefined;
-  onReset: (() => Promise<unknown>) | undefined;
+  onClear: (() => Promise<unknown>) | undefined;
   onDownloadErrors: (() => Promise<unknown>) | undefined;
 }> = (props) => {
   const {
@@ -28,7 +28,7 @@ const Component: FC<{
     onAddCsv,
     onStartUpload,
     onStopUpload,
-    onReset,
+    onClear,
     onDownloadErrors,
   } = props;
   const { t } = useTranslation();
@@ -44,16 +44,16 @@ const Component: FC<{
           {t('Back')}
         </Button>,
         <FileUploadButton
-          color="primary"
           variant="outlined"
-          onChange={onAddCsv}
+          color="primary"
+          onChange={onAddCsv || emptyCallback}
+          disabled={!onAddCsv}
           accept={'text/csv'}
-          icon={AddIcon}
+          startIcon={<AddIcon />}
         >
           {t('Add CSV')}
         </FileUploadButton>,
         <LoaderButton
-          type="button"
           variant="outlined"
           color="primary"
           startIcon={<FileUploadIcon />}
@@ -63,7 +63,6 @@ const Component: FC<{
           {t('Start Upload')}
         </LoaderButton>,
         <LoaderButton
-          type="button"
           variant="outlined"
           color="secondary"
           startIcon={<StopIcon />}
@@ -73,22 +72,20 @@ const Component: FC<{
           {t('Stop Upload')}
         </LoaderButton>,
         <LoaderButton
-          type="button"
           variant="outlined"
           color="secondary"
           startIcon={<DeleteIcon />}
-          onClick={onReset || emptyCallback}
-          disabled={!onStartUpload}
+          onClick={onClear || emptyCallback}
+          disabled={!onClear}
         >
           {t('Clear')}
         </LoaderButton>,
         <LoaderButton
-          type="button"
           variant="outlined"
           color="default"
           startIcon={<FileDownloadIcon />}
           onClick={onDownloadErrors || emptyCallback}
-          disabled={!onStartUpload}
+          disabled={!onDownloadErrors}
         >
           {t('Download Error Rows')}
         </LoaderButton>,

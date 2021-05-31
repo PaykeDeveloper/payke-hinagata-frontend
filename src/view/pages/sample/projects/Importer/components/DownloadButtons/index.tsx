@@ -85,7 +85,7 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
             bodyParams,
           })
         );
-        if (projectsActions.addEntity.rejected.match(action)) {
+        if (projectsActions.mergeEntity.rejected.match(action)) {
           return { status: UploadStatus.Failed, error: action.payload || null };
         }
         return { status: UploadStatus.Done, error: null };
@@ -97,7 +97,7 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
             pathParams: { ...pathParams, projectSlug },
           })
         );
-        if (projectsActions.addEntity.rejected.match(action)) {
+        if (projectsActions.removeEntity.rejected.match(action)) {
           return { status: UploadStatus.Failed, error: action.payload || null };
         }
         return { status: UploadStatus.Done, error: null };
@@ -113,39 +113,37 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
     });
   }, [dispatch, methods, enqueueSnackbar]);
 
-  const onReset: ChildProps['onReset'] = useCallback(async () => {
-    dispatch(uploadProjectsActions.reset());
-  }, [dispatch]);
+  const onClear: ChildProps['onClear'] = useCallback(
+    async () => dispatch(uploadProjectsActions.reset()),
+    [dispatch]
+  );
 
   const { rows, metas } = useStoreSelector(selector);
 
-  const errorRows = useMemo(
-    () => rows.filter(({ id }) => metas[id]?.status === UploadStatus.Failed),
+  const errorDataList = useMemo(
+    () =>
+      rows
+        .filter(({ id }) => metas[id]?.status === UploadStatus.Failed)
+        .map(({ data }) => data),
     [metas, rows]
   );
   const onDownloadErrors: ChildProps['onDownloadErrors'] =
     useCallback(async () => {
-      exportToCsv(errorRows, 'errors.csv');
-    }, [errorRows]);
+      exportToCsv(errorDataList, 'errors.csv');
+    }, [errorDataList]);
 
-  const hasInitial = useMemo(
+  const statuses = useMemo(
     () =>
-      rows.filter(({ id }) => metas[id]?.status === UploadStatus.Initial)
-        .length > 0,
-    [metas, rows]
-  );
-
-  const hasWaiting = useMemo(
-    () =>
-      rows.filter(({ id }) => metas[id]?.status === UploadStatus.Waiting)
-        .length > 0,
-    [metas, rows]
-  );
-
-  const hasUploading = useMemo(
-    () =>
-      rows.filter(({ id }) => metas[id]?.status === UploadStatus.Uploading)
-        .length > 0,
+      rows.reduce((result, row) => {
+        const status = metas[row.id]?.status;
+        if (status !== undefined) {
+          if (result[status] === undefined) {
+            result[status] = 0;
+          }
+          result[status] += 1;
+        }
+        return result;
+      }, {} as Record<UploadStatus, number>),
     [metas, rows]
   );
 
@@ -154,16 +152,23 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
     [dispatch]
   );
 
+  const processing =
+    statuses[UploadStatus.Waiting] || statuses[UploadStatus.Uploading];
+
+  const finished = statuses[UploadStatus.Done] || statuses[UploadStatus.Failed];
+
   return (
     <Component
       onBack={onBack}
-      onAddCsv={onAddCsv}
+      onAddCsv={!processing && !finished ? onAddCsv : undefined}
       onStartUpload={
-        hasInitial && !hasWaiting && !hasUploading ? onStartUpload : undefined
+        statuses[UploadStatus.Initial] && !processing
+          ? onStartUpload
+          : undefined
       }
-      onStopUpload={hasWaiting ? onStopUpload : undefined}
-      onReset={!hasWaiting && !hasUploading ? onReset : undefined}
-      onDownloadErrors={errorRows.length > 0 ? onDownloadErrors : undefined}
+      onStopUpload={statuses[UploadStatus.Waiting] ? onStopUpload : undefined}
+      onClear={rows.length > 0 && !processing ? onClear : undefined}
+      onDownloadErrors={errorDataList.length > 0 ? onDownloadErrors : undefined}
     />
   );
 };
