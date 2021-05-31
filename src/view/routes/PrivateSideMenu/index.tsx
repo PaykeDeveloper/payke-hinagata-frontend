@@ -37,7 +37,7 @@ import {
   getMemberNewPath,
   getMembersPath,
   getProjectEditPath,
-  getProjectImportPath,
+  getProjectUploadPath,
   getProjectNewPath,
   getProjectsPath,
   invitationEditPath,
@@ -99,7 +99,7 @@ const getMiddleMenuLists = (
                     getProjectsPath({ divisionId }),
                     getProjectNewPath({ divisionId }),
                     getProjectEditPath({ ...projectParams, divisionId }),
-                    getProjectImportPath({ divisionId }),
+                    getProjectUploadPath({ divisionId }),
                   ],
                 },
                 {

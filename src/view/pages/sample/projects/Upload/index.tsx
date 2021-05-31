@@ -12,7 +12,7 @@ const selector = createSelector([divisionSelector], (division) => ({
   division,
 }));
 
-const Importer: FC<RouteComponentProps<DivisionPath>> = (props) => {
+const Upload: FC<RouteComponentProps<DivisionPath>> = (props) => {
   const {
     match: { params: pathParams },
   } = props;
@@ -22,4 +22,4 @@ const Importer: FC<RouteComponentProps<DivisionPath>> = (props) => {
   return <Component {...state} divisionPath={pathParams} />;
 };
 
-export default Importer;
+export default Upload;

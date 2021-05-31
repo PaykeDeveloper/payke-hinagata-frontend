@@ -70,9 +70,9 @@ export const projectsPath = getProjectsPath(divisionParams);
 export const projectNewPath = getProjectNewPath(divisionParams);
 export const projectEditPath = getProjectEditPath(projectParams);
 
-export const getProjectImportPath = (params: DivisionPath) =>
-  `${getProjectsPath(params)}import/`;
-export const projectImportPath = getProjectImportPath(divisionParams);
+export const getProjectUploadPath = (params: DivisionPath) =>
+  `${getProjectsPath(params)}upload/`;
+export const projectUploadPath = getProjectUploadPath(divisionParams);
 
 export interface MemberPath extends DivisionPath {
   memberId: string;
