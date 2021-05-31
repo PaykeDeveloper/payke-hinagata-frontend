@@ -12,8 +12,8 @@ import {
   StopIcon,
 } from 'src/view/base/material-ui/Icon';
 import Buttons from 'src/view/components/molecules/Buttons';
+import FileUploadButton from 'src/view/components/molecules/FileUploadButton';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
-import FileUploadButton from './components/FileUploadButton';
 
 const Component: FC<{
   onBack: () => void;

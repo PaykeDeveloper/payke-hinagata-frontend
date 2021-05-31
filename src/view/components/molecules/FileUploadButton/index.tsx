@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, FC } from 'react';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 
 export type FileUploadButtonProps = Omit<
@@ -11,7 +11,7 @@ export type FileUploadButtonProps = Omit<
   onChange: (value?: File | null) => void | Promise<unknown>;
 };
 
-function FileUploadButton(props: FileUploadButtonProps) {
+const FileUploadButton: FC<FileUploadButtonProps> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { onChange, children, accept, ...otherProps } = props;
   const handleChange = useCallback(
@@ -43,6 +43,6 @@ function FileUploadButton(props: FileUploadButtonProps) {
       />
     </>
   );
-}
+};
 
 export default FileUploadButton;

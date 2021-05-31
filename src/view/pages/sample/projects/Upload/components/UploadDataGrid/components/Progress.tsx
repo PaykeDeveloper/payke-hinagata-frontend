@@ -1,7 +1,6 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import { createSelector } from '@reduxjs/toolkit';
 import { useStoreSelector } from 'src/store';
 import {
@@ -10,31 +9,32 @@ import {
 } from 'src/store/state/ui/upload/sample/projects/selectors';
 import { UploadStatus } from 'src/store/types';
 import { uploadProcessingStatuses } from 'src/store/utils';
+import UploadProgress from 'src/view/components/atoms/UploadProgress';
 
 const selector = createSelector(
   [uploadProjectRowsSelector, uploadProjectMetasSelector],
   (rows, metas) => {
-    const done = rows.filter(
+    const progress = rows.filter(
       (row) => metas[row.id]?.status === UploadStatus.Done
     ).length;
-    const progress = rows.filter((row) => {
+    const remaining = rows.filter((row) => {
       const status = metas[row.id]?.status;
       return status !== undefined && uploadProcessingStatuses.includes(status);
     }).length;
     return {
-      done,
       progress,
+      remaining,
     };
   }
 );
 
-const ImportProgress: FC = () => {
-  const { done, progress } = useStoreSelector(selector);
-  if (!progress) {
+const Progress: FC = () => {
+  const { progress, remaining } = useStoreSelector(selector);
+  if (!remaining) {
     return <></>;
   }
-  const value = (done / (done + progress)) * 100;
-  return <LinearProgress variant="determinate" value={value} />;
+  const total = progress + remaining;
+  return <UploadProgress progress={progress} total={total} />;
 };
 
-export default ImportProgress;
+export default Progress;

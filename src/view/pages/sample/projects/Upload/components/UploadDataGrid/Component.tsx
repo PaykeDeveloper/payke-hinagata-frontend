@@ -8,7 +8,7 @@ import { UploadProjectInput } from 'src/store/state/ui/upload/sample/projects/ty
 import { UploadRow } from 'src/store/types';
 import BaseDataGrid from 'src/view/base/material-ui/DataGrid';
 import ErrorCell from './components/ErrorCell';
-import ImportProgress from './components/ImportProgress';
+import Progress from 'src/view/pages/sample/projects/Upload/components/UploadDataGrid/components/Progress';
 import StatusCell from './components/StatusCell';
 import ValueCell from './components/ValueCell';
 
@@ -153,7 +153,7 @@ export const Component: FC<{
         LoadingOverlay: () => (
           <GridOverlay>
             <div style={{ position: 'absolute', top: 0, width: '100%' }}>
-              <ImportProgress />
+              <Progress />
             </div>
           </GridOverlay>
         ),
