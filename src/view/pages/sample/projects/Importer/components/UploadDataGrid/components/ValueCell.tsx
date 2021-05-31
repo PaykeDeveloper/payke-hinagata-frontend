@@ -11,7 +11,9 @@ const ErrorCell: FC<{
   row: UploadRow<UploadProjectInput>;
   name: keyof UploadProjectInput;
 }> = ({ row, name }) => {
-  const meta = useStoreSelector((s) => uploadProjectMetaSelector(s, row.key));
+  const meta = useStoreSelector((s) =>
+    uploadProjectMetaSelector(s, { id: row.id })
+  );
   const hasError = meta?.status === UploadStatus.Failed;
   const value = row.value[name];
 

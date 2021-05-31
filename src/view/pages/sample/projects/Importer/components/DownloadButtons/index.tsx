@@ -11,7 +11,7 @@ import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
 import {
   uploadProjectMetasSelector,
-  uploadProjectsSelector,
+  uploadProjectRowsSelector,
 } from 'src/store/state/ui/upload/sample/projects/selectors';
 import { uploadProjectsActions } from 'src/store/state/ui/upload/sample/projects/slice';
 import { UploadProjectInput } from 'src/store/state/ui/upload/sample/projects/types';
@@ -26,7 +26,7 @@ export const MAX_FILE_SIZE = 1024 * 1024;
 export const SUPPORTED_FORMATS = ['text/csv'];
 
 const selector = createSelector(
-  [uploadProjectsSelector, uploadProjectMetasSelector],
+  [uploadProjectRowsSelector, uploadProjectMetasSelector],
   (rows, metas) => ({ rows, metas })
 );
 

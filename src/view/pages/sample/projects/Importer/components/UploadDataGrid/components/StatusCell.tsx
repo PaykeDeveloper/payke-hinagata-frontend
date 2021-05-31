@@ -5,8 +5,8 @@ import { uploadProjectMetaSelector } from 'src/store/state/ui/upload/sample/proj
 import { UploadStatus } from 'src/store/types';
 import { BlockIcon, CheckIcon } from 'src/view/base/material-ui/Icon';
 
-const StatusCell: FC<{ key: string }> = ({ key }) => {
-  const meta = useStoreSelector((s) => uploadProjectMetaSelector(s, key));
+const StatusCell: FC<{ id: string }> = ({ id }) => {
+  const meta = useStoreSelector((s) => uploadProjectMetaSelector(s, { id }));
   switch (meta?.status) {
     case UploadStatus.Waiting:
     case UploadStatus.Uploading: {

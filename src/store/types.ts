@@ -102,7 +102,7 @@ export interface UploadMeta {
 }
 
 export interface UploadRow<Value> {
-  key: string;
+  id: string;
   value: Value;
 }
 

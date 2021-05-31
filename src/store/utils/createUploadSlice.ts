@@ -40,10 +40,10 @@ const createUploadSlice = <Value>({
         const {
           payload: { values },
         } = action;
-        const rows = values.map((value) => ({ key: nanoid(), value }));
+        const rows = values.map((value) => ({ id: nanoid(), value }));
         state.rows = state.rows.concat(castDrafts(rows));
         for (const row of rows) {
-          state.metas[row.key] = {
+          state.metas[row.id] = {
             status: UploadStatus.Initial,
             error: null,
           };
@@ -52,50 +52,50 @@ const createUploadSlice = <Value>({
       updateMeta(
         state,
         action: PayloadAction<{
-          key: string;
+          id: string;
           status?: UploadStatus;
           error?: StoreError | null;
         }>
       ) {
         const {
-          payload: { key, status, error },
+          payload: { id, status, error },
         } = action;
-        if (!state.metas[key]) {
+        if (!state.metas[id]) {
           return;
         }
 
         if (status) {
-          state.metas[key]!.status = status;
+          state.metas[id]!.status = status;
         }
         if (error !== undefined) {
-          state.metas[key]!.error = error;
+          state.metas[id]!.error = error;
         }
       },
-      removeRow(state, action: PayloadAction<{ key: string }>) {
+      removeRow(state, action: PayloadAction<{ id: string }>) {
         const {
-          payload: { key },
+          payload: { id },
         } = action;
-        state.rows = state.rows.filter((row) => row.key !== key);
-        delete state.metas[key];
+        state.rows = state.rows.filter((row) => row.id !== id);
+        delete state.metas[id];
       },
-      setRowsToWaiting(state, action: PayloadAction<{ keys: string[] }>) {
+      setRowsToWaiting(state, action: PayloadAction<{ ids: string[] }>) {
         const {
-          payload: { keys },
+          payload: { ids },
         } = action;
-        for (const key of keys) {
-          const status = state.metas[key]?.status;
+        for (const id of ids) {
+          const status = state.metas[id]?.status;
           if (status && !uploadProcessingStatuses.includes(status)) {
-            state.metas[key]!.status = UploadStatus.Waiting;
+            state.metas[id]!.status = UploadStatus.Waiting;
           }
         }
       },
-      setRowsToStopped(state, action: PayloadAction<{ keys: string[] }>) {
+      setRowsToStopped(state, action: PayloadAction<{ ids: string[] }>) {
         const {
-          payload: { keys },
+          payload: { ids },
         } = action;
-        for (const key of keys) {
-          if (state.metas[key]?.status === UploadStatus.Waiting) {
-            state.metas[key]!.status = UploadStatus.Waiting;
+        for (const id of ids) {
+          if (state.metas[id]?.status === UploadStatus.Waiting) {
+            state.metas[id]!.status = UploadStatus.Waiting;
           }
         }
       },
@@ -106,19 +106,19 @@ const createUploadSlice = <Value>({
 
   const uploadRow =
     (
-      key: string,
+      id: string,
       { addMethod, mergeMethod, removeMethod }: UploadMethods<Value>
     ) =>
     async (dispatch: StoreDispatch, getState: GetState) => {
       const { rows, metas } = domainSelector(getState());
-      const row = rows.find((r) => r.key === key);
-      const meta = metas[key];
+      const row = rows.find((r) => r.id === id);
+      const meta = metas[id];
       if (!row || !meta || meta.status !== UploadStatus.Waiting) {
         return undefined;
       }
 
       await dispatch(
-        actions.updateMeta({ key, status: UploadStatus.Uploading })
+        actions.updateMeta({ id: id, status: UploadStatus.Uploading })
       );
 
       const { value } = row;
@@ -126,15 +126,15 @@ const createUploadSlice = <Value>({
       switch (method) {
         case UploadMethod.Add: {
           const meta = await addMethod(value);
-          return dispatch(actions.updateMeta({ key, ...meta }));
+          return dispatch(actions.updateMeta({ id: id, ...meta }));
         }
         case UploadMethod.Merge: {
           const meta = await mergeMethod(value);
-          return dispatch(actions.updateMeta({ key, ...meta }));
+          return dispatch(actions.updateMeta({ id: id, ...meta }));
         }
         case UploadMethod.Remove: {
           const meta = await removeMethod(value);
-          return dispatch(actions.updateMeta({ key, ...meta }));
+          return dispatch(actions.updateMeta({ id: id, ...meta }));
         }
       }
     };
@@ -150,7 +150,7 @@ const createUploadSlice = <Value>({
   const selectStatusKeys = (state: RootState, status: UploadStatus) => {
     const { rows, metas } = domainSelector(state);
     return rows
-      .map((row) => (metas[row.key]?.status === status ? row.key : undefined))
+      .map((row) => (metas[row.id]?.status === status ? row.id : undefined))
       .filter(notUndefined);
   };
 
@@ -159,7 +159,7 @@ const createUploadSlice = <Value>({
     async (dispatch: StoreDispatch, getState: GetState) => {
       const keys = selectStatusKeys(getState(), UploadStatus.Initial);
 
-      await dispatch(actions.setRowsToWaiting({ keys }));
+      await dispatch(actions.setRowsToWaiting({ ids: keys }));
 
       const evenKeys = keys.filter((k, i) => i % 2 === 0);
       const oddKeys = keys.filter((k, i) => i % 2 === 1);
@@ -172,7 +172,7 @@ const createUploadSlice = <Value>({
   const stopWaitingRows =
     () => async (dispatch: StoreDispatch, getState: GetState) => {
       const keys = selectStatusKeys(getState(), UploadStatus.Waiting);
-      await dispatch(actions.setRowsToStopped({ keys }));
+      await dispatch(actions.setRowsToStopped({ ids: keys }));
     };
 
   return {

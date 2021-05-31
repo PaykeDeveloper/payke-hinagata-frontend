@@ -6,19 +6,19 @@ import { createSelector } from '@reduxjs/toolkit';
 import { useStoreSelector } from 'src/store';
 import {
   uploadProjectMetasSelector,
-  uploadProjectsSelector,
+  uploadProjectRowsSelector,
 } from 'src/store/state/ui/upload/sample/projects/selectors';
 import { UploadStatus } from 'src/store/types';
 import { uploadProcessingStatuses } from 'src/store/utils';
 
 const selector = createSelector(
-  [uploadProjectsSelector, uploadProjectMetasSelector],
+  [uploadProjectRowsSelector, uploadProjectMetasSelector],
   (rows, metas) => {
     const done = rows.filter(
-      (row) => metas[row.key]?.status === UploadStatus.Done
+      (row) => metas[row.id]?.status === UploadStatus.Done
     ).length;
     const progress = rows.filter((row) => {
-      const status = metas[row.key]?.status;
+      const status = metas[row.id]?.status;
       return status && uploadProcessingStatuses.includes(status);
     }).length;
     return {

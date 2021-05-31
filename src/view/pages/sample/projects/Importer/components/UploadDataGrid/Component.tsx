@@ -13,9 +13,9 @@ import StatusCell from './components/StatusCell';
 import ValueCell from './components/ValueCell';
 
 export const Component: FC<{
-  uploadProjects: UploadProjectInput[];
+  rows: UploadRow<UploadProjectInput>[];
 }> = (props) => {
-  const { uploadProjects } = props;
+  const { rows } = props;
   const { t } = useTranslation();
   const columns: GridColumns = [
     { field: 'id', hide: true },
@@ -24,7 +24,7 @@ export const Component: FC<{
       headerName: t('Status'),
       type: 'number',
       flex: 0.5,
-      renderCell: ({ row }) => <StatusCell key={row['key']} />,
+      renderCell: ({ row }) => <StatusCell id={row['id']} />,
     },
     {
       field: 'slug',
@@ -44,13 +44,13 @@ export const Component: FC<{
       field: 'errorMessage',
       headerName: t('error message'),
       flex: 3,
-      renderCell: ({ row }) => <ErrorCell key={row['key']} />,
+      renderCell: ({ row }) => <ErrorCell id={row['id']} />,
     },
   ];
   return (
     <RouterDataGrid
       columns={columns}
-      rows={uploadProjects}
+      rows={rows}
       disableColumnMenu
       disableColumnSelector
       disableColumnReorder

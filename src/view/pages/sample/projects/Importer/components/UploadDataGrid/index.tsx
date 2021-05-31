@@ -3,11 +3,11 @@
 import React, { FC } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { useStoreSelector } from 'src/store';
-import { uploadProjectsSelector } from 'src/store/state/ui/upload/sample/projects/selectors';
+import { uploadProjectRowsSelector } from 'src/store/state/ui/upload/sample/projects/selectors';
 import Component from './Component';
 
-const selector = createSelector([uploadProjectsSelector], (uploadProjects) => ({
-  uploadProjects,
+const selector = createSelector([uploadProjectRowsSelector], (rows) => ({
+  rows,
 }));
 
 const UploadDataGrid: FC = () => {
