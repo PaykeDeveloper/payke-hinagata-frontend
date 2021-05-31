@@ -120,8 +120,7 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
   const { rows, metas } = useStoreSelector(selector);
 
   const errorRows = useMemo(
-    () =>
-      rows.filter((row, index) => metas[index]?.status === UploadStatus.Failed),
+    () => rows.filter(({ id }) => metas[id]?.status === UploadStatus.Failed),
     [metas, rows]
   );
   const onDownloadErrors: ChildProps['onDownloadErrors'] =
@@ -131,23 +130,22 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
 
   const hasInitial = useMemo(
     () =>
-      rows.filter((row, index) => metas[index]?.status === UploadStatus.Initial)
+      rows.filter(({ id }) => metas[id]?.status === UploadStatus.Initial)
         .length > 0,
     [metas, rows]
   );
 
   const hasWaiting = useMemo(
     () =>
-      rows.filter((row, index) => metas[index]?.status === UploadStatus.Waiting)
+      rows.filter(({ id }) => metas[id]?.status === UploadStatus.Waiting)
         .length > 0,
     [metas, rows]
   );
 
   const hasUploading = useMemo(
     () =>
-      rows.filter(
-        (row, index) => metas[index]?.status === UploadStatus.Uploading
-      ).length > 0,
+      rows.filter(({ id }) => metas[id]?.status === UploadStatus.Uploading)
+        .length > 0,
     [metas, rows]
   );
 

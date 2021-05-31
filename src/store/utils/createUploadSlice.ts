@@ -84,7 +84,10 @@ const createUploadSlice = <Data>({
         } = action;
         for (const id of ids) {
           const status = state.metas[id]?.status;
-          if (status && !uploadProcessingStatuses.includes(status)) {
+          if (
+            status !== undefined &&
+            !uploadProcessingStatuses.includes(status)
+          ) {
             state.metas[id]!.status = UploadStatus.Waiting;
           }
         }
@@ -164,8 +167,8 @@ const createUploadSlice = <Data>({
       const evenKeys = keys.filter((k, i) => i % 2 === 0);
       const oddKeys = keys.filter((k, i) => i % 2 === 1);
       return Promise.all([
-        uploadRows(evenKeys, methods),
-        uploadRows(oddKeys, methods),
+        dispatch(uploadRows(evenKeys, methods)),
+        dispatch(uploadRows(oddKeys, methods)),
       ]);
     };
 

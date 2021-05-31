@@ -19,7 +19,7 @@ const selector = createSelector(
     ).length;
     const progress = rows.filter((row) => {
       const status = metas[row.id]?.status;
-      return status && uploadProcessingStatuses.includes(status);
+      return status !== undefined && uploadProcessingStatuses.includes(status);
     }).length;
     return {
       done,
