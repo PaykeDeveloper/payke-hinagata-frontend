@@ -11,6 +11,6 @@ export const uploadProjectMetasSelector = (state: StoreState) =>
 
 export const uploadProjectMetaSelector = createSelector(
   uploadProjectMetasSelector,
-  (_: StoreState, index: number) => index,
-  (metas, index) => metas[index]
+  (_: StoreState, key: string) => key,
+  (metas, key) => metas[key]
 );

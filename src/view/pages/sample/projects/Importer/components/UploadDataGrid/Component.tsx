@@ -1,14 +1,16 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import { GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
+import { GridColumns } from '@material-ui/data-grid';
 import { GridOverlay } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { UploadProjectInput } from 'src/store/state/ui/upload/sample/projects/types';
+import { UploadRow } from 'src/store/types';
 import { RouterDataGrid } from 'src/view/base/material-ui/DataGrid';
 import ErrorCell from './components/ErrorCell';
 import ImportProgress from './components/ImportProgress';
 import StatusCell from './components/StatusCell';
+import ValueCell from './components/ValueCell';
 
 export const Component: FC<{
   uploadProjects: UploadProjectInput[];
@@ -22,27 +24,27 @@ export const Component: FC<{
       headerName: t('Status'),
       type: 'number',
       flex: 0.5,
-      renderCell: ({ row }) => {
-        return <StatusCell index={row['id']} />;
-      },
+      renderCell: ({ row }) => <StatusCell key={row['key']} />,
     },
     {
       field: 'slug',
       flex: 0.6,
-      valueGetter: (params: GridValueGetterParams) => params.row.project.slug,
+      renderCell: ({ row }) => (
+        <ValueCell row={row as UploadRow<UploadProjectInput>} name="slug" />
+      ),
     },
     {
       field: 'name',
       flex: 1,
-      valueGetter: (params: GridValueGetterParams) => params.row.project.name,
+      renderCell: ({ row }) => (
+        <ValueCell row={row as UploadRow<UploadProjectInput>} name="name" />
+      ),
     },
     {
       field: 'errorMessage',
       headerName: t('error message'),
       flex: 3,
-      renderCell: ({ row }) => {
-        return <ErrorCell index={row['id']} />;
-      },
+      renderCell: ({ row }) => <ErrorCell key={row['key']} />,
     },
   ];
   return (

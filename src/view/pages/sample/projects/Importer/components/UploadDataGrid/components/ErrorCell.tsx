@@ -5,8 +5,8 @@ import { uploadProjectMetaSelector } from 'src/store/state/ui/upload/sample/proj
 import { UploadStatus } from 'src/store/types';
 import { getErrorMessage } from 'src/store/utils';
 
-const ErrorCell: FC<{ index: number }> = ({ index }) => {
-  const meta = useStoreSelector((s) => uploadProjectMetaSelector(s, index));
+const ErrorCell: FC<{ key: string }> = ({ key }) => {
+  const meta = useStoreSelector((s) => uploadProjectMetaSelector(s, key));
   if (!meta || meta.status !== UploadStatus.Failed || !meta.error) {
     return <></>;
   }

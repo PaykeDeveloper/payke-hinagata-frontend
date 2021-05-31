@@ -60,16 +60,16 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
         return;
       }
       const data = await parseCSV(value);
-      const rows = toCamelCaseKeys<UploadProjectInput[]>(data);
-      dispatch(uploadProjectsActions.addRows({ rows }));
+      const values = toCamelCaseKeys<UploadProjectInput[]>(data);
+      dispatch(uploadProjectsActions.addRows({ values }));
     },
     [dispatch, enqueueSnackbar]
   );
 
   const methods = useMemo<UploadMethods<UploadProjectInput>>(
     () => ({
-      addMethod: async (dis, bodyParams) => {
-        const action = await dis(
+      addMethod: async (bodyParams) => {
+        const action = await dispatch(
           projectsActions.addEntity({ pathParams, bodyParams })
         );
         if (projectsActions.addEntity.rejected.match(action)) {
@@ -77,9 +77,9 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
         }
         return { status: UploadStatus.Done, error: null };
       },
-      mergeMethod: async (dis, bodyParams) => {
+      mergeMethod: async (bodyParams) => {
         const projectSlug = `${bodyParams.slug}`;
-        const action = await dis(
+        const action = await dispatch(
           projectsActions.mergeEntity({
             pathParams: { ...pathParams, projectSlug },
             bodyParams,
@@ -90,9 +90,9 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
         }
         return { status: UploadStatus.Done, error: null };
       },
-      removeMethod: async (dis, bodyParams) => {
+      removeMethod: async (bodyParams) => {
         const projectSlug = `${bodyParams.slug}`;
-        const action = await dis(
+        const action = await dispatch(
           projectsActions.removeEntity({
             pathParams: { ...pathParams, projectSlug },
           })
@@ -103,7 +103,7 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
         return { status: UploadStatus.Done, error: null };
       },
     }),
-    [pathParams]
+    [dispatch, pathParams]
   );
 
   const onStartUpload: ChildProps['onStartUpload'] = useCallback(async () => {
@@ -129,17 +129,32 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
       exportToCsv(errorRows, 'errors.csv');
     }, [errorRows]);
 
-  const hasInitial =
-    metas.filter((meta) => meta.status === UploadStatus.Initial).length > 0;
+  const hasInitial = useMemo(
+    () =>
+      rows.filter((row, index) => metas[index]?.status === UploadStatus.Initial)
+        .length > 0,
+    [metas, rows]
+  );
 
-  const hasWaiting =
-    metas.filter((meta) => meta.status === UploadStatus.Waiting).length > 0;
+  const hasWaiting = useMemo(
+    () =>
+      rows.filter((row, index) => metas[index]?.status === UploadStatus.Waiting)
+        .length > 0,
+    [metas, rows]
+  );
 
-  const hasUploading =
-    metas.filter((meta) => meta.status === UploadStatus.Uploading).length > 0;
+  const hasUploading = useMemo(
+    () =>
+      rows.filter(
+        (row, index) => metas[index]?.status === UploadStatus.Uploading
+      ).length > 0,
+    [metas, rows]
+  );
 
-  const onStopUpload: ChildProps['onStopUpload'] = async () =>
-    dispatch(uploadProjectsActions.setRowsWaitingToStopped());
+  const onStopUpload: ChildProps['onStopUpload'] = useCallback(
+    async () => dispatch(uploadProjectsActions.stopWaitingRows()),
+    [dispatch]
+  );
 
   return (
     <Component

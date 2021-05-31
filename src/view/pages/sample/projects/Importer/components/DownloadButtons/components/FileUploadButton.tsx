@@ -51,7 +51,7 @@ function FileUploadButton(props: FileUploadButtonProps) {
 FileUploadButton.defaultProps = {
   type: 'button',
   variant: 'contained',
-  size: 'middle',
+  size: 'medium',
   color: 'primary',
   children: <Trans>File Upload</Trans>,
   icon: AttachFileIcon,

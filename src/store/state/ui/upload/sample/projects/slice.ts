@@ -7,10 +7,10 @@ import { UploadProjectInput } from './types';
 const uploadProjectsSlice = createUploadSlice<UploadProjectInput>({
   domainName: 'project',
   domainSelector: (state) => state.ui.upload.sample.projects,
-  selectMethod: (row) => {
-    if (!row.slug) {
+  selectMethod: (value) => {
+    if (!value.id) {
       return UploadMethod.Add;
-    } else if (row.deleteFlag) {
+    } else if (value.deleteFlag) {
       return UploadMethod.Remove;
     } else {
       return UploadMethod.Merge;

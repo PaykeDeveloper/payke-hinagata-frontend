@@ -10,7 +10,7 @@ const selector = createSelector([uploadProjectsSelector], (uploadProjects) => ({
   uploadProjects,
 }));
 
-const UploadDataGrid: FC = (props) => {
+const UploadDataGrid: FC = () => {
   const state = useStoreSelector(selector);
 
   return <Component {...state} />;

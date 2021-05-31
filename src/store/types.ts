@@ -1,5 +1,3 @@
-import { StoreDispatch } from 'src/store/index';
-
 export enum ErrorStatus {
   Unknown = -1,
   Connection = -2,
@@ -103,9 +101,14 @@ export interface UploadMeta {
   error: StoreError | null;
 }
 
-export interface UploadState<Row> {
-  rows: Row[];
-  metas: UploadMeta[];
+export interface UploadRow<Value> {
+  key: string;
+  value: Value;
+}
+
+export interface UploadState<Value> {
+  rows: UploadRow<Value>[];
+  metas: Record<string, UploadMeta>;
 }
 
 export enum UploadMethod {
@@ -114,8 +117,8 @@ export enum UploadMethod {
   Remove,
 }
 
-export interface UploadMethods<Row> {
-  addMethod: (dispatch: StoreDispatch, row: Row) => Promise<UploadMeta>;
-  mergeMethod: (dispatch: StoreDispatch, row: Row) => Promise<UploadMeta>;
-  removeMethod: (dispatch: StoreDispatch, row: Row) => Promise<UploadMeta>;
+export interface UploadMethods<Value> {
+  addMethod: (value: Value) => Promise<UploadMeta>;
+  mergeMethod: (value: Value) => Promise<UploadMeta>;
+  removeMethod: (value: Value) => Promise<UploadMeta>;
 }

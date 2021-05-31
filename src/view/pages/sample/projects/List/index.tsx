@@ -14,7 +14,7 @@ import {
   canCreateProjectSelector,
   canEditProjectSelector,
 } from 'src/store/state/domain/sample/projects/selectors';
-import { getProjectsExportApiUrl } from 'src/store/urls';
+import { getProjectsDownloadApiUrl } from 'src/store/urls';
 import {
   DivisionPath,
   getProjectEditPath,
@@ -85,7 +85,7 @@ const Container: FC<
   return (
     <Component
       {...otherState}
-      exportUrl={getProjectsExportApiUrl(pathParams)}
+      exportUrl={getProjectsDownloadApiUrl(pathParams)}
       onClickAdd={canCreate ? onClickAdd : undefined}
       onClickEdit={canEdit ? onClickEdit : undefined}
       onClickImport={canCreate ? onClickImport : undefined}

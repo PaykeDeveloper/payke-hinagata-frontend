@@ -1,29 +1,33 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { siteName } from 'src/base/constants';
 import { castDrafts, notUndefined } from 'src/base/utils';
 import { StoreDispatch } from 'src/store/index';
 import { RootState } from 'src/store/state';
 import {
   StoreError,
-  UploadMeta,
   UploadMethod,
   UploadMethods,
   UploadState,
   UploadStatus,
 } from 'src/store/types';
 
-const createUploadSlice = <Row>({
+export const uploadProcessingStatuses = [
+  UploadStatus.Waiting,
+  UploadStatus.Uploading,
+];
+
+const createUploadSlice = <Value>({
   domainName,
   domainSelector,
   selectMethod,
 }: {
   domainName: string;
-  domainSelector: (state: RootState) => UploadState<Row>;
-  selectMethod: (row: Row) => UploadMethod;
+  domainSelector: (state: RootState) => UploadState<Value>;
+  selectMethod: (value: Value) => UploadMethod;
 }) => {
-  const initialState: UploadState<Row> = {
+  const initialState: UploadState<Value> = {
     rows: [],
-    metas: [],
+    metas: {},
   };
   const { actions, reducer, ...otherSlice } = createSlice({
     name: `${siteName}/upload/${domainName}`,
@@ -32,75 +36,66 @@ const createUploadSlice = <Row>({
       reset() {
         return initialState;
       },
-      addRows(state, action: PayloadAction<{ rows: Row[] }>) {
+      addRows(state, action: PayloadAction<{ values: Value[] }>) {
         const {
-          payload: { rows },
+          payload: { values },
         } = action;
+        const rows = values.map((value) => ({ key: nanoid(), value }));
         state.rows = state.rows.concat(castDrafts(rows));
-        const metas = Array<UploadMeta>(state.rows.length).fill({
-          status: UploadStatus.Initial,
-          error: null,
-        });
-        state.metas = state.metas.concat(metas);
+        for (const row of rows) {
+          state.metas[row.key] = {
+            status: UploadStatus.Initial,
+            error: null,
+          };
+        }
       },
       updateMeta(
         state,
         action: PayloadAction<{
-          index: number;
+          key: string;
           status?: UploadStatus;
           error?: StoreError | null;
         }>
       ) {
         const {
-          payload: { index, status, error },
+          payload: { key, status, error },
         } = action;
-        if (!state.metas[index]) {
+        if (!state.metas[key]) {
           return;
         }
 
         if (status) {
-          state.metas[index]!.status = status;
+          state.metas[key]!.status = status;
         }
         if (error !== undefined) {
-          state.metas[index]!.error = error;
+          state.metas[key]!.error = error;
         }
       },
-      removeRow(state, action: PayloadAction<{ index: number }>) {
+      removeRow(state, action: PayloadAction<{ key: string }>) {
         const {
-          payload: { index },
+          payload: { key },
         } = action;
-        const meta = state.metas[index];
-        if (
-          !meta ||
-          [UploadStatus.Waiting, UploadStatus.Uploading].includes(meta.status)
-        ) {
-          return;
-        }
-
-        state.rows.slice(index);
-        state.metas.slice(index);
+        state.rows = state.rows.filter((row) => row.key !== key);
+        delete state.metas[key];
       },
-      setRowsToWaiting(state, action: PayloadAction<{ indexes: number[] }>) {
+      setRowsToWaiting(state, action: PayloadAction<{ keys: string[] }>) {
         const {
-          payload: { indexes },
+          payload: { keys },
         } = action;
-        for (const index of indexes) {
-          const meta = state.metas[index];
-          if (
-            !meta ||
-            [UploadStatus.Waiting, UploadStatus.Uploading].includes(meta.status)
-          ) {
-            continue;
+        for (const key of keys) {
+          const status = state.metas[key]?.status;
+          if (status && !uploadProcessingStatuses.includes(status)) {
+            state.metas[key]!.status = UploadStatus.Waiting;
           }
-
-          state.metas[index]!.status = UploadStatus.Waiting;
         }
       },
-      setRowsWaitingToStopped(state) {
-        const indexes = state.metas.map((m, i) => i);
-        for (const index of indexes) {
-          if (state.metas[index]?.status === UploadStatus.Waiting) {
-            state.metas[index]!.status = UploadStatus.Waiting;
+      setRowsToStopped(state, action: PayloadAction<{ keys: string[] }>) {
+        const {
+          payload: { keys },
+        } = action;
+        for (const key of keys) {
+          if (state.metas[key]?.status === UploadStatus.Waiting) {
+            state.metas[key]!.status = UploadStatus.Waiting;
           }
         }
       },
@@ -111,83 +106,78 @@ const createUploadSlice = <Row>({
 
   const uploadRow =
     (
-      index: number,
-      { addMethod, mergeMethod, removeMethod }: UploadMethods<Row>
+      key: string,
+      { addMethod, mergeMethod, removeMethod }: UploadMethods<Value>
     ) =>
     async (dispatch: StoreDispatch, getState: GetState) => {
       const { rows, metas } = domainSelector(getState());
-      const row = rows[index];
-      const meta = metas[index];
+      const row = rows.find((r) => r.key === key);
+      const meta = metas[key];
       if (!row || !meta || meta.status !== UploadStatus.Waiting) {
         return undefined;
       }
 
       await dispatch(
-        actions.updateMeta({ index, status: UploadStatus.Uploading })
+        actions.updateMeta({ key, status: UploadStatus.Uploading })
       );
 
-      const method = selectMethod(row);
+      const { value } = row;
+      const method = selectMethod(value);
       switch (method) {
         case UploadMethod.Add: {
-          // const result = await dispatch(projectsActions.addEntity({}));
-          // if (projectsActions.addEntity.fulfilled.match(result)) {
-          //   await dispatch(
-          //     actions.updateMeta({ index, status: UploadStatus.Done })
-          //   );
-          // } else if (projectsActions.addEntity.rejected.match(result)) {
-          //   await dispatch(
-          //     actions.updateMeta({
-          //       index,
-          //       status: UploadStatus.Failed,
-          //       error: result.payload,
-          //     })
-          //   );
-          // }
-          const meta = await addMethod(dispatch, row);
-          return dispatch(actions.updateMeta({ index, ...meta }));
+          const meta = await addMethod(value);
+          return dispatch(actions.updateMeta({ key, ...meta }));
         }
         case UploadMethod.Merge: {
-          const meta = await mergeMethod(dispatch, row);
-          return dispatch(actions.updateMeta({ index, ...meta }));
+          const meta = await mergeMethod(value);
+          return dispatch(actions.updateMeta({ key, ...meta }));
         }
         case UploadMethod.Remove: {
-          const meta = await removeMethod(dispatch, row);
-          return dispatch(actions.updateMeta({ index, ...meta }));
+          const meta = await removeMethod(value);
+          return dispatch(actions.updateMeta({ key, ...meta }));
         }
       }
     };
 
   const uploadRows =
-    (indexes: number[], methods: UploadMethods<Row>) =>
+    (keys: string[], methods: UploadMethods<Value>) =>
     async (dispatch: StoreDispatch) => {
-      for (const index of indexes) {
-        await dispatch(uploadRow(index, methods));
+      for (const key of keys) {
+        await dispatch(uploadRow(key, methods));
       }
     };
 
+  const selectStatusKeys = (state: RootState, status: UploadStatus) => {
+    const { rows, metas } = domainSelector(state);
+    return rows
+      .map((row) => (metas[row.key]?.status === status ? row.key : undefined))
+      .filter(notUndefined);
+  };
+
   const uploadInitialRows =
-    (methods: UploadMethods<Row>) =>
+    (methods: UploadMethods<Value>) =>
     async (dispatch: StoreDispatch, getState: GetState) => {
-      const { metas } = domainSelector(getState());
-      const indexes = metas
-        .map((meta, index) =>
-          meta.status === UploadStatus.Initial ? index : undefined
-        )
-        .filter(notUndefined);
+      const keys = selectStatusKeys(getState(), UploadStatus.Initial);
 
-      await dispatch(actions.setRowsToWaiting({ indexes }));
+      await dispatch(actions.setRowsToWaiting({ keys }));
 
-      const evenIndexes = indexes.filter((i) => i % 2 === 0);
-      const oddIndexes = indexes.filter((i) => i % 2 === 1);
+      const evenKeys = keys.filter((k, i) => i % 2 === 0);
+      const oddKeys = keys.filter((k, i) => i % 2 === 1);
       return Promise.all([
-        uploadRows(evenIndexes, methods),
-        uploadRows(oddIndexes, methods),
+        uploadRows(evenKeys, methods),
+        uploadRows(oddKeys, methods),
       ]);
+    };
+
+  const stopWaitingRows =
+    () => async (dispatch: StoreDispatch, getState: GetState) => {
+      const keys = selectStatusKeys(getState(), UploadStatus.Waiting);
+      await dispatch(actions.setRowsToStopped({ keys }));
     };
 
   return {
     ...otherSlice,
-    actions: { ...actions, uploadInitialRows },
+    actions: { ...actions, uploadInitialRows, stopWaitingRows },
     reducer,
   };
 };
