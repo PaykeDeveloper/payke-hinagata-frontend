@@ -15,7 +15,7 @@ const ErrorCell: FC<{
     uploadProjectMetaSelector(s, { id: row.id })
   );
   const hasError = meta?.status === UploadStatus.Failed;
-  const value = row.value[name];
+  const value = row.data[name];
 
   let message: string | undefined;
   const error = meta?.error;

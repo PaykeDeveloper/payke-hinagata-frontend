@@ -60,8 +60,8 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
         return;
       }
       const data = await parseCSV(value);
-      const values = toCamelCaseKeys<UploadProjectInput[]>(data);
-      dispatch(uploadProjectsActions.addRows({ values }));
+      const dataList = toCamelCaseKeys<UploadProjectInput[]>(data);
+      dispatch(uploadProjectsActions.addRows({ dataList }));
     },
     [dispatch, enqueueSnackbar]
   );

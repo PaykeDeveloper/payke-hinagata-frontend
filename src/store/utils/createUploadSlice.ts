@@ -16,16 +16,16 @@ export const uploadProcessingStatuses = [
   UploadStatus.Uploading,
 ];
 
-const createUploadSlice = <Value>({
+const createUploadSlice = <Data>({
   domainName,
   domainSelector,
   selectMethod,
 }: {
   domainName: string;
-  domainSelector: (state: RootState) => UploadState<Value>;
-  selectMethod: (value: Value) => UploadMethod;
+  domainSelector: (state: RootState) => UploadState<Data>;
+  selectMethod: (data: Data) => UploadMethod;
 }) => {
-  const initialState: UploadState<Value> = {
+  const initialState: UploadState<Data> = {
     rows: [],
     metas: {},
   };
@@ -36,11 +36,11 @@ const createUploadSlice = <Value>({
       reset() {
         return initialState;
       },
-      addRows(state, action: PayloadAction<{ values: Value[] }>) {
+      addRows(state, action: PayloadAction<{ dataList: Data[] }>) {
         const {
-          payload: { values },
+          payload: { dataList },
         } = action;
-        const rows = values.map((value) => ({ id: nanoid(), value }));
+        const rows = dataList.map((data) => ({ id: nanoid(), data }));
         state.rows = state.rows.concat(castDrafts(rows));
         for (const row of rows) {
           state.metas[row.id] = {
@@ -107,7 +107,7 @@ const createUploadSlice = <Value>({
   const uploadRow =
     (
       id: string,
-      { addMethod, mergeMethod, removeMethod }: UploadMethods<Value>
+      { addMethod, mergeMethod, removeMethod }: UploadMethods<Data>
     ) =>
     async (dispatch: StoreDispatch, getState: GetState) => {
       const { rows, metas } = domainSelector(getState());
@@ -121,26 +121,26 @@ const createUploadSlice = <Value>({
         actions.updateMeta({ id: id, status: UploadStatus.Uploading })
       );
 
-      const { value } = row;
-      const method = selectMethod(value);
+      const { data } = row;
+      const method = selectMethod(data);
       switch (method) {
         case UploadMethod.Add: {
-          const meta = await addMethod(value);
+          const meta = await addMethod(data);
           return dispatch(actions.updateMeta({ id: id, ...meta }));
         }
         case UploadMethod.Merge: {
-          const meta = await mergeMethod(value);
+          const meta = await mergeMethod(data);
           return dispatch(actions.updateMeta({ id: id, ...meta }));
         }
         case UploadMethod.Remove: {
-          const meta = await removeMethod(value);
+          const meta = await removeMethod(data);
           return dispatch(actions.updateMeta({ id: id, ...meta }));
         }
       }
     };
 
   const uploadRows =
-    (keys: string[], methods: UploadMethods<Value>) =>
+    (keys: string[], methods: UploadMethods<Data>) =>
     async (dispatch: StoreDispatch) => {
       for (const key of keys) {
         await dispatch(uploadRow(key, methods));
@@ -155,7 +155,7 @@ const createUploadSlice = <Value>({
   };
 
   const uploadInitialRows =
-    (methods: UploadMethods<Value>) =>
+    (methods: UploadMethods<Data>) =>
     async (dispatch: StoreDispatch, getState: GetState) => {
       const keys = selectStatusKeys(getState(), UploadStatus.Initial);
 

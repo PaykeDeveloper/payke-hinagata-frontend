@@ -101,13 +101,13 @@ export interface UploadMeta {
   error: StoreError | null;
 }
 
-export interface UploadRow<Value> {
+export interface UploadRow<Data> {
   id: string;
-  value: Value;
+  data: Data;
 }
 
-export interface UploadState<Value> {
-  rows: UploadRow<Value>[];
+export interface UploadState<Data> {
+  rows: UploadRow<Data>[];
   metas: Record<string, UploadMeta>;
 }
 
@@ -117,8 +117,8 @@ export enum UploadMethod {
   Remove,
 }
 
-export interface UploadMethods<Value> {
-  addMethod: (value: Value) => Promise<UploadMeta>;
-  mergeMethod: (value: Value) => Promise<UploadMeta>;
-  removeMethod: (value: Value) => Promise<UploadMeta>;
+export interface UploadMethods<Data> {
+  addMethod: (data: Data) => Promise<UploadMeta>;
+  mergeMethod: (data: Data) => Promise<UploadMeta>;
+  removeMethod: (data: Data) => Promise<UploadMeta>;
 }
