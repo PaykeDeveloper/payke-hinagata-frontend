@@ -1,46 +1,44 @@
 // FIXME: SAMPLE CODE
 
-import React, { useRef, useCallback, FC } from 'react';
+import React, { useCallback, FC } from 'react';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 
 export type FileUploadButtonProps = Omit<
   ButtonProps,
   'onClick' | 'onChange'
 > & {
+  id: string;
   accept?: string;
   onChange: (value?: File | null) => void | Promise<unknown>;
 };
 
 const FileUploadButton: FC<FileUploadButtonProps> = (props) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const { onChange, children, accept, ...otherProps } = props;
+  const { id, accept, children, onChange, ...otherProps } = props;
   const handleChange = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.currentTarget.files !== null) {
         const file = event.currentTarget.files[0];
         await onChange(file);
-        inputRef.current!.value = '';
       } else {
         await onChange(event.currentTarget.files);
       }
     },
-    [onChange, inputRef]
+    [onChange]
   );
-  const fileUpload = async () => {
-    inputRef.current!.click();
-  };
   return (
     <>
-      <Button onClick={fileUpload} {...otherProps}>
-        {children}
-      </Button>
       <input
         hidden
-        ref={inputRef}
         type="file"
+        id={id}
         accept={accept}
         onChange={handleChange}
       />
+      <label htmlFor={id}>
+        <Button component="span" {...otherProps}>
+          {children}
+        </Button>
+      </label>
     </>
   );
 };

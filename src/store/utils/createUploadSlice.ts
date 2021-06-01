@@ -98,7 +98,7 @@ const createUploadSlice = <Data>({
         } = action;
         for (const id of ids) {
           if (state.metas[id]?.status === UploadStatus.Waiting) {
-            state.metas[id]!.status = UploadStatus.Waiting;
+            state.metas[id]!.status = UploadStatus.Initial;
           }
         }
       },
@@ -143,14 +143,22 @@ const createUploadSlice = <Data>({
     };
 
   const uploadRows =
-    (keys: string[], methods: UploadMethods<Data>) =>
+    (ids: string[], methods: UploadMethods<Data>) =>
     async (dispatch: StoreDispatch) => {
-      for (const key of keys) {
-        await dispatch(uploadRow(key, methods));
+      for (const id of ids) {
+        await dispatch(uploadRow(id, methods));
       }
     };
 
-  const selectStatusKeys = (state: RootState, status: UploadStatus) => {
+  const uploadInitialRow =
+    (id: string, methods: UploadMethods<Data>) =>
+    async (dispatch: StoreDispatch) => {
+      const ids = [id];
+      await dispatch(actions.setRowsToWaiting({ ids }));
+      return dispatch(uploadRows(ids, methods));
+    };
+
+  const selectStatusIds = (state: RootState, status: UploadStatus) => {
     const { rows, metas } = domainSelector(state);
     return rows
       .map((row) => (metas[row.id]?.status === status ? row.id : undefined))
@@ -160,27 +168,32 @@ const createUploadSlice = <Data>({
   const uploadInitialRows =
     (methods: UploadMethods<Data>) =>
     async (dispatch: StoreDispatch, getState: GetState) => {
-      const keys = selectStatusKeys(getState(), UploadStatus.Initial);
+      const ids = selectStatusIds(getState(), UploadStatus.Initial);
 
-      await dispatch(actions.setRowsToWaiting({ ids: keys }));
+      await dispatch(actions.setRowsToWaiting({ ids }));
 
-      const evenKeys = keys.filter((k, i) => i % 2 === 0);
-      const oddKeys = keys.filter((k, i) => i % 2 === 1);
+      const evenIds = ids.filter((k, i) => i % 2 === 0);
+      const oddIds = ids.filter((k, i) => i % 2 === 1);
       return Promise.all([
-        dispatch(uploadRows(evenKeys, methods)),
-        dispatch(uploadRows(oddKeys, methods)),
+        dispatch(uploadRows(evenIds, methods)),
+        dispatch(uploadRows(oddIds, methods)),
       ]);
     };
 
   const stopWaitingRows =
     () => async (dispatch: StoreDispatch, getState: GetState) => {
-      const keys = selectStatusKeys(getState(), UploadStatus.Waiting);
-      await dispatch(actions.setRowsToStopped({ ids: keys }));
+      const ids = selectStatusIds(getState(), UploadStatus.Waiting);
+      return dispatch(actions.setRowsToStopped({ ids }));
     };
 
   return {
     ...otherSlice,
-    actions: { ...actions, uploadInitialRows, stopWaitingRows },
+    actions: {
+      ...actions,
+      uploadInitialRow,
+      uploadInitialRows,
+      stopWaitingRows,
+    },
     reducer,
   };
 };

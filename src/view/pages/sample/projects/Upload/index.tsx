@@ -1,10 +1,13 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
-import { useStoreSelector } from 'src/store';
+import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
+import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
+import { UploadProjectInput } from 'src/store/state/ui/upload/sample/projects/types';
+import { UploadMethods, UploadStatus } from 'src/store/types';
 import { DivisionPath } from 'src/view/routes/paths';
 import Component from './Component';
 
@@ -17,9 +20,50 @@ const Upload: FC<RouteComponentProps<DivisionPath>> = (props) => {
     match: { params: pathParams },
   } = props;
 
+  const dispatch = useStoreDispatch();
+  const methods = useMemo<UploadMethods<UploadProjectInput>>(
+    () => ({
+      addMethod: async (bodyParams) => {
+        const action = await dispatch(
+          projectsActions.addEntity({ pathParams, bodyParams })
+        );
+        if (projectsActions.addEntity.rejected.match(action)) {
+          return { status: UploadStatus.Failed, error: action.payload || null };
+        }
+        return { status: UploadStatus.Done, error: null };
+      },
+      mergeMethod: async (bodyParams) => {
+        const projectSlug = `${bodyParams.slug}`;
+        const action = await dispatch(
+          projectsActions.mergeEntity({
+            pathParams: { ...pathParams, projectSlug },
+            bodyParams,
+          })
+        );
+        if (projectsActions.mergeEntity.rejected.match(action)) {
+          return { status: UploadStatus.Failed, error: action.payload || null };
+        }
+        return { status: UploadStatus.Done, error: null };
+      },
+      removeMethod: async (bodyParams) => {
+        const projectSlug = `${bodyParams.slug}`;
+        const action = await dispatch(
+          projectsActions.removeEntity({
+            pathParams: { ...pathParams, projectSlug },
+          })
+        );
+        if (projectsActions.removeEntity.rejected.match(action)) {
+          return { status: UploadStatus.Failed, error: action.payload || null };
+        }
+        return { status: UploadStatus.Done, error: null };
+      },
+    }),
+    [dispatch, pathParams]
+  );
+
   const state = useStoreSelector(selector);
 
-  return <Component {...state} divisionPath={pathParams} />;
+  return <Component {...state} divisionPath={pathParams} methods={methods} />;
 };
 
 export default Upload;

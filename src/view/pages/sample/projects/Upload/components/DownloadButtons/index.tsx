@@ -8,7 +8,6 @@ import { useHistory } from 'react-router-dom';
 import { parseCSV } from 'src/base/csvParser';
 import { toCamelCaseKeys } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
-import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
 import {
   uploadProjectMetasSelector,
   uploadProjectRowsSelector,
@@ -22,16 +21,24 @@ import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;
 
-export const MAX_FILE_SIZE = 1024 * 1024;
-export const SUPPORTED_FORMATS = ['text/csv'];
+const MAX_FILE_SIZE = 1024 * 1024;
+const SUPPORTED_FORMATS = ['text/csv'];
 
 const selector = createSelector(
   [uploadProjectRowsSelector, uploadProjectMetasSelector],
   (rows, metas) => ({ rows, metas })
 );
 
-const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
-  const pathParams = props.divisionPath;
+const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+  event.preventDefault();
+  event.returnValue = 'Are you sure to close this tab?';
+};
+
+const DownloadButtons: FC<{
+  divisionPath: DivisionPath;
+  methods: UploadMethods<UploadProjectInput>;
+}> = (props) => {
+  const { divisionPath: pathParams, methods } = props;
   const { push } = useHistory();
 
   const onBack: ChildProps['onBack'] = useCallback(
@@ -66,51 +73,11 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
     [dispatch, enqueueSnackbar]
   );
 
-  const methods = useMemo<UploadMethods<UploadProjectInput>>(
-    () => ({
-      addMethod: async (bodyParams) => {
-        const action = await dispatch(
-          projectsActions.addEntity({ pathParams, bodyParams })
-        );
-        if (projectsActions.addEntity.rejected.match(action)) {
-          return { status: UploadStatus.Failed, error: action.payload || null };
-        }
-        return { status: UploadStatus.Done, error: null };
-      },
-      mergeMethod: async (bodyParams) => {
-        const projectSlug = `${bodyParams.slug}`;
-        const action = await dispatch(
-          projectsActions.mergeEntity({
-            pathParams: { ...pathParams, projectSlug },
-            bodyParams,
-          })
-        );
-        if (projectsActions.mergeEntity.rejected.match(action)) {
-          return { status: UploadStatus.Failed, error: action.payload || null };
-        }
-        return { status: UploadStatus.Done, error: null };
-      },
-      removeMethod: async (bodyParams) => {
-        const projectSlug = `${bodyParams.slug}`;
-        const action = await dispatch(
-          projectsActions.removeEntity({
-            pathParams: { ...pathParams, projectSlug },
-          })
-        );
-        if (projectsActions.removeEntity.rejected.match(action)) {
-          return { status: UploadStatus.Failed, error: action.payload || null };
-        }
-        return { status: UploadStatus.Done, error: null };
-      },
-    }),
-    [dispatch, pathParams]
-  );
-
   const onStartUpload: ChildProps['onStartUpload'] = useCallback(async () => {
+    window.addEventListener('beforeunload', handleBeforeUnload);
     await dispatch(uploadProjectsActions.uploadInitialRows(methods));
-    enqueueSnackbar(<Trans>finished import</Trans>, {
-      variant: 'success',
-    });
+    enqueueSnackbar(<Trans>Upload completed.</Trans>);
+    window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [dispatch, methods, enqueueSnackbar]);
 
   const onClear: ChildProps['onClear'] = useCallback(
@@ -155,12 +122,10 @@ const DownloadButtons: FC<{ divisionPath: DivisionPath }> = (props) => {
   const processing =
     statuses[UploadStatus.Waiting] || statuses[UploadStatus.Uploading];
 
-  const finished = statuses[UploadStatus.Done] || statuses[UploadStatus.Failed];
-
   return (
     <Component
       onBack={onBack}
-      onAddCsv={!processing && !finished ? onAddCsv : undefined}
+      onAddCsv={!processing ? onAddCsv : undefined}
       onStartUpload={
         statuses[UploadStatus.Initial] && !processing
           ? onStartUpload

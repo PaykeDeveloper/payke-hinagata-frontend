@@ -45,8 +45,8 @@ const Component: FC<{
       headerName: t('ID'),
       width: 100,
     },
-    { field: 'name', headerName: t('Name'), width: 300 },
-    { field: 'email', headerName: t('Email'), width: 300 },
+    { field: 'name', headerName: t('Name'), width: 300, flex: 1 },
+    { field: 'email', headerName: t('Email'), width: 300, flex: 1 },
     {
       field: 'createdAt',
       headerName: t('Created at'),

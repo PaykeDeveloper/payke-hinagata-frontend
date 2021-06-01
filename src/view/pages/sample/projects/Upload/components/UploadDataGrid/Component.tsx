@@ -5,48 +5,80 @@ import { GridColumns } from '@material-ui/data-grid';
 import { GridOverlay } from '@material-ui/data-grid';
 import { useTranslation } from 'react-i18next';
 import { UploadProjectInput } from 'src/store/state/ui/upload/sample/projects/types';
-import { UploadRow } from 'src/store/types';
-import BaseDataGrid from 'src/view/base/material-ui/DataGrid';
+import { UploadMethod, UploadRow } from 'src/store/types';
+import BaseDataGrid, {
+  booleanColDef,
+  dateColDef,
+  dateTimeColDef,
+} from 'src/view/base/material-ui/DataGrid';
+import UploadMethodCell from 'src/view/components/atoms/UploadMethodCell';
+import ActionCell from './components/ActionCell';
 import ErrorCell from './components/ErrorCell';
 import Progress from './components/Progress';
-import StatusCell from './components/StatusCell';
 import ValueCell from './components/ValueCell';
+
+type Row = UploadRow<UploadProjectInput>;
 
 export const Component: FC<{
   rows: UploadRow<UploadProjectInput>[];
+  onRestart: (id: string) => void;
+  onRemove: (id: string) => void;
 }> = (props) => {
-  const { rows } = props;
+  const { rows, onRestart, onRemove } = props;
   const { t } = useTranslation();
   const columns: GridColumns = [
     {
       field: 'status',
       headerName: t('Status'),
-      align: 'right',
-      renderCell: ({ row }) => <StatusCell id={row['id']} />,
+      align: 'center',
+      renderCell: ({ row }) => (
+        <ActionCell id={row['id']} onRestart={onRestart} onRemove={onRemove} />
+      ),
+    },
+    {
+      field: 'method',
+      headerName: t('Method'),
+      valueGetter: ({ row }) => {
+        const { slug, deleteFlag } = (row as Row).data;
+        if (!slug) {
+          return UploadMethod.Add;
+        } else if (deleteFlag) {
+          return UploadMethod.Remove;
+        } else {
+          return UploadMethod.Merge;
+        }
+      },
+      renderCell: ({ value }) => (
+        <UploadMethodCell method={value as UploadMethod} />
+      ),
     },
     {
       field: 'slug',
       headerName: t('Slug'),
       width: 310,
-      renderCell: ({ row }) => (
-        <ValueCell row={row as UploadRow<UploadProjectInput>} name="slug" />
+      valueGetter: ({ row }) => (row as Row).data.slug,
+      renderCell: ({ row, formattedValue }) => (
+        <ValueCell id={row['id']} formattedValue={formattedValue} name="slug" />
       ),
     },
     {
       field: 'name',
       headerName: t('Name'),
       width: 200,
-      renderCell: ({ row }) => (
-        <ValueCell row={row as UploadRow<UploadProjectInput>} name="name" />
+      valueGetter: ({ row }) => (row as Row).data.name,
+      renderCell: ({ row, formattedValue }) => (
+        <ValueCell id={row['id']} formattedValue={formattedValue} name="name" />
       ),
     },
     {
       field: 'description',
       headerName: t('Description'),
       width: 300,
-      renderCell: ({ row }) => (
+      valueGetter: ({ row }) => (row as Row).data.description,
+      renderCell: ({ row, formattedValue }) => (
         <ValueCell
-          row={row as UploadRow<UploadProjectInput>}
+          id={row['id']}
+          formattedValue={formattedValue}
           name="description"
         />
       ),
@@ -54,41 +86,51 @@ export const Component: FC<{
     {
       field: 'priority',
       headerName: t('Priority'),
-      renderCell: ({ row }) => (
-        <ValueCell row={row as UploadRow<UploadProjectInput>} name="priority" />
+      valueGetter: ({ row }) => (row as Row).data.priority,
+      renderCell: ({ row, formattedValue }) => (
+        <ValueCell
+          id={row['id']}
+          formattedValue={formattedValue}
+          name="priority"
+        />
       ),
     },
     {
+      ...booleanColDef,
       field: 'approved',
       headerName: t('Approved'),
-      renderCell: ({ row }) => (
+      valueGetter: ({ row }) => (row as Row).data.approved,
+      renderCell: ({ row, formattedValue }) => (
         <ValueCell
-          row={row as UploadRow<UploadProjectInput>}
+          id={row['id']}
+          formattedValue={formattedValue}
           name="approved"
-          type="boolean"
         />
       ),
     },
     {
+      ...dateColDef,
       field: 'startDate',
       headerName: t('Start Date'),
-      renderCell: ({ row }) => (
+      valueGetter: ({ row }) => (row as Row).data.startDate,
+      renderCell: ({ row, formattedValue }) => (
         <ValueCell
-          row={row as UploadRow<UploadProjectInput>}
+          id={row['id']}
+          formattedValue={formattedValue}
           name="startDate"
-          type="date"
         />
       ),
     },
     {
+      ...dateTimeColDef,
       field: 'finishedAt',
       headerName: t('Finished At'),
-      width: 150,
-      renderCell: ({ row }) => (
+      valueGetter: ({ row }) => (row as Row).data.finishedAt,
+      renderCell: ({ row, formattedValue }) => (
         <ValueCell
-          row={row as UploadRow<UploadProjectInput>}
+          id={row['id']}
+          formattedValue={formattedValue}
           name="finishedAt"
-          type="datetime"
         />
       ),
     },
@@ -96,9 +138,11 @@ export const Component: FC<{
       field: 'difficulty',
       headerName: t('Difficulty'),
       type: 'number',
-      renderCell: ({ row }) => (
+      valueGetter: ({ row }) => (row as Row).data.difficulty,
+      renderCell: ({ row, formattedValue }) => (
         <ValueCell
-          row={row as UploadRow<UploadProjectInput>}
+          id={row['id']}
+          formattedValue={formattedValue}
           name="difficulty"
         />
       ),
@@ -107,9 +151,11 @@ export const Component: FC<{
       field: 'coefficient',
       headerName: t('Coefficient'),
       type: 'number',
-      renderCell: ({ row }) => (
+      valueGetter: ({ row }) => (row as Row).data.coefficient,
+      renderCell: ({ row, formattedValue }) => (
         <ValueCell
-          row={row as UploadRow<UploadProjectInput>}
+          id={row['id']}
+          formattedValue={formattedValue}
           name="coefficient"
         />
       ),
@@ -118,9 +164,11 @@ export const Component: FC<{
       field: 'productivity',
       headerName: t('Productivity'),
       type: 'number',
-      renderCell: ({ row }) => (
+      valueGetter: ({ row }) => (row as Row).data.productivity,
+      renderCell: ({ row, formattedValue }) => (
         <ValueCell
-          row={row as UploadRow<UploadProjectInput>}
+          id={row['id']}
+          formattedValue={formattedValue}
           name="productivity"
         />
       ),
@@ -129,9 +177,24 @@ export const Component: FC<{
       field: 'lockVersion',
       headerName: t('Lock Version'),
       type: 'number',
-      renderCell: ({ row }) => (
+      valueGetter: ({ row }) => (row as Row).data.lockVersion,
+      renderCell: ({ row, formattedValue }) => (
         <ValueCell
-          row={row as UploadRow<UploadProjectInput>}
+          id={row['id']}
+          formattedValue={formattedValue}
+          name="lockVersion"
+        />
+      ),
+    },
+    {
+      ...booleanColDef,
+      field: 'deleteFlag',
+      headerName: t('Delete Flag'),
+      valueGetter: ({ row }) => (row as Row).data.deleteFlag,
+      renderCell: ({ row, formattedValue }) => (
+        <ValueCell
+          id={row['id']}
+          formattedValue={formattedValue}
           name="lockVersion"
         />
       ),

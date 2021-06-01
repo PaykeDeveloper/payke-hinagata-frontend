@@ -64,6 +64,7 @@ const Component: FC<{
       field: 'name',
       headerName: t('Name'),
       width: 300,
+      flex: 1,
       renderCell: ({ row }) => <>{userIdMap[row['userId']]?.name}</>,
     },
     { field: 'roleNames', headerName: t('Role Names'), width: 200 },

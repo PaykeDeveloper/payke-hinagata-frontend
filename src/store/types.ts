@@ -93,7 +93,6 @@ export enum UploadStatus {
   Uploading,
   Done,
   Failed,
-  Stopped,
 }
 
 export interface UploadMeta {

@@ -25,14 +25,13 @@ export const ErrorOutlineIcon = createIcon('error_outline');
 export const SendIcon = createIcon('send');
 export const PersonAddIcon = createIcon('person_add');
 export const PasswordIcon = createIcon('password');
-export const BlockIcon = createIcon('block');
 export const CheckIcon = createIcon('check');
-export const AttachFileIcon = createIcon('attach_file');
-export const TaskIcon = createIcon('task');
 export const FileDownloadIcon = createIcon('file_download');
 export const FileUploadIcon = createIcon('file_upload');
 export const SettingsIcon = createIcon('settings');
 export const StopIcon = createIcon('stop');
+export const RemoveCircleOutlineIcon = createIcon('remove_circle_outline');
+export const RestartAltIcon = createIcon('restart_alt');
 
 // FIXME: SAMPLE CODE
 export const HomeIcon = createIcon('home');

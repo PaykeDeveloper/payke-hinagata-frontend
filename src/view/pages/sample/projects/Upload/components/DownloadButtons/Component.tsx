@@ -44,6 +44,7 @@ const Component: FC<{
           {t('Back')}
         </Button>,
         <FileUploadButton
+          id="upload-csv"
           variant="outlined"
           color="primary"
           onChange={onAddCsv || emptyCallback}
