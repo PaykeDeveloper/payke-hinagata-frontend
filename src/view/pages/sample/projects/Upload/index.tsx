@@ -1,23 +1,43 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import { projectsActions } from 'src/store/state/domain/sample/projects/slice';
+import {
+  uploadProjectKeySelector,
+  uploadProjectMetasSelector,
+  uploadProjectRowsSelector,
+} from 'src/store/state/ui/upload/sample/projects/selectors';
+import { uploadProjectsActions } from 'src/store/state/ui/upload/sample/projects/slice';
 import { UploadProjectInput } from 'src/store/state/ui/upload/sample/projects/types';
 import { UploadMethods, UploadStatus } from 'src/store/types';
+import { uploadProcessingStatuses } from 'src/store/utils';
 import { DivisionPath } from 'src/view/routes/paths';
 import Component from './Component';
 
-const selector = createSelector([divisionSelector], (division) => ({
-  division,
-}));
+const selector = createSelector(
+  [
+    divisionSelector,
+    uploadProjectRowsSelector,
+    uploadProjectMetasSelector,
+    uploadProjectKeySelector,
+  ],
+  (division, rows, metas, key) => {
+    const processing = !!rows.find((row) => {
+      const status = metas[row.id]?.status;
+      return status !== undefined && uploadProcessingStatuses.includes(status);
+    });
+    return { division, processing, key };
+  }
+);
 
 const Upload: FC<RouteComponentProps<DivisionPath>> = (props) => {
   const {
     match: { params: pathParams },
+    location: { pathname },
   } = props;
 
   const dispatch = useStoreDispatch();
@@ -61,9 +81,25 @@ const Upload: FC<RouteComponentProps<DivisionPath>> = (props) => {
     [dispatch, pathParams]
   );
 
-  const state = useStoreSelector(selector);
+  const { processing, key, ...otherState } = useStoreSelector(selector);
 
-  return <Component {...state} divisionPath={pathParams} methods={methods} />;
+  const notSameKey = key !== pathname;
+
+  useEffect(() => {
+    if (!processing && notSameKey) {
+      dispatch(uploadProjectsActions.initialize({ key: pathname }));
+    }
+  }, [dispatch, processing, notSameKey, pathname]);
+
+  return (
+    <Component
+      {...otherState}
+      pathname={pathname}
+      divisionPath={pathParams}
+      methods={methods}
+      disabled={processing && notSameKey}
+    />
+  );
 };
 
 export default Upload;

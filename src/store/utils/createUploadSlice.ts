@@ -1,5 +1,4 @@
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
-import { castDraft } from 'immer';
 import { siteName } from 'src/base/constants';
 import { castDrafts, notUndefined } from 'src/base/utils';
 import { StoreDispatch } from 'src/store/index';
@@ -17,25 +16,29 @@ export const uploadProcessingStatuses = [
   UploadStatus.Uploading,
 ];
 
-const createUploadSlice = <Data, PathParams>({
+const createUploadSlice = <Data>({
   domainName,
   domainSelector,
   selectMethod,
 }: {
   domainName: string;
-  domainSelector: (state: RootState) => UploadState<Data, PathParams>;
+  domainSelector: (state: RootState) => UploadState<Data>;
   selectMethod: (data: Data) => UploadMethod;
 }) => {
-  const initialState: UploadState<Data, PathParams> = {
+  const initialState: UploadState<Data> = {
     rows: [],
     metas: {},
+    key: '',
   };
   const { actions, reducer, ...otherSlice } = createSlice({
     name: `${siteName}/upload/${domainName}`,
     initialState,
     reducers: {
-      reset() {
-        return initialState;
+      initialize(state, action: PayloadAction<{ key: string }>) {
+        const {
+          payload: { key },
+        } = action;
+        return { ...initialState, key };
       },
       addRows(state, action: PayloadAction<{ dataList: Data[] }>) {
         const {
@@ -102,12 +105,6 @@ const createUploadSlice = <Data, PathParams>({
             state.metas[id]!.status = UploadStatus.Initial;
           }
         }
-      },
-      setPathParams(state, action: PayloadAction<{ pathParams: PathParams }>) {
-        const {
-          payload: { pathParams },
-        } = action;
-        state.pathParams = castDraft(pathParams);
       },
     },
   });

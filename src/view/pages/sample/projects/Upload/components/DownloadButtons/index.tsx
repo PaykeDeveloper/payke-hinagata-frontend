@@ -35,10 +35,11 @@ const handleBeforeUnload = (event: BeforeUnloadEvent) => {
 };
 
 const DownloadButtons: FC<{
+  pathname: string;
   divisionPath: DivisionPath;
   methods: UploadMethods<UploadProjectInput>;
 }> = (props) => {
-  const { divisionPath: pathParams, methods } = props;
+  const { pathname, divisionPath: pathParams, methods } = props;
   const { push } = useHistory();
 
   const onBack: ChildProps['onBack'] = useCallback(
@@ -81,8 +82,8 @@ const DownloadButtons: FC<{
   }, [dispatch, methods, enqueueSnackbar]);
 
   const onClear: ChildProps['onClear'] = useCallback(
-    async () => dispatch(uploadProjectsActions.reset()),
-    [dispatch]
+    async () => dispatch(uploadProjectsActions.initialize({ key: pathname })),
+    [dispatch, pathname]
   );
 
   const { rows, metas } = useStoreSelector(selector);

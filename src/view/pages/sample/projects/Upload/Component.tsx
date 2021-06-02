@@ -1,6 +1,7 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { useTranslation } from 'react-i18next';
 import { Division } from 'src/store/state/domain/division/divisions/types';
 import { UploadProjectInput } from 'src/store/state/ui/upload/sample/projects/types';
@@ -13,11 +14,13 @@ import DownloadButtons from './components/DownloadButtons';
 import UploadDataGrid from './components/UploadDataGrid';
 
 const Component: FC<{
+  pathname: string;
   divisionPath: DivisionPath;
   division: Division | undefined;
   methods: UploadMethods<UploadProjectInput>;
+  disabled: boolean;
 }> = (props) => {
-  const { divisionPath, division, methods } = props;
+  const { pathname, divisionPath, division, methods, disabled } = props;
   const { t } = useTranslation();
   return (
     <ContentWrapper>
@@ -34,8 +37,22 @@ const Component: FC<{
         {t('Upload CSV')}
       </ContentHeader>
       <ContentBody>
-        <DownloadButtons divisionPath={divisionPath} methods={methods} />
-        <UploadDataGrid methods={methods} />
+        {disabled ? (
+          <Alert severity="warning">
+            <AlertTitle>{t('Warning')}</AlertTitle>
+            {`${t('Uploading in other Divisions.')} - `}
+            <strong>{t('Please wait or stop the upload.')}</strong>
+          </Alert>
+        ) : (
+          <>
+            <DownloadButtons
+              pathname={pathname}
+              divisionPath={divisionPath}
+              methods={methods}
+            />
+            <UploadDataGrid methods={methods} />
+          </>
+        )}
       </ContentBody>
     </ContentWrapper>
   );

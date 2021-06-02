@@ -9,6 +9,9 @@ export const uploadProjectRowsSelector = (state: StoreState) =>
 export const uploadProjectMetasSelector = (state: StoreState) =>
   state.ui.upload.sample.projects.metas;
 
+export const uploadProjectKeySelector = (state: StoreState) =>
+  state.ui.upload.sample.projects.key;
+
 export const uploadProjectMetaSelector = createSelector(
   uploadProjectMetasSelector,
   (_: StoreState, { id }: { id: string }) => id,
