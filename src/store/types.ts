@@ -86,3 +86,39 @@ export interface EntitiesState<EntitiesEntity, EntitiesArg, Entity, EntityArg>
     fetchEntities: StoreMeta<FetchEntitiesArg<EntitiesArg>>;
   };
 }
+
+export enum UploadStatus {
+  Initial,
+  Waiting,
+  Uploading,
+  Done,
+  Failed,
+}
+
+export interface UploadMeta {
+  status: UploadStatus;
+  error: StoreError | null;
+}
+
+export interface UploadRow<Data> {
+  id: string;
+  data: Data;
+}
+
+export interface UploadState<Data> {
+  rows: UploadRow<Data>[];
+  metas: Record<string, UploadMeta>;
+  key: string;
+}
+
+export enum UploadMethod {
+  Add,
+  Merge,
+  Remove,
+}
+
+export interface UploadMethods<Data> {
+  addMethod: (data: Data) => Promise<UploadMeta>;
+  mergeMethod: (data: Data) => Promise<UploadMeta>;
+  removeMethod: (data: Data) => Promise<UploadMeta>;
+}

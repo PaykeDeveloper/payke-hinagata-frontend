@@ -13,12 +13,13 @@ import {
   projectsStatusSelector,
   canCreateProjectSelector,
   canEditProjectSelector,
+  canViewProjectsSelector,
 } from 'src/store/state/domain/sample/projects/selectors';
-import { getProjectsExportApiUrl } from 'src/store/urls';
+import { getProjectsDownloadApiUrl } from 'src/store/urls';
 import {
   DivisionPath,
   getProjectEditPath,
-  getProjectImportPath,
+  getProjectUploadPath,
   getProjectNewPath,
 } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
@@ -32,14 +33,16 @@ const selector = createSelector(
     projectsStatusSelector,
     projectsErrorSelector,
     divisionSelector,
+    canViewProjectsSelector,
     canCreateProjectSelector,
     canEditProjectSelector,
   ],
-  (projects, status, error, division, canCreate, canEdit) => ({
+  (projects, status, error, division, canView, canCreate, canEdit) => ({
     projects,
     status,
     error,
     division,
+    canView,
     canCreate,
     canEdit,
   })
@@ -74,7 +77,7 @@ const Container: FC<
 
   const onClickImport: ChildProps['onClickImport'] = useCallback(
     () =>
-      push(getProjectImportPath(pathParams), {
+      push(getProjectUploadPath(pathParams), {
         path,
       } as RouterState),
     [push, pathParams, path]
@@ -85,7 +88,7 @@ const Container: FC<
   return (
     <Component
       {...otherState}
-      exportUrl={getProjectsExportApiUrl(pathParams)}
+      exportUrl={getProjectsDownloadApiUrl(pathParams)}
       onClickAdd={canCreate ? onClickAdd : undefined}
       onClickEdit={canEdit ? onClickEdit : undefined}
       onClickImport={canCreate ? onClickImport : undefined}

@@ -27,6 +27,10 @@ export {
   getEntitiesInitialState,
 } from './createEntitiesSlice';
 export {
+  default as createUploadSlice,
+  uploadProcessingStatuses,
+} from './createUploadSlice';
+export {
   AllPermissionFactory,
   OwnPermissionFactory,
 } from 'src/store/utils/permissionFactories';

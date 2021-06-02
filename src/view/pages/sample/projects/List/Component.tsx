@@ -32,6 +32,7 @@ const Component: FC<{
   error: StoreError | undefined;
   exportUrl: string;
   division: Division | undefined;
+  canView: boolean;
 
   onClickAdd?: () => void;
   onClickEdit?: (projectSlug: string) => void;
@@ -43,6 +44,7 @@ const Component: FC<{
     error,
     exportUrl,
     division,
+    canView,
     onClickAdd,
     onClickEdit,
     onClickImport,
@@ -60,10 +62,9 @@ const Component: FC<{
         ) : (
           <></>
         ),
-      width: 50,
     },
-    { field: 'id', headerName: t('ID'), width: 100 },
-    { field: 'name', headerName: t('Name'), width: 200 },
+    { field: 'slug', headerName: t('Slug'), width: 310 },
+    { field: 'name', headerName: t('Name'), width: 350, flex: 1 },
     {
       field: 'createdAt',
       headerName: t('Created at'),
@@ -110,15 +111,17 @@ const Component: FC<{
                   <Trans>Upload CSV</Trans>
                 </Button>
               ) : undefined,
-              <Button
-                startIcon={<FileDownloadIcon />}
-                color="primary"
-                variant="outlined"
-                href={exportUrl}
-                download
-              >
-                <Trans>Download CSV</Trans>
-              </Button>,
+              canView ? (
+                <Button
+                  startIcon={<FileDownloadIcon />}
+                  color="primary"
+                  variant="outlined"
+                  href={exportUrl}
+                  download
+                >
+                  <Trans>Download CSV</Trans>
+                </Button>
+              ) : undefined,
             ]}
           />
           <Loader status={status}>

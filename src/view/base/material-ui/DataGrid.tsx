@@ -5,6 +5,7 @@ import {
   DataGridProps,
   GridColDef,
   GridFilterItem,
+  GridLocaleText,
 } from '@material-ui/data-grid';
 import clsx from 'clsx';
 import isEqual from 'lodash/isEqual';
@@ -26,8 +27,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+export const booleanColDef: Omit<GridColDef, 'field'> = {
+  width: 100,
+  type: 'boolean',
+  valueFormatter: ({ value }) => {
+    if (value === undefined || value === null || value === '') {
+      return '';
+    }
+    return value ? 'True' : 'False';
+  },
+};
+
 export const dateColDef: Omit<GridColDef, 'field'> = {
   width: 120,
+  type: 'date',
   valueFormatter: ({ value }) =>
     typeof value === 'string' || value instanceof Date
       ? formatDate(value)
@@ -36,6 +49,7 @@ export const dateColDef: Omit<GridColDef, 'field'> = {
 
 export const dateTimeColDef: Omit<GridColDef, 'field'> = {
   width: 150,
+  type: 'dateTime',
   valueFormatter: ({ value }) =>
     typeof value === 'string' || value instanceof Date
       ? formatUtcToZonedDateTime(value)
@@ -44,6 +58,7 @@ export const dateTimeColDef: Omit<GridColDef, 'field'> = {
 
 export const timestampColDef: Omit<GridColDef, 'field'> = {
   width: 180,
+  type: 'dateTime',
   valueFormatter: ({ value }) =>
     typeof value === 'string' || value instanceof Date
       ? formatUtcToZonedTimestamp(value)
@@ -54,9 +69,8 @@ const BaseDataGrid: FC<BaseDataGridProps> = (props) => {
   const { className, ...otherProps } = props;
 
   const { t } = useTranslation();
-  const localeText = {
+  const localeText: Partial<GridLocaleText> = {
     // https://github.com/mui-org/material-ui-x/blob/HEAD/packages/grid/_modules_/grid/constants/localeTextConstants.ts
-    rootGridLabel: t('grid'),
     noRowsLabel: t('No rows'),
     errorOverlayDefaultLabel: t('An error occurred.'),
   };
@@ -72,6 +86,7 @@ const BaseDataGrid: FC<BaseDataGridProps> = (props) => {
 
 BaseDataGrid.defaultProps = {
   autoPageSize: true,
+  disableSelectionOnClick: true,
 };
 
 export default BaseDataGrid;

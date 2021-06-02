@@ -1,14 +1,14 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import sampleReducer, { SampleState } from 'src/store/state/ui/sample';
 import { menuReducer } from './menu/slice';
 import { MenuState } from './menu/types';
+import uploadReducer, { UploadState } from './upload';
 
 export interface UiState {
   menu: MenuState;
-  sample: SampleState;
+  upload: UploadState;
 }
 
 export default combineReducers({
-  sample: sampleReducer,
   menu: menuReducer,
+  upload: uploadReducer,
 });
