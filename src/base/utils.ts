@@ -1,5 +1,6 @@
 import { camelCase, Options } from 'camel-case';
 import { Draft } from 'immer';
+import { snakeCase } from 'snake-case';
 import { formatUtcToZoned, formatZonedToUtc } from 'src/base/dateFormat';
 
 export function notUndefined<T>(item: T | undefined): item is T {
@@ -98,5 +99,8 @@ const changeKeys = (
 
 export const toCamelCaseKeys = <T>(data: object | object[]) =>
   changeKeys(data, camelCase) as T;
+
+export const toSnakeCaseKeys = <T>(data: object | object[]) =>
+  changeKeys(data, snakeCase) as T;
 
 export const castDrafts = <Row>(rows: Row[]) => rows as Draft<Row[]>;

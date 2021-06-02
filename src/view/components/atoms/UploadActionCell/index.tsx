@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { IconButton, Tooltip } from '@material-ui/core';
+import { IconButton, makeStyles, Tooltip } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useTranslation } from 'react-i18next';
 import { UploadStatus } from 'src/store/types';
@@ -9,12 +9,19 @@ import {
   RestartAltIcon,
 } from 'src/view/base/material-ui/Icon';
 
+const useStyles = makeStyles((theme) => ({
+  staticProgress: {
+    color: theme.palette.text.disabled,
+  },
+}));
+
 const UploadActionCell: FC<{
   status: UploadStatus;
   onRestart: () => void;
   onRemove: () => void;
 }> = ({ status, onRestart, onRemove }) => {
   const { t } = useTranslation();
+  const classes = useStyles();
   switch (status) {
     case UploadStatus.Initial: {
       return (
@@ -25,9 +32,18 @@ const UploadActionCell: FC<{
         </Tooltip>
       );
     }
-    case UploadStatus.Waiting:
+    case UploadStatus.Waiting: {
+      return (
+        <CircularProgress
+          size={20}
+          value={100}
+          variant="determinate"
+          className={classes.staticProgress}
+        />
+      );
+    }
     case UploadStatus.Uploading: {
-      return <CircularProgress size={30} />;
+      return <CircularProgress size={20} />;
     }
     case UploadStatus.Done: {
       return <CheckIcon color="primary" fontSize="small" />;

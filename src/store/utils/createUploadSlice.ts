@@ -1,4 +1,5 @@
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
+import { castDraft } from 'immer';
 import { siteName } from 'src/base/constants';
 import { castDrafts, notUndefined } from 'src/base/utils';
 import { StoreDispatch } from 'src/store/index';
@@ -16,16 +17,16 @@ export const uploadProcessingStatuses = [
   UploadStatus.Uploading,
 ];
 
-const createUploadSlice = <Data>({
+const createUploadSlice = <Data, PathParams>({
   domainName,
   domainSelector,
   selectMethod,
 }: {
   domainName: string;
-  domainSelector: (state: RootState) => UploadState<Data>;
+  domainSelector: (state: RootState) => UploadState<Data, PathParams>;
   selectMethod: (data: Data) => UploadMethod;
 }) => {
-  const initialState: UploadState<Data> = {
+  const initialState: UploadState<Data, PathParams> = {
     rows: [],
     metas: {},
   };
@@ -101,6 +102,12 @@ const createUploadSlice = <Data>({
             state.metas[id]!.status = UploadStatus.Initial;
           }
         }
+      },
+      setPathParams(state, action: PayloadAction<{ pathParams: PathParams }>) {
+        const {
+          payload: { pathParams },
+        } = action;
+        state.pathParams = castDraft(pathParams);
       },
     },
   });

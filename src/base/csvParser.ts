@@ -31,4 +31,4 @@ export const parseCSV = async <T>(input: File | string) => {
   return results.data;
 };
 
-export const serializeCsv = (rows: Object[]) => unparse(rows);
+export const serializeCsv = (rows: Object[]) => unparse(rows, { quotes: true });

@@ -6,7 +6,7 @@ import { useSnackbar } from 'notistack';
 import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { parseCSV } from 'src/base/csvParser';
-import { toCamelCaseKeys } from 'src/base/utils';
+import { toCamelCaseKeys, toSnakeCaseKeys } from 'src/base/utils';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
   uploadProjectMetasSelector,
@@ -91,7 +91,7 @@ const DownloadButtons: FC<{
     () =>
       rows
         .filter(({ id }) => metas[id]?.status === UploadStatus.Failed)
-        .map(({ data }) => data),
+        .map(({ data }) => toSnakeCaseKeys<Object>(data)),
     [metas, rows]
   );
   const onDownloadErrors: ChildProps['onDownloadErrors'] =

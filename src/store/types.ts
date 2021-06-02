@@ -105,9 +105,10 @@ export interface UploadRow<Data> {
   data: Data;
 }
 
-export interface UploadState<Data> {
+export interface UploadState<Data, PathParams> {
   rows: UploadRow<Data>[];
   metas: Record<string, UploadMeta>;
+  pathParams?: PathParams;
 }
 
 export enum UploadMethod {
