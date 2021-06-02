@@ -1,5 +1,3 @@
-// FIXME: SAMPLE CODE
-
 import React, { useCallback, FC } from 'react';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 

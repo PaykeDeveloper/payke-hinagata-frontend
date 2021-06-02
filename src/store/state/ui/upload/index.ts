@@ -6,5 +6,6 @@ export interface UploadState {
   sample: SampleState;
 }
 export default combineReducers({
+  // FIXME: SAMPLE CODE
   sample: sampleReducer,
 });
