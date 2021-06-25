@@ -8,6 +8,7 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
 import { Property } from 'csstype';
 import { useDropzone } from 'react-dropzone';
 import { Trans } from 'react-i18next';
@@ -103,23 +104,24 @@ const ImageField: FC<ImageFieldProps> = (props) => {
       </div>
     </CardContent>
   );
+  const { className, ...otherRootProps } = getRootProps();
   return (
     <Card className={classes.card}>
-      <CardActionArea
-        component="div"
-        disabled={disabled}
-        className={classes.cardActionArea}
-        {...getRootProps()}
-      >
-        <input {...getInputProps()} />
-        {children}
-        {helperText && (
-          <GridListTileBar
-            subtitle={
-              <FormHelperText error={error}>{helperText}</FormHelperText>
-            }
-          />
-        )}
+      <CardActionArea disabled={disabled}>
+        <div
+          className={clsx(classes.cardActionArea, className)}
+          {...otherRootProps}
+        >
+          <input {...getInputProps()} />
+          {children}
+          {helperText && (
+            <GridListTileBar
+              subtitle={
+                <FormHelperText error={error}>{helperText}</FormHelperText>
+              }
+            />
+          )}
+        </div>
       </CardActionArea>
     </Card>
   );
