@@ -1,12 +1,12 @@
 import React, { FC, ReactNode, useEffect } from 'react';
 
-import FormControl, { FormControlProps } from '@material-ui/core/FormControl';
+import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import FormHelperText, {
   FormHelperTextProps,
-} from '@material-ui/core/FormHelperText';
-import InputLabel, { InputLabelProps } from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import Select, { SelectProps } from '@material-ui/core/Select';
+} from '@mui/material/FormHelperText';
+import InputLabel, { InputLabelProps } from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Select, { SelectProps } from '@mui/material/Select';
 
 export interface SelectFieldProps {
   label: ReactNode;
@@ -34,10 +34,10 @@ const SelectField: FC<SelectFieldProps> = (props) => {
   } = props;
   // const classes = useStyles();
   const inputLabel = React.useRef<HTMLLabelElement>(null);
-  const [labelWidth, setLabelWidth] = React.useState<number>();
+  const [, setLabelWidth] = React.useState<number>();
   let input;
   if (formControlProps?.variant === 'outlined') {
-    input = <OutlinedInput labelWidth={labelWidth} />;
+    input = <OutlinedInput label={label} />;
   }
 
   useEffect(() => {

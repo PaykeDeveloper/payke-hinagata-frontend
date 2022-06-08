@@ -19,7 +19,6 @@ import { getProjectsDownloadApiUrl } from 'src/store/urls';
 import {
   DivisionPath,
   getProjectEditPath,
-  getProjectUploadPath,
   getProjectNewPath,
 } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
@@ -75,14 +74,6 @@ const Container: FC<
     [push, pathParams, path]
   );
 
-  const onClickImport: ChildProps['onClickImport'] = useCallback(
-    () =>
-      push(getProjectUploadPath(pathParams), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
-
   const { canCreate, canEdit, ...otherState } = useStoreSelector(selector);
 
   return (
@@ -91,7 +82,6 @@ const Container: FC<
       exportUrl={getProjectsDownloadApiUrl(pathParams)}
       onClickAdd={canCreate ? onClickAdd : undefined}
       onClickEdit={canEdit ? onClickEdit : undefined}
-      onClickImport={canCreate ? onClickImport : undefined}
     />
   );
 };

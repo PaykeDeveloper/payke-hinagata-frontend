@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { makeStyles } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 import { siteName } from 'src/base/constants';
 import { drawerWidth } from 'src/view/components/organisms/Sidebar';

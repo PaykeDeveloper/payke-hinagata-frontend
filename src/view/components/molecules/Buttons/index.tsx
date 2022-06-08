@@ -1,10 +1,13 @@
 import React, { FC, ReactElement } from 'react';
-import { Box, BoxProps, makeStyles } from '@material-ui/core';
+import { Box, BoxProps } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 import { notUndefined } from 'src/base/utils';
 
 const useStyles = makeStyles((theme) => ({
-  buttons: {},
+  buttons: {
+    overflow: 'hidden',
+  },
   leftButton: {
     marginBottom: theme.spacing(0.5),
   },

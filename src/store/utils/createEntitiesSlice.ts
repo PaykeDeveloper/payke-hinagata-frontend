@@ -5,8 +5,9 @@ import {
   SliceCaseReducers,
   ValidateSliceCaseReducers,
 } from '@reduxjs/toolkit';
-import { castDraft } from 'immer';
+import { castDraft, Draft } from 'immer';
 import isEqual from 'lodash/isEqual';
+import sortBy from 'lodash/sortBy';
 import { siteName } from 'src/base/constants';
 import { StoreDispatch } from 'src/store';
 import { RootState } from 'src/store/state';
@@ -36,6 +37,21 @@ export const getEntitiesInitialState = () => ({
   },
 });
 
+interface Sort<Entity> {
+  key: keyof Entity;
+  reverse?: boolean;
+  skipUpdated?: boolean;
+}
+
+const sortIfNeeded = <Entity>(collection: Entity[], sort?: Sort<Entity>) => {
+  if (!sort) {
+    return collection;
+  }
+  const { key, reverse } = sort;
+  const sorted = sortBy(collection, key);
+  return reverse ? sorted.reverse() : sorted;
+};
+
 const createEntitiesSlice = <
   Entity,
   EntitiesPath,
@@ -49,22 +65,36 @@ const createEntitiesSlice = <
     EntityDetail,
     EntityPath
   > = EntitiesState<Entity, EntitiesPath, EntityDetail, EntityPath>
->(
-  domainName: string,
-  initialState: DomainState,
-  entitiesUrl: (e: EntitiesPath) => string,
-  entityUrl: (e: EntityPath) => string,
-  domainSelector: (state: RootState) => DomainState,
-  keyMapping?: KeyMapping<Entity, EntityPath>,
-  detailToList?: (e: EntityDetail) => Entity,
-  listToDetail?: (e: Entity) => EntityDetail,
+>({
+  domainName,
+  initialState,
+  entitiesUrl,
+  entityUrl,
+  domainSelector,
+  keyMapping,
+  detailToList,
+  listToDetail,
+  sort,
+  reducers,
+  extraReducers,
+  activeMilliSeconds,
+}: {
+  domainName: string;
+  initialState: DomainState;
+  entitiesUrl: (e: EntitiesPath) => string;
+  entityUrl: (e: EntityPath) => string;
+  domainSelector: (state: RootState) => DomainState;
+  keyMapping?: KeyMapping<Entity, EntityPath>;
+  detailToList?: (e: EntityDetail) => Entity;
+  listToDetail?: (e: Entity) => EntityDetail;
+  sort?: Sort<Entity>;
   reducers?: ValidateSliceCaseReducers<
     DomainState,
     SliceCaseReducers<DomainState>
-  >,
-  extraReducers?: (builder: ActionReducerMapBuilder<DomainState>) => void,
-  activeMilliSeconds: number = defaultActiveMilliSeconds
-) => {
+  >;
+  extraReducers?: (builder: ActionReducerMapBuilder<DomainState>) => void;
+  activeMilliSeconds?: number;
+}) => {
   type FetchEntitiesArg = Exclude<
     DomainState['meta']['fetchEntities']['arg'],
     undefined
@@ -141,7 +171,7 @@ const createEntitiesSlice = <
         })
         .addCase(fetchEntities.fulfilled, (state, action) => {
           if (state.meta.fetchEntities.requestId === action.meta.requestId) {
-            state.entities = castDraft(action.payload);
+            state.entities = castDraft(sortIfNeeded(action.payload, sort));
             state.meta.fetchEntities.status = StoreStatus.Done;
             state.meta.fetchEntities.timestamp = Date.now();
             state.meta.fetchEntities.error = undefined;
@@ -185,10 +215,14 @@ const createEntitiesSlice = <
               state.meta.fetchEntities.arg?.pathParams
             )
           ) {
-            state.entities = [
+            const entities = [
               ...state.entities,
               castDraft(detailToList(action.payload)),
             ];
+            state.entities = sortIfNeeded(
+              entities,
+              sort as Sort<Draft<Entity>>
+            );
           }
         })
         .addCase(mergeEntity.fulfilled, (state, action) => {
@@ -204,12 +238,15 @@ const createEntitiesSlice = <
           ) {
             const entitiesEntity = detailToList(action.payload);
             const objectKeyValue = entitiesEntity[keyMapping.objectKey];
-            state.entities = state.entities.map((entity) => {
+            const entities = state.entities.map((entity) => {
               if ((entity as Entity)[keyMapping.objectKey] === objectKeyValue) {
                 return castDraft(entitiesEntity);
               }
               return entity;
             });
+            state.entities = sort?.skipUpdated
+              ? entities
+              : sortIfNeeded(entities, sort as Sort<Draft<Entity>>);
           }
         })
         .addCase(removeEntity.fulfilled, (state, action) => {
@@ -236,8 +273,9 @@ const createEntitiesSlice = <
 
   const { actions, reducer } = slice;
 
+  const milliSeconds = activeMilliSeconds ?? defaultActiveMilliSeconds;
   const checkInActivePeriod = (timestamp: number | undefined) =>
-    timestamp && Date.now() - timestamp < activeMilliSeconds;
+    timestamp && Date.now() - timestamp < milliSeconds;
 
   const shouldFetchEntities = (domain: DomainState, arg: FetchEntitiesArg) => {
     const meta = domain.meta.fetchEntities;

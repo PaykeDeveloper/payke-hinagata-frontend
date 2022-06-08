@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
-import { Button, Card, Grid, MenuItem } from '@material-ui/core';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import { Button, Card, Grid, MenuItem } from '@mui/material';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 import { Role } from 'src/store/state/domain/common/roles/types';
 import { UserInput } from 'src/store/state/domain/common/users/types';
 import { StoreError, StoreStatus } from 'src/store/types';
@@ -20,7 +21,6 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import { rootPath, usersPath } from 'src/view/routes/paths';
-import * as yup from 'yup';
 
 const Component: FC<{
   title: string;

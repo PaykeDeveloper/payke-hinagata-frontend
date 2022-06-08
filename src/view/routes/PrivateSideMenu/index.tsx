@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import { ListSubheader } from '@material-ui/core';
+import { ListSubheader } from '@mui/material';
 import { createSelector } from '@reduxjs/toolkit';
 import toSafeInteger from 'lodash/toSafeInteger';
 import { Trans } from 'react-i18next';
@@ -37,7 +37,6 @@ import {
   getMemberNewPath,
   getMembersPath,
   getProjectEditPath,
-  getProjectUploadPath,
   getProjectNewPath,
   getProjectsPath,
   invitationEditPath,
@@ -99,7 +98,6 @@ const getMiddleMenuLists = (
                     getProjectsPath({ divisionId }),
                     getProjectNewPath({ divisionId }),
                     getProjectEditPath({ ...projectParams, divisionId }),
-                    getProjectUploadPath({ divisionId }),
                   ],
                 },
                 {

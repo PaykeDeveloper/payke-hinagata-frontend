@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
-import { BoxProps } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
+import { BoxProps } from '@mui/material';
+import Box from '@mui/material/Box';
 
 interface Props {
   boxProps?: BoxProps;

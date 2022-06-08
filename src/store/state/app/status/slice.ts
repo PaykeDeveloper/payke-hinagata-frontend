@@ -3,13 +3,12 @@ import { getStatusApiUrl } from 'src/store/urls';
 import { createEntitySlice, getEntityInitialState } from 'src/store/utils';
 import { Status } from './types';
 
-const statusSlice = createEntitySlice<Status, unknown>(
-  'status',
-  getEntityInitialState(),
-  getStatusApiUrl,
-  (state) => state.app.status,
-  undefined,
-  (builder) =>
+const statusSlice = createEntitySlice<Status, unknown>({
+  domainName: 'status',
+  initialState: getEntityInitialState(),
+  entityUrl: getStatusApiUrl,
+  domainSelector: (state) => state.app.status,
+  extraReducers: (builder) =>
     builder
       .addCase(authActions.login.fulfilled, (state) => {
         if (state.entity) {
@@ -25,8 +24,8 @@ const statusSlice = createEntitySlice<Status, unknown>(
         if (state.entity) {
           state.entity.isAuthenticated = true;
         }
-      })
-);
+      }),
+});
 
 export const statusActions = statusSlice.actions;
 export const statusReducer = statusSlice.reducer;

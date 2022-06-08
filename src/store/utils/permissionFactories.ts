@@ -1,17 +1,17 @@
 enum PermissionType {
-  ViewOwn = 'viewOwn',
-  ViewAll = 'viewAll',
-  CreateOwn = 'createOwn',
-  CreateAll = 'createAll',
-  UpdateOwn = 'updateOwn',
-  UpdateAll = 'updateAll',
-  DeleteOwn = 'deleteOwn',
-  DeleteAll = 'deleteAll',
+  ViewOwn = 'view_own',
+  ViewAll = 'view_all',
+  CreateOwn = 'create_own',
+  CreateAll = 'create_all',
+  UpdateOwn = 'update_own',
+  UpdateAll = 'update_all',
+  DeleteOwn = 'delete_own',
+  DeleteAll = 'delete_all',
 }
-type ModelPermission<M extends string, P extends PermissionType> = `${M}_${P}`;
+type ModelPermission<M extends string, P extends PermissionType> = `${M}__${P}`;
 
 export class AllPermissionFactory<Model extends string> {
-  readonly model: Model;
+  private readonly model: Model;
 
   readonly viewAll: ModelPermission<Model, PermissionType.ViewAll>;
   readonly createAll: ModelPermission<Model, PermissionType.CreateAll>;
@@ -29,7 +29,7 @@ export class AllPermissionFactory<Model extends string> {
   protected toPermissionType<Type extends PermissionType>(
     type: Type
   ): ModelPermission<Model, Type> {
-    return `${this.model}_${type}` as const;
+    return `${this.model}__${type}` as const;
   }
   canViewAll(permissionNames?: string[] | undefined) {
     return !!permissionNames?.includes(this.viewAll);

@@ -1,10 +1,11 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import { Button, Card, Grid } from '@material-ui/core';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import { Button, Card, Grid } from '@mui/material';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 import { DivisionInput } from 'src/store/state/domain/division/divisions/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
@@ -20,7 +21,6 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import { divisionsPath, rootPath } from 'src/view/routes/paths';
-import * as yup from 'yup';
 
 const Form: FC<{
   title: string;

@@ -6,8 +6,12 @@ import { isDevelopment, isDebugTranslation } from 'src/base/constants';
 // FIXME: SAMPLE CODE
 import ja from './locales/ja.json';
 
+export enum Language {
+  Japanese = 'ja',
+}
+
 const resources = {
-  ja: {
+  [Language.Japanese]: {
     translation: ja,
   },
 };
@@ -22,9 +26,6 @@ const i18n = i18next
     keySeparator: false,
     interpolation: {
       escapeValue: false,
-    },
-    react: {
-      wait: false,
     },
   });
 

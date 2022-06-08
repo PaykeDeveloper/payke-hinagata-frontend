@@ -1,7 +1,9 @@
-import React, { FC } from 'react';
-
-import { InputLabelProps } from '@material-ui/core/InputLabel';
-import MuiTextField, { TextFieldProps } from '@material-ui/core/TextField';
+import React, { FC, InputHTMLAttributes } from 'react';
+import { FilledInputProps } from '@mui/material/FilledInput';
+import { InputProps as StandardInputProps } from '@mui/material/Input';
+import { InputLabelProps } from '@mui/material/InputLabel';
+import { OutlinedInputProps } from '@mui/material/OutlinedInput';
+import MuiTextField, { TextFieldProps } from '@mui/material/TextField';
 import { useField, useFormikContext } from 'formik';
 
 type Props = TextFieldProps & {
@@ -32,13 +34,18 @@ export default TextField;
 interface BaseTextFieldProps {
   name: string;
   label: string;
-  type?: string;
+  type?: InputHTMLAttributes<HTMLInputElement>['type'];
   disabled?: boolean;
   fullWidth?: boolean;
   required?: boolean;
   multiline?: boolean;
+  minRows?: number | string;
+  maxRows?: number | string;
   InputLabelProps?: InputLabelProps;
   helperText?: string;
+  InputProps?: Partial<
+    FilledInputProps | StandardInputProps | OutlinedInputProps
+  >;
 }
 
 export const BaseTextField: FC<BaseTextFieldProps> = (props) => {

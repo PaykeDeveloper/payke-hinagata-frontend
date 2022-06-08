@@ -1,10 +1,11 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import { Button, Card, Grid } from '@material-ui/core';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import { Button, Card, Grid } from '@mui/material';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 import { Division } from 'src/store/state/domain/division/divisions/types';
 import {
   Project,
@@ -33,7 +34,6 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import { DivisionPath, getProjectsPath, rootPath } from 'src/view/routes/paths';
-import * as yup from 'yup';
 import PriorityOptions from './PriorityOptions';
 
 const Form: FC<{

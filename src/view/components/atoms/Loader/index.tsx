@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 
-import { makeStyles } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress';
+import makeStyles from '@mui/styles/makeStyles';
 import { StoreStatus } from 'src/store/types';
 import { checkProcessed } from 'src/store/utils';
 
 const useStyles = makeStyles((theme) => {
   const backgroundColor =
-    theme.palette.type === 'light'
+    theme.palette.mode === 'light'
       ? 'rgba(255,255,255,0.5)'
       : 'rgba(0,0,0,0.5)';
   return {

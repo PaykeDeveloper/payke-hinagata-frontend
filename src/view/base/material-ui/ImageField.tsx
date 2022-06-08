@@ -1,13 +1,12 @@
 import React, { FC, ReactNode, useCallback } from 'react';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import FormHelperText from '@mui/material/FormHelperText';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 import { Property } from 'csstype';
 import { useDropzone } from 'react-dropzone';
@@ -75,7 +74,7 @@ const ImageField: FC<ImageFieldProps> = (props) => {
   );
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    accept: 'image/*',
+    accept: { 'image/jpeg': [], 'image/png': [] },
   });
 
   const children = image ? (
@@ -115,11 +114,7 @@ const ImageField: FC<ImageFieldProps> = (props) => {
           <input {...getInputProps()} />
           {children}
           {helperText && (
-            <GridListTileBar
-              subtitle={
-                <FormHelperText error={error}>{helperText}</FormHelperText>
-              }
-            />
+            <FormHelperText error={error}>{helperText}</FormHelperText>
           )}
         </div>
       </CardActionArea>

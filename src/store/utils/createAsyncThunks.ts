@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
-import { serialize } from 'object-to-formdata';
+import { Options, serialize } from 'object-to-formdata';
 import qs from 'qs';
 import api, { CancelToken, isAxiosError } from 'src/base/api';
 import { siteName } from 'src/base/constants';
@@ -15,7 +15,12 @@ import {
   UnknownError,
   ConnectionError,
   MethodNotAllowedError,
+  ForbiddenError,
 } from 'src/store/types';
+
+const options: Options = {
+  allowEmptyArrays: true,
+};
 
 const getError = (error: AxiosError) => {
   if (!error.response) {
@@ -34,6 +39,10 @@ const getError = (error: AxiosError) => {
         status: ErrorStatus.Unauthorized,
         data,
       };
+      return result;
+    }
+    case 403: {
+      const result: ForbiddenError = { status: ErrorStatus.Forbidden, data };
       return result;
     }
     case 404: {
@@ -71,7 +80,7 @@ const getError = (error: AxiosError) => {
   }
 };
 
-const getRejectValue = (error: Error) => {
+const getRejectValue = (error: unknown) => {
   if (isAxiosError(error)) {
     return getError(error);
   }
@@ -107,7 +116,7 @@ export const createGetAsyncThunk = <Returned, PathParams, SearchParams>(
         if (searchParams) {
           url += `?${qs.stringify(searchParams)}`;
         }
-        const response = await api.get(url, {
+        const response = await api.get<Returned>(url, {
           cancelToken: createCancelToken(signal),
         });
         return response.data;
@@ -133,9 +142,9 @@ export const createPostAsyncThunk = <Returned, PathParams, BodyParams>(
       { signal, rejectWithValue }
     ) => {
       try {
-        const response = await api.post(
+        const response = await api.post<Returned>(
           getApiUrl(pathParams),
-          useFormData ? serialize(bodyParams) : bodyParams,
+          useFormData ? serialize(bodyParams, options) : bodyParams,
           {
             cancelToken: createCancelToken(signal),
           }
@@ -163,9 +172,9 @@ export const createPutAsyncThunk = <Returned, PathParams, BodyParams>(
       { signal, rejectWithValue }
     ) => {
       try {
-        const response = await api.put(
+        const response = await api.put<Returned>(
           getApiUrl(pathParams),
-          useFormData ? serialize(bodyParams) : bodyParams,
+          useFormData ? serialize(bodyParams, options) : bodyParams,
           {
             cancelToken: createCancelToken(signal),
           }
@@ -193,9 +202,9 @@ export const createPatchAsyncThunk = <Returned, PathParams, BodyParams>(
       { signal, rejectWithValue }
     ) => {
       try {
-        const response = await api.post(
+        const response = await api.post<Returned>(
           getApiUrl(pathParams),
-          useFormData ? serialize(bodyParams) : bodyParams,
+          useFormData ? serialize(bodyParams, options) : bodyParams,
           {
             cancelToken: createCancelToken(signal),
             headers: {
@@ -219,90 +228,9 @@ export const createDeleteAsyncThunk = <Returned, PathParams>(
     `${siteName}/${name}`,
     async ({ pathParams }, { signal, rejectWithValue }) => {
       try {
-        const response = await api.delete(getApiUrl(pathParams), {
+        const response = await api.delete<Returned>(getApiUrl(pathParams), {
           cancelToken: createCancelToken(signal),
         });
-        return response.data;
-      } catch (e) {
-        const rejectValue = getRejectValue(e);
-        return rejectWithValue(rejectValue);
-      }
-    }
-  );
-
-export const createPostAsyncThunkWithOriginalUniqueId = <
-  Returned,
-  PathParams,
-  BodyParams
->(
-  name: string,
-  getApiUrl: (_: PathParams) => string
-) =>
-  createAsyncThunk<
-    Returned,
-    {
-      pathParams: PathParams;
-      bodyParams: BodyParams;
-      useFormData?: boolean;
-      uniqueId?: number | string;
-    },
-    ThunkApiConfig
-  >(
-    `${siteName}/${name}`,
-    async (
-      { pathParams, bodyParams, useFormData },
-      { signal, rejectWithValue }
-    ) => {
-      try {
-        const response = await api.post(
-          getApiUrl(pathParams),
-          useFormData ? serialize(bodyParams) : bodyParams,
-          {
-            cancelToken: createCancelToken(signal),
-          }
-        );
-        return response.data;
-      } catch (e) {
-        const rejectValue = getRejectValue(e);
-        return rejectWithValue(rejectValue);
-      }
-    }
-  );
-
-export const createPatchAsyncThunkWithOriginalUniqueId = <
-  Returned,
-  PathParams,
-  BodyParams
->(
-  name: string,
-  getApiUrl: (_: PathParams) => string
-) =>
-  createAsyncThunk<
-    Returned,
-    {
-      pathParams: PathParams;
-      bodyParams: BodyParams;
-      useFormData?: boolean;
-      uniqueId?: number | string;
-    },
-    ThunkApiConfig
-  >(
-    `${siteName}/${name}`,
-    async (
-      { pathParams, bodyParams, useFormData },
-      { signal, rejectWithValue }
-    ) => {
-      try {
-        const response = await api.post(
-          getApiUrl(pathParams),
-          useFormData ? serialize(bodyParams) : bodyParams,
-          {
-            cancelToken: createCancelToken(signal),
-            headers: {
-              'X-HTTP-Method-Override': 'PATCH',
-            },
-          }
-        );
         return response.data;
       } catch (e) {
         const rejectValue = getRejectValue(e);

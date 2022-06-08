@@ -1,8 +1,8 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import { Button } from '@material-ui/core';
-import { GridColumns } from '@material-ui/data-grid';
+import { Button } from '@mui/material';
+import { GridColumns } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { Division } from 'src/store/state/domain/division/divisions/types';
@@ -12,11 +12,7 @@ import {
   RouterDataGrid,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
-import {
-  AddIcon,
-  FileDownloadIcon,
-  FileUploadIcon,
-} from 'src/view/base/material-ui/Icon';
+import { AddIcon, FileDownloadIcon } from 'src/view/base/material-ui/Icon';
 import Link from 'src/view/base/material-ui/Link';
 import Loader from 'src/view/components/atoms/Loader';
 import Buttons from 'src/view/components/molecules/Buttons';
@@ -36,7 +32,6 @@ const Component: FC<{
 
   onClickAdd?: () => void;
   onClickEdit?: (projectSlug: string) => void;
-  onClickImport?: () => void;
 }> = (props) => {
   const {
     projects,
@@ -47,7 +42,6 @@ const Component: FC<{
     canView,
     onClickAdd,
     onClickEdit,
-    onClickImport,
   } = props;
   const { t } = useTranslation();
 
@@ -99,16 +93,6 @@ const Component: FC<{
                   variant="outlined"
                 >
                   <Trans>Add</Trans>
-                </Button>
-              ) : undefined,
-              onClickAdd ? (
-                <Button
-                  startIcon={<FileUploadIcon />}
-                  onClick={onClickImport}
-                  color="primary"
-                  variant="outlined"
-                >
-                  <Trans>Upload CSV</Trans>
                 </Button>
               ) : undefined,
               canView ? (

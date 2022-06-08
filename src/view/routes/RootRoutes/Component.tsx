@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress';
+import makeStyles from '@mui/styles/makeStyles';
 import { Switch } from 'react-router-dom';
 import { StoreStatus } from 'src/store/types';
 import PrivateRoute from 'src/view/components/atoms/PrivateRoute';

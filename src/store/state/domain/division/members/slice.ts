@@ -16,19 +16,19 @@ const membersSlice = createEntitiesSlice<
   Member,
   MemberApiUrl,
   MemberInput
->(
-  'members',
-  getEntitiesInitialState(),
-  getMembersApiUrl,
-  getMemberApiUrl,
-  (state) => state.domain.division.members,
-  { objectKey: 'id', pathKey: 'memberId' },
-  (entity) => entity,
-  (entity) => entity,
-  undefined,
-  (builder) =>
-    builder.addCase(authActions.resetAll, () => getEntitiesInitialState())
-);
+>({
+  domainName: 'members',
+  initialState: getEntitiesInitialState(),
+  entitiesUrl: getMembersApiUrl,
+  entityUrl: getMemberApiUrl,
+  domainSelector: (state) => state.domain.division.members,
+  keyMapping: { objectKey: 'id', pathKey: 'memberId' },
+  detailToList: (entity) => entity,
+  listToDetail: (entity) => entity,
+  sort: { key: 'createdAt', reverse: true, skipUpdated: true },
+  extraReducers: (builder) =>
+    builder.addCase(authActions.resetAll, () => getEntitiesInitialState()),
+});
 
 export const membersActions = membersSlice.actions;
 export const membersReducer = membersSlice.reducer;

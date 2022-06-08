@@ -43,25 +43,33 @@ const createEntitySlice = <
     Entity,
     EntityPath
   >
->(
-  domainName: string,
-  initialState: DomainState,
-  entityUrl: (e: EntityPath) => string,
-  domainSelector: (state: RootState) => DomainState,
+>({
+  domainName,
+  initialState,
+  entityUrl,
+  domainSelector,
+  reducers,
+  extraReducers,
+  activeMilliSeconds,
+}: {
+  domainName: string;
+  initialState: DomainState;
+  entityUrl: (e: EntityPath) => string;
+  domainSelector: (state: RootState) => DomainState;
   reducers?: ValidateSliceCaseReducers<
     DomainState,
     SliceCaseReducers<DomainState>
-  >,
-  extraReducers?: (builder: ActionReducerMapBuilder<DomainState>) => void,
-  activeMilliSeconds: number = defaultActiveMilliSeconds
-) => {
+  >;
+  extraReducers?: (builder: ActionReducerMapBuilder<DomainState>) => void;
+  activeMilliSeconds?: number;
+}) => {
   type FetchEntityArg = Exclude<
     DomainState['meta']['fetchEntity']['arg'],
     undefined
   >;
   type GetState = () => RootState;
 
-  const fetchEntity = createGetAsyncThunk<Entity, EntityPath, never>(
+  const fetchEntity = createGetAsyncThunk<Entity, EntityPath, unknown>(
     `${domainName}/fetchEntity`,
     entityUrl
   );
@@ -138,8 +146,9 @@ const createEntitySlice = <
 
   const { actions, reducer } = slice;
 
+  const milliSeconds = activeMilliSeconds ?? defaultActiveMilliSeconds;
   const checkInActivePeriod = (timestamp: number | undefined) =>
-    timestamp && Date.now() - timestamp < activeMilliSeconds;
+    timestamp && Date.now() - timestamp < milliSeconds;
 
   const shouldFetchEntity = (domain: DomainState, arg: FetchEntityArg) => {
     const meta = domain.meta.fetchEntity;

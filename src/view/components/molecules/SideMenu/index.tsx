@@ -1,8 +1,8 @@
 import React, { FC, Fragment, ReactElement } from 'react';
 
-import { makeStyles } from '@material-ui/core';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+import makeStyles from '@mui/styles/makeStyles';
 import MenuLink, { Menu } from './MenuLink';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,25 +17,14 @@ export type MenuList = {
 };
 
 interface Props {
-  pathname: string;
+  path: string;
   onClickMenu?: (event: unknown) => void;
   permissionNames: string[] | undefined;
   menuLists: MenuList[];
 }
 
-const getPaths = (menu: Menu): string[] => {
-  if ('menus' in menu) {
-    return menu.menus.map((m) => getPaths(m)).flat();
-  }
-  return menu.paths;
-};
-
 const SideMenu: FC<Props> = (props) => {
-  const { pathname, menuLists, permissionNames, onClickMenu } = props;
-  const paths = menuLists
-    .map((menuList) => menuList.menus.map((m) => getPaths(m)).flat())
-    .flat()
-    .reverse();
+  const { path, menuLists, permissionNames, onClickMenu } = props;
   const classes = useStyles();
   return (
     <>
@@ -48,8 +37,7 @@ const SideMenu: FC<Props> = (props) => {
               <MenuLink
                 key={index}
                 menu={menu}
-                pathname={pathname}
-                paths={paths}
+                path={path}
                 onClickMenu={onClickMenu}
                 permissionNames={permissionNames}
               />

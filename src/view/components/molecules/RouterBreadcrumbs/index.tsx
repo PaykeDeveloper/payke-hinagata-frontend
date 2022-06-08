@@ -1,13 +1,16 @@
 import React, { FC } from 'react';
-
-import Breadcrumbs, { BreadcrumbsProps } from '@material-ui/core/Breadcrumbs';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import Breadcrumbs, { BreadcrumbsProps } from '@mui/material/Breadcrumbs';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 import RouterLink, {
   RouterLinkProps,
 } from 'src/view/components/atoms/RouterLink';
 
+export interface RouterBreadcrumbLinkProps extends Omit<RouterLinkProps, 'to'> {
+  to?: RouterLinkProps['to'];
+}
+
 export interface RouterBreadcrumbsProps {
-  links?: RouterLinkProps[];
+  links?: RouterBreadcrumbLinkProps[];
   breadcrumbsProps?: BreadcrumbsProps;
   typographyProps?: TypographyProps;
 }
@@ -16,9 +19,15 @@ const RouterBreadcrumbs: FC<RouterBreadcrumbsProps> = (props) => {
   const { children, links, breadcrumbsProps, typographyProps } = props;
   return (
     <Breadcrumbs {...breadcrumbsProps}>
-      {links?.map((link, index) => (
-        <RouterLink key={index} {...link} />
-      ))}
+      {links?.map(({ to, ...linkProps }, index) =>
+        to ? (
+          <RouterLink key={index} to={to} {...linkProps} />
+        ) : (
+          <Typography key={index} component="div">
+            {linkProps.children}
+          </Typography>
+        )
+      )}
       <Typography color="textPrimary" {...typographyProps}>
         {children}
       </Typography>

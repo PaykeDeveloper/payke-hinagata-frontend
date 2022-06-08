@@ -1,8 +1,8 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import { Button } from '@material-ui/core';
-import { GridColumns } from '@material-ui/data-grid';
+import { Button } from '@mui/material';
+import { GridColumns } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { Division } from 'src/store/state/domain/division/divisions/types';

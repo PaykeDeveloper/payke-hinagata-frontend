@@ -19,10 +19,8 @@ import MemberNew from 'src/view/pages/division/members/New';
 import ProjectEdit from 'src/view/pages/sample/projects/Edit';
 import ProjectList from 'src/view/pages/sample/projects/List';
 import ProjectNew from 'src/view/pages/sample/projects/New';
-import ProjectUpload from 'src/view/pages/sample/projects/Upload';
 
 import {
-  projectUploadPath,
   otherPath,
   rootPath,
   usersPath,
@@ -46,7 +44,6 @@ import {
 
 const privateRoutes: RouteProps[] = [
   // FIXME: SAMPLE CODE
-  { path: projectUploadPath, component: ProjectUpload },
   { path: projectNewPath, component: ProjectNew },
   { path: projectEditPath, component: ProjectEdit },
   { path: projectsPath, component: ProjectList },

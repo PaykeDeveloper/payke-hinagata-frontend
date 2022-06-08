@@ -1,5 +1,6 @@
 import { FC, ReactNode } from 'react';
-import { Grid, GridProps, makeStyles } from '@material-ui/core';
+import { Grid, GridProps } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 
 const useStyles = makeStyles({

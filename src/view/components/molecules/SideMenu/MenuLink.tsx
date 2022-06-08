@@ -1,12 +1,11 @@
 import React, { FC, ReactElement } from 'react';
 
-import { makeStyles } from '@material-ui/core';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import makeStyles from '@mui/styles/makeStyles';
 import { Link } from 'react-router-dom';
 import MenuCollapse from './MenuCollapse';
-import { getExactMatch } from './utils';
 
 const useStyles = makeStyles((theme) => ({
   nested: {
@@ -40,8 +39,7 @@ export const exactMatchPath = (menu: Menu, path: string): boolean => {
 
 interface Props {
   menu: Menu;
-  pathname: string;
-  paths: string[];
+  path: string;
   nested?: boolean;
   permissionNames: string[] | undefined;
   requiredPermissions?: string[];
@@ -49,9 +47,8 @@ interface Props {
 }
 
 const MenuLink: FC<Props> = (props) => {
-  const { menu, pathname, paths, nested, permissionNames, onClickMenu } = props;
+  const { menu, path, nested, permissionNames, onClickMenu } = props;
   const classes = useStyles();
-  const path = getExactMatch(paths, pathname)?.path;
 
   if (
     menu.requiredPermissions &&
@@ -64,25 +61,23 @@ const MenuLink: FC<Props> = (props) => {
     return (
       <MenuCollapse
         menu={menu}
-        pathname={pathname}
-        paths={paths}
+        path={path}
         onClickMenu={onClickMenu}
         permissionNames={permissionNames}
       />
     );
   }
   return (
-    <ListItem
-      button
+    <ListItemButton
       component={Link}
       to={menu.to}
-      selected={!!path && exactMatchPath(menu, path)}
+      selected={exactMatchPath(menu, path)}
       className={nested ? classes.nested : undefined}
       onClick={onClickMenu}
     >
       {menu.icon && <ListItemIcon>{menu.icon}</ListItemIcon>}
       <ListItemText inset={false} primary={menu.text} />
-    </ListItem>
+    </ListItemButton>
   );
 };
 

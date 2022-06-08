@@ -1,7 +1,8 @@
-import React, { FC, Fragment, ReactElement, useMemo } from 'react';
-import { ListItem, makeStyles } from '@material-ui/core';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
+import React, { FC, Fragment, ReactElement } from 'react';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import makeStyles from '@mui/styles/makeStyles';
 import { useTranslation } from 'react-i18next';
 import SelectField from 'src/view/base/material-ui/SelectField';
 import MenuLink, {
@@ -49,13 +50,6 @@ export interface Props {
   onClickMenu?: (event: unknown) => void;
 }
 
-const getPaths = (menu: Menu): string[] => {
-  if ('menus' in menu) {
-    return menu.menus.map((m) => getPaths(m)).flat();
-  }
-  return menu.paths;
-};
-
 const Component: FC<Props> = (props) => {
   const {
     pathname,
@@ -67,15 +61,6 @@ const Component: FC<Props> = (props) => {
     onChangeDivisionId,
     onClickMenu,
   } = props;
-  const paths = useMemo(
-    () =>
-      [...topMenuLists, ...middleMenuLists, ...bottomMenuLists]
-        .map((menuList) => menuList.menus.map((m) => getPaths(m)).flat())
-        .flat()
-        .reverse(),
-    [topMenuLists, middleMenuLists, bottomMenuLists]
-  );
-
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -90,8 +75,7 @@ const Component: FC<Props> = (props) => {
               <MenuLink
                 key={index}
                 menu={menu}
-                pathname={pathname}
-                paths={paths}
+                path={pathname}
                 onClickMenu={onClickMenu}
                 permissionNames={permissionNames}
               />
@@ -131,8 +115,7 @@ const Component: FC<Props> = (props) => {
                     <MenuLink
                       key={i}
                       menu={m}
-                      pathname={pathname}
-                      paths={paths}
+                      path={pathname}
                       nested
                       permissionNames={permissionNames}
                       onClickMenu={onClickMenu}
@@ -152,8 +135,7 @@ const Component: FC<Props> = (props) => {
               <MenuLink
                 key={index}
                 menu={menu}
-                pathname={pathname}
-                paths={paths}
+                path={pathname}
                 onClickMenu={onClickMenu}
                 permissionNames={permissionNames}
               />

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { Container, ContainerProps } from '@material-ui/core';
+import { Container, ContainerProps } from '@mui/material';
 
 interface Props extends ContainerProps {}
 

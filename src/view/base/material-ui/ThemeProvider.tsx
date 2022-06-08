@@ -1,17 +1,20 @@
 import React, { FC, useMemo } from 'react';
-import { MuiThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core';
-import { jaJP } from '@material-ui/core/locale';
+import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material';
+import { jaJP as coreJaJP, Localization } from '@mui/material/locale';
+import { jaJP as dataGridJaJP } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
+import { Language } from 'src/base/i18n';
 import baseTheme from './theme';
 
-const getLocale = (lang: string | undefined) => {
+const getLocale = (
+  lang: string | undefined
+): [Localization | object, Localization | object] => {
   switch (lang) {
-    case 'ja': {
-      return jaJP;
+    case Language.Japanese: {
+      return [coreJaJP, dataGridJaJP];
     }
     default: {
-      return {};
+      return [{}, {}];
     }
   }
 };
@@ -19,8 +22,11 @@ const getLocale = (lang: string | undefined) => {
 const ThemeProvider: FC = (props) => {
   const { children } = props;
   const { i18n } = useTranslation();
-  const locale = getLocale(i18n.language);
-  const theme = useMemo(() => createMuiTheme(baseTheme, locale), [locale]);
+  const [coreLocale, gridLocale] = getLocale(i18n.language);
+  const theme = useMemo(
+    () => createTheme(baseTheme, coreLocale, gridLocale),
+    [coreLocale, gridLocale]
+  );
   return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
 };
 

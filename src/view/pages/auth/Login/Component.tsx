@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
 
-import { makeStyles } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
-import Fade from '@material-ui/core/Fade';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Fade from '@mui/material/Fade';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import { Trans, useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 import { LoginInput } from 'src/store/state/app/auth/types';
 import { StoreStatus } from 'src/store/types';
 import { BaseForm } from 'src/view/base/formik/Form';
@@ -22,7 +23,6 @@ import Loader from 'src/view/components/atoms/Loader';
 import Logo from 'src/view/components/atoms/Logo';
 import RouterLink from 'src/view/components/atoms/RouterLink';
 import { forgotPasswordPath } from 'src/view/routes/paths';
-import * as yup from 'yup';
 
 const useStyles = makeStyles({
   logoBox: {

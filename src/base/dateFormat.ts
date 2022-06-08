@@ -4,13 +4,13 @@ import i18next from 'i18next';
 
 const locales: { [key: string]: Locale } = { enUS, ja };
 
-type Value = Date | string | null | undefined;
+type Value = Date | string | number | null | undefined;
 
 const getTimeZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const formatUtcToZoned = (date: Value, formatStr: string) => {
   if (!date) {
-    return date;
+    return '';
   }
 
   const d = utcToZonedTime(date, getTimeZone());
@@ -21,6 +21,7 @@ export const formatUtcToZoned = (date: Value, formatStr: string) => {
 };
 
 export const formatDate = (value: Value) => formatUtcToZoned(value, 'P');
+export const formatMonth = (value: Value) => formatUtcToZoned(value, 'yyyy-MM');
 export const formatUtcToZonedDateTime = (value: Value) =>
   formatUtcToZoned(value, 'Pp');
 export const formatUtcToZonedTimestamp = (value: Value) =>

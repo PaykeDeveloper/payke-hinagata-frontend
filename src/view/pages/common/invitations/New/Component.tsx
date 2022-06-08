@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
-import { Button, Card, Grid, MenuItem } from '@material-ui/core';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import { Button, Card, Grid, MenuItem } from '@mui/material';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 import { InvitationCreateInput } from 'src/store/state/domain/common/invitations/types';
 import { DomainLocale } from 'src/store/state/domain/common/locales/types';
 import { Role } from 'src/store/state/domain/common/roles/types';
@@ -22,7 +23,6 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import Options from 'src/view/components/molecules/Options';
 import { invitationsPath, rootPath } from 'src/view/routes/paths';
-import * as yup from 'yup';
 
 const Component: FC<{
   object: InvitationCreateInput | undefined;

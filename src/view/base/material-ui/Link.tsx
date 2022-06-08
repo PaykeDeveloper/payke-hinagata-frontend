@@ -1,5 +1,6 @@
-import { FC } from 'react';
-import { Link, LinkProps, makeStyles } from '@material-ui/core';
+import React, { FC } from 'react';
+import { Link, LinkProps } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 
 type Props = LinkProps;

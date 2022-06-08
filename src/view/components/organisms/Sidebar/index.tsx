@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 
-import { makeStyles } from '@material-ui/core';
-import Drawer from '@material-ui/core/Drawer';
-import SwipeDrawer from '@material-ui/core/SwipeableDrawer';
+import Drawer from '@mui/material/Drawer';
+import SwipeDrawer from '@mui/material/SwipeableDrawer';
+import makeStyles from '@mui/styles/makeStyles';
 import SideMenu from 'src/view/routes/PrivateSideMenu';
 
 export const drawerWidth = 240;
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
     backgroundColor:
-      theme.palette.type === 'light'
+      theme.palette.mode === 'light'
         ? theme.palette.grey[100]
         : theme.palette.grey[900],
   },

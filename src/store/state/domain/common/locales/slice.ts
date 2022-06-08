@@ -9,13 +9,13 @@ const localesSlice = createEntitiesSlice<
   {},
   {},
   {}
->(
-  'locales',
-  getEntitiesInitialState(),
-  getLocalesApiUrl,
-  () => '',
-  (state) => state.domain.common.locales
-);
+>({
+  domainName: 'locales',
+  initialState: getEntitiesInitialState(),
+  entitiesUrl: getLocalesApiUrl,
+  entityUrl: () => '',
+  domainSelector: (state) => state.domain.common.locales,
+});
 
 export const localesActions = localesSlice.actions;
 export const localesReducer = localesSlice.reducer;

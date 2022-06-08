@@ -1,6 +1,5 @@
 import React, { FC, ReactNode } from 'react';
 import {
-  makeStyles,
   FormControl,
   FormControlProps,
   Checkbox,
@@ -9,7 +8,9 @@ import {
   FormControlLabelProps,
   FormHelperText,
   FormHelperTextProps,
-} from '@material-ui/core';
+} from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
   label: ({ error }: { error?: boolean }) => {
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export interface CheckFieldProps {
-  label: ReactNode;
+  label: FormControlLabelProps['label'];
   error?: boolean;
   helperText?: ReactNode;
   checkboxProps?: CheckboxProps;

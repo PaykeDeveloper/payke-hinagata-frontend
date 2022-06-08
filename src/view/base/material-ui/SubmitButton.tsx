@@ -1,8 +1,8 @@
 import React, { ComponentType, FC } from 'react';
 
-import { makeStyles } from '@material-ui/core';
-import Button, { ButtonProps } from '@material-ui/core/Button';
-import { IconProps } from '@material-ui/core/Icon';
+import Button, { ButtonProps } from '@mui/material/Button';
+import { IconProps } from '@mui/material/Icon';
+import makeStyles from '@mui/styles/makeStyles';
 import { Trans } from 'react-i18next';
 import { SaveIcon } from './Icon';
 

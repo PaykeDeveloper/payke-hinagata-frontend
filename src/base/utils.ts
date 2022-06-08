@@ -1,6 +1,3 @@
-import { camelCase, Options } from 'camel-case';
-import { Draft } from 'immer';
-import { snakeCase } from 'snake-case';
 import { formatUtcToZoned, formatZonedToUtc } from 'src/base/dateFormat';
 
 export function notUndefined<T>(item: T | undefined): item is T {
@@ -70,37 +67,3 @@ export const convertListToObject = <K extends keyof any, T>(
   }
   return result as Record<K, T>;
 };
-
-const isPlainObject = (value: unknown): value is object => {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    Object.prototype.toString.call(value) === '[object Object]'
-  );
-};
-
-const changeKeys = (
-  data: unknown,
-  casing: (input: string, options?: Options) => string
-): unknown => {
-  if (!data) {
-    return data;
-  } else if (Array.isArray(data)) {
-    return data.map((d) => changeKeys(d, casing));
-  } else if (isPlainObject(data)) {
-    const record = data as Record<string, unknown>;
-    return Object.keys(record).reduce((obj, key) => {
-      obj[casing(key)] = changeKeys(record[key], casing);
-      return obj;
-    }, {} as Record<string, unknown>);
-  }
-  return data;
-};
-
-export const toCamelCaseKeys = <T>(data: object | object[]) =>
-  changeKeys(data, camelCase) as T;
-
-export const toSnakeCaseKeys = <T>(data: object | object[]) =>
-  changeKeys(data, snakeCase) as T;
-
-export const castDrafts = <Row>(rows: Row[]) => rows as Draft<Row[]>;

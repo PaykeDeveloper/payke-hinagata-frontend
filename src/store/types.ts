@@ -2,6 +2,7 @@ export enum ErrorStatus {
   Unknown = -1,
   Connection = -2,
   Unauthorized = 401,
+  Forbidden = 403,
   NotFound = 404,
   MethodNotAllowed = 405,
   UnprocessableEntity = 422,
@@ -21,6 +22,8 @@ export type UnauthorizedError = StoreError<
   ErrorStatus.Unauthorized,
   { message?: string }
 >;
+
+export type ForbiddenError = StoreError<ErrorStatus.Forbidden, {}>;
 
 export type NotFoundError = StoreError<
   ErrorStatus.NotFound,
@@ -85,40 +88,4 @@ export interface EntitiesState<EntitiesEntity, EntitiesArg, Entity, EntityArg>
     fetchEntity: StoreMeta<FetchEntityArg<EntityArg>>;
     fetchEntities: StoreMeta<FetchEntitiesArg<EntitiesArg>>;
   };
-}
-
-export enum UploadStatus {
-  Initial,
-  Waiting,
-  Uploading,
-  Done,
-  Failed,
-}
-
-export interface UploadMeta {
-  status: UploadStatus;
-  error: StoreError | null;
-}
-
-export interface UploadRow<Data> {
-  id: string;
-  data: Data;
-}
-
-export interface UploadState<Data> {
-  rows: UploadRow<Data>[];
-  metas: Record<string, UploadMeta>;
-  key: string;
-}
-
-export enum UploadMethod {
-  Add,
-  Merge,
-  Remove,
-}
-
-export interface UploadMethods<Data> {
-  addMethod: (data: Data) => Promise<UploadMeta>;
-  mergeMethod: (data: Data) => Promise<UploadMeta>;
-  removeMethod: (data: Data) => Promise<UploadMeta>;
 }

@@ -16,19 +16,19 @@ const projectsSlice = createEntitiesSlice<
   Project,
   ProjectApiUrl,
   ProjectInput
->(
-  'projects',
-  getEntitiesInitialState(),
-  getProjectsApiUrl,
-  getProjectApiUrl,
-  (state) => state.domain.sample.projects,
-  { objectKey: 'slug', pathKey: 'projectSlug' },
-  (entity) => entity,
-  (entity) => entity,
-  undefined,
-  (builder) =>
-    builder.addCase(authActions.resetAll, () => getEntitiesInitialState())
-);
+>({
+  domainName: 'projects',
+  initialState: getEntitiesInitialState(),
+  entitiesUrl: getProjectsApiUrl,
+  entityUrl: getProjectApiUrl,
+  domainSelector: (state) => state.domain.sample.projects,
+  keyMapping: { objectKey: 'slug', pathKey: 'projectSlug' },
+  detailToList: (entity) => entity,
+  listToDetail: (entity) => entity,
+  sort: { key: 'createdAt', reverse: true, skipUpdated: true },
+  extraReducers: (builder) =>
+    builder.addCase(authActions.resetAll, () => getEntitiesInitialState()),
+});
 
 export const projectsActions = projectsSlice.actions;
 export const projectsReducer = projectsSlice.reducer;

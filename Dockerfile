@@ -1,4 +1,4 @@
-FROM node:14.15.5
+FROM node:14.18.0
 
 RUN apt-get update -qq
 

@@ -46,41 +46,42 @@ const selector = createSelector(
   })
 );
 
-const List: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> =
-  (props) => {
-    const {
-      history: { push },
-      match: { params: pathParams },
-      location,
-    } = props;
+const List: FC<
+  RouteComponentProps<DivisionPath, StaticContext, RouterState>
+> = (props) => {
+  const {
+    history: { push },
+    match: { params: pathParams },
+    location,
+  } = props;
 
-    const path = joinString(location.pathname, location.search);
+  const path = joinString(location.pathname, location.search);
 
-    const onClickAdd: ChildProps['onClickAdd'] = useCallback(
-      () =>
-        push(getMemberNewPath(pathParams), {
-          path,
-        } as RouterState),
-      [push, pathParams, path]
-    );
+  const onClickAdd: ChildProps['onClickAdd'] = useCallback(
+    () =>
+      push(getMemberNewPath(pathParams), {
+        path,
+      } as RouterState),
+    [push, pathParams, path]
+  );
 
-    const onClickEdit: ChildProps['onClickEdit'] = useCallback(
-      (memberId) =>
-        push(getMemberEditPath({ ...pathParams, memberId: `${memberId}` }), {
-          path,
-        } as RouterState),
-      [push, pathParams, path]
-    );
+  const onClickEdit: ChildProps['onClickEdit'] = useCallback(
+    (memberId) =>
+      push(getMemberEditPath({ ...pathParams, memberId: `${memberId}` }), {
+        path,
+      } as RouterState),
+    [push, pathParams, path]
+  );
 
-    const { canCreate, ...otherState } = useStoreSelector(selector);
+  const { canCreate, ...otherState } = useStoreSelector(selector);
 
-    return (
-      <Component
-        {...otherState}
-        onClickAdd={canCreate ? onClickAdd : undefined}
-        onClickEdit={onClickEdit}
-      />
-    );
-  };
+  return (
+    <Component
+      {...otherState}
+      onClickAdd={canCreate ? onClickAdd : undefined}
+      onClickEdit={onClickEdit}
+    />
+  );
+};
 
 export default List;
