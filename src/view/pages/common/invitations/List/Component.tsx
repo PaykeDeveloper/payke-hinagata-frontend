@@ -73,14 +73,14 @@ const Component: FC<{
     {
       field: 'id',
       headerName: t('ID'),
-      width: 100,
+      minWidth: 100,
     },
-    { field: 'name', headerName: t('Name'), width: 300, flex: 1 },
-    { field: 'email', headerName: t('Email'), width: 300, flex: 1 },
+    { field: 'name', headerName: t('Name'), minWidth: 300, flex: 1 },
+    { field: 'email', headerName: t('Email'), minWidth: 300, flex: 1 },
     {
       field: 'status',
       headerName: t('Status'),
-      width: 150,
+      minWidth: 150,
       renderCell: ({ value }) => (
         <InvitationStatusLabel status={value as InvitationStatus} />
       ),

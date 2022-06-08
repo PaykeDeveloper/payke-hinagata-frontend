@@ -15,7 +15,8 @@ import {
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
 import { AddIcon } from 'src/view/base/material-ui/Icon';
-import Link from 'src/view/base/material-ui/Link';
+// import Link from 'src/view/base/material-ui/Link';
+import LinkButton from 'src/view/components/atoms/LinkButton';
 import Loader from 'src/view/components/atoms/Loader';
 import Buttons from 'src/view/components/molecules/Buttons';
 import ContentBody from 'src/view/components/molecules/ContentBody';
@@ -43,7 +44,7 @@ const Component: FC<{
     division,
     checkEdit,
     onClickAdd,
-    onClickEdit,
+    // onClickEdit,
   } = props;
   const { t } = useTranslation();
 
@@ -54,19 +55,29 @@ const Component: FC<{
         if (!checkEdit(memberId)) {
           return <></>;
         }
-        return <Link onClick={() => onClickEdit(memberId)}>{t('Edit')}</Link>;
+        return (
+          <>
+            <LinkButton to="/" size="small">
+              {t('Edit')}
+            </LinkButton>
+            <LinkButton to="/" size="small">
+              {t('Edit')}
+            </LinkButton>
+          </>
+        );
       },
+      minWidth: 150,
       ...actionsColDef,
     },
-    { field: 'id', headerName: t('ID'), width: 100 },
+    { field: 'id', headerName: t('ID'), minWidth: 100 },
     {
       field: 'name',
       headerName: t('Name'),
-      width: 300,
+      minWidth: 300,
       flex: 1,
       renderCell: ({ row }) => <>{userIdMap[row['userId']]?.name}</>,
     },
-    { field: 'roleNames', headerName: t('Role Names'), width: 200 },
+    { field: 'roleNames', headerName: t('Role Names'), minWidth: 200 },
     {
       field: 'createdAt',
       headerName: t('Created at'),

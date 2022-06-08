@@ -56,8 +56,8 @@ const Component: FC<{
         ),
       ...actionsColDef,
     },
-    { field: 'slug', headerName: t('Slug'), width: 310 },
-    { field: 'name', headerName: t('Name'), width: 350, flex: 1 },
+    { field: 'slug', headerName: t('Slug'), minWidth: 310 },
+    { field: 'name', headerName: t('Name'), minWidth: 350, flex: 1 },
     {
       field: 'createdAt',
       headerName: t('Created at'),
