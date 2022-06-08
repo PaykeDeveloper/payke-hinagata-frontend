@@ -21,12 +21,10 @@ interface Props {
   upMd: boolean;
   open: boolean;
   setOpen: (open: boolean) => void;
-
-  pathname: string;
 }
 
 const Sidebar: FC<Props> = (props) => {
-  const { upMd, open, setOpen, pathname } = props;
+  const { upMd, open, setOpen } = props;
   const classes = useStyles();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -37,7 +35,7 @@ const Sidebar: FC<Props> = (props) => {
       variant="persistent"
       open={open}
     >
-      <SideMenu pathname={pathname} />
+      <SideMenu />
     </Drawer>
   ) : (
     <SwipeDrawer
@@ -46,7 +44,7 @@ const Sidebar: FC<Props> = (props) => {
       onClose={handleClose}
       classes={{ paper: classes.drawerPaper }}
     >
-      <SideMenu pathname={pathname} onClickMenu={handleClose} />
+      <SideMenu onClickMenu={handleClose} />
     </SwipeDrawer>
   );
 };

@@ -3,7 +3,6 @@ import { Theme } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
-import { useLocation } from 'react-router-dom';
 import ScrollToTop from 'src/view/components/atoms/ScrollToTop';
 import Footer from 'src/view/components/organisms/Footer';
 import Header from 'src/view/components/organisms/Header';
@@ -42,7 +41,6 @@ export const useStyles = makeStyles((theme) => ({
 const PrivateLayout: FC = (props) => {
   const { children } = props;
   const upMd = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
-  const { pathname } = useLocation();
   const [open, setOpen] = useState(upMd);
   useEffect(() => {
     setOpen(upMd);
@@ -54,12 +52,7 @@ const PrivateLayout: FC = (props) => {
       <ScrollToTop />
       <div className={classes.wrapper}>
         <Header upMd={upMd} open={open} setOpen={setOpen} />
-        <Sidebar
-          upMd={upMd}
-          open={open}
-          setOpen={setOpen}
-          pathname={pathname}
-        />
+        <Sidebar upMd={upMd} open={open} setOpen={setOpen} />
         <main
           className={clsx(classes.content, {
             [classes.contentShift]: upMd && open,

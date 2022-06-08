@@ -42,28 +42,62 @@ import {
   myUserEditPath,
 } from 'src/view/routes/paths';
 
-const privateRoutes: RouteProps[] = [
+export enum MenuType {
+  Common,
   // FIXME: SAMPLE CODE
-  { path: projectNewPath, component: ProjectNew },
-  { path: projectEditPath, component: ProjectEdit },
-  { path: projectsPath, component: ProjectList },
-  { path: memberNewPath, component: MemberNew },
-  { path: memberEditPath, component: MemberEdit },
-  { path: membersPath, component: MemberList },
-  { path: divisionNewPath, component: DivisionNew },
-  { path: divisionEditPath, component: DivisionEdit },
-  { path: divisionsPath, component: DivisionList },
+  Division,
+}
 
-  { path: userEditPath, component: UserEdit },
-  { path: usersPath, component: UserList },
-  { path: myUserEditPath, component: MyUserEdit },
-  { path: invitationNewPath, component: InvitationNew },
-  { path: invitationEditPath, component: InvitationEdit },
-  { path: invitationsPath, component: InvitationList },
-  { path: changePasswordPath, component: ChangePassword },
-  { path: verifyEmailPath, component: VerifyEmail },
-  { path: rootPath, component: Home },
-  { path: otherPath, component: NotFound },
+interface PrivateRouteProps extends RouteProps {
+  menuType: MenuType;
+}
+
+const privateRoutes: PrivateRouteProps[] = [
+  // FIXME: SAMPLE CODE
+  { path: projectNewPath, component: ProjectNew, menuType: MenuType.Division },
+  {
+    path: projectEditPath,
+    component: ProjectEdit,
+    menuType: MenuType.Division,
+  },
+  { path: projectsPath, component: ProjectList, menuType: MenuType.Division },
+  { path: memberNewPath, component: MemberNew, menuType: MenuType.Division },
+  { path: memberEditPath, component: MemberEdit, menuType: MenuType.Division },
+  { path: membersPath, component: MemberList, menuType: MenuType.Division },
+  { path: divisionNewPath, component: DivisionNew, menuType: MenuType.Common },
+  {
+    path: divisionEditPath,
+    component: DivisionEdit,
+    menuType: MenuType.Common,
+  },
+  { path: divisionsPath, component: DivisionList, menuType: MenuType.Common },
+
+  { path: userEditPath, component: UserEdit, menuType: MenuType.Common },
+  { path: usersPath, component: UserList, menuType: MenuType.Common },
+  { path: myUserEditPath, component: MyUserEdit, menuType: MenuType.Common },
+  {
+    path: invitationNewPath,
+    component: InvitationNew,
+    menuType: MenuType.Common,
+  },
+  {
+    path: invitationEditPath,
+    component: InvitationEdit,
+    menuType: MenuType.Common,
+  },
+  {
+    path: invitationsPath,
+    component: InvitationList,
+    menuType: MenuType.Common,
+  },
+  {
+    path: changePasswordPath,
+    component: ChangePassword,
+    menuType: MenuType.Common,
+  },
+  { path: verifyEmailPath, component: VerifyEmail, menuType: MenuType.Common },
+  { path: rootPath, component: Home, menuType: MenuType.Common },
+  { path: otherPath, component: NotFound, menuType: MenuType.Common },
 ];
 
 export default privateRoutes;

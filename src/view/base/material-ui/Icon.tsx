@@ -32,6 +32,7 @@ export const SettingsIcon = createIcon('settings');
 export const StopIcon = createIcon('stop');
 export const RemoveCircleOutlineIcon = createIcon('remove_circle_outline');
 export const RestartAltIcon = createIcon('restart_alt');
+export const ArrowBackIcon = createIcon('arrow_back');
 
 // FIXME: SAMPLE CODE
 export const HomeIcon = createIcon('home');

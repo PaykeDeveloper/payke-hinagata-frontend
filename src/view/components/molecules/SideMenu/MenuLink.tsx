@@ -20,17 +20,18 @@ export interface ItemMenu {
   icon?: ReactElement;
   to: string;
   paths: string[];
-  requiredPermissions?: string[];
+  permissions?: string[];
 }
 
 export interface CollapseMenu {
   text: ReactElement;
   menus: Menu[];
   icon?: ReactElement;
-  requiredPermissions?: string[];
+  permissions?: string[];
 }
 
 export const exactMatchPath = (menu: Menu, path: string): boolean => {
+  console.log(menu, path);
   if ('menus' in menu) {
     return menu.menus.some((m) => exactMatchPath(m, path));
   }
@@ -39,7 +40,7 @@ export const exactMatchPath = (menu: Menu, path: string): boolean => {
 
 interface Props {
   menu: Menu;
-  path: string;
+  pathname: string;
   nested?: boolean;
   permissionNames: string[] | undefined;
   requiredPermissions?: string[];
@@ -47,12 +48,12 @@ interface Props {
 }
 
 const MenuLink: FC<Props> = (props) => {
-  const { menu, path, nested, permissionNames, onClickMenu } = props;
+  const { menu, pathname, nested, permissionNames, onClickMenu } = props;
   const classes = useStyles();
 
   if (
-    menu.requiredPermissions &&
-    !menu.requiredPermissions.some((e) => permissionNames?.includes(e))
+    menu.permissions &&
+    !menu.permissions.some((e) => permissionNames?.includes(e))
   ) {
     return <></>;
   }
@@ -61,7 +62,7 @@ const MenuLink: FC<Props> = (props) => {
     return (
       <MenuCollapse
         menu={menu}
-        path={path}
+        pathname={pathname}
         onClickMenu={onClickMenu}
         permissionNames={permissionNames}
       />
@@ -71,7 +72,7 @@ const MenuLink: FC<Props> = (props) => {
     <ListItemButton
       component={Link}
       to={menu.to}
-      selected={exactMatchPath(menu, path)}
+      selected={exactMatchPath(menu, pathname)}
       className={nested ? classes.nested : undefined}
       onClick={onClickMenu}
     >
