@@ -31,7 +31,6 @@ export interface CollapseMenu {
 }
 
 export const exactMatchPath = (menu: Menu, path: string): boolean => {
-  console.log(menu, path);
   if ('menus' in menu) {
     return menu.menus.some((m) => exactMatchPath(m, path));
   }
