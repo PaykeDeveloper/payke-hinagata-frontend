@@ -12,7 +12,11 @@ import {
   divisionsStatusSelector,
   checkEditDivisionSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
-import { divisionNewPath, getDivisionEditPath } from 'src/view/routes/paths';
+import {
+  divisionNewPath,
+  getDivisionEditPath,
+  getProjectsPath,
+} from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Component from './Component';
 
@@ -56,6 +60,14 @@ const List: FC<RouteComponentProps> = (props) => {
     [push, path]
   );
 
+  const onClickShow: ChildProps['onClickShow'] = useCallback(
+    (divisionId) =>
+      push(getProjectsPath({ divisionId: `${divisionId}` }), {
+        path,
+      } as RouterState),
+    [push, path]
+  );
+
   const { canCreate, ...otherState } = useStoreSelector(selector);
 
   return (
@@ -63,6 +75,7 @@ const List: FC<RouteComponentProps> = (props) => {
       {...otherState}
       onClickAdd={canCreate ? onClickAdd : undefined}
       onClickEdit={onClickEdit}
+      onClickShow={onClickShow}
     />
   );
 };

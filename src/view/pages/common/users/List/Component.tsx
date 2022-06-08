@@ -5,6 +5,7 @@ import { Trans } from 'react-i18next';
 import { User } from 'src/store/state/domain/common/users/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
+  actionsColDef,
   RouterDataGrid,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
@@ -29,9 +30,6 @@ const Component: FC<{
 
   const columns: GridColumns = [
     {
-      field: ' ',
-      sortable: false,
-      filterable: false,
       renderCell: ({ row }) => {
         const userId = row['id'];
         if (!checkEdit(userId)) {
@@ -39,6 +37,7 @@ const Component: FC<{
         }
         return <Link onClick={() => onClickEdit(userId)}>{t('Edit')}</Link>;
       },
+      ...actionsColDef,
     },
     {
       field: 'id',

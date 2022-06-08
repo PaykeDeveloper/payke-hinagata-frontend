@@ -9,6 +9,7 @@ import {
 } from 'src/store/state/domain/common/invitations/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
+  actionsColDef,
   RouterDataGrid,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
@@ -57,9 +58,6 @@ const Component: FC<{
 
   const columns: GridColumns = [
     {
-      field: ' ',
-      sortable: false,
-      filterable: false,
       renderCell: ({ row }) => {
         if (!onClickEdit || row['status'] !== InvitationStatus.Pending) {
           return <></>;
@@ -70,6 +68,7 @@ const Component: FC<{
           </Link>
         );
       },
+      ...actionsColDef,
     },
     {
       field: 'id',

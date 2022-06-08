@@ -10,6 +10,7 @@ import { Division } from 'src/store/state/domain/division/divisions/types';
 import { Member } from 'src/store/state/domain/division/members/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
+  actionsColDef,
   RouterDataGrid,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
@@ -48,9 +49,6 @@ const Component: FC<{
 
   const memberColumns: GridColumns = [
     {
-      field: ' ',
-      sortable: false,
-      filterable: false,
       renderCell: ({ row }) => {
         const memberId = row['id'];
         if (!checkEdit(memberId)) {
@@ -58,6 +56,7 @@ const Component: FC<{
         }
         return <Link onClick={() => onClickEdit(memberId)}>{t('Edit')}</Link>;
       },
+      ...actionsColDef,
     },
     { field: 'id', headerName: t('ID'), width: 100 },
     {

@@ -43,7 +43,7 @@ const ManufacturerSideMenu: FC<PrivateSideMenuProps> = ({
     {
       subheader: (
         <ListSubheader>
-          <Trans>メーカーメニュー</Trans>
+          <Trans>Main Menu</Trans>
         </ListSubheader>
       ),
       menus: [

@@ -9,6 +9,7 @@ import { Division } from 'src/store/state/domain/division/divisions/types';
 import { Project } from 'src/store/state/domain/sample/projects/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
+  actionsColDef,
   RouterDataGrid,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
@@ -47,15 +48,13 @@ const Component: FC<{
 
   const projectColumns: GridColumns = [
     {
-      field: ' ',
-      sortable: false,
-      filterable: false,
       renderCell: ({ row }) =>
         onClickEdit ? (
           <Link onClick={() => onClickEdit(row['slug'])}>{t('Edit')}</Link>
         ) : (
           <></>
         ),
+      ...actionsColDef,
     },
     { field: 'slug', headerName: t('Slug'), width: 310 },
     { field: 'name', headerName: t('Name'), width: 350, flex: 1 },

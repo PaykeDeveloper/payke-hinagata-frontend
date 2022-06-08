@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { ListSubheader } from '@mui/material';
 import { Trans } from 'react-i18next';
 import { useStoreSelector } from 'src/store';
 import { invitationPermission } from 'src/store/state/domain/common/invitations/selectors';
@@ -34,6 +35,15 @@ const menuList: MenuList[] = [
         to: rootPath,
         paths: [rootPath],
       },
+    ],
+  },
+  {
+    subheader: (
+      <ListSubheader>
+        <Trans>Main Menu</Trans>
+      </ListSubheader>
+    ),
+    menus: [
       {
         text: <Trans>Divisions</Trans>,
         icon: <DomainIcon />,

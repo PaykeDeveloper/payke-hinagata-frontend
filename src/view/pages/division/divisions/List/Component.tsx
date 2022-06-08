@@ -1,13 +1,14 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 import { GridColumns } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { Division } from 'src/store/state/domain/division/divisions/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
+  actionsColDef,
   RouterDataGrid,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
@@ -21,13 +22,6 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import { rootPath } from 'src/view/routes/paths';
 
-export type PermissionList = {
-  divisionCreate: boolean;
-  divisionUpdate: boolean;
-  usersView: boolean;
-  membersView: boolean;
-};
-
 const Component: FC<{
   divisions: Division[];
   status: StoreStatus;
@@ -36,21 +30,31 @@ const Component: FC<{
 
   onClickAdd?: () => void;
   onClickEdit: (divisionId: number) => void;
+  onClickShow: (divisionId: number) => void;
 }> = (props) => {
-  const { divisions, status, error, checkEdit, onClickAdd, onClickEdit } =
-    props;
+  const {
+    divisions,
+    status,
+    error,
+    checkEdit,
+    onClickAdd,
+    onClickEdit,
+    onClickShow,
+  } = props;
   const { t } = useTranslation();
-  const columns: GridColumns = [
+  const columns: GridColumns<Division> = [
     {
-      field: ' ',
-      sortable: false,
-      filterable: false,
       renderCell: ({ row }) => {
-        if (!checkEdit(row['requestMemberId'])) {
-          return <></>;
-        }
-        return <Link onClick={() => onClickEdit(row['id'])}>{t('Edit')}</Link>;
+        return (
+          <>
+            {checkEdit(row.requestMemberId) ? (
+              <Link onClick={() => onClickEdit(row['id'])}>{t('Edit')}</Link>
+            ) : undefined}
+            <Link onClick={() => onClickShow(row['id'])}>{t('Show')}</Link>
+          </>
+        );
       },
+      ...actionsColDef,
     },
     {
       field: 'id',
