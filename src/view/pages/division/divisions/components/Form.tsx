@@ -1,7 +1,7 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import { Button, Card, Grid } from '@mui/material';
+import { Card, Grid } from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,8 @@ import SubmitButton from 'src/view/base/formik/SubmitButton';
 import { BaseTextField } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
 import { DeleteIcon, NavigateBeforeIcon } from 'src/view/base/material-ui/Icon';
+import { LinkTo } from 'src/view/base/react-router/types';
+import LinkButton from 'src/view/components/atoms/LinkButton';
 import Loader from 'src/view/components/atoms/Loader';
 import Buttons from 'src/view/components/molecules/Buttons';
 import ContentBody from 'src/view/components/molecules/ContentBody';
@@ -28,12 +30,12 @@ const Form: FC<{
   status: StoreStatus;
   error: StoreError | undefined;
   disabled: boolean;
+  backTo: LinkTo;
 
   onSubmit: OnSubmit<DivisionInput>;
-  onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
-  const { title, object, status, error, disabled, onSubmit, onBack, onDelete } =
+  const { title, object, status, error, disabled, backTo, onSubmit, onDelete } =
     props;
   const { t } = useTranslation();
   return (
@@ -50,13 +52,13 @@ const Form: FC<{
         <ErrorWrapper error={error}>
           <Buttons
             leftButtons={[
-              <Button
-                onClick={onBack}
+              <LinkButton
+                to={backTo}
                 startIcon={<NavigateBeforeIcon />}
                 variant="outlined"
               >
                 {t('Back')}
-              </Button>,
+              </LinkButton>,
             ]}
             rightButtons={[
               onDelete ? (

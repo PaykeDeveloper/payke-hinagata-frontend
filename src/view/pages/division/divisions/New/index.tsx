@@ -34,11 +34,7 @@ const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
     history: { push },
     location,
   } = props;
-  const backPath = location.state?.path || divisionsPath;
-  const onBack: ChildProps['onBack'] = useCallback(
-    () => push(backPath),
-    [push, backPath]
-  );
+  const backTo = location.state?.path || divisionsPath;
 
   const dispatch = useStoreDispatch();
 
@@ -48,11 +44,11 @@ const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
         divisionsActions.addEntity({ pathParams, bodyParams })
       );
       if (divisionsActions.addEntity.fulfilled.match(action)) {
-        onBack();
+        push(backTo);
       }
       return action;
     },
-    [dispatch, pathParams, onBack]
+    [backTo, dispatch, pathParams, push]
   );
 
   const { canCreate, ...otherState } = useStoreSelector(selector);
@@ -63,8 +59,8 @@ const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
       title="Add division"
       object={undefined}
       disabled={!canCreate}
+      backTo={backTo}
       onSubmit={onSubmit}
-      onBack={onBack}
     />
   );
 };

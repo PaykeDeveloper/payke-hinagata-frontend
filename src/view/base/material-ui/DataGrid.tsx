@@ -31,6 +31,8 @@ import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 
 type BaseDataGridProps = Omit<DataGridProps, 'localeText'>;
 
+export const ACTION_WIDTH = 70;
+
 export const actionsColDef: GridColDef = {
   field: 'actions',
   headerName: ' ',

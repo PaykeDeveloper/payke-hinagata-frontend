@@ -1,7 +1,8 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback } from 'react';
+import React, { ComponentProps, FC, useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
+import { Trans } from 'react-i18next';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreSelector } from 'src/store';
@@ -12,6 +13,7 @@ import {
   divisionsStatusSelector,
   checkEditDivisionSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
+import { canViewProjectsSelector } from 'src/store/state/domain/sample/projects/selectors';
 import {
   divisionNewPath,
   getDivisionEditPath,
@@ -29,53 +31,56 @@ const selector = createSelector(
     divisionsErrorSelector,
     canCreateDivisionSelector,
     checkEditDivisionSelector,
+    canViewProjectsSelector,
   ],
-  (divisions, status, error, canCreate, checkEdit) => ({
+  (divisions, status, error, canCreate, checkEdit, canViewProjects) => ({
     divisions,
     status,
     error,
     canCreate,
     checkEdit,
+    canViewProjects,
   })
 );
 
 const List: FC<RouteComponentProps> = (props) => {
   const {
-    history: { push },
     location: { pathname, search },
   } = props;
 
   const path = joinString(pathname, search);
 
-  const onClickAdd: ChildProps['onClickAdd'] = useCallback(
-    () => push(divisionNewPath, { path } as RouterState),
-    [push, path]
+  const addTo: ChildProps['addTo'] = useMemo(
+    () => ({
+      pathname: divisionNewPath,
+      state: { path } as RouterState,
+    }),
+    [path]
   );
 
-  const onClickEdit: ChildProps['onClickEdit'] = useCallback(
-    (divisionId) =>
-      push(getDivisionEditPath({ divisionId: `${divisionId}` }), {
-        path,
-      } as RouterState),
-    [push, path]
-  );
+  const { canCreate, checkEdit, canViewProjects, ...otherState } =
+    useStoreSelector(selector);
 
-  const onClickShow: ChildProps['onClickShow'] = useCallback(
-    (divisionId) =>
-      push(getProjectsPath({ divisionId: `${divisionId}` }), {
-        path,
-      } as RouterState),
-    [push, path]
-  );
-
-  const { canCreate, ...otherState } = useStoreSelector(selector);
+  const actions: ChildProps['actions'] = [
+    {
+      children: <Trans>Edit</Trans>,
+      getTo: ({ id }) =>
+        checkEdit(id)
+          ? getDivisionEditPath({ divisionId: `${id}` })
+          : undefined,
+    },
+    {
+      children: <Trans>Show</Trans>,
+      getTo: ({ id }) =>
+        canViewProjects ? getProjectsPath({ divisionId: `${id}` }) : undefined,
+    },
+  ];
 
   return (
     <Component
       {...otherState}
-      onClickAdd={canCreate ? onClickAdd : undefined}
-      onClickEdit={onClickEdit}
-      onClickShow={onClickShow}
+      actions={actions}
+      addTo={canCreate ? addTo : undefined}
     />
   );
 };
