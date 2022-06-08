@@ -40,7 +40,7 @@ export const exactMatchPath = (menu: Menu, path: string): boolean => {
 
 interface Props {
   menu: Menu;
-  pathname: string;
+  path: string;
   nested?: boolean;
   permissionNames: string[] | undefined;
   requiredPermissions?: string[];
@@ -48,7 +48,7 @@ interface Props {
 }
 
 const MenuLink: FC<Props> = (props) => {
-  const { menu, pathname, nested, permissionNames, onClickMenu } = props;
+  const { menu, path, nested, permissionNames, onClickMenu } = props;
   const classes = useStyles();
 
   if (
@@ -62,7 +62,7 @@ const MenuLink: FC<Props> = (props) => {
     return (
       <MenuCollapse
         menu={menu}
-        pathname={pathname}
+        path={path}
         onClickMenu={onClickMenu}
         permissionNames={permissionNames}
       />
@@ -72,7 +72,7 @@ const MenuLink: FC<Props> = (props) => {
     <ListItemButton
       component={Link}
       to={menu.to}
-      selected={exactMatchPath(menu, pathname)}
+      selected={exactMatchPath(menu, path)}
       className={nested ? classes.nested : undefined}
       onClick={onClickMenu}
     >

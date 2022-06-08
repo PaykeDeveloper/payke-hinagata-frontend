@@ -10,14 +10,14 @@ import MenuLink, { CollapseMenu, exactMatchPath } from './MenuLink';
 
 interface Props {
   menu: CollapseMenu;
-  pathname: string;
+  path: string;
   permissionNames: string[] | undefined;
   onClickMenu?: (event: unknown) => void;
 }
 
 const MenuCollapse: FC<Props> = (props) => {
-  const { menu, pathname, permissionNames, onClickMenu } = props;
-  const selected = exactMatchPath(menu, pathname);
+  const { menu, path, permissionNames, onClickMenu } = props;
+  const selected = exactMatchPath(menu, path);
   const [open, setOpen] = useState(selected);
   const handleClick = () => setOpen((prevOpen: boolean) => !prevOpen);
   return (
@@ -33,7 +33,7 @@ const MenuCollapse: FC<Props> = (props) => {
             <MenuLink
               key={i}
               menu={m}
-              pathname={pathname}
+              path={path}
               nested
               permissionNames={permissionNames}
               onClickMenu={onClickMenu}

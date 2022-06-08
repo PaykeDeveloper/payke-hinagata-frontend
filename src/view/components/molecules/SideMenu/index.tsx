@@ -37,7 +37,7 @@ const SideMenu: FC<Props> = (props) => {
               <MenuLink
                 key={index}
                 menu={menu}
-                pathname={path}
+                path={path}
                 onClickMenu={onClickMenu}
                 permissionNames={permissionNames}
               />
