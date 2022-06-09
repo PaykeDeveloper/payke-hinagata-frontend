@@ -1,10 +1,12 @@
 import React, { FC, useState } from 'react';
 
-import Collapse from '@mui/material/Collapse';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import {
+  Collapse,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 import { ExpandLessIcon, ExpandMoreIcon } from 'src/view/base/material-ui/Icon';
 import MenuLink, { CollapseMenu, exactMatchPath } from './MenuLink';
 

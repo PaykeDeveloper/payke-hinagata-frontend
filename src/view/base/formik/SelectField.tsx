@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { TextField, TextFieldProps } from '@mui/material';
 import { useField, useFormikContext } from 'formik';
 
 type Props = Omit<TextFieldProps, 'select'> & {

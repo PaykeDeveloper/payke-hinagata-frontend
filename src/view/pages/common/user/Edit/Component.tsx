@@ -1,7 +1,5 @@
 import React, { FC } from 'react';
-import { Card, Grid } from '@mui/material';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
+import { Card, Grid, CardActions, CardContent } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { DomainLocale } from 'src/store/state/domain/common/locales/types';

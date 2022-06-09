@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
+import { AppBar, Toolbar } from '@mui/material';
 import ScrollToTop from 'src/view/components/atoms/ScrollToTop';
 import Footer from 'src/view/components/organisms/Footer';
 import { useStyles } from 'src/view/components/templates/PrivateLayout';

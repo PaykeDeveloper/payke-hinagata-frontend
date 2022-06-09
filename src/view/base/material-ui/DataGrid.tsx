@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material';
 import {
   DataGrid,
   DataGridProps,

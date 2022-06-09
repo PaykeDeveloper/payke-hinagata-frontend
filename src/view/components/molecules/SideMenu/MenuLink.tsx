@@ -1,8 +1,6 @@
 import React, { FC, ReactElement } from 'react';
 
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Link } from 'react-router-dom';
 import MenuCollapse from './MenuCollapse';

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import Button, { ButtonProps } from '@mui/material/Button';
+import { Button, ButtonProps } from '@mui/material';
 import Loader from 'src/view/components/atoms/Loader';
 
 type Props<T> = Omit<ButtonProps, 'onClick'> & {

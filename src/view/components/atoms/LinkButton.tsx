@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import Button, { ButtonProps } from '@mui/material/Button';
+import { Button, ButtonProps } from '@mui/material';
 import { Link, LinkProps } from 'react-router-dom';
 
 export type LinkButtonProps = ButtonProps & LinkProps;

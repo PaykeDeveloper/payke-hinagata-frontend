@@ -1,6 +1,10 @@
 import React, { FC } from 'react';
-import Breadcrumbs, { BreadcrumbsProps } from '@mui/material/Breadcrumbs';
-import Typography, { TypographyProps } from '@mui/material/Typography';
+import {
+  Breadcrumbs,
+  BreadcrumbsProps,
+  Typography,
+  TypographyProps,
+} from '@mui/material';
 import RouterLink, {
   RouterLinkProps,
 } from 'src/view/components/atoms/RouterLink';

@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Theme } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { Theme, useMediaQuery } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 import ScrollToTop from 'src/view/components/atoms/ScrollToTop';

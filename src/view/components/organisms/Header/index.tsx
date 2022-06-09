@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
 
-import AppBar from '@mui/material/AppBar';
-import IconButton from '@mui/material/IconButton';
-import Slide from '@mui/material/Slide';
-import Toolbar from '@mui/material/Toolbar';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
+import {
+  AppBar,
+  IconButton,
+  Slide,
+  Toolbar,
+  useScrollTrigger,
+} from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 import { MenuIcon } from 'src/view/base/material-ui/Icon';

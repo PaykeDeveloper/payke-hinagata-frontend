@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-import { CheckboxProps } from '@mui/material/Checkbox';
-import { FormControlProps } from '@mui/material/FormControl';
+import { FormControlProps, CheckboxProps } from '@mui/material';
 import { useField, useFormikContext } from 'formik';
 import MuiCheckField, {
   CheckFieldProps,

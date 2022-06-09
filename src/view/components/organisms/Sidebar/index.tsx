@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 
-import Drawer from '@mui/material/Drawer';
-import SwipeDrawer from '@mui/material/SwipeableDrawer';
+import { Drawer, SwipeableDrawer } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import SideMenu from 'src/view/routes/PrivateSideMenu';
 
@@ -38,14 +37,14 @@ const Sidebar: FC<Props> = (props) => {
       <SideMenu />
     </Drawer>
   ) : (
-    <SwipeDrawer
+    <SwipeableDrawer
       open={open}
       onOpen={handleOpen}
       onClose={handleClose}
       classes={{ paper: classes.drawerPaper }}
     >
       <SideMenu onClickMenu={handleClose} />
-    </SwipeDrawer>
+    </SwipeableDrawer>
   );
 };
 

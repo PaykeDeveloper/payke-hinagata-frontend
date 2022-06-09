@@ -1,9 +1,12 @@
 import React, { FC, InputHTMLAttributes } from 'react';
-import { FilledInputProps } from '@mui/material/FilledInput';
-import { InputProps as StandardInputProps } from '@mui/material/Input';
-import { InputLabelProps } from '@mui/material/InputLabel';
-import { OutlinedInputProps } from '@mui/material/OutlinedInput';
-import MuiTextField, { TextFieldProps } from '@mui/material/TextField';
+import {
+  FilledInputProps,
+  InputProps as StandardInputProps,
+  InputLabelProps,
+  OutlinedInputProps,
+  TextField as MuiTextField,
+  TextFieldProps,
+} from '@mui/material';
 import { useField, useFormikContext } from 'formik';
 
 type Props = TextFieldProps & {

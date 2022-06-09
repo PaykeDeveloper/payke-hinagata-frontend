@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
+import { CircularProgress } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Switch } from 'react-router-dom';
 import { StoreStatus } from 'src/store/types';

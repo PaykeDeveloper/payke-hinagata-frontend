@@ -1,7 +1,6 @@
 import React, { FC, Fragment, ReactElement } from 'react';
 
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
+import { Divider, List } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import MenuLink, { Menu } from './MenuLink';
 

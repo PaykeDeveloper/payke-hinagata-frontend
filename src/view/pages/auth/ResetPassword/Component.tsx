@@ -1,11 +1,6 @@
 import React, { FC } from 'react';
 
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Fade from '@mui/material/Fade';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
+import { Box, Container, Fade, Grid, Paper, Typography } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Trans, useTranslation } from 'react-i18next';
 import * as yup from 'yup';

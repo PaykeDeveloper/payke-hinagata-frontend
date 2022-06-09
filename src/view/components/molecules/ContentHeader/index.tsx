@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Box, Typography } from '@mui/material';
 import RouterBreadcrumbs, {
   RouterBreadcrumbLinkProps,
 } from 'src/view/components/molecules/RouterBreadcrumbs';

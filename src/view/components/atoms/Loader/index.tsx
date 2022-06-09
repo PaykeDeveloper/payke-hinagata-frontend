@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import CircularProgress from '@mui/material/CircularProgress';
+import { CircularProgress } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { StoreStatus } from 'src/store/types';
 import { checkProcessed } from 'src/store/utils';

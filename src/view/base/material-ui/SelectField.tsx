@@ -1,12 +1,16 @@
 import React, { FC, ReactNode, useEffect } from 'react';
 
-import FormControl, { FormControlProps } from '@mui/material/FormControl';
-import FormHelperText, {
+import {
+  FormControl,
+  FormControlProps,
+  FormHelperText,
   FormHelperTextProps,
-} from '@mui/material/FormHelperText';
-import InputLabel, { InputLabelProps } from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Select, { SelectProps } from '@mui/material/Select';
+  InputLabel,
+  InputLabelProps,
+  OutlinedInput,
+  Select,
+  SelectProps,
+} from '@mui/material';
 
 export interface SelectFieldProps {
   label: ReactNode;

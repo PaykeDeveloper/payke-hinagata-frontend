@@ -1,5 +1,4 @@
-import { ThemeOptions } from '@mui/material';
-import { Theme } from '@mui/material/styles';
+import { ThemeOptions, Theme } from '@mui/material';
 import components from './overrides';
 import palette from './palette';
 import typography from './typography';

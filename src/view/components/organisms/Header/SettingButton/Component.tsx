@@ -1,9 +1,11 @@
 import React, { FC, MouseEvent, useState } from 'react';
-import IconButton from '@mui/material/IconButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
+import {
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Typography,
+} from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Trans } from 'react-i18next';
 import {
