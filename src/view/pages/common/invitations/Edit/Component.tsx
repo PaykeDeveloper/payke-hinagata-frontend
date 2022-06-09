@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Card, Grid, MenuItem, CardActions, CardContent } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';

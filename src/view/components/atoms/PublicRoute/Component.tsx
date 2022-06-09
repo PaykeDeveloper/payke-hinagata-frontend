@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
 import { rootPath } from 'src/view/routes/paths';
 

@@ -1,5 +1,4 @@
-import React, { FC, ReactElement } from 'react';
-
+import { FC, ReactElement } from 'react';
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Link } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Button, ButtonProps } from '@mui/material';
 import { Link, LinkProps } from 'react-router-dom';
 

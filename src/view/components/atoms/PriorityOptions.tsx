@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC } from 'react';
+import { FC } from 'react';
 import i18next from 'i18next';
 import { Priority } from 'src/store/state/domain/sample/projects/types';
 import Options from 'src/view/components/molecules/Options';

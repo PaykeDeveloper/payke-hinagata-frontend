@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { CircularProgress } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Switch } from 'react-router-dom';

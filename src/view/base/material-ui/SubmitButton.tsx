@@ -1,5 +1,4 @@
-import React, { ComponentType, FC } from 'react';
-
+import { ComponentType, FC } from 'react';
 import { Button, ButtonProps, IconProps } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Trans } from 'react-i18next';

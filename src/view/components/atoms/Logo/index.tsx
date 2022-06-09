@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-
+import { FC } from 'react';
 // FIXME: SAMPLE CODE
 import logo from './logo.svg';
 

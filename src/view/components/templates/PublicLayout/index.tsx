@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-
+import { FC } from 'react';
 import { AppBar, Toolbar } from '@mui/material';
 import ScrollToTop from 'src/view/components/atoms/ScrollToTop';
 import Footer from 'src/view/components/organisms/Footer';

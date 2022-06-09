@@ -1,4 +1,4 @@
-import React, { ComponentType, FC } from 'react';
+import { ComponentType, FC } from 'react';
 import { Route } from 'react-router-dom';
 import { privatePaths, privateRoutes } from '../PrivateRoutes';
 import { MenuType } from '../PrivateRoutes/routes';

@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material';
 import { jaJP as coreJaJP, Localization } from '@mui/material/locale';
 import { jaJP as dataGridJaJP } from '@mui/x-data-grid';

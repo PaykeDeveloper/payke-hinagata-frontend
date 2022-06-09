@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-
+import { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PublicLayout from 'src/view/components/templates/PublicLayout';
 import publicRoutes from './routes';

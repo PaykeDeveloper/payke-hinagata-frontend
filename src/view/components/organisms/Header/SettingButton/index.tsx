@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useStoreDispatch } from 'src/store';
 import { authActions } from 'src/store/state/app/auth/slice';

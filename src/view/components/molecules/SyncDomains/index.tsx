@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import SyncInvitations from './components/common/SyncInvitations';
 import SyncLocales from './components/common/SyncLocales';

@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-
+import { FC } from 'react';
 import { Drawer, SwipeableDrawer } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import SideMenu from 'src/view/routes/PrivateSideMenu';

@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useMemo } from 'react';
+import { ComponentProps, FC, useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { Trans } from 'react-i18next';
 import { RouteComponentProps } from 'react-router-dom';

@@ -1,5 +1,4 @@
-import React, { FC, ReactNode, useEffect } from 'react';
-
+import { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import {
   FormControl,
   FormControlProps,
@@ -37,8 +36,8 @@ const SelectField: FC<SelectFieldProps> = (props) => {
     formHelperTextProps,
   } = props;
   // const classes = useStyles();
-  const inputLabel = React.useRef<HTMLLabelElement>(null);
-  const [, setLabelWidth] = React.useState<number>();
+  const inputLabel = useRef<HTMLLabelElement>(null);
+  const [, setLabelWidth] = useState<number>();
   let input;
   if (formControlProps?.variant === 'outlined') {
     input = <OutlinedInput label={label} />;

@@ -1,5 +1,4 @@
-import React, { FC, useEffect } from 'react';
-
+import { FC, useEffect } from 'react';
 const Component: FC<{
   onSubmit: () => void;
 }> = (props) => {

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RouteProps } from 'react-router-dom';
 import { useStoreSelector } from 'src/store';

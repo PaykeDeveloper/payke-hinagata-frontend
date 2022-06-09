@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback, useMemo } from 'react';
+import { ComponentProps, FC, useCallback, useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { useSnackbar } from 'notistack';
 import { StaticContext } from 'react-router';

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ListSubheader } from '@mui/material';
 import { Trans } from 'react-i18next';
 import { useStoreSelector } from 'src/store';

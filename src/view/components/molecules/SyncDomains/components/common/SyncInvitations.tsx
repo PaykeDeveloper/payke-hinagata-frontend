@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {

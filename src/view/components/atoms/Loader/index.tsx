@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-
+import { FC } from 'react';
 import { CircularProgress } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { StoreStatus } from 'src/store/types';

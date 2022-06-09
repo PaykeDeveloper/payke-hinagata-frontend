@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, ReactNode } from 'react';
+import { CSSProperties, FC, ReactNode } from 'react';
 import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 
 interface Props extends Omit<TooltipProps, 'title'> {

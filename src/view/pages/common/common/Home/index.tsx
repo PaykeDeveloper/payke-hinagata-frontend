@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Typography } from '@mui/material';
 import { Trans } from 'react-i18next';
 import ContentBody from 'src/view/components/molecules/ContentBody';

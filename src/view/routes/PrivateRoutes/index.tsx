@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-
+import { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import SyncDomains from 'src/view/components/molecules/SyncDomains';
 import PrivateLayout from 'src/view/components/templates/PrivateLayout';

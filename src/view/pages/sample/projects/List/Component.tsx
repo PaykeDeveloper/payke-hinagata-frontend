@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Button } from '@mui/material';
 import { GridColumns } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';

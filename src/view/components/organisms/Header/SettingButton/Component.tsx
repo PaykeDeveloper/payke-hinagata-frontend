@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, useState } from 'react';
+import { FC, MouseEvent, useState } from 'react';
 import {
   IconButton,
   ListItemIcon,

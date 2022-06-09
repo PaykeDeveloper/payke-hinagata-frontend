@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC } from 'react';
+import { ComponentProps, FC } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { Trans } from 'react-i18next';
 import { StaticContext } from 'react-router';
