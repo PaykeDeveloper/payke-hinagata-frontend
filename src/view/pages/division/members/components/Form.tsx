@@ -2,7 +2,7 @@
 
 import { FC } from 'react';
 import { Card, Grid, MenuItem, CardActions, CardContent } from '@mui/material';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { Role } from 'src/store/state/domain/common/roles/types';
 import { User } from 'src/store/state/domain/common/users/types';
@@ -69,7 +69,7 @@ const Form: FC<{
           { children: t('Home'), to: rootPath },
           { children: division?.name },
           {
-            children: <Trans>Members</Trans>,
+            children: t('Members'),
             to: getMembersPath(divisionPath),
           },
         ]}

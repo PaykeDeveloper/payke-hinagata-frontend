@@ -8,7 +8,7 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { ForgotPasswordInput } from 'src/store/state/app/auth/types';
 import { StoreStatus } from 'src/store/types';
@@ -48,7 +48,7 @@ const Component: FC<{
             <Box p={[2, 5]}>
               <Box mb={4}>
                 <Typography component="h1" variant="h5" align="center">
-                  <Trans>Reset password</Trans>
+                  {t('Reset password')}
                 </Typography>
               </Box>
               <BaseForm
@@ -64,7 +64,7 @@ const Component: FC<{
                   </Grid>
                   <Grid item xs={12}>
                     <SubmitButton icon={SendIcon} fullWidth>
-                      <Trans>Send</Trans>
+                      {t('Send')}
                     </SubmitButton>
                   </Grid>
                 </Grid>

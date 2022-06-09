@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Card, Grid, CardActions, CardContent } from '@mui/material';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { ChangePasswordInput } from 'src/store/state/app/auth/types';
 import { BaseForm } from 'src/view/base/formik/Form';
@@ -20,7 +20,7 @@ const Component: FC<{
   const { t } = useTranslation();
   return (
     <ContentWrapper>
-      <ContentHeader links={[{ children: <Trans>Home</Trans>, to: rootPath }]}>
+      <ContentHeader links={[{ children: t('Home'), to: rootPath }]}>
         {t('Change password')}
       </ContentHeader>
       <ContentBody>

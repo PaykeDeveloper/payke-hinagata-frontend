@@ -4,7 +4,6 @@ import { FC } from 'react';
 import { Button } from '@mui/material';
 import { GridColumns } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
-import { Trans } from 'react-i18next';
 import { Division } from 'src/store/state/domain/division/divisions/types';
 import { Project } from 'src/store/state/domain/sample/projects/types';
 import { StoreError, StoreStatus } from 'src/store/types';
@@ -78,11 +77,11 @@ const Component: FC<{
     <ContentWrapper>
       <ContentHeader
         links={[
-          { children: <Trans>Home</Trans>, to: rootPath },
+          { children: t('Home'), to: rootPath },
           { children: division?.name },
         ]}
       >
-        <Trans>Projects</Trans>
+        {t('Projects')}
       </ContentHeader>
       <ContentBody>
         <ErrorWrapper error={error}>
@@ -102,7 +101,7 @@ const Component: FC<{
                   color="primary"
                   variant="outlined"
                 >
-                  <Trans>Add</Trans>
+                  {t('Add')}
                 </LinkButton>
               ) : undefined,
               <Button
@@ -112,7 +111,7 @@ const Component: FC<{
                 href={exportUrl}
                 download
               >
-                <Trans>Download CSV</Trans>
+                {t('Download CSV')}
               </Button>,
             ]}
           />

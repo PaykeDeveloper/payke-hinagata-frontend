@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { GridColumns } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
-import { Trans } from 'react-i18next';
 import { User } from 'src/store/state/domain/common/users/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
@@ -52,8 +51,8 @@ const Component: FC<{
 
   return (
     <ContentWrapper>
-      <ContentHeader links={[{ children: <Trans>Home</Trans>, to: rootPath }]}>
-        <Trans>Users</Trans>
+      <ContentHeader links={[{ children: t('Home'), to: rootPath }]}>
+        {t('Users')}
       </ContentHeader>
       <ContentBody>
         <ErrorWrapper error={error}>

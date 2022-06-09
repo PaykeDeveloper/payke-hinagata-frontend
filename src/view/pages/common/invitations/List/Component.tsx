@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { GridColumns } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
-import { Trans } from 'react-i18next';
 import { Invitation } from 'src/store/state/domain/common/invitations/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
@@ -69,8 +68,8 @@ const Component: FC<{
 
   return (
     <ContentWrapper>
-      <ContentHeader links={[{ children: <Trans>Home</Trans>, to: rootPath }]}>
-        <Trans>Invitations</Trans>
+      <ContentHeader links={[{ children: t('Home'), to: rootPath }]}>
+        {t('Invitations')}
       </ContentHeader>
       <ContentBody>
         <ErrorWrapper error={error}>
@@ -83,7 +82,7 @@ const Component: FC<{
                   color="primary"
                   variant="outlined"
                 >
-                  <Trans>Add</Trans>
+                  {t('Add')}
                 </LinkButton>
               ) : undefined,
             ]}
