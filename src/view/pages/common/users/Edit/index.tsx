@@ -37,11 +37,7 @@ const selector = createSelector(
   })
 );
 
-export type UserEditRouterState =
-  | (BaseRouterState & {
-      fromShow: boolean;
-    })
-  | undefined;
+export type UserEditRouterState = BaseRouterState | undefined;
 
 const Container: FC<
   RouteComponentProps<UserPath, StaticContext, UserEditRouterState>
@@ -52,11 +48,7 @@ const Container: FC<
     location,
   } = props;
 
-  const backPath = location.state?.path || usersPath;
-  const onBack: ChildProps['onBack'] = useCallback(
-    () => push(backPath),
-    [push, backPath]
-  );
+  const backTo = location.state?.path || usersPath;
 
   const dispatch = useStoreDispatch();
 
@@ -66,25 +58,20 @@ const Container: FC<
         usersActions.mergeEntity({ pathParams, bodyParams })
       );
       if (usersActions.mergeEntity.fulfilled.match(action)) {
-        onBack();
+        push(backTo);
       }
       return action;
     },
-    [dispatch, pathParams, onBack]
+    [backTo, dispatch, pathParams, push]
   );
 
-  const fromShow = location.state?.fromShow;
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
     const action = await dispatch(usersActions.removeEntity({ pathParams }));
     if (usersActions.removeEntity.fulfilled.match(action)) {
-      if (fromShow) {
-        push(usersPath);
-      } else {
-        onBack();
-      }
+      push(backTo);
     }
     return action;
-  }, [dispatch, pathParams, onBack, push, fromShow]);
+  }, [backTo, dispatch, pathParams, push]);
 
   const { checkUpdate, checkDelete, ...otherState } =
     useStoreSelector(selector);
@@ -96,8 +83,8 @@ const Container: FC<
       {...otherState}
       disabled={!canUpdate}
       title="Edit user"
+      backTo={backTo}
       onSubmit={onSubmit}
-      onBack={onBack}
       onDelete={canDelete ? onDelete : undefined}
     />
   );

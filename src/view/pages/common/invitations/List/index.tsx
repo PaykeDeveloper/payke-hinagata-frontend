@@ -1,5 +1,6 @@
-import React, { ComponentProps, FC, useCallback } from 'react';
+import React, { ComponentProps, FC } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
+import { Trans } from 'react-i18next';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreSelector } from 'src/store';
@@ -38,34 +39,32 @@ const selector = createSelector(
 
 const List: FC<RouteComponentProps> = (props) => {
   const {
-    history: { push },
     location: { pathname, search },
   } = props;
-
   const path = joinString(pathname, search);
-
-  const onClickAdd: ChildProps['onClickAdd'] = useCallback(
-    () => push(invitationNewPath, { path } as RouterState),
-    [push, path]
-  );
-
-  const onClickEdit: ChildProps['onClickEdit'] = useCallback(
-    (invitationId) =>
-      push(getInvitationEditPath({ invitationId: `${invitationId}` }), {
-        path,
-      } as RouterState),
-    [push, path]
-  );
-
   const { canCreate, canEdit, ...otherState } = useStoreSelector(selector);
 
-  return (
-    <Component
-      {...otherState}
-      onClickAdd={canCreate ? onClickAdd : undefined}
-      onClickEdit={canEdit ? onClickEdit : undefined}
-    />
-  );
+  const actions: ChildProps['actions'] = [
+    {
+      children: <Trans>Edit</Trans>,
+      getTo: ({ id }) =>
+        canEdit
+          ? {
+              pathname: getInvitationEditPath({ invitationId: `${id}` }),
+              state: { path } as RouterState,
+            }
+          : undefined,
+    },
+  ];
+
+  const addTo: ChildProps['addTo'] = canCreate
+    ? {
+        pathname: invitationNewPath,
+        state: { path } as RouterState,
+      }
+    : undefined;
+
+  return <Component {...otherState} actions={actions} addTo={addTo} />;
 };
 
 export default List;

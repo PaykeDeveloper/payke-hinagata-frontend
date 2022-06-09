@@ -22,7 +22,7 @@ import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import GridActions, {
-  Actions,
+  LinkActions,
 } from 'src/view/components/molecules/GridActions';
 import { rootPath } from 'src/view/routes/paths';
 
@@ -30,7 +30,7 @@ const Component: FC<{
   divisions: Division[];
   status: StoreStatus;
   error: StoreError | undefined;
-  actions: Actions<Division>;
+  actions: LinkActions<Division>;
   addTo?: LinkTo;
 }> = (props) => {
   const { divisions, status, error, actions, addTo } = props;
@@ -41,11 +41,7 @@ const Component: FC<{
       minWidth: actions.length * ACTION_WIDTH,
       ...actionsColDef,
     },
-    {
-      field: 'id',
-      headerName: t('ID'),
-      minWidth: 100,
-    },
+    { field: 'id', headerName: t('ID') },
     { field: 'name', headerName: t('name'), minWidth: 300, flex: 1 },
     {
       field: 'createdAt',

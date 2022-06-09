@@ -1,7 +1,7 @@
 // FIXME: SAMPLE CODE
 
 import React, { FC } from 'react';
-import { Button, Card, Grid } from '@mui/material';
+import { Card, Grid } from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +26,10 @@ import {
 } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
 import { DeleteIcon, NavigateBeforeIcon } from 'src/view/base/material-ui/Icon';
+import { LinkTo } from 'src/view/base/react-router/types';
+import LinkButton from 'src/view/components/atoms/LinkButton';
 import Loader from 'src/view/components/atoms/Loader';
+import PriorityOptions from 'src/view/components/atoms/PriorityOptions';
 import Buttons from 'src/view/components/molecules/Buttons';
 import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentHeader from 'src/view/components/molecules/ContentHeader';
@@ -34,7 +37,6 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import { DivisionPath, getProjectsPath, rootPath } from 'src/view/routes/paths';
-import PriorityOptions from './PriorityOptions';
 
 const Form: FC<{
   title: string;
@@ -45,9 +47,8 @@ const Form: FC<{
   divisionPath: DivisionPath;
   project: Project | undefined;
   division: Division | undefined;
-
+  backTo: LinkTo;
   onSubmit: OnSubmit<ProjectInput>;
-  onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
   const {
@@ -59,8 +60,8 @@ const Form: FC<{
     divisionPath,
     project,
     division,
+    backTo,
     onSubmit,
-    onBack,
     onDelete,
   } = props;
   const { t } = useTranslation();
@@ -82,13 +83,13 @@ const Form: FC<{
         <ErrorWrapper error={error}>
           <Buttons
             leftButtons={[
-              <Button
-                onClick={onBack}
+              <LinkButton
+                to={backTo}
                 startIcon={<NavigateBeforeIcon />}
                 variant="outlined"
               >
                 {t('Back')}
-              </Button>,
+              </LinkButton>,
             ]}
             rightButtons={
               onDelete && [

@@ -1,7 +1,8 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback } from 'react';
+import React, { ComponentProps, FC } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
+import { Trans } from 'react-i18next';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
@@ -50,38 +51,35 @@ const List: FC<
   RouteComponentProps<DivisionPath, StaticContext, RouterState>
 > = (props) => {
   const {
-    history: { push },
     match: { params: pathParams },
     location,
   } = props;
 
   const path = joinString(location.pathname, location.search);
 
-  const onClickAdd: ChildProps['onClickAdd'] = useCallback(
-    () =>
-      push(getMemberNewPath(pathParams), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
+  const { canCreate, checkEdit, ...otherState } = useStoreSelector(selector);
 
-  const onClickEdit: ChildProps['onClickEdit'] = useCallback(
-    (memberId) =>
-      push(getMemberEditPath({ ...pathParams, memberId: `${memberId}` }), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
+  const actions: ChildProps['actions'] = [
+    {
+      children: <Trans>Edit</Trans>,
+      getTo: ({ id }) =>
+        checkEdit(id)
+          ? {
+              pathname: getMemberEditPath({ ...pathParams, memberId: `${id}` }),
+              state: { path } as RouterState,
+            }
+          : undefined,
+    },
+  ];
 
-  const { canCreate, ...otherState } = useStoreSelector(selector);
+  const addTo: ChildProps['addTo'] = canCreate
+    ? {
+        pathname: getMemberNewPath(pathParams),
+        state: { path } as RouterState,
+      }
+    : undefined;
 
-  return (
-    <Component
-      {...otherState}
-      onClickAdd={canCreate ? onClickAdd : undefined}
-      onClickEdit={onClickEdit}
-    />
-  );
+  return <Component {...otherState} actions={actions} addTo={addTo} />;
 };
 
 export default List;

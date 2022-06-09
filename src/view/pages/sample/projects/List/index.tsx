@@ -1,7 +1,8 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback } from 'react';
+import React, { ComponentProps, FC } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
+import { Trans } from 'react-i18next';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
@@ -18,6 +19,7 @@ import {
 import { getProjectsDownloadApiUrl } from 'src/store/urls';
 import {
   DivisionPath,
+  divisionsPath,
   getProjectEditPath,
   getProjectNewPath,
 } from 'src/view/routes/paths';
@@ -51,37 +53,42 @@ const Container: FC<
   RouteComponentProps<DivisionPath, StaticContext, RouterState>
 > = (props) => {
   const {
-    history: { push },
     match: { params: pathParams },
     location,
   } = props;
-
+  const backTo = location.state?.path || divisionsPath;
   const path = joinString(location.pathname, location.search);
-
-  const onClickAdd: ChildProps['onClickAdd'] = useCallback(
-    () =>
-      push(getProjectNewPath(pathParams), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
-
-  const onClickEdit: ChildProps['onClickEdit'] = useCallback(
-    (projectSlug) =>
-      push(getProjectEditPath({ ...pathParams, projectSlug }), {
-        path,
-      } as RouterState),
-    [push, pathParams, path]
-  );
-
   const { canCreate, canEdit, ...otherState } = useStoreSelector(selector);
+
+  const actions: ChildProps['actions'] = [
+    {
+      children: <Trans>Edit</Trans>,
+      getTo: ({ slug }) =>
+        canEdit
+          ? {
+              pathname: getProjectEditPath({
+                ...pathParams,
+                projectSlug: slug,
+              }),
+              state: { path } as RouterState,
+            }
+          : undefined,
+    },
+  ];
+  const addTo: ChildProps['addTo'] = canCreate
+    ? {
+        pathname: getProjectNewPath(pathParams),
+        state: { path } as RouterState,
+      }
+    : undefined;
 
   return (
     <Component
       {...otherState}
       exportUrl={getProjectsDownloadApiUrl(pathParams)}
-      onClickAdd={canCreate ? onClickAdd : undefined}
-      onClickEdit={canEdit ? onClickEdit : undefined}
+      actions={actions}
+      addTo={addTo}
+      backTo={backTo}
     />
   );
 };

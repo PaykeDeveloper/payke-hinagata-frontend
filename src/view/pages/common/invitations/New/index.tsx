@@ -42,11 +42,7 @@ const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
     history: { push },
     location,
   } = props;
-  const backPath = location.state?.path || invitationsPath;
-  const onBack: ChildProps['onBack'] = useCallback(
-    () => push(backPath),
-    [push, backPath]
-  );
+  const backTo = location.state?.path || invitationsPath;
 
   const dispatch = useStoreDispatch();
 
@@ -56,11 +52,11 @@ const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
         invitationsActions.addEntity({ pathParams, bodyParams })
       );
       if (invitationsActions.addEntity.fulfilled.match(action)) {
-        onBack();
+        push(backTo);
       }
       return action;
     },
-    [dispatch, pathParams, onBack]
+    [backTo, dispatch, pathParams, push]
   );
 
   const { canCreate, ...otherState } = useStoreSelector(selector);
@@ -77,8 +73,8 @@ const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
       {...otherState}
       object={object}
       disabled={!canCreate}
+      backTo={backTo}
       onSubmit={onSubmit}
-      onBack={onBack}
     />
   );
 };

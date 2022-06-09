@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Card, Grid } from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { ChangePasswordInput } from 'src/store/state/app/auth/types';
 import { BaseForm } from 'src/view/base/formik/Form';
@@ -12,6 +12,7 @@ import { OnSubmit } from 'src/view/base/formik/types';
 import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
+import { rootPath } from 'src/view/routes/paths';
 
 const Component: FC<{
   object: ChangePasswordInput | undefined;
@@ -21,7 +22,9 @@ const Component: FC<{
   const { t } = useTranslation();
   return (
     <ContentWrapper>
-      <ContentHeader>{t('Change password')}</ContentHeader>
+      <ContentHeader links={[{ children: <Trans>Home</Trans>, to: rootPath }]}>
+        {t('Change password')}
+      </ContentHeader>
       <ContentBody>
         <BaseForm
           initialValues={object}

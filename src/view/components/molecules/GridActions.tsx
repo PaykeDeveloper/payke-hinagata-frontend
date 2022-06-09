@@ -3,7 +3,7 @@ import LinkButton, {
   LinkButtonProps,
 } from 'src/view/components/atoms/LinkButton';
 
-type Action<Row> = Omit<LinkButtonProps, 'to'> &
+type LinkAction<Row> = Omit<LinkButtonProps, 'to'> &
   (
     | {
         to: LinkTo | undefined;
@@ -13,14 +13,14 @@ type Action<Row> = Omit<LinkButtonProps, 'to'> &
       }
   );
 
-export type Actions<Row> = Action<Row>[];
+export type LinkActions<Row> = LinkAction<Row>[];
 
 const GridActions = <Row extends object>({
   row,
   actions,
 }: {
   row: Row;
-  actions: Actions<Row>;
+  actions: LinkActions<Row>;
 }) => (
   <>
     {actions.map((action, index) => {

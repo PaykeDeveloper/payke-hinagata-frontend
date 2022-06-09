@@ -36,11 +36,7 @@ const selector = createSelector(
   })
 );
 
-export type DivisionEditRouterState =
-  | (BaseRouterState & {
-      fromShow: boolean;
-    })
-  | undefined;
+export type DivisionEditRouterState = BaseRouterState | undefined;
 
 const Edit: FC<
   RouteComponentProps<DivisionPath, StaticContext, DivisionEditRouterState>

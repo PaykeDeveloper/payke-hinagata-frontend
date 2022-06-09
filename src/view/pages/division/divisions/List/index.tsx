@@ -66,13 +66,21 @@ const List: FC<RouteComponentProps> = (props) => {
       children: <Trans>Edit</Trans>,
       getTo: ({ id }) =>
         checkEdit(id)
-          ? getDivisionEditPath({ divisionId: `${id}` })
+          ? {
+              pathname: getDivisionEditPath({ divisionId: `${id}` }),
+              state: { path } as RouterState,
+            }
           : undefined,
     },
     {
       children: <Trans>Show</Trans>,
       getTo: ({ id }) =>
-        canViewProjects ? getProjectsPath({ divisionId: `${id}` }) : undefined,
+        canViewProjects
+          ? {
+              pathname: getProjectsPath({ divisionId: `${id}` }),
+              state: { path } as RouterState,
+            }
+          : undefined,
     },
   ];
 
