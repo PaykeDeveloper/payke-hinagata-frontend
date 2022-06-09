@@ -1,4 +1,4 @@
-import { ComponentProps, FC, useCallback, useMemo } from 'react';
+import { ComponentProps, FC, useCallback, useEffect, useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
@@ -45,6 +45,11 @@ const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
   const backTo = location.state?.path || invitationsPath;
 
   const dispatch = useStoreDispatch();
+  useEffect(() => {
+    dispatch(
+      invitationsActions.fetchEntitiesIfNeeded({ pathParams: {}, reset: true })
+    );
+  }, [dispatch]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {

@@ -1,9 +1,9 @@
-import { ComponentProps, FC } from 'react';
+import { ComponentProps, FC, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { Trans } from 'react-i18next';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
-import { useStoreSelector } from 'src/store';
+import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
   canCreateInvitationSelector,
   canEditInvitationSelector,
@@ -11,6 +11,7 @@ import {
   invitationsSelector,
   invitationsStatusSelector,
 } from 'src/store/state/domain/common/invitations/selectors';
+import { invitationsActions } from 'src/store/state/domain/common/invitations/slice';
 import {
   getInvitationEditPath,
   invitationNewPath,
@@ -43,6 +44,13 @@ const List: FC<RouteComponentProps> = (props) => {
   } = props;
   const path = joinString(pathname, search);
   const { canCreate, canEdit, ...otherState } = useStoreSelector(selector);
+
+  const dispatch = useStoreDispatch();
+  useEffect(() => {
+    dispatch(
+      invitationsActions.fetchEntitiesIfNeeded({ pathParams: {}, reset: true })
+    );
+  }, [dispatch]);
 
   const actions: ChildProps['actions'] = [
     {
