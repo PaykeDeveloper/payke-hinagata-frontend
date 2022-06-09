@@ -1,11 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { menuReducer } from './menu/slice';
-import { MenuState } from './menu/types';
 
-export interface UiState {
-  menu: MenuState;
-}
+export interface UiState {}
 
-export default combineReducers({
-  menu: menuReducer,
-});
+export default combineReducers({});
