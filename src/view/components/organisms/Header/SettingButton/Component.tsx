@@ -4,9 +4,9 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
+  styled,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { Trans } from 'react-i18next';
 import {
   SettingsIcon,
@@ -17,10 +17,8 @@ import {
 import MenuItemLink from 'src/view/components/atoms/MenuItemLink';
 import { changePasswordPath, myUserEditPath } from 'src/view/routes/paths';
 
-const useStyles = makeStyles((theme) => ({
-  listItemIcon: {
-    minWidth: theme.spacing(5),
-  },
+const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({
+  minWidth: theme.spacing(5),
 }));
 
 interface Props {
@@ -36,7 +34,6 @@ const Component: FC<Props> = (props) => {
     handleClose();
     onLogout();
   };
-  const classes = useStyles();
   return (
     <>
       <IconButton color="inherit" onClick={handleMenu}>
@@ -56,25 +53,25 @@ const Component: FC<Props> = (props) => {
         }}
       >
         <MenuItem onClick={handleLogout}>
-          <ListItemIcon className={classes.listItemIcon}>
+          <StyledListItemIcon>
             <PowerSettingsNewIcon />
-          </ListItemIcon>
+          </StyledListItemIcon>
           <Typography>
             <Trans>Logout</Trans>
           </Typography>
         </MenuItem>
         <MenuItemLink to={myUserEditPath}>
-          <ListItemIcon className={classes.listItemIcon}>
+          <StyledListItemIcon>
             <SettingsIcon />
-          </ListItemIcon>
+          </StyledListItemIcon>
           <Typography>
             <Trans>Setting</Trans>
           </Typography>
         </MenuItemLink>
         <MenuItemLink to={changePasswordPath}>
-          <ListItemIcon className={classes.listItemIcon}>
+          <StyledListItemIcon>
             <PasswordIcon />
-          </ListItemIcon>
+          </StyledListItemIcon>
           <Typography>
             <Trans>Change password</Trans>
           </Typography>

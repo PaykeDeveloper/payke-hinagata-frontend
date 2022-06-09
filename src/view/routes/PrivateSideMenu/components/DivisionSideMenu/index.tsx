@@ -33,7 +33,7 @@ const ManufacturerSideMenu: FC<PrivateSideMenuProps> = ({
     {
       menus: [
         {
-          text: <Trans>ホームへ戻る</Trans>,
+          text: <Trans>Back to home</Trans>,
           icon: <ArrowBackIcon />,
           to: rootPath,
           paths: [],

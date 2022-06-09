@@ -1,6 +1,13 @@
 import { FC } from 'react';
-import { Box, Container, Fade, Grid, Paper, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {
+  Box,
+  Container,
+  Fade,
+  Grid,
+  Paper,
+  styled,
+  Typography,
+} from '@mui/material';
 import { Trans, useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { RegisterInput } from 'src/store/state/app/auth/types';
@@ -16,13 +23,11 @@ import Logo from 'src/view/components/atoms/Logo';
 import RouterLink from 'src/view/components/atoms/RouterLink';
 import { loginPath } from 'src/view/routes/paths';
 
-const useStyles = makeStyles({
-  logoBox: {
-    textAlign: 'center',
-  },
-  logo: {
-    maxWidth: 200,
-  },
+const StyledBox = styled(Box)({
+  textAlign: 'center',
+});
+const StyledLogo = styled(Logo)({
+  maxWidth: 200,
 });
 
 const Component: FC<{
@@ -32,14 +37,13 @@ const Component: FC<{
   onSubmit: OnSubmit<RegisterInput>;
 }> = (props) => {
   const { object, status, onSubmit } = props;
-  const classes = useStyles();
   const { t } = useTranslation();
 
   return (
     <Container maxWidth="xs">
-      <Box mt={2} mb={6} className={classes.logoBox}>
-        <Logo className={classes.logo} />
-      </Box>
+      <StyledBox mt={2} mb={6}>
+        <StyledLogo />
+      </StyledBox>
       <Fade in timeout={1000}>
         <Paper>
           <Loader status={status}>

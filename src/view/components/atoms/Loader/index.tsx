@@ -1,38 +1,33 @@
 import { FC } from 'react';
-import { CircularProgress } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { CircularProgress, styled } from '@mui/material';
 import { StoreStatus } from 'src/store/types';
 import { checkProcessed } from 'src/store/utils';
 
-const useStyles = makeStyles((theme) => {
-  const backgroundColor =
+const LoaderDiv = styled('div')({
+  position: 'relative',
+});
+const FabProgressDiv = styled('div')(({ theme }) => ({
+  backgroundColor:
     theme.palette.mode === 'light'
       ? 'rgba(255,255,255,0.5)'
-      : 'rgba(0,0,0,0.5)';
-  return {
-    wrapper: { position: 'relative' },
-    fabProgress: {
-      backgroundColor,
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      margin: 'auto',
-      zIndex: 100,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  };
-});
+      : 'rgba(0,0,0,0.5)',
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  margin: 'auto',
+  zIndex: 100,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
 
 const FabProgress: FC<{ side: number }> = ({ side }) => {
-  const classes = useStyles();
   return (
-    <div className={classes.fabProgress}>
+    <FabProgressDiv>
       <CircularProgress size={side} />
-    </div>
+    </FabProgressDiv>
   );
 };
 
@@ -50,7 +45,6 @@ export type LoaderProps = { size?: number } & (
 
 const Loader: FC<LoaderProps> = (props) => {
   const { children, size } = props;
-  const classes = useStyles();
   const loading = (() => {
     if ('status' in props) {
       return !checkProcessed(props.status);
@@ -61,10 +55,10 @@ const Loader: FC<LoaderProps> = (props) => {
     }
   })();
   return (
-    <div className={classes.wrapper}>
+    <LoaderDiv>
       {children}
       {loading && <FabProgress side={size || 68} />}
-    </div>
+    </LoaderDiv>
   );
 };
 

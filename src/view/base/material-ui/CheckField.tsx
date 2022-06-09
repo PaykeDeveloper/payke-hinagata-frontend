@@ -8,15 +8,14 @@ import {
   FormControlLabelProps,
   FormHelperText,
   FormHelperTextProps,
+  styled,
 } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles';
-
-const useStyles = makeStyles((theme) => ({
-  label: ({ error }: { error?: boolean }) => {
-    return error ? { color: theme.palette.error.main } : {};
-  },
-}));
+const StyledFormControlLabel = styled(FormControlLabel, {
+  shouldForwardProp: (propName) => propName !== 'error',
+})<{ error?: boolean }>(({ theme, error }) =>
+  error ? { color: theme.palette.error.main } : {}
+);
 
 export interface CheckFieldProps {
   label: FormControlLabelProps['label'];
@@ -38,13 +37,12 @@ const CheckField: FC<CheckFieldProps> = (props) => {
     formControlLabelProps,
     formHelperTextProps,
   } = props;
-  const classes = useStyles({ error });
   return (
     <FormControl error={error} {...formControlProps}>
-      <FormControlLabel
+      <StyledFormControlLabel
         control={<Checkbox {...checkboxProps} />}
         label={label}
-        className={classes.label}
+        error={error}
         {...formControlLabelProps}
       />
       <FormHelperText {...formHelperTextProps}>{helperText}</FormHelperText>

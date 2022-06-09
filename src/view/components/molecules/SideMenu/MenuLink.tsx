@@ -1,14 +1,7 @@
 import { FC, ReactElement } from 'react';
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { Link } from 'react-router-dom';
 import MenuCollapse from './MenuCollapse';
-
-const useStyles = makeStyles((theme) => ({
-  nested: {
-    paddingLeft: theme.spacing(4),
-  },
-}));
 
 export type Menu = ItemMenu | CollapseMenu;
 
@@ -45,7 +38,6 @@ interface Props {
 
 const MenuLink: FC<Props> = (props) => {
   const { menu, path, nested, permissionNames, onClickMenu } = props;
-  const classes = useStyles();
 
   if (
     menu.permissions &&
@@ -69,7 +61,7 @@ const MenuLink: FC<Props> = (props) => {
       component={Link}
       to={menu.to}
       selected={exactMatchPath(menu, path)}
-      className={nested ? classes.nested : undefined}
+      sx={(theme) => (nested ? { paddingLeft: theme.spacing(4) } : {})}
       onClick={onClickMenu}
     >
       {menu.icon && <ListItemIcon>{menu.icon}</ListItemIcon>}

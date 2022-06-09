@@ -1,11 +1,17 @@
 import { FC, Fragment, ReactElement } from 'react';
-import { Divider, List } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { Divider, List, styled } from '@mui/material';
 import MenuLink, { Menu } from './MenuLink';
 
-const useStyles = makeStyles((theme) => ({
-  toolbar: {
-    ...theme.mixins.toolbar,
+const StyledDiv = styled('div')(({ theme }) => ({
+  ...theme.mixins.toolbar,
+}));
+
+const StyledList = styled(List)(({ theme }) => ({
+  '& .MuiListSubheader-root': {
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[100]
+        : theme.palette.grey[900],
   },
 }));
 
@@ -23,14 +29,13 @@ interface Props {
 
 const SideMenu: FC<Props> = (props) => {
   const { path, menuLists, permissionNames, onClickMenu } = props;
-  const classes = useStyles();
   return (
     <>
-      <div className={classes.toolbar} />
+      <StyledDiv />
       {menuLists.map(({ subheader, menus }, listIndex) => (
         <Fragment key={listIndex}>
           <Divider />
-          <List subheader={subheader}>
+          <StyledList subheader={subheader}>
             {menus.map((menu, index) => (
               <MenuLink
                 key={index}
@@ -40,7 +45,7 @@ const SideMenu: FC<Props> = (props) => {
                 permissionNames={permissionNames}
               />
             ))}
-          </List>
+          </StyledList>
         </Fragment>
       ))}
     </>
