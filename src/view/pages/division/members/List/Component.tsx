@@ -59,11 +59,6 @@ const Component: FC<{
       headerName: t('Created at'),
       ...timestampColDef,
     },
-    {
-      field: 'updatedAt',
-      headerName: t('Updated at'),
-      ...timestampColDef,
-    },
   ];
 
   return (

@@ -22,7 +22,6 @@ export interface Project {
   coverUrl: string | null;
   lockVersion: number;
   createdAt: string | null;
-  updatedAt: string | null;
 }
 
 export type ProjectInput = Partial<Omit<Project, 'coverUrl'>> & {

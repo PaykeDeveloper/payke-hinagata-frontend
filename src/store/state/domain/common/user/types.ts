@@ -7,7 +7,6 @@ export interface MyUser {
   roleNames: string[];
   locale: string | null;
   createdAt: string | null;
-  updatedAt: string | null;
 }
 
 export interface MyUserInput {
