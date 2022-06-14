@@ -69,7 +69,7 @@ const Container: FC<
     <Form
       {...otherState}
       title="Add project"
-      object={undefined}
+      object={{ approved: false }}
       disabled={!canCreate}
       divisionPath={pathParams}
       project={undefined}

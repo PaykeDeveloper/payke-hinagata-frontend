@@ -60,7 +60,6 @@ export const BaseCheckField: FC<BaseCheckFieldProps> = (props) => {
       formControlProps={{ disabled, required, ...formControlProps }}
       {...otherProps}
     >
-      {nullable && <option value="" />}
       {children}
     </CheckField>
   );
