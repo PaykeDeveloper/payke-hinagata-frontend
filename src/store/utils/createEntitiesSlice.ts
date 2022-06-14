@@ -263,7 +263,7 @@ const createEntitiesSlice = <
               action.meta.arg.pathParams[keyMapping.pathKey];
             state.entities = state.entities.filter(
               (entity) =>
-                (entity as Entity)[keyMapping.objectKey] !== urlKeyValue
+                `${(entity as Entity)[keyMapping.objectKey]}` !== urlKeyValue
             );
           }
         });

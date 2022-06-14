@@ -13,7 +13,6 @@ import {
   divisionsStatusSelector,
   checkEditDivisionSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
-import { canViewProjectsSelector } from 'src/store/state/domain/sample/projects/selectors';
 import {
   divisionNewPath,
   getDivisionEditPath,
@@ -31,15 +30,13 @@ const selector = createSelector(
     divisionsErrorSelector,
     canCreateDivisionSelector,
     checkEditDivisionSelector,
-    canViewProjectsSelector,
   ],
-  (divisions, status, error, canCreate, checkEdit, canViewProjects) => ({
+  (divisions, status, error, canCreate, checkEdit) => ({
     divisions,
     status,
     error,
     canCreate,
     checkEdit,
-    canViewProjects,
   })
 );
 
@@ -58,8 +55,7 @@ const List: FC<RouteComponentProps> = (props) => {
     [path]
   );
 
-  const { canCreate, checkEdit, canViewProjects, ...otherState } =
-    useStoreSelector(selector);
+  const { canCreate, checkEdit, ...otherState } = useStoreSelector(selector);
 
   const actions: ChildProps['actions'] = [
     {
@@ -74,13 +70,10 @@ const List: FC<RouteComponentProps> = (props) => {
     },
     {
       children: <Trans>Show</Trans>,
-      getTo: ({ id }) =>
-        canViewProjects
-          ? {
-              pathname: getProjectsPath({ divisionId: `${id}` }),
-              state: { path } as RouterState,
-            }
-          : undefined,
+      getTo: ({ id }) => ({
+        pathname: getProjectsPath({ divisionId: `${id}` }),
+        state: { path } as RouterState,
+      }),
     },
   ];
 

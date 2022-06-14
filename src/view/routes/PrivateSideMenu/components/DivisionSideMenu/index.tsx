@@ -1,8 +1,11 @@
 import { FC } from 'react';
 import { ListSubheader } from '@mui/material';
+import { createSelector } from '@reduxjs/toolkit';
+import uniq from 'lodash/uniq';
 import { Trans } from 'react-i18next';
 import { useStoreSelector } from 'src/store';
 import { userPermissionNamesSelector } from 'src/store/state/domain/common/user/selectors';
+import { memberPermissionNamesSelector } from 'src/store/state/domain/division/divisions/selectors';
 import { memberPermission } from 'src/store/state/domain/division/members/selectors';
 import { projectPermission } from 'src/store/state/domain/sample/projects/selectors';
 import {
@@ -23,6 +26,16 @@ import {
   rootPath,
 } from 'src/view/routes/paths';
 import { PrivateSideMenuProps } from '../../types';
+
+const selector = createSelector(
+  [userPermissionNamesSelector, memberPermissionNamesSelector],
+  (userPermissionNames, memberPermissionNames) => ({
+    permissionNames: uniq([
+      ...(userPermissionNames || []),
+      ...(memberPermissionNames || []),
+    ]),
+  })
+);
 
 const ManufacturerSideMenu: FC<PrivateSideMenuProps> = ({
   path,
@@ -65,7 +78,7 @@ const ManufacturerSideMenu: FC<PrivateSideMenuProps> = ({
     },
   ];
 
-  const permissionNames = useStoreSelector(userPermissionNamesSelector);
+  const { permissionNames } = useStoreSelector(selector);
   return (
     <SideMenu
       permissionNames={permissionNames}
