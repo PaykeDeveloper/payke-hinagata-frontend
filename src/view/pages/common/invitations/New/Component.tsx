@@ -1,8 +1,7 @@
-import React, { FC } from 'react';
-import { Button, Card, Grid, MenuItem } from '@material-ui/core';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import { FC } from 'react';
+import { Card, Grid, MenuItem, CardActions, CardContent } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 import { InvitationCreateInput } from 'src/store/state/domain/common/invitations/types';
 import { DomainLocale } from 'src/store/state/domain/common/locales/types';
 import { Role } from 'src/store/state/domain/common/roles/types';
@@ -14,6 +13,8 @@ import SubmitButton from 'src/view/base/formik/SubmitButton';
 import { BaseTextField, EmailTextField } from 'src/view/base/formik/TextField';
 import { OnSubmit } from 'src/view/base/formik/types';
 import { NavigateBeforeIcon } from 'src/view/base/material-ui/Icon';
+import { LinkTo } from 'src/view/base/react-router/types';
+import LinkButton from 'src/view/components/atoms/LinkButton';
 import Loader from 'src/view/components/atoms/Loader';
 import Buttons from 'src/view/components/molecules/Buttons';
 import ContentBody from 'src/view/components/molecules/ContentBody';
@@ -22,7 +23,6 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import Options from 'src/view/components/molecules/Options';
 import { invitationsPath, rootPath } from 'src/view/routes/paths';
-import * as yup from 'yup';
 
 const Component: FC<{
   object: InvitationCreateInput | undefined;
@@ -31,11 +31,10 @@ const Component: FC<{
   disabled: boolean;
   roles: Role[];
   locales: DomainLocale[];
-
+  backTo: LinkTo;
   onSubmit: OnSubmit<InvitationCreateInput>;
-  onBack: () => void;
 }> = (props) => {
-  const { object, status, error, disabled, roles, locales, onSubmit, onBack } =
+  const { object, status, error, disabled, roles, locales, backTo, onSubmit } =
     props;
   const { t } = useTranslation();
   return (
@@ -52,13 +51,13 @@ const Component: FC<{
         <ErrorWrapper error={error}>
           <Buttons
             leftButtons={[
-              <Button
-                onClick={onBack}
+              <LinkButton
+                to={backTo}
                 startIcon={<NavigateBeforeIcon />}
                 variant="outlined"
               >
                 {t('Back')}
-              </Button>,
+              </LinkButton>,
             ]}
           />
           <BaseForm

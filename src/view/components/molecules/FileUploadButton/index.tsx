@@ -1,5 +1,6 @@
-import React, { useCallback, FC } from 'react';
-import Button, { ButtonProps } from '@material-ui/core/Button';
+import { useCallback, FC, useState } from 'react';
+import { Button, ButtonProps } from '@mui/material';
+import Loader from 'src/view/components/atoms/Loader';
 
 export type FileUploadButtonProps = Omit<
   ButtonProps,
@@ -7,19 +8,20 @@ export type FileUploadButtonProps = Omit<
 > & {
   id: string;
   accept?: string;
-  onChange: (value?: File | null) => void | Promise<unknown>;
+  multiple?: boolean;
+  onChange: (value?: FileList | null) => void | Promise<unknown>;
 };
 
 const FileUploadButton: FC<FileUploadButtonProps> = (props) => {
-  const { id, accept, children, onChange, ...otherProps } = props;
+  const { id, accept, multiple, children, onChange, disabled, ...otherProps } =
+    props;
+  const [loading, setLoading] = useState(false);
   const handleChange = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (event.currentTarget.files !== null) {
-        const file = event.currentTarget.files[0];
-        await onChange(file);
-      } else {
-        await onChange(event.currentTarget.files);
-      }
+      setLoading(true);
+      await onChange(event.currentTarget.files);
+      event.target.value = '';
+      setLoading(false);
     },
     [onChange]
   );
@@ -30,12 +32,16 @@ const FileUploadButton: FC<FileUploadButtonProps> = (props) => {
         type="file"
         id={id}
         accept={accept}
+        multiple={multiple}
         onChange={handleChange}
+        disabled={disabled || loading}
       />
       <label htmlFor={id}>
-        <Button component="span" {...otherProps}>
-          {children}
-        </Button>
+        <Loader loading={loading} size={20}>
+          <Button component="span" {...otherProps}>
+            {children}
+          </Button>
+        </Loader>
       </label>
     </>
   );

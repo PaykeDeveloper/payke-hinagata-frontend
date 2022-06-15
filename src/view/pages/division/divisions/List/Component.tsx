@@ -1,93 +1,72 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC } from 'react';
-import { Button } from '@material-ui/core';
-import { GridColumns } from '@material-ui/data-grid';
+import { FC } from 'react';
+import { GridColumns } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
-import { Trans } from 'react-i18next';
 import { Division } from 'src/store/state/domain/division/divisions/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
+  ACTION_WIDTH,
+  actionsColDef,
   RouterDataGrid,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
 import { AddIcon } from 'src/view/base/material-ui/Icon';
-import Link from 'src/view/base/material-ui/Link';
+import { LinkTo } from 'src/view/base/react-router/types';
+import LinkButton from 'src/view/components/atoms/LinkButton';
 import Loader from 'src/view/components/atoms/Loader';
 import Buttons from 'src/view/components/molecules/Buttons';
 import ContentBody from 'src/view/components/molecules/ContentBody';
 import ContentHeader from 'src/view/components/molecules/ContentHeader';
 import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
+import GridActions, {
+  LinkActions,
+} from 'src/view/components/molecules/GridActions';
 import { rootPath } from 'src/view/routes/paths';
-
-export type PermissionList = {
-  divisionCreate: boolean;
-  divisionUpdate: boolean;
-  usersView: boolean;
-  membersView: boolean;
-};
 
 const Component: FC<{
   divisions: Division[];
   status: StoreStatus;
   error: StoreError | undefined;
-  checkEdit: (_: number | null | undefined) => boolean;
-
-  onClickAdd?: () => void;
-  onClickEdit: (divisionId: number) => void;
+  actions: LinkActions<Division>;
+  addTo?: LinkTo;
 }> = (props) => {
-  const { divisions, status, error, checkEdit, onClickAdd, onClickEdit } =
-    props;
+  const { divisions, status, error, actions, addTo } = props;
   const { t } = useTranslation();
-  const columns: GridColumns = [
+  const columns: GridColumns<Division> = [
     {
-      field: ' ',
-      sortable: false,
-      filterable: false,
-      renderCell: ({ row }) => {
-        if (!checkEdit(row['requestMemberId'])) {
-          return <></>;
-        }
-        return <Link onClick={() => onClickEdit(row['id'])}>{t('Edit')}</Link>;
-      },
+      renderCell: ({ row }) => <GridActions row={row} actions={actions} />,
+      minWidth: actions.length * ACTION_WIDTH,
+      ...actionsColDef,
     },
-    {
-      field: 'id',
-      headerName: t('ID'),
-      width: 100,
-    },
-    { field: 'name', headerName: t('name'), width: 300, flex: 1 },
+    { field: 'id', headerName: t('ID') },
+    { field: 'name', headerName: t('name'), minWidth: 300, flex: 1 },
     {
       field: 'createdAt',
       headerName: t('Created at'),
-      ...timestampColDef,
-    },
-    {
-      field: 'updatedAt',
-      headerName: t('Updated at'),
       ...timestampColDef,
     },
   ];
 
   return (
     <ContentWrapper>
-      <ContentHeader links={[{ children: <Trans>Home</Trans>, to: rootPath }]}>
-        <Trans>Divisions</Trans>
+      <ContentHeader links={[{ children: t('Home'), to: rootPath }]}>
+        {t('Divisions')}
       </ContentHeader>
       <ContentBody>
         <ErrorWrapper error={error}>
           <Buttons
             leftButtons={[
-              onClickAdd ? (
-                <Button
-                  onClick={onClickAdd}
+              addTo ? (
+                <LinkButton
+                  to={addTo}
                   startIcon={<AddIcon />}
                   color="primary"
                   variant="outlined"
                 >
-                  <Trans>Add</Trans>
-                </Button>
+                  {t('Add')}
+                </LinkButton>
               ) : undefined,
             ]}
           />

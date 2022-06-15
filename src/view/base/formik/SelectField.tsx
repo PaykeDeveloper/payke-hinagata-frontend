@@ -1,33 +1,26 @@
-import React, { FC } from 'react';
-
-import { FormControlProps } from '@material-ui/core/FormControl';
-import { SelectProps } from '@material-ui/core/Select';
+import { FC } from 'react';
+import { TextField, TextFieldProps } from '@mui/material';
 import { useField, useFormikContext } from 'formik';
-import MuiSelectField, {
-  SelectFieldProps,
-} from 'src/view/base/material-ui/SelectField';
 
-type Props = SelectFieldProps & {
+type Props = Omit<TextFieldProps, 'select'> & {
   name: string;
 };
 
 const SelectField: FC<Props> = (props) => {
-  const { name, selectProps, helperText, formControlProps, ...otherProps } =
-    props;
+  const { name, disabled, helperText, value: _, ...otherProps } = props;
   const { isSubmitting, submitCount } = useFormikContext();
   const [field, meta] = useField({ name });
   const { value, ...otherField } = field;
   const hasError = !!((meta.touched || submitCount) && meta.error);
   return (
-    <MuiSelectField
+    <TextField
+      select
+      disabled={disabled || isSubmitting}
       error={hasError}
-      formControlProps={{
-        ...formControlProps,
-        disabled: formControlProps?.disabled || isSubmitting,
-      }}
-      selectProps={{ value: value ?? '', ...selectProps, ...otherField }}
       helperText={hasError ? meta.error : helperText}
+      value={value ?? ''}
       {...otherProps}
+      {...otherField}
     />
   );
 };
@@ -40,28 +33,15 @@ interface BaseSelectFieldProps {
   disabled?: boolean;
   required?: boolean;
   fullWidth?: boolean;
-  formControlProps?: FormControlProps;
-  selectProps?: SelectProps;
+  SelectProps?: TextFieldProps['SelectProps'];
   nullable?: boolean;
   helperText?: string;
 }
 
 export const BaseSelectField: FC<BaseSelectFieldProps> = (props) => {
-  const {
-    children,
-    label,
-    nullable,
-    disabled,
-    required,
-    formControlProps,
-    ...otherProps
-  } = props;
+  const { children, nullable, ...otherProps } = props;
   return (
-    <SelectField
-      label={label}
-      formControlProps={{ disabled, required, ...formControlProps }}
-      {...otherProps}
-    >
+    <SelectField {...otherProps}>
       {nullable && <option value="" />}
       {children}
     </SelectField>
@@ -70,8 +50,7 @@ export const BaseSelectField: FC<BaseSelectFieldProps> = (props) => {
 BaseSelectField.defaultProps = {
   disabled: false,
   fullWidth: true,
-  formControlProps: { variant: 'outlined' },
-  selectProps: { native: true },
+  SelectProps: { native: true },
   nullable: false,
   helperText: ' ',
 };

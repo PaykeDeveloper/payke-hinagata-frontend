@@ -18,19 +18,19 @@ const invitationsSlice = createEntitiesSlice<
   InvitationApiUrl,
   InvitationCreateInput,
   InvitationUpdateInput
->(
-  'invitations',
-  getEntitiesInitialState(),
-  getInvitationsApiUrl,
-  getInvitationApiUrl,
-  (state) => state.domain.common.invitations,
-  { objectKey: 'id', pathKey: 'invitationId' },
-  (entity) => entity,
-  (entity) => entity,
-  undefined,
-  (builder) =>
-    builder.addCase(authActions.resetAll, () => getEntitiesInitialState())
-);
+>({
+  domainName: 'invitations',
+  initialState: getEntitiesInitialState(),
+  entitiesUrl: getInvitationsApiUrl,
+  entityUrl: getInvitationApiUrl,
+  domainSelector: (state) => state.domain.common.invitations,
+  keyMapping: { objectKey: 'id', pathKey: 'invitationId' },
+  detailToList: (entity) => entity,
+  listToDetail: (entity) => entity,
+  sort: { key: 'createdAt', reverse: true, skipUpdated: true },
+  extraReducers: (builder) =>
+    builder.addCase(authActions.resetAll, () => getEntitiesInitialState()),
+});
 
 export const invitationsActions = invitationsSlice.actions;
 export const invitationsReducer = invitationsSlice.reducer;

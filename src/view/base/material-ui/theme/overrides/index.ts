@@ -1,10 +1,13 @@
-import { Overrides } from '@material-ui/core/styles/overrides';
+import { Components } from '@mui/material';
 import MuiButton from './MuiButton';
 import MuiTab from './MuiTab';
 
-const overrides: Overrides = {
-  MuiButton,
-  MuiTab,
+const components: Components = {
+  MuiButton: {
+    styleOverrides: MuiButton,
+  },
+  MuiTab: {
+    styleOverrides: MuiTab,
+  },
 };
-
-export default overrides;
+export default components;

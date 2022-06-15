@@ -1,5 +1,4 @@
-import React, { ComponentProps, FC, useCallback } from 'react';
-
+import { ComponentProps, FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import { statusStatusSelector } from 'src/store/state/app/status/selectors';

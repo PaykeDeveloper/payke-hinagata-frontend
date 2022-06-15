@@ -3,9 +3,12 @@ import applyConverters from 'axios-case-converter';
 import { getLanguage } from 'src/base/i18n';
 
 const requestFunc = (config: AxiosRequestConfig) => {
-  const language = getLanguage();
-  if (language) {
-    config.headers.common['Accept-Language'] = language;
+  const { headers } = config;
+  if (headers) {
+    const language = getLanguage();
+    if (language) {
+      headers['Accept-Language'] = language;
+    }
   }
   return config;
 };

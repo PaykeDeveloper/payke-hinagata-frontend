@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useStoreDispatch } from 'src/store';
 import { localesActions } from 'src/store/state/domain/common/locales/slice';
 

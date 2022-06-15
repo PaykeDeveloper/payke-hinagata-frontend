@@ -1,11 +1,9 @@
 import { FC } from 'react';
-import { Box, makeStyles, Typography } from '@material-ui/core';
+import { Box, styled, Typography } from '@mui/material';
 import { ErrorOutlineIcon } from 'src/view/base/material-ui/Icon';
 
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    fontSize: theme.spacing(14),
-  },
+const ErrorIcon = styled(ErrorOutlineIcon)(({ theme }) => ({
+  fontSize: theme.spacing(10),
 }));
 
 export interface ErrorMessageProps {
@@ -14,11 +12,10 @@ export interface ErrorMessageProps {
 
 const ErrorMessage: FC<ErrorMessageProps> = (props) => {
   const { message } = props;
-  const classes = useStyles();
   return (
     <Box>
       <Box display="flex" justifyContent="center">
-        <ErrorOutlineIcon color="error" className={classes.icon} />
+        <ErrorIcon color="error" />
       </Box>
       <Box display="flex" justifyContent="center" mt={1}>
         <Typography variant="h4">{message}</Typography>

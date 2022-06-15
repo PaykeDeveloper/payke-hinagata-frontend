@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback } from 'react';
+import { ComponentProps, FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
@@ -42,11 +42,7 @@ const Container: FC<
     history: { push },
     location,
   } = props;
-  const backPath = location.state?.path || getProjectsPath(pathParams);
-  const onBack: ChildProps['onBack'] = useCallback(
-    () => push(backPath),
-    [push, backPath]
-  );
+  const backTo = location.state?.path || getProjectsPath(pathParams);
 
   const dispatch = useStoreDispatch();
 
@@ -60,11 +56,11 @@ const Container: FC<
         })
       );
       if (projectsActions.addEntity.fulfilled.match(action)) {
-        onBack();
+        push(backTo);
       }
       return action;
     },
-    [dispatch, pathParams, onBack]
+    [dispatch, pathParams, push, backTo]
   );
 
   const { canCreate, ...otherState } = useStoreSelector(selector);
@@ -73,12 +69,12 @@ const Container: FC<
     <Form
       {...otherState}
       title="Add project"
-      object={undefined}
+      object={{ approved: false }}
       disabled={!canCreate}
       divisionPath={pathParams}
       project={undefined}
+      backTo={backTo}
       onSubmit={onSubmit}
-      onBack={onBack}
     />
   );
 };

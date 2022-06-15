@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { CssBaseline } from '@material-ui/core';
+import { FC } from 'react';
+import { CssBaseline } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';

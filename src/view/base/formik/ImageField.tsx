@@ -1,16 +1,12 @@
-import React, { FC } from 'react';
-
-import InputLabel from '@material-ui/core/InputLabel';
-import { makeStyles } from '@material-ui/core/styles';
+import { FC } from 'react';
+import { InputLabel, styled } from '@mui/material';
 import { useField, useFormikContext } from 'formik';
 import MuiImageField, {
   ImageFieldProps,
 } from 'src/view/base/material-ui/ImageField';
 
-const useStyles = makeStyles((theme) => ({
-  label: {
-    marginBottom: theme.spacing(1),
-  },
+const StyledInputLabel = styled(InputLabel)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
 }));
 
 type Props = ImageFieldProps & {
@@ -47,17 +43,16 @@ const ImageField: FC<Props> = (props) => {
 export default ImageField;
 
 interface BaseImageFieldProps extends Props {
-  label: string;
+  label?: string;
 }
 
 export const BaseImageField: FC<BaseImageFieldProps> = (props) => {
   const { label, ...otherProps } = props;
-  const classes = useStyles();
   return (
     <>
-      <InputLabel htmlFor={otherProps.name} className={classes.label}>
-        {label}
-      </InputLabel>
+      {label && (
+        <StyledInputLabel htmlFor={otherProps.name}>{label}</StyledInputLabel>
+      )}
       <ImageField {...otherProps} />
     </>
   );

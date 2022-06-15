@@ -1,23 +1,16 @@
-import React, { FC, ReactElement } from 'react';
-import { Box, BoxProps, makeStyles } from '@material-ui/core';
-import clsx from 'clsx';
+import { FC, ReactElement } from 'react';
+import { Box, BoxProps, styled } from '@mui/material';
 import { notUndefined } from 'src/base/utils';
 
-const useStyles = makeStyles((theme) => ({
-  buttons: {},
-  leftButton: {
-    marginBottom: theme.spacing(0.5),
-  },
-  leftMargin: {
-    marginLeft: theme.spacing(1),
-  },
-  rightButton: {
-    marginBottom: theme.spacing(0.5),
-    float: 'right',
-  },
-  rightMargin: {
-    marginRight: theme.spacing(1),
-  },
+const ContainerBox = styled(Box)({
+  overflow: 'hidden',
+});
+const LeftBox = styled(Box)(({ theme }) => ({
+  marginBottom: theme.spacing(0.5),
+}));
+const RightBox = styled(Box)(({ theme }) => ({
+  marginBottom: theme.spacing(0.5),
+  float: 'right',
 }));
 
 type Props = {
@@ -28,34 +21,41 @@ type Props = {
 
 const Buttons: FC<Props> = (props) => {
   const { boxProps, leftButtons, rightButtons } = props;
-  const classes = useStyles();
   const filteredLeftButtons = leftButtons?.filter(notUndefined);
   const filteredRightButtons = rightButtons?.filter(notUndefined);
   return (
-    <Box {...boxProps} className={clsx(classes.buttons, boxProps?.className)}>
+    <ContainerBox {...boxProps}>
       {filteredLeftButtons?.map((button, index) => (
-        <Box
+        <LeftBox
           display="inline-block"
           key={`left-button-${index}`}
-          className={clsx(classes.leftButton, {
-            [classes.rightMargin]: index + 1 !== filteredLeftButtons?.length,
-          })}
+          sx={(theme) =>
+            index + 1 !== filteredLeftButtons?.length
+              ? {
+                  marginRight: theme.spacing(1),
+                }
+              : {}
+          }
         >
           {button}
-        </Box>
+        </LeftBox>
       ))}
       {filteredRightButtons?.map((button, index) => (
-        <Box
+        <RightBox
           display="inline-block"
           key={`right-button-${index}`}
-          className={clsx(classes.rightButton, {
-            [classes.leftMargin]: index + 1 !== filteredRightButtons?.length,
-          })}
+          sx={(theme) =>
+            index + 1 !== filteredRightButtons?.length
+              ? {
+                  marginLeft: theme.spacing(1),
+                }
+              : {}
+          }
         >
           {button}
-        </Box>
+        </RightBox>
       ))}
-    </Box>
+    </ContainerBox>
   );
 };
 Buttons.defaultProps = {

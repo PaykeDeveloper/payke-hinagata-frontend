@@ -1,6 +1,5 @@
-import React, { FC } from 'react';
-import { CheckboxProps } from '@material-ui/core';
-import { FormControlProps } from '@material-ui/core/FormControl';
+import { FC } from 'react';
+import { FormControlProps, CheckboxProps } from '@mui/material';
 import { useField, useFormikContext } from 'formik';
 import MuiCheckField, {
   CheckFieldProps,
@@ -61,7 +60,6 @@ export const BaseCheckField: FC<BaseCheckFieldProps> = (props) => {
       formControlProps={{ disabled, required, ...formControlProps }}
       {...otherProps}
     >
-      {nullable && <option value="" />}
       {children}
     </CheckField>
   );

@@ -1,4 +1,4 @@
-import React, { ComponentProps, FC, useCallback } from 'react';
+import { ComponentProps, FC, useCallback } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch } from 'src/store';
 import { authActions } from 'src/store/state/app/auth/slice';

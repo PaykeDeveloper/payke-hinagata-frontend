@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { MenuItem } from '@material-ui/core';
+import { MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 interface Props {

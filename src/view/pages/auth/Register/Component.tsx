@@ -1,13 +1,15 @@
-import React, { FC } from 'react';
-
-import { makeStyles } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
-import Fade from '@material-ui/core/Fade';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { Trans, useTranslation } from 'react-i18next';
+import { FC } from 'react';
+import {
+  Box,
+  Container,
+  Fade,
+  Grid,
+  Paper,
+  styled,
+  Typography,
+} from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 import { RegisterInput } from 'src/store/state/app/auth/types';
 import { StoreStatus } from 'src/store/types';
 import { BaseErrorField } from 'src/view/base/formik/ErrorField';
@@ -20,15 +22,12 @@ import Loader from 'src/view/components/atoms/Loader';
 import Logo from 'src/view/components/atoms/Logo';
 import RouterLink from 'src/view/components/atoms/RouterLink';
 import { loginPath } from 'src/view/routes/paths';
-import * as yup from 'yup';
 
-const useStyles = makeStyles({
-  logoBox: {
-    textAlign: 'center',
-  },
-  logo: {
-    maxWidth: 200,
-  },
+const StyledBox = styled(Box)({
+  textAlign: 'center',
+});
+const StyledLogo = styled(Logo)({
+  maxWidth: 200,
 });
 
 const Component: FC<{
@@ -38,21 +37,20 @@ const Component: FC<{
   onSubmit: OnSubmit<RegisterInput>;
 }> = (props) => {
   const { object, status, onSubmit } = props;
-  const classes = useStyles();
   const { t } = useTranslation();
 
   return (
     <Container maxWidth="xs">
-      <Box mt={2} mb={6} className={classes.logoBox}>
-        <Logo className={classes.logo} />
-      </Box>
+      <StyledBox mt={2} mb={6}>
+        <StyledLogo />
+      </StyledBox>
       <Fade in timeout={1000}>
         <Paper>
           <Loader status={status}>
             <Box p={[2, 5]}>
               <Box mb={4}>
                 <Typography component="h1" variant="h5" align="center">
-                  <Trans>Sign up</Trans>
+                  {t('Sign up')}
                 </Typography>
               </Box>
               <BaseForm
@@ -86,7 +84,7 @@ const Component: FC<{
                   </Grid>
                   <Grid item xs={12}>
                     <SubmitButton icon={SaveIcon} fullWidth>
-                      <Trans>Sign up</Trans>
+                      {t('Sign up')}
                     </SubmitButton>
                   </Grid>
                 </Grid>

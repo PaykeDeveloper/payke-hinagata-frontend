@@ -1,9 +1,14 @@
 {
+  "An network error has occurred.": "ネットワークエラーが発生しました。",
+  "Unauthorized": "認証エラーが発生しました。",
+  "Forbidden": "認可エラーが発生しました。",
+  "Page not found": "ページが見つかりません。",
+  "This action is not allowed": "許可されていないアクションです。",
   "The given data was invalid.": "不正なデータが送信されました。",
-  "Some error occurred.": "不明なエラーが発生しました。",
+  "Internal server error": "サーバーでエラーが発生しました。",
+  "An unknown error has occurred.": "不明なエラーが発生しました。",
   "Email": "メールアドレス",
   "Password": "パスワード",
   "Log in": "ログイン",
-
   "${path} is a required field": "${path}は入力必須です"
 }

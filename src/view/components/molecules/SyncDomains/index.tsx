@@ -1,6 +1,5 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import SyncInvitations from './components/common/SyncInvitations';
 import SyncLocales from './components/common/SyncLocales';
 import SyncRoles from './components/common/SyncRoles';
 import SyncUser from './components/common/SyncUser';
@@ -21,7 +20,6 @@ const SyncDomains: FC<Props> = (props) => {
       <SyncLocales />
       <SyncUser />
       <SyncUsers params={params} />
-      <SyncInvitations params={params} />
       <SyncDivisions params={params} />
       <SyncMembers params={params} />
       <SyncProjects params={params} />

@@ -1,8 +1,5 @@
-import React, { FC } from 'react';
-
-import { MenuItem } from '@material-ui/core';
-import { FormControlProps } from '@material-ui/core/FormControl';
-import { SelectProps } from '@material-ui/core/Select';
+import { FC } from 'react';
+import { SelectProps, MenuItem, FormControlProps } from '@mui/material';
 import { useField, useFormikContext } from 'formik';
 import MuiSelectField, {
   SelectFieldProps,

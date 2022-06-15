@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback } from 'react';
+import { ComponentProps, FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
@@ -36,11 +36,7 @@ const selector = createSelector(
   })
 );
 
-export type DivisionEditRouterState =
-  | (BaseRouterState & {
-      fromShow: boolean;
-    })
-  | undefined;
+export type DivisionEditRouterState = BaseRouterState | undefined;
 
 const Edit: FC<
   RouteComponentProps<DivisionPath, StaticContext, DivisionEditRouterState>
@@ -51,11 +47,7 @@ const Edit: FC<
     location,
   } = props;
 
-  const backPath = location.state?.path || divisionsPath;
-  const onBack: ChildProps['onBack'] = useCallback(
-    () => push(backPath),
-    [push, backPath]
-  );
+  const backTo = location.state?.path || divisionsPath;
 
   const dispatch = useStoreDispatch();
 
@@ -65,31 +57,22 @@ const Edit: FC<
         divisionsActions.mergeEntity({ pathParams, bodyParams })
       );
       if (divisionsActions.mergeEntity.fulfilled.match(action)) {
-        // mergeEntity で削除されるので再取得
-        dispatch(
-          divisionsActions.fetchEntitiesIfNeeded({ pathParams, reset: true })
-        );
-        onBack();
+        push(backTo);
       }
       return action;
     },
-    [dispatch, pathParams, onBack]
+    [backTo, dispatch, pathParams, push]
   );
 
-  const fromShow = location.state?.fromShow;
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
     const action = await dispatch(
       divisionsActions.removeEntity({ pathParams })
     );
     if (divisionsActions.removeEntity.fulfilled.match(action)) {
-      if (fromShow) {
-        push(divisionsPath);
-      } else {
-        onBack();
-      }
+      push(backTo);
     }
     return action;
-  }, [dispatch, pathParams, onBack, push, fromShow]);
+  }, [dispatch, pathParams, push, backTo]);
 
   const { checkUpdate, checkDelete, ...otherState } =
     useStoreSelector(selector);
@@ -101,8 +84,8 @@ const Edit: FC<
       {...otherState}
       title="Edit division"
       disabled={!canUpdate}
+      backTo={backTo}
       onSubmit={onSubmit}
-      onBack={onBack}
       onDelete={canDelete ? onDelete : undefined}
     />
   );

@@ -10,6 +10,7 @@ import {
   ConnectionError,
   MethodNotAllowedError,
   StoreStatus,
+  ForbiddenError,
 } from 'src/store/types';
 export {
   createGetAsyncThunk,
@@ -27,10 +28,6 @@ export {
   getEntitiesInitialState,
 } from './createEntitiesSlice';
 export {
-  default as createUploadSlice,
-  uploadProcessingStatuses,
-} from './createUploadSlice';
-export {
   AllPermissionFactory,
   OwnPermissionFactory,
 } from 'src/store/utils/permissionFactories';
@@ -47,7 +44,10 @@ const isConnectionError = (error: StoreError): error is ConnectionError =>
 const isUnauthorizedError = (error: StoreError): error is UnauthorizedError =>
   error.status === ErrorStatus.Unauthorized;
 
-const isNotFoundError = (error: StoreError): error is NotFoundError =>
+const isForbiddenError = (error: StoreError): error is ForbiddenError =>
+  error.status === ErrorStatus.Forbidden;
+
+export const isNotFoundError = (error: StoreError): error is NotFoundError =>
   error.status === ErrorStatus.NotFound;
 
 const isMethodNotAllowedError = (
@@ -65,20 +65,15 @@ const isInternalServerError = (
 ): error is InternalServerError =>
   error.status === ErrorStatus.InternalServerError;
 
-// const getResponseErrorMessage = (error: StoreError) => {
-//   if (isUnknownError(error)) {
-//   } else if (isConnectionError(error)) {
-//   } else if (isUnauthorizedError(error)) {
-//     return error.data.message;
-//   } else if (isNotFoundError(error)) {
-//     return error.data.message;
-//   } else if (isUnprocessableEntityError(error)) {
-//     return error.data.message;
-//   } else if (isInternalServerError(error)) {
-//     return error.data.message;
-//   }
-//   return undefined;
-// };
+const getResponseErrorMessage = (error: StoreError) => {
+  if (isUnprocessableEntityError(error)) {
+    const message = error.data.errors?.[''];
+    if (message) {
+      return `${message}`;
+    }
+  }
+  return undefined;
+};
 
 const getDefault = (error: StoreError) => {
   if (isUnknownError(error)) {
@@ -86,6 +81,8 @@ const getDefault = (error: StoreError) => {
     return 'An network error has occurred.';
   } else if (isUnauthorizedError(error)) {
     return 'Unauthorized';
+  } else if (isForbiddenError(error)) {
+    return 'Forbidden';
   } else if (isNotFoundError(error)) {
     return 'Page not found';
   } else if (isMethodNotAllowedError(error)) {
@@ -104,8 +101,7 @@ const getDefaultErrorMessage = (error: StoreError) => {
 };
 
 export const getErrorMessage = (error: StoreError) =>
-  // getResponseErrorMessage(error) || getDefaultErrorMessage(error);
-  getDefaultErrorMessage(error);
+  getResponseErrorMessage(error) || getDefaultErrorMessage(error);
 
 export const checkProcessed = (status: StoreStatus) =>
   status === StoreStatus.Done || status === StoreStatus.Failed;

@@ -1,18 +1,7 @@
-import React, { FC, ReactElement } from 'react';
-
-import { makeStyles } from '@material-ui/core';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import { FC, ReactElement } from 'react';
+import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { Link } from 'react-router-dom';
 import MenuCollapse from './MenuCollapse';
-import { getExactMatch } from './utils';
-
-const useStyles = makeStyles((theme) => ({
-  nested: {
-    paddingLeft: theme.spacing(4),
-  },
-}));
 
 export type Menu = ItemMenu | CollapseMenu;
 
@@ -21,14 +10,14 @@ export interface ItemMenu {
   icon?: ReactElement;
   to: string;
   paths: string[];
-  requiredPermissions?: string[];
+  permissions?: string[];
 }
 
 export interface CollapseMenu {
   text: ReactElement;
   menus: Menu[];
   icon?: ReactElement;
-  requiredPermissions?: string[];
+  permissions?: string[];
 }
 
 export const exactMatchPath = (menu: Menu, path: string): boolean => {
@@ -40,8 +29,7 @@ export const exactMatchPath = (menu: Menu, path: string): boolean => {
 
 interface Props {
   menu: Menu;
-  pathname: string;
-  paths: string[];
+  path: string;
   nested?: boolean;
   permissionNames: string[] | undefined;
   requiredPermissions?: string[];
@@ -49,13 +37,11 @@ interface Props {
 }
 
 const MenuLink: FC<Props> = (props) => {
-  const { menu, pathname, paths, nested, permissionNames, onClickMenu } = props;
-  const classes = useStyles();
-  const path = getExactMatch(paths, pathname)?.path;
+  const { menu, path, nested, permissionNames, onClickMenu } = props;
 
   if (
-    menu.requiredPermissions &&
-    !menu.requiredPermissions.some((e) => permissionNames?.includes(e))
+    menu.permissions &&
+    !menu.permissions.some((e) => permissionNames?.includes(e))
   ) {
     return <></>;
   }
@@ -64,25 +50,23 @@ const MenuLink: FC<Props> = (props) => {
     return (
       <MenuCollapse
         menu={menu}
-        pathname={pathname}
-        paths={paths}
+        path={path}
         onClickMenu={onClickMenu}
         permissionNames={permissionNames}
       />
     );
   }
   return (
-    <ListItem
-      button
+    <ListItemButton
       component={Link}
       to={menu.to}
-      selected={!!path && exactMatchPath(menu, path)}
-      className={nested ? classes.nested : undefined}
+      selected={exactMatchPath(menu, path)}
+      sx={(theme) => (nested ? { paddingLeft: theme.spacing(4) } : {})}
       onClick={onClickMenu}
     >
       {menu.icon && <ListItemIcon>{menu.icon}</ListItemIcon>}
       <ListItemText inset={false} primary={menu.text} />
-    </ListItem>
+    </ListItemButton>
   );
 };
 

@@ -1,18 +1,18 @@
-import React, { FC } from 'react';
-
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import { FC } from 'react';
+import { AppBar, Toolbar } from '@mui/material';
 import ScrollToTop from 'src/view/components/atoms/ScrollToTop';
 import Footer from 'src/view/components/organisms/Footer';
-import { useStyles } from 'src/view/components/templates/PrivateLayout';
+import {
+  StyledDiv,
+  StyledFooter,
+} from 'src/view/components/templates/PrivateLayout';
 
 const PublicLayout: FC = (props) => {
   const { children } = props;
-  const classes = useStyles();
   return (
     <>
       <ScrollToTop />
-      <div className={classes.wrapper}>
+      <StyledDiv>
         <AppBar position="static" color="transparent" elevation={0}>
           <Toolbar>
             <div style={{ flexGrow: 1 }} />
@@ -20,10 +20,10 @@ const PublicLayout: FC = (props) => {
           </Toolbar>
         </AppBar>
         <main>{children}</main>
-        <footer className={classes.footer}>
+        <StyledFooter>
           <Footer />
-        </footer>
-      </div>
+        </StyledFooter>
+      </StyledDiv>
     </>
   );
 };

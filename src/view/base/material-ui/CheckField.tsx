@@ -1,6 +1,5 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import {
-  makeStyles,
   FormControl,
   FormControlProps,
   Checkbox,
@@ -9,16 +8,17 @@ import {
   FormControlLabelProps,
   FormHelperText,
   FormHelperTextProps,
-} from '@material-ui/core';
+  styled,
+} from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
-  label: ({ error }: { error?: boolean }) => {
-    return error ? { color: theme.palette.error.main } : {};
-  },
-}));
+const StyledFormControlLabel = styled(FormControlLabel, {
+  shouldForwardProp: (propName) => propName !== 'error',
+})<{ error?: boolean }>(({ theme, error }) =>
+  error ? { color: theme.palette.error.main } : {}
+);
 
 export interface CheckFieldProps {
-  label: ReactNode;
+  label: FormControlLabelProps['label'];
   error?: boolean;
   helperText?: ReactNode;
   checkboxProps?: CheckboxProps;
@@ -37,13 +37,12 @@ const CheckField: FC<CheckFieldProps> = (props) => {
     formControlLabelProps,
     formHelperTextProps,
   } = props;
-  const classes = useStyles({ error });
   return (
     <FormControl error={error} {...formControlProps}>
-      <FormControlLabel
+      <StyledFormControlLabel
         control={<Checkbox {...checkboxProps} />}
         label={label}
-        className={classes.label}
+        error={error}
         {...formControlLabelProps}
       />
       <FormHelperText {...formHelperTextProps}>{helperText}</FormHelperText>

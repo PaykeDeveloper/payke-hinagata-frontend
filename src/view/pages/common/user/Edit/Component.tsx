@@ -1,8 +1,7 @@
-import React, { FC } from 'react';
-import { Card, Grid } from '@material-ui/core';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import { FC } from 'react';
+import { Card, Grid, CardActions, CardContent } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 import { DomainLocale } from 'src/store/state/domain/common/locales/types';
 import { MyUserInput } from 'src/store/state/domain/common/user/types';
 import { StoreError, StoreStatus } from 'src/store/types';
@@ -17,7 +16,6 @@ import ContentWrapper from 'src/view/components/molecules/ContentWrapper';
 import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import Options from 'src/view/components/molecules/Options';
 import { rootPath } from 'src/view/routes/paths';
-import * as yup from 'yup';
 
 const Component: FC<{
   object: MyUserInput | undefined;

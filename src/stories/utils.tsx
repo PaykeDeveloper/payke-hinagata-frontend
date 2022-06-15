@@ -1,7 +1,4 @@
-import React from 'react';
-
 import 'src/base/i18n';
-
 import { Story } from '@storybook/react';
 import { Provider } from 'react-redux';
 import store from 'src/store';

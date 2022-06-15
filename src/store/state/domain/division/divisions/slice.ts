@@ -15,19 +15,19 @@ const divisionsSlice = createEntitiesSlice<
   Division,
   DivisionApiUrl,
   DivisionInput
->(
-  'divisions',
-  getEntitiesInitialState(),
-  getDivisionsApiUrl,
-  getDivisionApiUrl,
-  (state) => state.domain.division.divisions,
-  { objectKey: 'id', pathKey: 'divisionId' },
-  (entity) => entity,
-  (entity) => entity,
-  undefined,
-  (builder) =>
-    builder.addCase(authActions.resetAll, () => getEntitiesInitialState())
-);
+>({
+  domainName: 'divisions',
+  initialState: getEntitiesInitialState(),
+  entitiesUrl: getDivisionsApiUrl,
+  entityUrl: getDivisionApiUrl,
+  domainSelector: (state) => state.domain.division.divisions,
+  keyMapping: { objectKey: 'id', pathKey: 'divisionId' },
+  detailToList: (entity) => entity,
+  listToDetail: (entity) => entity,
+  sort: { key: 'createdAt', reverse: true, skipUpdated: true },
+  extraReducers: (builder) =>
+    builder.addCase(authActions.resetAll, () => getEntitiesInitialState()),
+});
 
 export const divisionsActions = divisionsSlice.actions;
 export const divisionsReducer = divisionsSlice.reducer;

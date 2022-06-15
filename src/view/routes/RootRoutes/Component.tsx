@@ -1,6 +1,5 @@
-import React, { FC, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { FC, useEffect } from 'react';
+import { CircularProgress, styled } from '@mui/material';
 import { Switch } from 'react-router-dom';
 import { StoreStatus } from 'src/store/types';
 import PrivateRoute from 'src/view/components/atoms/PrivateRoute';
@@ -9,13 +8,11 @@ import { otherPath } from 'src/view/routes/paths';
 import PrivateRoutes from 'src/view/routes/PrivateRoutes';
 import PublicRoutes, { publicPaths } from 'src/view/routes/PublicRoutes';
 
-const useStyles = makeStyles({
-  loader: {
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-  },
+const StyledDiv = styled('div')({
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
 });
 
 const Component: FC<{
@@ -24,7 +21,6 @@ const Component: FC<{
   onMounted: () => void;
 }> = (props) => {
   const { status, onMounted } = props;
-  const classes = useStyles();
   useEffect(() => {
     if (status === StoreStatus.Initial) {
       onMounted();
@@ -33,9 +29,9 @@ const Component: FC<{
 
   if (status === StoreStatus.Initial || status === StoreStatus.Started) {
     return (
-      <div className={classes.loader}>
+      <StyledDiv>
         <CircularProgress />
-      </div>
+      </StyledDiv>
     );
   }
 

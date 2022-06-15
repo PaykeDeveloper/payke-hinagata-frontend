@@ -1,6 +1,5 @@
-import React, { ComponentProps, FC, useCallback } from 'react';
-
-import { IconButton } from '@material-ui/core';
+import { ComponentProps, FC, useCallback } from 'react';
+import { IconButton } from '@mui/material';
 import { createSelector } from '@reduxjs/toolkit';
 import { useSnackbar } from 'notistack';
 import { RouteComponentProps } from 'react-router-dom';

@@ -1,6 +1,6 @@
 // FIXME: SAMPLE CODE
 
-import React, { ComponentProps, FC, useCallback } from 'react';
+import { ComponentProps, FC, useCallback } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
@@ -47,11 +47,7 @@ const New: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> = (
     history: { push },
     location,
   } = props;
-  const backPath = location.state?.path || getProjectsPath(pathParams);
-  const onBack: ChildProps['onBack'] = useCallback(
-    () => push(backPath),
-    [push, backPath]
-  );
+  const backTo = location.state?.path || getProjectsPath(pathParams);
 
   const dispatch = useStoreDispatch();
 
@@ -61,11 +57,11 @@ const New: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> = (
         membersActions.addEntity({ pathParams, bodyParams })
       );
       if (membersActions.addEntity.fulfilled.match(action)) {
-        onBack();
+        push(backTo);
       }
       return action;
     },
-    [dispatch, pathParams, onBack]
+    [dispatch, pathParams, push, backTo]
   );
 
   const { canCreate, ...otherState } = useStoreSelector(selector);
@@ -77,8 +73,8 @@ const New: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> = (
       object={undefined}
       disabled={!canCreate}
       divisionPath={pathParams}
+      backTo={backTo}
       onSubmit={onSubmit}
-      onBack={onBack}
     />
   );
 };

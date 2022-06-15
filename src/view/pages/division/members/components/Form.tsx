@@ -1,10 +1,9 @@
 // FIXME: SAMPLE CODE
 
-import React, { FC } from 'react';
-import { Button, Card, Grid, MenuItem } from '@material-ui/core';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import { Trans, useTranslation } from 'react-i18next';
+import { FC } from 'react';
+import { Card, Grid, MenuItem, CardActions, CardContent } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 import { Role } from 'src/store/state/domain/common/roles/types';
 import { User } from 'src/store/state/domain/common/users/types';
 import { Division } from 'src/store/state/domain/division/divisions/types';
@@ -16,6 +15,8 @@ import { BaseSelectField } from 'src/view/base/formik/SelectField';
 import SubmitButton from 'src/view/base/formik/SubmitButton';
 import { OnSubmit } from 'src/view/base/formik/types';
 import { DeleteIcon, NavigateBeforeIcon } from 'src/view/base/material-ui/Icon';
+import { LinkTo } from 'src/view/base/react-router/types';
+import LinkButton from 'src/view/components/atoms/LinkButton';
 import Loader from 'src/view/components/atoms/Loader';
 import Buttons from 'src/view/components/molecules/Buttons';
 import ContentBody from 'src/view/components/molecules/ContentBody';
@@ -25,7 +26,6 @@ import ErrorWrapper from 'src/view/components/molecules/ErrorWrapper';
 import LoaderButton from 'src/view/components/molecules/LoaderButton';
 import Options from 'src/view/components/molecules/Options';
 import { DivisionPath, getMembersPath, rootPath } from 'src/view/routes/paths';
-import * as yup from 'yup';
 
 const Form: FC<{
   title: string;
@@ -37,9 +37,8 @@ const Form: FC<{
   roles: Role[];
   divisionPath: DivisionPath;
   division: Division | undefined;
-
+  backTo: LinkTo;
   onSubmit: OnSubmit<MemberInput>;
-  onBack: () => void;
   onDelete?: () => Promise<unknown>;
 }> = (props) => {
   const {
@@ -52,8 +51,8 @@ const Form: FC<{
     roles,
     divisionPath,
     division,
+    backTo,
     onSubmit,
-    onBack,
     onDelete,
   } = props;
   const { t } = useTranslation();
@@ -70,7 +69,7 @@ const Form: FC<{
           { children: t('Home'), to: rootPath },
           { children: division?.name },
           {
-            children: <Trans>Members</Trans>,
+            children: t('Members'),
             to: getMembersPath(divisionPath),
           },
         ]}
@@ -81,13 +80,13 @@ const Form: FC<{
         <ErrorWrapper error={error}>
           <Buttons
             leftButtons={[
-              <Button
-                onClick={onBack}
+              <LinkButton
+                to={backTo}
                 startIcon={<NavigateBeforeIcon />}
                 variant="outlined"
               >
                 {t('Back')}
-              </Button>,
+              </LinkButton>,
             ]}
             rightButtons={
               onDelete && [

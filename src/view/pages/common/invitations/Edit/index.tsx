@@ -1,4 +1,4 @@
-import React, { ComponentProps, FC, useCallback } from 'react';
+import { ComponentProps, FC, useCallback, useEffect } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { useSnackbar } from 'notistack';
 import { StaticContext } from 'react-router';
@@ -49,13 +49,14 @@ const Edit: FC<
     location,
   } = props;
 
-  const backPath = location.state?.path || invitationsPath;
-  const onBack: ChildProps['onBack'] = useCallback(
-    () => push(backPath),
-    [push, backPath]
-  );
+  const backTo = location.state?.path || invitationsPath;
 
   const dispatch = useStoreDispatch();
+  useEffect(() => {
+    dispatch(
+      invitationsActions.fetchEntityIfNeeded({ pathParams, reset: true })
+    );
+  }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
@@ -63,11 +64,11 @@ const Edit: FC<
         invitationsActions.mergeEntity({ pathParams, bodyParams })
       );
       if (invitationsActions.mergeEntity.fulfilled.match(action)) {
-        onBack();
+        push(backTo);
       }
       return action;
     },
-    [dispatch, pathParams, onBack]
+    [backTo, dispatch, pathParams, push]
   );
 
   const { enqueueSnackbar } = useSnackbar();
@@ -76,7 +77,7 @@ const Edit: FC<
       invitationsActions.removeEntity({ pathParams })
     );
     if (invitationsActions.removeEntity.fulfilled.match(action)) {
-      onBack();
+      push(backTo);
     } else if (invitationsActions.removeEntity.rejected.match(action)) {
       if (action.payload) {
         const message = getErrorMessage(action.payload);
@@ -84,7 +85,7 @@ const Edit: FC<
       }
     }
     return action;
-  }, [dispatch, pathParams, onBack, enqueueSnackbar]);
+  }, [dispatch, pathParams, push, backTo, enqueueSnackbar]);
 
   const { canUpdate, canDelete, ...otherState } = useStoreSelector(selector);
   const isPending = otherState.object?.status === InvitationStatus.Pending;
@@ -92,8 +93,8 @@ const Edit: FC<
     <Component
       {...otherState}
       disabled={!canUpdate || !isPending}
+      backTo={backTo}
       onSubmit={onSubmit}
-      onBack={onBack}
       onDelete={canDelete && isPending ? onDelete : undefined}
     />
   );

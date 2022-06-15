@@ -1,5 +1,6 @@
-import React, { ComponentProps, FC, useCallback } from 'react';
+import { ComponentProps, FC } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
+import { Trans } from 'react-i18next';
 import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreSelector } from 'src/store';
@@ -32,23 +33,26 @@ const selector = createSelector(
 
 const List: FC<RouteComponentProps> = (props) => {
   const {
-    history: { push },
     location: { pathname, search },
   } = props;
 
   const path = joinString(pathname, search);
 
-  const onClickEdit: ChildProps['onClickEdit'] = useCallback(
-    (userId) =>
-      push(getUserEditPath({ userId: `${userId}` }), {
-        path,
-      } as RouterState),
-    [push, path]
-  );
+  const { checkEdit, ...otherState } = useStoreSelector(selector);
+  const actions: ChildProps['actions'] = [
+    {
+      children: <Trans>Edit</Trans>,
+      getTo: ({ id }) =>
+        checkEdit(id)
+          ? {
+              pathname: getUserEditPath({ userId: `${id}` }),
+              state: { path } as RouterState,
+            }
+          : undefined,
+    },
+  ];
 
-  const state = useStoreSelector(selector);
-
-  return <Component {...state} onClickEdit={onClickEdit} />;
+  return <Component {...otherState} actions={actions} />;
 };
 
 export default List;

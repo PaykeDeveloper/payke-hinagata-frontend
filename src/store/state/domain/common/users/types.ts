@@ -7,7 +7,6 @@ export interface User {
   roleNames: string[];
   locale: string | null;
   createdAt: string | null;
-  updatedAt: string | null;
 }
 
 export type UserInput = Partial<User>;

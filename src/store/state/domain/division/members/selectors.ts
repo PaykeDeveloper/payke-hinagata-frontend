@@ -9,7 +9,7 @@ import {
 } from 'src/store/state/domain/division/divisions/selectors';
 import { OwnPermissionFactory } from 'src/store/utils';
 
-const memberPermission = new OwnPermissionFactory('member');
+export const memberPermission = new OwnPermissionFactory('member');
 
 export const membersSelector = (state: StoreState) =>
   state.domain.division.members.entities;

@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import Button, { ButtonProps } from '@material-ui/core/Button';
+import { useCallback, useState } from 'react';
+import { Button, ButtonProps } from '@mui/material';
 import Loader from 'src/view/components/atoms/Loader';
 
 type Props<T> = Omit<ButtonProps, 'onClick'> & {
@@ -9,7 +9,7 @@ type Props<T> = Omit<ButtonProps, 'onClick'> & {
 export default function LoaderButton<T>(props: Props<T>) {
   const { onClick, disabled, ...otherProps } = props;
 
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClick = useCallback(async () => {
     setLoading(true);

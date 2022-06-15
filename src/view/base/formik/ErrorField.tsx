@@ -1,6 +1,5 @@
-import React, { FC } from 'react';
-import Box, { BoxProps } from '@material-ui/core/Box';
-import Alert, { AlertProps } from '@material-ui/lab/Alert';
+import { FC } from 'react';
+import { Alert, AlertProps, Box, BoxProps } from '@mui/material';
 import { useField } from 'formik';
 
 interface Props {

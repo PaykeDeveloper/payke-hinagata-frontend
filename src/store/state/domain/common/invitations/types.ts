@@ -10,8 +10,8 @@ export interface Invitation {
   email: string;
   status: InvitationStatus;
   roleNames: string[];
+  createdBy: number | null;
   createdAt: string | null;
-  updatedAt: string | null;
 }
 
 export type InvitationCreateInput = {

@@ -1,5 +1,5 @@
-import React, { ComponentProps, FC, useCallback, useMemo } from 'react';
-import { IconButton } from '@material-ui/core';
+import { ComponentProps, FC, useCallback, useMemo } from 'react';
+import { IconButton } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { RouteComponentProps } from 'react-router-dom';
