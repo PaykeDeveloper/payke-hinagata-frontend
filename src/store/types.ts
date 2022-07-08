@@ -7,6 +7,7 @@ export enum ErrorStatus {
   MethodNotAllowed = 405,
   UnprocessableEntity = 422,
   InternalServerError = 500,
+  ServiceUnavailable = 503,
 }
 
 export interface StoreError<Status = ErrorStatus, Data = unknown> {
@@ -45,6 +46,11 @@ export type UnprocessableEntityError = StoreError<
 
 export type InternalServerError = StoreError<
   ErrorStatus.InternalServerError,
+  { message?: string }
+>;
+
+export type ServiceUnavailable = StoreError<
+  ErrorStatus.ServiceUnavailable,
   { message?: string }
 >;
 
