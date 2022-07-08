@@ -11,6 +11,7 @@ import {
   MethodNotAllowedError,
   StoreStatus,
   ForbiddenError,
+  ServiceUnavailable,
 } from 'src/store/types';
 export {
   createGetAsyncThunk,
@@ -65,6 +66,9 @@ const isInternalServerError = (
 ): error is InternalServerError =>
   error.status === ErrorStatus.InternalServerError;
 
+const isServiceUnavailable = (error: StoreError): error is ServiceUnavailable =>
+  error.status === ErrorStatus.ServiceUnavailable;
+
 const getResponseErrorMessage = (error: StoreError) => {
   if (isUnprocessableEntityError(error)) {
     const message = error.data.errors?.[''];
@@ -91,6 +95,8 @@ const getDefault = (error: StoreError) => {
     return 'The given data was invalid.';
   } else if (isInternalServerError(error)) {
     return 'Internal server error';
+  } else if (isServiceUnavailable(error)) {
+    return 'Service Unavailable';
   }
   return 'An unknown error has occurred.';
 };

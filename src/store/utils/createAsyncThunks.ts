@@ -16,6 +16,7 @@ import {
   ConnectionError,
   MethodNotAllowedError,
   ForbiddenError,
+  ServiceUnavailable,
 } from 'src/store/types';
 
 const options: Options = {
@@ -66,6 +67,13 @@ const getError = (error: AxiosError) => {
     case 500: {
       const result: InternalServerError = {
         status: ErrorStatus.InternalServerError,
+        data,
+      };
+      return result;
+    }
+    case 503: {
+      const result: ServiceUnavailable = {
+        status: ErrorStatus.ServiceUnavailable,
         data,
       };
       return result;
