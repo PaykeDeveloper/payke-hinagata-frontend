@@ -33,7 +33,6 @@ const {
 const SyncMembers: FC<Props> = (props) => {
   const {
     params: { divisionId, memberId },
-    children,
   } = props;
   const { processed, canView } = useStoreSelector(selector);
   const dispatch = useStoreDispatch();
@@ -60,7 +59,7 @@ const SyncMembers: FC<Props> = (props) => {
     }
   }, [dispatch, processed, canView, divisionId, memberId]);
 
-  return <>{children}</>;
+  return <></>;
 };
 
 export default SyncMembers;

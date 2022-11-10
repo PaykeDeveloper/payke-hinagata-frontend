@@ -4,14 +4,13 @@ import { rolesActions } from 'src/store/state/domain/common/roles/slice';
 
 const { fetchEntitiesIfNeeded } = rolesActions;
 
-const SyncRoles: FC = (props) => {
-  const { children } = props;
+const SyncRoles: FC = () => {
   const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
 
-  return <>{children}</>;
+  return <></>;
 };
 
 export default SyncRoles;

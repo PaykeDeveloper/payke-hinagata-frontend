@@ -33,7 +33,6 @@ const {
 const SyncProjects: FC<Props> = (props) => {
   const {
     params: { divisionId, projectSlug },
-    children,
   } = props;
   const { processed, canView } = useStoreSelector(selector);
   const dispatch = useStoreDispatch();
@@ -60,7 +59,7 @@ const SyncProjects: FC<Props> = (props) => {
     }
   }, [dispatch, processed, canView, divisionId, projectSlug]);
 
-  return <>{children}</>;
+  return <></>;
 };
 
 export default SyncProjects;

@@ -6,10 +6,12 @@ import {
   isStoreError,
   isUnprocessableEntityError,
 } from 'src/store/utils';
+import { WithChildren } from 'src/view/base/types';
 
-type Props<T> = Omit<FormikConfig<T>, 'initialValues'> & {
-  initialValues: T | undefined;
-};
+type Props<T> = Omit<FormikConfig<T>, 'initialValues'> &
+  WithChildren & {
+    initialValues: T | undefined;
+  };
 
 const nullTypes = ['number', 'date'];
 const shouldCheckEmpty = (key: string) => {

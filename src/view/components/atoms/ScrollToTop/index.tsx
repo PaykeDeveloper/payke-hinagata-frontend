@@ -1,8 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-const ScrollToTop: FC = (props) => {
-  const { children } = props;
+const ScrollToTop: FC = () => {
   const history = useHistory();
 
   useEffect(
@@ -15,7 +14,7 @@ const ScrollToTop: FC = (props) => {
     [history]
   );
 
-  return <>{children}</>;
+  return <></>;
 };
 
 export default ScrollToTop;

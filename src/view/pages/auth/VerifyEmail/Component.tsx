@@ -1,14 +1,18 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
+
 const Component: FC<{
   onSubmit: () => void;
 }> = (props) => {
-  const { onSubmit, children } = props;
+  const ref = useRef(false);
+  const { onSubmit } = props;
   useEffect(() => {
-    onSubmit();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (!ref.current) {
+      ref.current = true;
+      onSubmit();
+    }
+  }, [onSubmit]);
 
-  return <>{children}</>;
+  return <></>;
 };
 
 export default Component;

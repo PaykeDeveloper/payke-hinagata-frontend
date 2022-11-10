@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Property } from 'csstype';
-import { useDropzone } from 'react-dropzone';
+import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import { Trans } from 'react-i18next';
 import { AddIcon, CloseIcon } from 'src/view/base/material-ui/Icon';
 
@@ -61,8 +61,8 @@ const ImageField: FC<ImageFieldProps> = (props) => {
   } = props;
 
   const handleChange = onChange || emptyCallback;
-  const onDrop = useCallback(
-    (acceptedFiles) => handleChange(acceptedFiles[0]),
+  const onDrop: NonNullable<DropzoneOptions['onDrop']> = useCallback(
+    (acceptedFiles) => handleChange(acceptedFiles[0] ?? null),
     [handleChange]
   );
   const { getRootProps, getInputProps } = useDropzone({

@@ -4,6 +4,7 @@ import { jaJP as coreJaJP, Localization } from '@mui/material/locale';
 import { jaJP as dataGridJaJP } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
 import { Language } from 'src/base/i18n';
+import { WithChildren } from 'src/view/base/types';
 import baseTheme from './theme';
 
 const getLocale = (
@@ -19,7 +20,7 @@ const getLocale = (
   }
 };
 
-const ThemeProvider: FC = (props) => {
+const ThemeProvider: FC<WithChildren> = (props) => {
   const { children } = props;
   const { i18n } = useTranslation();
   const [coreLocale, gridLocale] = getLocale(i18n.language);

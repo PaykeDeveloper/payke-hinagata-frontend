@@ -10,8 +10,9 @@ import {
   Select,
   SelectProps,
 } from '@mui/material';
+import { WithChildren } from 'src/view/base/types';
 
-export interface SelectFieldProps {
+export interface SelectFieldProps extends WithChildren {
   label: ReactNode;
   // name: string;
   error?: boolean;

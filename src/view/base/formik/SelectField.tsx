@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { TextField, TextFieldProps } from '@mui/material';
 import { useField, useFormikContext } from 'formik';
+import { WithChildren } from 'src/view/base/types';
 
 type Props = Omit<TextFieldProps, 'select'> & {
   name: string;
@@ -27,7 +28,7 @@ const SelectField: FC<Props> = (props) => {
 
 export default SelectField;
 
-interface BaseSelectFieldProps {
+interface BaseSelectFieldProps extends WithChildren {
   name: string;
   label: string;
   disabled?: boolean;

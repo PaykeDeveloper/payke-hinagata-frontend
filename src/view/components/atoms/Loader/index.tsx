@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { CircularProgress, styled } from '@mui/material';
 import { StoreStatus } from 'src/store/types';
 import { checkProcessed } from 'src/store/utils';
+import { WithChildren } from 'src/view/base/types';
 
 const LoaderDiv = styled('div')({
   position: 'relative',
@@ -31,17 +32,17 @@ const FabProgress: FC<{ side: number }> = ({ side }) => {
   );
 };
 
-export type LoaderProps = { size?: number } & (
-  | {
-      status: StoreStatus;
-    }
-  | {
-      loading: boolean;
-    }
-  | {
-      statuses: StoreStatus[];
-    }
-);
+export type LoaderProps = WithChildren & { size?: number } & (
+    | {
+        status: StoreStatus;
+      }
+    | {
+        loading: boolean;
+      }
+    | {
+        statuses: StoreStatus[];
+      }
+  );
 
 const Loader: FC<LoaderProps> = (props) => {
   const { children, size } = props;

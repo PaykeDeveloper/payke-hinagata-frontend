@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { styled, Theme, useMediaQuery } from '@mui/material';
+import { WithChildren } from 'src/view/base/types';
 import ScrollToTop from 'src/view/components/atoms/ScrollToTop';
 import Footer from 'src/view/components/organisms/Footer';
 import Header from 'src/view/components/organisms/Header';
@@ -38,7 +39,7 @@ export const StyledFooter = styled('footer')(({ theme }) => ({
   height: theme.spacing(footerSpace),
 }));
 
-const PrivateLayout: FC = (props) => {
+const PrivateLayout: FC<WithChildren> = (props) => {
   const { children } = props;
   const upMd = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const [open, setOpen] = useState(upMd);

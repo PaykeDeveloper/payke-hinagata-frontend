@@ -253,51 +253,55 @@ export const RouterDataGrid: FC<RouterDataGridProps> = (props) => {
     location: { search },
   } = useHistory();
 
-  const handlePageChange: DataGridProps['onPageChange'] = useCallback(
-    (model, detail) => {
-      onPageChange?.(model, detail);
-      const newSearch = createSearchIfNeeded(search, model, 'page');
-      if (newSearch !== undefined) {
-        replace({ search: newSearch });
-      }
-    },
-    [onPageChange, replace, search]
-  );
-  const handlePageSizeChange: DataGridProps['onPageSizeChange'] = useCallback(
-    (model, detail) => {
-      onPageSizeChange?.(model, detail);
-      const newSearch = createSearchIfNeeded(search, model, 'pageSize');
-      if (newSearch !== undefined) {
-        replace({ search: newSearch });
-      }
-    },
-    [onPageSizeChange, replace, search]
-  );
-  const handleSortModelChange: DataGridProps['onSortModelChange'] = useCallback(
-    (model, detail) => {
-      onSortModelChange?.(model, detail);
-      const newSearch = createSearchIfNeeded(search, model, 'sortModel');
-      if (newSearch !== undefined) {
-        replace({ search: newSearch });
-      }
-    },
-    [onSortModelChange, replace, search]
-  );
-  const handleFilterModelChange: DataGridProps['onFilterModelChange'] =
+  const handlePageChange: NonNullable<DataGridProps['onPageChange']> =
     useCallback(
       (model, detail) => {
-        onFilterModelChange?.(model, detail);
-        const newSearch = createSearchIfNeeded(
-          search,
-          model.items.length ? model : undefined,
-          'filterModel'
-        );
+        onPageChange?.(model, detail);
+        const newSearch = createSearchIfNeeded(search, model, 'page');
         if (newSearch !== undefined) {
           replace({ search: newSearch });
         }
       },
-      [onFilterModelChange, replace, search]
+      [onPageChange, replace, search]
     );
+  const handlePageSizeChange: NonNullable<DataGridProps['onPageSizeChange']> =
+    useCallback(
+      (model, detail) => {
+        onPageSizeChange?.(model, detail);
+        const newSearch = createSearchIfNeeded(search, model, 'pageSize');
+        if (newSearch !== undefined) {
+          replace({ search: newSearch });
+        }
+      },
+      [onPageSizeChange, replace, search]
+    );
+  const handleSortModelChange: NonNullable<DataGridProps['onSortModelChange']> =
+    useCallback(
+      (model, detail) => {
+        onSortModelChange?.(model, detail);
+        const newSearch = createSearchIfNeeded(search, model, 'sortModel');
+        if (newSearch !== undefined) {
+          replace({ search: newSearch });
+        }
+      },
+      [onSortModelChange, replace, search]
+    );
+  const handleFilterModelChange: NonNullable<
+    DataGridProps['onFilterModelChange']
+  > = useCallback(
+    (model, detail) => {
+      onFilterModelChange?.(model, detail);
+      const newSearch = createSearchIfNeeded(
+        search,
+        model.items.length ? model : undefined,
+        'filterModel'
+      );
+      if (newSearch !== undefined) {
+        replace({ search: newSearch });
+      }
+    },
+    [onFilterModelChange, replace, search]
+  );
 
   const fields = useMemo(
     () => columns.map((column) => column.field),
@@ -345,6 +349,8 @@ const ErrorFallback: FC = () => {
     <ErrorWrapper
       error={{ status: ErrorStatus.Unknown, data: undefined }}
       onButtonClick={onButtonClick}
-    />
+    >
+      <></>
+    </ErrorWrapper>
   );
 };

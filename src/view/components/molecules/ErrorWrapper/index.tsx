@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { notUndefined } from 'src/base/utils';
 import { StoreError } from 'src/store/types';
 import { getErrorMessage } from 'src/store/utils';
+import { WithChildren } from 'src/view/base/types';
 import ErrorMessage from 'src/view/components/molecules/ErrorMessage';
 
 const StyledContainer = styled(Container)(({ theme }) => ({
@@ -17,16 +18,16 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   },
 }));
 
-type Props = {
+type Props = WithChildren & {
   onButtonClick?: () => void;
 } & (
-  | {
-      error: StoreError | undefined;
-    }
-  | {
-      errors: (StoreError | undefined)[];
-    }
-);
+    | {
+        error: StoreError | undefined;
+      }
+    | {
+        errors: (StoreError | undefined)[];
+      }
+  );
 
 const ErrorWrapper: FC<Props> = (props) => {
   const { children, onButtonClick } = props;

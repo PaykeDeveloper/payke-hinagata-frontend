@@ -4,14 +4,13 @@ import { localesActions } from 'src/store/state/domain/common/locales/slice';
 
 const { fetchEntitiesIfNeeded } = localesActions;
 
-const SyncLocales: FC = (props) => {
-  const { children } = props;
+const SyncLocales: FC = () => {
   const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(fetchEntitiesIfNeeded({ pathParams: {} }));
   }, [dispatch]);
 
-  return <>{children}</>;
+  return <></>;
 };
 
 export default SyncLocales;
