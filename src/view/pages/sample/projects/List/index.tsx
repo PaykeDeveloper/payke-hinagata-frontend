@@ -9,12 +9,12 @@ import { joinString } from 'src/base/utils';
 import { useStoreSelector } from 'src/store';
 import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import {
-  projectsErrorSelector,
-  projectsSelector,
-  projectsStatusSelector,
   canCreateProjectSelector,
   canEditProjectSelector,
   canViewProjectsSelector,
+  projectsErrorSelector,
+  projectsSelector,
+  projectsStatusSelector,
 } from 'src/store/state/domain/sample/projects/selectors';
 import { getProjectsDownloadApiUrl } from 'src/store/urls';
 import {

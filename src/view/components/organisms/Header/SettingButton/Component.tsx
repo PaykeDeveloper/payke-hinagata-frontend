@@ -4,15 +4,15 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
-  styled,
   Typography,
+  styled,
 } from '@mui/material';
 import { Trans } from 'react-i18next';
 import {
-  SettingsIcon,
   MoreVertIcon,
   PasswordIcon,
   PowerSettingsNewIcon,
+  SettingsIcon,
 } from 'src/view/base/material-ui/Icon';
 import MenuItemLink from 'src/view/components/atoms/MenuItemLink';
 import { changePasswordPath, myUserEditPath } from 'src/view/routes/paths';

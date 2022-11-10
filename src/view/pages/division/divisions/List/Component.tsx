@@ -7,8 +7,8 @@ import { Division } from 'src/store/state/domain/division/divisions/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
   ACTION_WIDTH,
-  actionsColDef,
   RouterDataGrid,
+  actionsColDef,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
 import { AddIcon } from 'src/view/base/material-ui/Icon';

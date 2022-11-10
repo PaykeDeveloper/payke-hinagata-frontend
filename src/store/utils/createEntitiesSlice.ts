@@ -1,11 +1,11 @@
 import {
   ActionReducerMapBuilder,
-  createSlice,
   PayloadAction,
   SliceCaseReducers,
   ValidateSliceCaseReducers,
+  createSlice,
 } from '@reduxjs/toolkit';
-import { castDraft, Draft } from 'immer';
+import { Draft, castDraft } from 'immer';
 import isEqual from 'lodash/isEqual';
 import sortBy from 'lodash/sortBy';
 import { siteName } from 'src/base/constants';

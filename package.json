@@ -49,6 +49,12 @@
     ],
     "rules": {
       "prettier/prettier": "warn",
+      "sort-imports": [
+        "warn",
+        {
+          "ignoreDeclarationSort": true
+        }
+      ],
       "import/order": [
         "warn",
         {

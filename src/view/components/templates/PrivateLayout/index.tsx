@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { styled, Theme, useMediaQuery } from '@mui/material';
+import { Theme, styled, useMediaQuery } from '@mui/material';
 import { WithChildren } from 'src/view/base/types';
 import ScrollToTop from 'src/view/components/atoms/ScrollToTop';
 import Footer from 'src/view/components/organisms/Footer';

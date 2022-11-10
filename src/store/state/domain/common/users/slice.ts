@@ -1,5 +1,5 @@
 import { authActions } from 'src/store/state/app/auth/slice';
-import { UserApiUrl, getUsersApiUrl, getUserApiUrl } from 'src/store/urls';
+import { UserApiUrl, getUserApiUrl, getUsersApiUrl } from 'src/store/urls';
 import { createEntitiesSlice, getEntitiesInitialState } from 'src/store/utils';
 import { User, UserInput } from './types';
 

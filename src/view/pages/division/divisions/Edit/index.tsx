@@ -6,11 +6,11 @@ import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch, useStoreSelector } from 'src/store';
 import {
+  checkDeleteDivisionSelector,
+  checkUpdateDivisionSelector,
   divisionErrorSelector,
   divisionSelector,
   divisionStatusSelector,
-  checkDeleteDivisionSelector,
-  checkUpdateDivisionSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import { divisionsActions } from 'src/store/state/domain/division/divisions/slice';
 import { DivisionPath, divisionsPath } from 'src/view/routes/paths';

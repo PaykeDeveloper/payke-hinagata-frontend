@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Card, Grid, CardActions, CardContent } from '@mui/material';
+import { Card, CardActions, CardContent, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { ChangePasswordInput } from 'src/store/state/app/auth/types';

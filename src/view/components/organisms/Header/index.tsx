@@ -3,8 +3,8 @@ import {
   AppBar,
   IconButton,
   Slide,
-  styled,
   Toolbar,
+  styled,
   useScrollTrigger,
 } from '@mui/material';
 import { MenuIcon } from 'src/view/base/material-ui/Icon';

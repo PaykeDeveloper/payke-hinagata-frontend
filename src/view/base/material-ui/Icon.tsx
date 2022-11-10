@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Icon as MuiIcon, IconProps } from '@mui/material';
+import { IconProps, Icon as MuiIcon } from '@mui/material';
 
 const Icon: FC<IconProps> = (props) => <MuiIcon {...props} />;
 

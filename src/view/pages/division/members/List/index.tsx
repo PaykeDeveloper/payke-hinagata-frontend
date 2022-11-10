@@ -10,16 +10,16 @@ import { useStoreSelector } from 'src/store';
 import { userIdMapSelector } from 'src/store/state/domain/common/users/selectors';
 import { divisionSelector } from 'src/store/state/domain/division/divisions/selectors';
 import {
-  membersStatusSelector,
-  membersErrorSelector,
   canCreateMemberSelector,
-  membersSelector,
   checkEditMemberSelector,
+  membersErrorSelector,
+  membersSelector,
+  membersStatusSelector,
 } from 'src/store/state/domain/division/members/selectors';
 import {
   DivisionPath,
-  getMemberNewPath,
   getMemberEditPath,
+  getMemberNewPath,
 } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';
 import Component from './Component';

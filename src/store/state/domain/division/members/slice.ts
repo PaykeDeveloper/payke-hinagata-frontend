@@ -4,8 +4,8 @@ import { authActions } from 'src/store/state/app/auth/slice';
 import {
   DivisionApiUrl,
   MemberApiUrl,
-  getMembersApiUrl,
   getMemberApiUrl,
+  getMembersApiUrl,
 } from 'src/store/urls';
 import { createEntitiesSlice, getEntitiesInitialState } from 'src/store/utils';
 import { Member, MemberInput } from './types';

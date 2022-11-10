@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
-  shallowEqual,
   TypedUseSelectorHook,
+  shallowEqual,
   useDispatch,
   useSelector,
 } from 'react-redux';

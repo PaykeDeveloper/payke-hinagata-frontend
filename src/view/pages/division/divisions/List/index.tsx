@@ -8,10 +8,10 @@ import { joinString } from 'src/base/utils';
 import { useStoreSelector } from 'src/store';
 import {
   canCreateDivisionSelector,
+  checkEditDivisionSelector,
   divisionsErrorSelector,
   divisionsSelector,
   divisionsStatusSelector,
-  checkEditDivisionSelector,
 } from 'src/store/state/domain/division/divisions/selectors';
 import {
   divisionNewPath,

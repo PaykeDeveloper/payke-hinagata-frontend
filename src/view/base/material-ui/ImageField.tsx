@@ -6,8 +6,8 @@ import {
   CardMedia,
   FormHelperText,
   IconButton,
-  styled,
   Typography,
+  styled,
 } from '@mui/material';
 import { Property } from 'csstype';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
