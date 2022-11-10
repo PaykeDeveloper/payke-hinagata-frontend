@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Box, styled, Typography } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import { ErrorOutlineIcon } from 'src/view/base/material-ui/Icon';
 
 const ErrorIcon = styled(ErrorOutlineIcon)(({ theme }) => ({

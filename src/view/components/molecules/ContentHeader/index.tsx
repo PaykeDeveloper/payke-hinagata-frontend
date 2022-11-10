@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { Box, Typography } from '@mui/material';
+import { WithChildren } from 'src/view/base/types';
 import RouterBreadcrumbs, {
   RouterBreadcrumbLinkProps,
 } from 'src/view/components/molecules/RouterBreadcrumbs';
 
-interface Props {
+interface Props extends WithChildren {
   links?: RouterBreadcrumbLinkProps[];
 }
 

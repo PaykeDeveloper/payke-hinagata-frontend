@@ -1,17 +1,17 @@
 import i18next from 'i18next';
 import {
-  ErrorStatus,
-  NotFoundError,
-  InternalServerError,
-  StoreError,
-  UnauthorizedError,
-  UnprocessableEntityError,
-  UnknownError,
   ConnectionError,
-  MethodNotAllowedError,
-  StoreStatus,
+  ErrorStatus,
   ForbiddenError,
+  InternalServerError,
+  MethodNotAllowedError,
+  NotFoundError,
   ServiceUnavailable,
+  StoreError,
+  StoreStatus,
+  UnauthorizedError,
+  UnknownError,
+  UnprocessableEntityError,
 } from 'src/store/types';
 export {
   createGetAsyncThunk,

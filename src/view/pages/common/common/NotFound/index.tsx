@@ -12,9 +12,13 @@ const NotFound: FC = () => {
   };
   return (
     <ContentWrapper>
-      <ContentHeader />
+      <ContentHeader>
+        <></>
+      </ContentHeader>
       <ContentBody>
-        <ErrorWrapper error={error} />
+        <ErrorWrapper error={error}>
+          <></>
+        </ErrorWrapper>
       </ContentBody>
     </ContentWrapper>
   );

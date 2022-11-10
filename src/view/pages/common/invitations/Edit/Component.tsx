@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Card, Grid, MenuItem, CardActions, CardContent } from '@mui/material';
+import { Card, CardActions, CardContent, Grid, MenuItem } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { InvitationUpdateInput } from 'src/store/state/domain/common/invitations/types';

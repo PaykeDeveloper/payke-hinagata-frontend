@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
-import { isDevelopment, isDebugTranslation } from 'src/base/constants';
+import { isDebugTranslation, isDevelopment } from 'src/base/constants';
 
 // FIXME: SAMPLE CODE
 import ja from './locales/ja.json';

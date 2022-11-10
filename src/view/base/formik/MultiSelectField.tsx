@@ -1,17 +1,25 @@
 import { FC } from 'react';
-import { SelectProps, MenuItem, FormControlProps } from '@mui/material';
+import { FormControlProps, MenuItem, SelectProps } from '@mui/material';
 import { useField, useFormikContext } from 'formik';
 import MuiSelectField, {
   SelectFieldProps,
 } from 'src/view/base/material-ui/SelectField';
+import { WithChildren } from 'src/view/base/types';
 
-type Props = SelectFieldProps & {
-  name: string;
-};
+type Props = SelectFieldProps &
+  WithChildren & {
+    name: string;
+  };
 
 const MultiSelectField: FC<Props> = (props) => {
-  const { name, selectProps, helperText, formControlProps, ...otherProps } =
-    props;
+  const {
+    name,
+    selectProps,
+    helperText,
+    formControlProps,
+    children,
+    ...otherProps
+  } = props;
   const { isSubmitting, submitCount } = useFormikContext();
   const [field, meta] = useField({ name });
   const { value, ...otherField } = field;
@@ -31,13 +39,15 @@ const MultiSelectField: FC<Props> = (props) => {
       }}
       helperText={hasError ? meta.error : helperText}
       {...otherProps}
-    />
+    >
+      {children}
+    </MuiSelectField>
   );
 };
 
 export default MultiSelectField;
 
-interface BaseSelectFieldProps {
+interface BaseSelectFieldProps extends WithChildren {
   name: string;
   label: string;
   disabled?: boolean;

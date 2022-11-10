@@ -5,10 +5,10 @@ import { RouteComponentProps } from 'react-router-dom';
 import { joinString } from 'src/base/utils';
 import { useStoreSelector } from 'src/store';
 import {
+  checkEditUserSelector,
   usersErrorSelector,
   usersSelector,
   usersStatusSelector,
-  checkEditUserSelector,
 } from 'src/store/state/domain/common/users/selectors';
 import { getUserEditPath } from 'src/view/routes/paths';
 import { RouterState } from 'src/view/routes/types';

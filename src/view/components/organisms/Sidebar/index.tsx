@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Drawer, styled, SwipeableDrawer } from '@mui/material';
+import { Drawer, SwipeableDrawer, styled } from '@mui/material';
 import SideMenu from 'src/view/routes/PrivateSideMenu';
 
 export const drawerWidth = 240;

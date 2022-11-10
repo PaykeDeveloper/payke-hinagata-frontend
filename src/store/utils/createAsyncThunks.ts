@@ -6,17 +6,17 @@ import api, { CancelToken, isAxiosError } from 'src/base/api';
 import { siteName } from 'src/base/constants';
 import { RootState } from 'src/store/state';
 import {
+  ConnectionError,
   ErrorStatus,
-  NotFoundError,
+  ForbiddenError,
   InternalServerError,
+  MethodNotAllowedError,
+  NotFoundError,
+  ServiceUnavailable,
   StoreError,
   UnauthorizedError,
-  UnprocessableEntityError,
   UnknownError,
-  ConnectionError,
-  MethodNotAllowedError,
-  ForbiddenError,
-  ServiceUnavailable,
+  UnprocessableEntityError,
 } from 'src/store/types';
 
 const options: Options = {

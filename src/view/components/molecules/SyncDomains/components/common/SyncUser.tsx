@@ -4,14 +4,13 @@ import { userActions } from 'src/store/state/domain/common/user/slice';
 
 const { fetchEntityIfNeeded } = userActions;
 
-const SyncUser: FC = (props) => {
-  const { children } = props;
+const SyncUser: FC = () => {
   const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(fetchEntityIfNeeded({ pathParams: {} }));
   }, [dispatch]);
 
-  return <>{children}</>;
+  return <></>;
 };
 
 export default SyncUser;

@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { AppBar, Toolbar } from '@mui/material';
+import { WithChildren } from 'src/view/base/types';
 import ScrollToTop from 'src/view/components/atoms/ScrollToTop';
 import Footer from 'src/view/components/organisms/Footer';
 import {
@@ -7,7 +8,7 @@ import {
   StyledFooter,
 } from 'src/view/components/templates/PrivateLayout';
 
-const PublicLayout: FC = (props) => {
+const PublicLayout: FC<WithChildren> = (props) => {
   const { children } = props;
   return (
     <>

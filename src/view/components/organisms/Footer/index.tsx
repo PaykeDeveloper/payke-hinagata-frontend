@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Box, styled, Typography } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import { siteName } from 'src/base/constants';
 import { drawerWidth } from 'src/view/components/organisms/Sidebar';
 

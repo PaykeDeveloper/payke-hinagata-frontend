@@ -5,8 +5,8 @@ import {
   Fade,
   Grid,
   Paper,
-  styled,
   Typography,
+  styled,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';

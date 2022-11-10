@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { useStoreDispatch } from 'src/store';
 import { authActions } from 'src/store/state/app/auth/slice';
 import { CloseIcon } from 'src/view/base/material-ui/Icon';
-import { rootPath, VerifyEmailPath } from 'src/view/routes/paths';
+import { VerifyEmailPath, rootPath } from 'src/view/routes/paths';
 import Component from './Component';
 
 type ChildProps = ComponentProps<typeof Component>;

@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import { Box, BoxProps } from '@mui/material';
+import { WithChildren } from 'src/view/base/types';
 
-interface Props {
+interface Props extends WithChildren {
   boxProps?: BoxProps;
 }
 

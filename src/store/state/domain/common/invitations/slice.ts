@@ -1,8 +1,8 @@
 import { authActions } from 'src/store/state/app/auth/slice';
 import {
+  InvitationApiUrl,
   getInvitationApiUrl,
   getInvitationsApiUrl,
-  InvitationApiUrl,
 } from 'src/store/urls';
 import { createEntitiesSlice, getEntitiesInitialState } from 'src/store/utils';
 import {

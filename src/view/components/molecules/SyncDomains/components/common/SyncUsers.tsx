@@ -31,7 +31,6 @@ const {
 const SyncUsers: FC<Props> = (props) => {
   const {
     params: { userId },
-    children,
   } = props;
   const { processed, canView } = useStoreSelector(selector);
   const dispatch = useStoreDispatch();
@@ -51,7 +50,7 @@ const SyncUsers: FC<Props> = (props) => {
     }
   }, [dispatch, processed, canView, userId]);
 
-  return <>{children}</>;
+  return <></>;
 };
 
 export default SyncUsers;

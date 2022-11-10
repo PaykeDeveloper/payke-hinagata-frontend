@@ -33,7 +33,6 @@ const {
 const SyncDivisions: FC<Props> = (props) => {
   const {
     params: { divisionId },
-    children,
   } = props;
   const { processed, canView } = useStoreSelector(selector);
   const dispatch = useStoreDispatch();
@@ -53,7 +52,7 @@ const SyncDivisions: FC<Props> = (props) => {
     }
   }, [dispatch, processed, canView, divisionId]);
 
-  return <>{children}</>;
+  return <></>;
 };
 
 export default SyncDivisions;

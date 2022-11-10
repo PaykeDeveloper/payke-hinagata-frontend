@@ -1,5 +1,5 @@
 import { CSSProperties, FC, ReactNode } from 'react';
-import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
+import { Tooltip, TooltipProps, styled, tooltipClasses } from '@mui/material';
 
 interface Props extends Omit<TooltipProps, 'title'> {
   title: ReactNode;

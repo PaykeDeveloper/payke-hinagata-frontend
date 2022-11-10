@@ -2,8 +2,8 @@
 
 import { authActions } from 'src/store/state/app/auth/slice';
 import {
-  ProjectApiUrl,
   DivisionApiUrl,
+  ProjectApiUrl,
   getProjectApiUrl,
   getProjectsApiUrl,
 } from 'src/store/urls';

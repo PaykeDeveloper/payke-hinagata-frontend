@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { siteName } from 'src/base/constants';
 import {
+  VerifyEmailApiUrl,
   getChangePasswordApiUrl,
   getForgotPasswordApiUrl,
   getLoginApiUrl,
@@ -8,7 +9,6 @@ import {
   getRegisterApiUrl,
   getResetPasswordApiUrl,
   getVerifyEmailApiUrl,
-  VerifyEmailApiUrl,
 } from 'src/store/urls';
 import {
   createGetAsyncThunk,

@@ -1,8 +1,8 @@
 import {
   ActionReducerMapBuilder,
-  createSlice,
   SliceCaseReducers,
   ValidateSliceCaseReducers,
+  createSlice,
 } from '@reduxjs/toolkit';
 import { castDraft } from 'immer';
 import isEqual from 'lodash/isEqual';

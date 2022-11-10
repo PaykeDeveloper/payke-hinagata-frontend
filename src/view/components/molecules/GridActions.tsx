@@ -1,3 +1,4 @@
+import { styled } from '@mui/material';
 import { LinkTo } from 'src/view/base/react-router/types';
 import LinkButton, {
   LinkButtonProps,
@@ -15,6 +16,10 @@ type LinkAction<Row> = Omit<LinkButtonProps, 'to'> &
 
 export type LinkActions<Row> = LinkAction<Row>[];
 
+const GridLinkButton = styled(LinkButton, {
+  shouldForwardProp: (propName) => propName !== 'getTo',
+})({});
+
 const GridActions = <Row extends object>({
   row,
   actions,
@@ -26,7 +31,7 @@ const GridActions = <Row extends object>({
     {actions.map((action, index) => {
       const to = 'to' in action ? action.to : action.getTo(row);
       return to ? (
-        <LinkButton key={index} size="small" {...action} to={to} />
+        <GridLinkButton key={index} size="small" {...action} to={to} />
       ) : undefined;
     })}
   </>

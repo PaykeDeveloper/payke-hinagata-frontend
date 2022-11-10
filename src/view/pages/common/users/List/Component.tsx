@@ -5,8 +5,8 @@ import { User } from 'src/store/state/domain/common/users/types';
 import { StoreError, StoreStatus } from 'src/store/types';
 import {
   ACTION_WIDTH,
-  actionsColDef,
   RouterDataGrid,
+  actionsColDef,
   timestampColDef,
 } from 'src/view/base/material-ui/DataGrid';
 import Loader from 'src/view/components/atoms/Loader';
