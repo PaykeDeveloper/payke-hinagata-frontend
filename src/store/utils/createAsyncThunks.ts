@@ -20,7 +20,9 @@ import {
 } from 'src/store/types';
 
 const options: Options = {
+  indices: true,
   allowEmptyArrays: true,
+  booleansAsIntegers: true,
 };
 
 const getError = (error: AxiosError) => {
