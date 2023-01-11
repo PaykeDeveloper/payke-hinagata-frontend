@@ -118,7 +118,7 @@ const Form: FC<{
                         label={t('User')}
                         required
                         nullable
-                        disabled={disabled}
+                        disabled={disabled || !!onDelete}
                       >
                         <Options
                           objects={userOptions}
