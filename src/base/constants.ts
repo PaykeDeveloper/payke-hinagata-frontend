@@ -12,7 +12,7 @@ export const isProduction = webpackMode === WebpackMode.Production;
 
 export const backendOriginUrl = `${
   process.env.REACT_APP_BACKEND_ORIGIN || window.location.origin
-}/`;
+}`;
 
 // FIXME: SAMPLE CODE
 export const siteName = 'Payke Hinagata';
