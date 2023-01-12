@@ -43,12 +43,12 @@ const Component: FC<{
       minWidth: actions.length * ACTION_WIDTH,
       ...actionsColDef,
     },
-    { field: 'id', headerName: t('ID') },
-    { field: 'name', headerName: t('Name'), minWidth: 300, flex: 1 },
-    { field: 'email', headerName: t('Email'), minWidth: 300, flex: 1 },
+    { field: 'id', headerName: t<string>('ID') },
+    { field: 'name', headerName: t<string>('Name'), minWidth: 300, flex: 1 },
+    { field: 'email', headerName: t<string>('Email'), minWidth: 300, flex: 1 },
     {
       field: 'status',
-      headerName: t('Status'),
+      headerName: t<string>('Status'),
       minWidth: 150,
       type: 'singleSelect',
       valueOptions: getInvitationStatusOptions(),
@@ -56,7 +56,7 @@ const Component: FC<{
     },
     {
       field: 'createdAt',
-      headerName: t('Created at'),
+      headerName: t<string>('Created at'),
       ...timestampColDef,
     },
   ];

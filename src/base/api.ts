@@ -1,12 +1,24 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosHeaders,
+  AxiosInstance,
+  AxiosRequestConfig,
+} from 'axios';
 import applyConverters from 'axios-case-converter';
 import { getLanguage } from 'src/base/i18n';
 
 const requestFunc = (config: AxiosRequestConfig) => {
-  const { headers } = config;
-  if (headers) {
-    const language = getLanguage();
-    if (language) {
+  let { headers } = config;
+  if (!headers) {
+    headers = new AxiosHeaders();
+    config.headers = headers;
+  }
+
+  const language = getLanguage();
+  if (language) {
+    if (headers instanceof AxiosHeaders) {
+      headers.set('Accept-Language', language);
+    } else {
       headers['Accept-Language'] = language;
     }
   }
