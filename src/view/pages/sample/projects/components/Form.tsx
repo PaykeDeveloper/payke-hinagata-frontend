@@ -183,7 +183,7 @@ const Form: FC<{
                     <Grid item xs={12} sm={6}>
                       <BaseImageField
                         name="cover"
-                        label={t('Cover')}
+                        label={t<string>('Cover')}
                         defaultImage={project?.coverUrl}
                         maxWidth={150}
                         height={150}

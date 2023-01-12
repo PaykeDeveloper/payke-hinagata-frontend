@@ -134,6 +134,8 @@ const parsePageSize = (pageSize: unknown): number => {
 
 const fieldKey = 'field';
 const sortKey = 'sort';
+const checkSort = (value: unknown): value is GridSortItem['sort'] =>
+  ['asc', 'desc', null, undefined].includes(value as any);
 const parseSortModel = (
   sortModel: unknown,
   fields: string[]
@@ -144,11 +146,7 @@ const parseSortModel = (
         if (isObject(value) && fieldKey in value && sortKey in value) {
           const field: unknown = get(value, fieldKey);
           const sort = get(value, sortKey);
-          if (
-            isString(field) &&
-            fields.includes(field) &&
-            ['asc', 'desc', null, undefined].includes(sort)
-          ) {
+          if (isString(field) && fields.includes(field) && checkSort(sort)) {
             return { field, sort };
           }
         }
