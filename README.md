@@ -12,5 +12,5 @@
 
 ### Storybookの実行
 ```shell
-% yarn storybook
+% npm run storybook
 ```

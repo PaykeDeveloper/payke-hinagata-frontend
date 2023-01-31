@@ -15,13 +15,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: yarn
-      - run: yarn install
-      - run: yarn lint
-      - run: yarn test --watchAll=false
-      - run: yarn build
-      - run: yarn analyze
-      - uses: actions/upload-artifact@v2
+          cache: npm
+      - run: npm install
+      - run: npm run lint
+      - run: npm run test --watchAll=false
+      - run: npm run build
+      - run: npm run analyze
+      - uses: actions/upload-artifact@v3
         with:
           name: analyze
           path: analyze.html

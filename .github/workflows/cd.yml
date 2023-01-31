@@ -12,10 +12,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: yarn
+          cache: npm
       - run: npm install -g firebase-tools
-      - run: yarn install
-      - run: yarn build
+      - run: npm install
+      - run: npm run build
         env:
           REACT_APP_BACKEND_ORIGIN: ${{ secrets.REACT_APP_BACKEND_ORIGIN }}
           REACT_APP_DEBUG_TRANSLATION: ${{ secrets.REACT_APP_DEBUG_TRANSLATION }}

@@ -1,8 +1,8 @@
 import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from 'yup';
-import { suggestive as ja } from 'yup-locale-ja';
 import { LocaleObject } from 'yup/lib/locale';
+import { suggestive as ja } from 'yup-locale-ja';
 import { Language } from 'src/base/i18n';
 
 const locales: { [key: string]: LocaleObject } = {
