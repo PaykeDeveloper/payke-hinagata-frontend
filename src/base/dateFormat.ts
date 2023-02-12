@@ -1,5 +1,5 @@
-import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import { enUS, ja } from 'date-fns/locale';
+import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import i18next from 'i18next';
 
 const locales: { [key: string]: Locale } = { enUS, ja };
