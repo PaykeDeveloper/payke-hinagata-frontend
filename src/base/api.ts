@@ -2,7 +2,9 @@ import axios, { AxiosError, AxiosHeaders } from 'axios';
 import applyConverters from 'axios-case-converter';
 import { getLanguage } from 'src/base/i18n';
 
-const api = applyConverters(axios.create());
+const api = applyConverters(axios.create(),{
+  caseOptions: { stripRegexp: /[^A-Z0-9[.\]]+/gi },
+});
 api.defaults.withCredentials = true;
 api.interceptors.request.use((config) => {
   let { headers } = config;
