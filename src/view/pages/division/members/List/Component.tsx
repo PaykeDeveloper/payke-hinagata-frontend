@@ -45,18 +45,18 @@ const Component: FC<{
       minWidth: actions.length * ACTION_WIDTH,
       ...actionsColDef,
     },
-    { field: 'id', headerName: t<string>('ID') },
+    { field: 'id', headerName: t('ID') },
     {
       field: 'name',
-      headerName: t<string>('Name'),
+      headerName: t('Name'),
       minWidth: 300,
       flex: 1,
       renderCell: ({ row }) => <>{userIdMap[row['userId']]?.name}</>,
     },
-    { field: 'roleNames', headerName: t<string>('Role Names'), minWidth: 200 },
+    { field: 'roleNames', headerName: t('Role Names'), minWidth: 200 },
     {
       field: 'createdAt',
-      headerName: t<string>('Created at'),
+      headerName: t('Created at'),
       ...timestampColDef,
     },
   ];

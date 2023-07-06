@@ -59,11 +59,11 @@ const Component: FC<{
       minWidth: actions.length * ACTION_WIDTH,
       ...actionsColDef,
     },
-    { field: 'slug', headerName: t<string>('Slug'), minWidth: 310 },
-    { field: 'name', headerName: t<string>('Name'), minWidth: 350, flex: 1 },
+    { field: 'slug', headerName: t('Slug'), minWidth: 310 },
+    { field: 'name', headerName: t('Name'), minWidth: 350, flex: 1 },
     {
       field: 'createdAt',
-      headerName: t<string>('Created at'),
+      headerName: t('Created at'),
       ...timestampColDef,
     },
   ];

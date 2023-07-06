@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
-  TypedUseSelectorHook,
+  type EqualityFn,
+  type NoInfer,
   shallowEqual,
   useDispatch,
   useSelector,
@@ -13,6 +14,13 @@ const store = configureStore({ reducer });
 
 export type StoreState = ReturnType<typeof store.getState>;
 export type StoreDispatch = typeof store.dispatch;
+
+interface TypedUseSelectorHook<TState> {
+  <TSelected>(
+    selector: (state: TState) => TSelected,
+    equalityFn?: EqualityFn<NoInfer<TSelected>>
+  ): TSelected;
+}
 
 export const useStoreSelector: TypedUseSelectorHook<StoreState> = (
   selector,
