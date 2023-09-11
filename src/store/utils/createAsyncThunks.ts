@@ -112,7 +112,7 @@ type ThunkApiConfig = {
 
 export const createGetAsyncThunk = <Returned, PathParams, SearchParams>(
   name: string,
-  getApiUrl: (_: PathParams) => string
+  getApiUrl: (_: PathParams) => string,
 ) =>
   createAsyncThunk<
     Returned,
@@ -134,12 +134,12 @@ export const createGetAsyncThunk = <Returned, PathParams, SearchParams>(
         const rejectValue = getRejectValue(e);
         return rejectWithValue(rejectValue);
       }
-    }
+    },
   );
 
 export const createPostAsyncThunk = <Returned, PathParams, BodyParams>(
   name: string,
-  getApiUrl: (_: PathParams) => string
+  getApiUrl: (_: PathParams) => string,
 ) =>
   createAsyncThunk<
     Returned,
@@ -149,7 +149,7 @@ export const createPostAsyncThunk = <Returned, PathParams, BodyParams>(
     `${siteName}/${name}`,
     async (
       { pathParams, bodyParams, useFormData },
-      { signal, rejectWithValue }
+      { signal, rejectWithValue },
     ) => {
       try {
         const response = await api.post<Returned>(
@@ -157,19 +157,19 @@ export const createPostAsyncThunk = <Returned, PathParams, BodyParams>(
           useFormData ? serialize(bodyParams, options) : bodyParams,
           {
             cancelToken: createCancelToken(signal),
-          }
+          },
         );
         return response.data;
       } catch (e) {
         const rejectValue = getRejectValue(e);
         return rejectWithValue(rejectValue);
       }
-    }
+    },
   );
 
 export const createPutAsyncThunk = <Returned, PathParams, BodyParams>(
   name: string,
-  getApiUrl: (_: PathParams) => string
+  getApiUrl: (_: PathParams) => string,
 ) =>
   createAsyncThunk<
     Returned,
@@ -179,7 +179,7 @@ export const createPutAsyncThunk = <Returned, PathParams, BodyParams>(
     `${siteName}/${name}`,
     async (
       { pathParams, bodyParams, useFormData },
-      { signal, rejectWithValue }
+      { signal, rejectWithValue },
     ) => {
       try {
         const response = await api.put<Returned>(
@@ -187,19 +187,19 @@ export const createPutAsyncThunk = <Returned, PathParams, BodyParams>(
           useFormData ? serialize(bodyParams, options) : bodyParams,
           {
             cancelToken: createCancelToken(signal),
-          }
+          },
         );
         return response.data;
       } catch (e) {
         const rejectValue = getRejectValue(e);
         return rejectWithValue(rejectValue);
       }
-    }
+    },
   );
 
 export const createPatchAsyncThunk = <Returned, PathParams, BodyParams>(
   name: string,
-  getApiUrl: (_: PathParams) => string
+  getApiUrl: (_: PathParams) => string,
 ) =>
   createAsyncThunk<
     Returned,
@@ -209,7 +209,7 @@ export const createPatchAsyncThunk = <Returned, PathParams, BodyParams>(
     `${siteName}/${name}`,
     async (
       { pathParams, bodyParams, useFormData },
-      { signal, rejectWithValue }
+      { signal, rejectWithValue },
     ) => {
       try {
         const response = await api.post<Returned>(
@@ -220,19 +220,19 @@ export const createPatchAsyncThunk = <Returned, PathParams, BodyParams>(
             headers: {
               'X-HTTP-Method-Override': 'PATCH',
             },
-          }
+          },
         );
         return response.data;
       } catch (e) {
         const rejectValue = getRejectValue(e);
         return rejectWithValue(rejectValue);
       }
-    }
+    },
   );
 
 export const createDeleteAsyncThunk = <Returned, PathParams>(
   name: string,
-  getApiUrl: (_: PathParams) => string
+  getApiUrl: (_: PathParams) => string,
 ) =>
   createAsyncThunk<Returned, { pathParams: PathParams }, ThunkApiConfig>(
     `${siteName}/${name}`,
@@ -246,5 +246,5 @@ export const createDeleteAsyncThunk = <Returned, PathParams>(
         const rejectValue = getRejectValue(e);
         return rejectWithValue(rejectValue);
       }
-    }
+    },
   );

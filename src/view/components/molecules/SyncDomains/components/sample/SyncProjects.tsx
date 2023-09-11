@@ -20,7 +20,7 @@ const selector = createSelector(
   (status, canView) => ({
     processed: checkProcessed(status),
     canView,
-  })
+  }),
 );
 
 const {
@@ -39,7 +39,7 @@ const SyncProjects: FC<Props> = (props) => {
   useEffect(() => {
     if (canView && divisionId) {
       dispatch(
-        fetchEntitiesIfNeeded({ pathParams: { divisionId }, reset: true })
+        fetchEntitiesIfNeeded({ pathParams: { divisionId }, reset: true }),
       );
     } else {
       dispatch(resetEntitiesIfNeeded());
@@ -52,7 +52,7 @@ const SyncProjects: FC<Props> = (props) => {
         fetchEntityIfNeeded({
           pathParams: { divisionId, projectSlug },
           reset: true,
-        })
+        }),
       );
     } else {
       dispatch(resetEntityIfNeeded());

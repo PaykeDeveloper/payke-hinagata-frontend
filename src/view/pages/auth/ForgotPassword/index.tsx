@@ -26,7 +26,7 @@ const ForgotPassword: FC<RouteComponentProps> = () => {
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        forgotPassword({ pathParams: {}, bodyParams })
+        forgotPassword({ pathParams: {}, bodyParams }),
       );
       if (forgotPassword.fulfilled.match(action)) {
         enqueueSnackbar(action.payload.message, {
@@ -41,7 +41,7 @@ const ForgotPassword: FC<RouteComponentProps> = () => {
       }
       return action;
     },
-    [dispatch, enqueueSnackbar, closeSnackbar]
+    [dispatch, enqueueSnackbar, closeSnackbar],
   );
 
   return <Component {...state} object={undefined} onSubmit={onSubmit} />;

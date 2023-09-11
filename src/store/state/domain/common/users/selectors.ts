@@ -29,12 +29,12 @@ export const userErrorSelector = (state: StoreState) =>
   state.domain.common.users.meta.fetchEntity.error;
 
 export const userIdMapSelector = createSelector(usersSelector, (users) =>
-  convertListToObject<number, User>(users, 'id')
+  convertListToObject<number, User>(users, 'id'),
 );
 
 export const canViewUsersSelector = createSelector(
   userPermissionNamesSelector,
-  (userPermissionNames) => userPermission.canView(userPermissionNames)
+  (userPermissionNames) => userPermission.canView(userPermissionNames),
 );
 
 export const checkUpdateUserSelector = createSelector(
@@ -49,7 +49,7 @@ export const checkUpdateUserSelector = createSelector(
       return true;
     }
     return userPermission.canUpdateAll(permissionNames);
-  }
+  },
 );
 
 export const checkDeleteUserSelector = createSelector(
@@ -64,12 +64,12 @@ export const checkDeleteUserSelector = createSelector(
       return true;
     }
     return userPermission.canDeleteAll(permissionNames);
-  }
+  },
 );
 
 export const checkEditUserSelector = createSelector(
   checkUpdateUserSelector,
   checkDeleteUserSelector,
   (checkUpdate, checkDelete) => (userId: number | undefined) =>
-    checkUpdate(userId) || checkDelete(userId)
+    checkUpdate(userId) || checkDelete(userId),
 );

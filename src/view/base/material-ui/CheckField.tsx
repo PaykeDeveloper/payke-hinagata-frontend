@@ -14,7 +14,7 @@ import {
 const StyledFormControlLabel = styled(FormControlLabel, {
   shouldForwardProp: (propName) => propName !== 'error',
 })<{ error?: boolean }>(({ theme, error }) =>
-  error ? { color: theme.palette.error.main } : {}
+  error ? { color: theme.palette.error.main } : {},
 );
 
 export interface CheckFieldProps {

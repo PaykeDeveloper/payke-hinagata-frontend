@@ -24,7 +24,7 @@ const RouterBreadcrumbs: FC<RouterBreadcrumbsProps> = (props) => {
           <Typography key={index} component="div">
             {linkProps.children}
           </Typography>
-        )
+        ),
       )}
     </Breadcrumbs>
   );

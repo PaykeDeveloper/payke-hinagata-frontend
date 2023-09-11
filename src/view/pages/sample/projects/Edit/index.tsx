@@ -39,7 +39,7 @@ const selector = createSelector(
     division,
     canUpdate,
     canDelete,
-  })
+  }),
 );
 
 const rules = { finishedAt: 'dateTime' } as const;
@@ -63,14 +63,14 @@ const Container: FC<
           pathParams,
           bodyParams: inputsToObject(params, rules),
           useFormData: true,
-        })
+        }),
       );
       if (projectsActions.mergeEntity.fulfilled.match(action)) {
         push(backTo);
       }
       return action;
     },
-    [dispatch, pathParams, push, backTo]
+    [dispatch, pathParams, push, backTo],
   );
 
   const { enqueueSnackbar } = useSnackbar();
@@ -92,7 +92,7 @@ const Container: FC<
 
   const object = useMemo(
     () => project && objectToInputs(project, rules),
-    [project]
+    [project],
   );
 
   return (

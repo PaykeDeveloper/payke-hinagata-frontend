@@ -31,7 +31,7 @@ const selector = createSelector(
     error,
     division,
     canCreate,
-  })
+  }),
 );
 
 const Container: FC<
@@ -53,14 +53,14 @@ const Container: FC<
           pathParams,
           bodyParams: inputsToObject(params, {}),
           useFormData: true,
-        })
+        }),
       );
       if (projectsActions.addEntity.fulfilled.match(action)) {
         push(backTo);
       }
       return action;
     },
-    [dispatch, pathParams, push, backTo]
+    [dispatch, pathParams, push, backTo],
   );
 
   const { canCreate, ...otherState } = useStoreSelector(selector);

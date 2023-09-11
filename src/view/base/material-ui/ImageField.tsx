@@ -63,7 +63,7 @@ const ImageField: FC<ImageFieldProps> = (props) => {
   const handleChange = onChange || emptyCallback;
   const onDrop: NonNullable<DropzoneOptions['onDrop']> = useCallback(
     (acceptedFiles) => handleChange(acceptedFiles[0] ?? null),
-    [handleChange]
+    [handleChange],
   );
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,

@@ -7,7 +7,7 @@ import DivisionSideMenu from './components/DivisionSideMenu';
 import { PrivateSideMenuProps } from './types';
 
 const getComponent = (
-  menuType: MenuType
+  menuType: MenuType,
 ): ComponentType<PrivateSideMenuProps> => {
   switch (menuType) {
     case MenuType.Division: {

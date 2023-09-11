@@ -30,7 +30,7 @@ const StyledMain = styled('main', {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
-      }
+      },
 );
 export const StyledFooter = styled('footer')(({ theme }) => ({
   width: '100%',

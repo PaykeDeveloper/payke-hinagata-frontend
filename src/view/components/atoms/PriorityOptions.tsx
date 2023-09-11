@@ -7,7 +7,7 @@ import Options from 'src/view/components/molecules/Options';
 
 export const getPriorityLabel = (
   value: Priority | undefined,
-  defaultMessage = ''
+  defaultMessage = '',
 ) => {
   switch (value) {
     case Priority.High:

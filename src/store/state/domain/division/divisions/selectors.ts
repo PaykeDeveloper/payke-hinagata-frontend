@@ -27,22 +27,22 @@ export const divisionErrorSelector = (state: StoreState) =>
 
 export const requestMemberIdSelector = createSelector(
   divisionSelector,
-  (division) => division?.requestMemberId
+  (division) => division?.requestMemberId,
 );
 
 export const memberPermissionNamesSelector = createSelector(
   divisionSelector,
-  (division) => division?.permissionNames
+  (division) => division?.permissionNames,
 );
 
 export const canViewDivisionsSelector = createSelector(
   userPermissionNamesSelector,
-  (userPermissionNames) => divisionPermission.canView(userPermissionNames)
+  (userPermissionNames) => divisionPermission.canView(userPermissionNames),
 );
 
 export const canCreateDivisionSelector = createSelector(
   userPermissionNamesSelector,
-  (userPermissionNames) => divisionPermission.canCreate(userPermissionNames)
+  (userPermissionNames) => divisionPermission.canCreate(userPermissionNames),
 );
 
 export const checkUpdateDivisionSelector = createSelector(
@@ -57,7 +57,7 @@ export const checkUpdateDivisionSelector = createSelector(
         return true;
       }
       return divisionPermission.canUpdateAll(userPermissionNames);
-    }
+    },
 );
 
 export const checkDeleteDivisionSelector = createSelector(
@@ -72,12 +72,12 @@ export const checkDeleteDivisionSelector = createSelector(
         return true;
       }
       return divisionPermission.canDeleteAll(userPermissionNames);
-    }
+    },
 );
 
 export const checkEditDivisionSelector = createSelector(
   checkUpdateDivisionSelector,
   checkDeleteDivisionSelector,
   (checkUpdate, checkDelete) => (requestMemberId: number | null | undefined) =>
-    checkUpdate(requestMemberId) || checkDelete(requestMemberId)
+    checkUpdate(requestMemberId) || checkDelete(requestMemberId),
 );

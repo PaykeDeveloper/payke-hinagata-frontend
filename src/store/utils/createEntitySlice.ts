@@ -42,7 +42,7 @@ const createEntitySlice = <
   DomainState extends EntityState<Entity, EntityPath> = EntityState<
     Entity,
     EntityPath
-  >
+  >,
 >({
   domainName,
   initialState,
@@ -71,22 +71,22 @@ const createEntitySlice = <
 
   const fetchEntity = createGetAsyncThunk<Entity, EntityPath, unknown>(
     `${domainName}/fetchEntity`,
-    entityUrl
+    entityUrl,
   );
 
   const addEntity = createPostAsyncThunk<Entity, EntityPath, CreateInput>(
     `${domainName}/addEntity`,
-    entityUrl
+    entityUrl,
   );
 
   const mergeEntity = createPatchAsyncThunk<Entity, EntityPath, UpdateInput>(
     `${domainName}/mergeEntity`,
-    entityUrl
+    entityUrl,
   );
 
   const removeEntity = createDeleteAsyncThunk<null, EntityPath>(
     `${domainName}/removeEntity`,
-    entityUrl
+    entityUrl,
   );
 
   const slice = createSlice({

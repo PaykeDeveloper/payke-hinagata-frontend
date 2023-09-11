@@ -18,7 +18,7 @@ const selector = createSelector(
   (status, canView) => ({
     processed: checkProcessed(status),
     canView,
-  })
+  }),
 );
 
 const {

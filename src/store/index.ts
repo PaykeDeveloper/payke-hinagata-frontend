@@ -18,13 +18,13 @@ export type StoreDispatch = typeof store.dispatch;
 interface TypedUseSelectorHook<TState> {
   <TSelected>(
     selector: (state: TState) => TSelected,
-    equalityFn?: EqualityFn<NoInfer<TSelected>>
+    equalityFn?: EqualityFn<NoInfer<TSelected>>,
   ): TSelected;
 }
 
 export const useStoreSelector: TypedUseSelectorHook<StoreState> = (
   selector,
-  equalityFn = shallowEqual
+  equalityFn = shallowEqual,
 ) => useSelector(selector, equalityFn);
 
 export const useStoreDispatch = () => useDispatch<StoreDispatch>();

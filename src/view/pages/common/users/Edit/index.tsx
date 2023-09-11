@@ -34,7 +34,7 @@ const selector = createSelector(
     roles,
     checkUpdate,
     checkDelete,
-  })
+  }),
 );
 
 export type UserEditRouterState = BaseRouterState | undefined;
@@ -55,14 +55,14 @@ const Container: FC<
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        usersActions.mergeEntity({ pathParams, bodyParams })
+        usersActions.mergeEntity({ pathParams, bodyParams }),
       );
       if (usersActions.mergeEntity.fulfilled.match(action)) {
         push(backTo);
       }
       return action;
     },
-    [backTo, dispatch, pathParams, push]
+    [backTo, dispatch, pathParams, push],
   );
 
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {

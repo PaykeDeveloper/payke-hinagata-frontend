@@ -37,7 +37,7 @@ const selector = createSelector(
     error,
     canCreate,
     checkEdit,
-  })
+  }),
 );
 
 const List: FC<RouteComponentProps> = (props) => {
@@ -52,7 +52,7 @@ const List: FC<RouteComponentProps> = (props) => {
       pathname: divisionNewPath,
       state: { path } as RouterState,
     }),
-    [path]
+    [path],
   );
 
   const { canCreate, checkEdit, ...otherState } = useStoreSelector(selector);

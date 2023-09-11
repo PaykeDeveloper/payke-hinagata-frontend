@@ -33,7 +33,7 @@ const selector = createSelector(
     error,
     checkUpdate,
     checkDelete,
-  })
+  }),
 );
 
 export type DivisionEditRouterState = BaseRouterState | undefined;
@@ -54,19 +54,19 @@ const Edit: FC<
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        divisionsActions.mergeEntity({ pathParams, bodyParams })
+        divisionsActions.mergeEntity({ pathParams, bodyParams }),
       );
       if (divisionsActions.mergeEntity.fulfilled.match(action)) {
         push(backTo);
       }
       return action;
     },
-    [backTo, dispatch, pathParams, push]
+    [backTo, dispatch, pathParams, push],
   );
 
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
     const action = await dispatch(
-      divisionsActions.removeEntity({ pathParams })
+      divisionsActions.removeEntity({ pathParams }),
     );
     if (divisionsActions.removeEntity.fulfilled.match(action)) {
       push(backTo);

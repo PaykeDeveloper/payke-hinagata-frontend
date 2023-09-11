@@ -31,7 +31,7 @@ const login = createPostAsyncThunk<
 
 const logout = createPostAsyncThunk<unknown, unknown, unknown>(
   'logout',
-  getLogoutApiUrl
+  getLogoutApiUrl,
 );
 
 const register = createPostAsyncThunk<

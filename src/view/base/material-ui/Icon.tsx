@@ -7,8 +7,7 @@ export default Icon;
 
 const createIcon =
   (icon: string): FC<IconProps> =>
-  (props) =>
-    <Icon {...props}>{icon}</Icon>;
+  (props) => <Icon {...props}>{icon}</Icon>;
 
 export const MenuIcon = createIcon('menu');
 export const MoreVertIcon = createIcon('more_vert');

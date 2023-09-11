@@ -61,7 +61,7 @@ export const BaseForm = <T extends object>(props: Props<T>) => {
       }
       return action;
     },
-    [onSubmit, enqueueSnackbar]
+    [onSubmit, enqueueSnackbar],
   );
 
   return (

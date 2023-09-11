@@ -59,7 +59,7 @@ export const monthColDef: Omit<GridColDef, 'field'> = {
 
 const tryFormat = (
   format: (value: string | Date) => string,
-  value: string | Date
+  value: string | Date,
 ) => {
   try {
     return format(value);
@@ -138,7 +138,7 @@ const checkSort = (value: unknown): value is GridSortItem['sort'] =>
   ['asc', 'desc', null, undefined].includes(value as any);
 const parseSortModel = (
   sortModel: unknown,
-  fields: string[]
+  fields: string[],
 ): DataGridProps['sortModel'] => {
   if (isArray(sortModel)) {
     return sortModel
@@ -169,7 +169,7 @@ const convertValue = (value: string) => {
 };
 const parseFilterModel = (
   filterMode: unknown,
-  fields: string[]
+  fields: string[],
 ): DataGridProps['filterModel'] => {
   if (isObject(filterMode) && itemsKey in filterMode) {
     const items: unknown = get(filterMode, itemsKey);
@@ -226,7 +226,7 @@ type ParamsKey = 'page' | 'sortModel' | 'filterModel' | 'pageSize';
 function createSearchIfNeeded<Params>(
   search: string,
   params: Params,
-  key: ParamsKey
+  key: ParamsKey,
 ) {
   const searchParams = qs.parse(search, { ignoreQueryPrefix: true });
   return !isEqual(searchParams[key], params)
@@ -260,7 +260,7 @@ export const RouterDataGrid: FC<RouterDataGridProps> = (props) => {
           replace({ search: newSearch });
         }
       },
-      [onPageChange, replace, search]
+      [onPageChange, replace, search],
     );
   const handlePageSizeChange: NonNullable<DataGridProps['onPageSizeChange']> =
     useCallback(
@@ -271,7 +271,7 @@ export const RouterDataGrid: FC<RouterDataGridProps> = (props) => {
           replace({ search: newSearch });
         }
       },
-      [onPageSizeChange, replace, search]
+      [onPageSizeChange, replace, search],
     );
   const handleSortModelChange: NonNullable<DataGridProps['onSortModelChange']> =
     useCallback(
@@ -282,7 +282,7 @@ export const RouterDataGrid: FC<RouterDataGridProps> = (props) => {
           replace({ search: newSearch });
         }
       },
-      [onSortModelChange, replace, search]
+      [onSortModelChange, replace, search],
     );
   const handleFilterModelChange: NonNullable<
     DataGridProps['onFilterModelChange']
@@ -292,18 +292,18 @@ export const RouterDataGrid: FC<RouterDataGridProps> = (props) => {
       const newSearch = createSearchIfNeeded(
         search,
         model.items.length ? model : undefined,
-        'filterModel'
+        'filterModel',
       );
       if (newSearch !== undefined) {
         replace({ search: newSearch });
       }
     },
-    [onFilterModelChange, replace, search]
+    [onFilterModelChange, replace, search],
   );
 
   const fields = useMemo(
     () => columns.map((column) => column.field),
-    [columns]
+    [columns],
   );
   const params = qs.parse(search, { ignoreQueryPrefix: true });
   const page = parsePage(params['page']);

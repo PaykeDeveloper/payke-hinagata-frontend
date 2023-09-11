@@ -52,17 +52,17 @@ export const isNotFoundError = (error: StoreError): error is NotFoundError =>
   error.status === ErrorStatus.NotFound;
 
 const isMethodNotAllowedError = (
-  error: StoreError
+  error: StoreError,
 ): error is MethodNotAllowedError =>
   error.status === ErrorStatus.MethodNotAllowed;
 
 export const isUnprocessableEntityError = (
-  error: StoreError
+  error: StoreError,
 ): error is UnprocessableEntityError =>
   error.status === ErrorStatus.UnprocessableEntity;
 
 const isInternalServerError = (
-  error: StoreError
+  error: StoreError,
 ): error is InternalServerError =>
   error.status === ErrorStatus.InternalServerError;
 

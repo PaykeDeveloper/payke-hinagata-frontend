@@ -37,7 +37,7 @@ const selector = createSelector(
     roles,
     canUpdate,
     canDelete,
-  })
+  }),
 );
 
 const Edit: FC<
@@ -54,27 +54,27 @@ const Edit: FC<
   const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(
-      invitationsActions.fetchEntityIfNeeded({ pathParams, reset: true })
+      invitationsActions.fetchEntityIfNeeded({ pathParams, reset: true }),
     );
   }, [dispatch, pathParams]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        invitationsActions.mergeEntity({ pathParams, bodyParams })
+        invitationsActions.mergeEntity({ pathParams, bodyParams }),
       );
       if (invitationsActions.mergeEntity.fulfilled.match(action)) {
         push(backTo);
       }
       return action;
     },
-    [backTo, dispatch, pathParams, push]
+    [backTo, dispatch, pathParams, push],
   );
 
   const { enqueueSnackbar } = useSnackbar();
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {
     const action = await dispatch(
-      invitationsActions.removeEntity({ pathParams })
+      invitationsActions.removeEntity({ pathParams }),
     );
     if (invitationsActions.removeEntity.fulfilled.match(action)) {
       push(backTo);
