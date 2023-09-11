@@ -28,7 +28,7 @@ const StyledToolbar = styled(Toolbar, {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
-      }
+      },
 );
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,

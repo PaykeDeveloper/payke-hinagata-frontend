@@ -46,7 +46,7 @@ const selector = createSelector(
     canView,
     canCreate,
     canEdit,
-  })
+  }),
 );
 
 const Container: FC<

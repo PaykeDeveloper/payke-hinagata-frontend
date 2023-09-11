@@ -64,7 +64,7 @@ const createEntitiesSlice = <
     EntitiesPath,
     EntityDetail,
     EntityPath
-  > = EntitiesState<Entity, EntitiesPath, EntityDetail, EntityPath>
+  > = EntitiesState<Entity, EntitiesPath, EntityDetail, EntityPath>,
 >({
   domainName,
   initialState,
@@ -107,12 +107,12 @@ const createEntitiesSlice = <
 
   const fetchEntities = createGetAsyncThunk<Entity[], EntitiesPath, unknown>(
     `${domainName}/fetchEntities`,
-    entitiesUrl
+    entitiesUrl,
   );
 
   const fetchEntity = createGetAsyncThunk<EntityDetail, EntityPath, never>(
     `${domainName}/fetchEntity`,
-    entityUrl
+    entityUrl,
   );
 
   const addEntity = createPostAsyncThunk<
@@ -129,7 +129,7 @@ const createEntitiesSlice = <
 
   const removeEntity = createDeleteAsyncThunk<null, EntityPath>(
     `${domainName}/removeEntity`,
-    entityUrl
+    entityUrl,
   );
 
   const slice = createSlice({
@@ -152,7 +152,7 @@ const createEntitiesSlice = <
           entity: EntityDetail;
           timestamp: number;
           arg: FetchEntityArg;
-        }>
+        }>,
       ) {
         state.entity = castDraft(entity);
         state.meta.fetchEntity.status = StoreStatus.Done;
@@ -212,7 +212,7 @@ const createEntitiesSlice = <
             state.meta.fetchEntities.status === StoreStatus.Done &&
             isEqual(
               action.meta.arg.pathParams,
-              state.meta.fetchEntities.arg?.pathParams
+              state.meta.fetchEntities.arg?.pathParams,
             )
           ) {
             const entities = [
@@ -221,7 +221,7 @@ const createEntitiesSlice = <
             ];
             state.entities = sortIfNeeded(
               entities,
-              sort as Sort<Draft<Entity>>
+              sort as Sort<Draft<Entity>>,
             );
           }
         })
@@ -263,7 +263,7 @@ const createEntitiesSlice = <
               action.meta.arg.pathParams[keyMapping.pathKey];
             state.entities = state.entities.filter(
               (entity) =>
-                `${(entity as Entity)[keyMapping.objectKey]}` !== urlKeyValue
+                `${(entity as Entity)[keyMapping.objectKey]}` !== urlKeyValue,
             );
           }
         });
@@ -352,7 +352,7 @@ const createEntitiesSlice = <
         checkInActivePeriod(timestamp)
       ) {
         const entitiesEntity = domain.entities.find(
-          (entity) => `${entity[keyMapping.objectKey]}` === `${urlValue}`
+          (entity) => `${entity[keyMapping.objectKey]}` === `${urlValue}`,
         );
         if (entitiesEntity) {
           const entity = listToDetail(entitiesEntity);

@@ -12,5 +12,5 @@ export const myUserErrorSelector = (state: StoreState) =>
 
 export const userPermissionNamesSelector = createSelector(
   myUserSelector,
-  (user) => user?.permissionNames
+  (user) => user?.permissionNames,
 );

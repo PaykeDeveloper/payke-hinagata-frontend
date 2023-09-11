@@ -31,7 +31,7 @@ export const canViewProjectsSelector = createSelector(
   memberPermissionNamesSelector,
   (userPermissionNames, memberPermissionNames) =>
     projectPermission.canViewAll(memberPermissionNames) ||
-    projectPermission.canViewAll(userPermissionNames)
+    projectPermission.canViewAll(userPermissionNames),
 );
 
 export const canCreateProjectSelector = createSelector(
@@ -39,7 +39,7 @@ export const canCreateProjectSelector = createSelector(
   memberPermissionNamesSelector,
   (userPermissionNames, memberPermissionNames) =>
     projectPermission.canCreateAll(memberPermissionNames) ||
-    projectPermission.canCreateAll(userPermissionNames)
+    projectPermission.canCreateAll(userPermissionNames),
 );
 
 export const canUpdateProjectSelector = createSelector(
@@ -47,7 +47,7 @@ export const canUpdateProjectSelector = createSelector(
   memberPermissionNamesSelector,
   (userPermissionNames, memberPermissionNames) =>
     projectPermission.canUpdateAll(memberPermissionNames) ||
-    projectPermission.canUpdateAll(userPermissionNames)
+    projectPermission.canUpdateAll(userPermissionNames),
 );
 
 export const canDeleteProjectSelector = createSelector(
@@ -55,11 +55,11 @@ export const canDeleteProjectSelector = createSelector(
   memberPermissionNamesSelector,
   (userPermissionNames, memberPermissionNames) =>
     projectPermission.canDeleteAll(memberPermissionNames) ||
-    projectPermission.canDeleteAll(userPermissionNames)
+    projectPermission.canDeleteAll(userPermissionNames),
 );
 
 export const canEditProjectSelector = createSelector(
   canUpdateProjectSelector,
   canDeleteProjectSelector,
-  (canUpdate, canDelete) => canUpdate || canDelete
+  (canUpdate, canDelete) => canUpdate || canDelete,
 );

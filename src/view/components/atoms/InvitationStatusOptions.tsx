@@ -3,7 +3,7 @@ import { InvitationStatus } from 'src/store/state/domain/common/invitations/type
 
 export const getInvitationStatusLabel = (
   value: InvitationStatus | undefined,
-  defaultMessage = ''
+  defaultMessage = '',
 ) => {
   switch (value) {
     case InvitationStatus.Approved:

@@ -35,7 +35,7 @@ const selector = createSelector(
     error,
     canCreate,
     canEdit,
-  })
+  }),
 );
 
 const List: FC<RouteComponentProps> = (props) => {
@@ -48,7 +48,7 @@ const List: FC<RouteComponentProps> = (props) => {
   const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(
-      invitationsActions.fetchEntitiesIfNeeded({ pathParams: {}, reset: true })
+      invitationsActions.fetchEntitiesIfNeeded({ pathParams: {}, reset: true }),
     );
   }, [dispatch]);
 

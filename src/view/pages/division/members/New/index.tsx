@@ -36,11 +36,11 @@ const selector = createSelector(
     roles,
     division,
     canCreate,
-  })
+  }),
 );
 
 const New: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> = (
-  props
+  props,
 ) => {
   const {
     match: { params: pathParams },
@@ -54,14 +54,14 @@ const New: FC<RouteComponentProps<DivisionPath, StaticContext, RouterState>> = (
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        membersActions.addEntity({ pathParams, bodyParams })
+        membersActions.addEntity({ pathParams, bodyParams }),
       );
       if (membersActions.addEntity.fulfilled.match(action)) {
         push(backTo);
       }
       return action;
     },
-    [dispatch, pathParams, push, backTo]
+    [dispatch, pathParams, push, backTo],
   );
 
   const { canCreate, ...otherState } = useStoreSelector(selector);

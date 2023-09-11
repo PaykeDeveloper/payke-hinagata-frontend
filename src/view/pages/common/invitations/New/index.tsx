@@ -31,11 +31,11 @@ const selector = createSelector(
     roles,
     locales,
     canCreate,
-  })
+  }),
 );
 
 const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
-  props
+  props,
 ) => {
   const {
     match: { params: pathParams },
@@ -47,21 +47,21 @@ const New: FC<RouteComponentProps<{}, StaticContext, RouterState>> = (
   const dispatch = useStoreDispatch();
   useEffect(() => {
     dispatch(
-      invitationsActions.fetchEntitiesIfNeeded({ pathParams: {}, reset: true })
+      invitationsActions.fetchEntitiesIfNeeded({ pathParams: {}, reset: true }),
     );
   }, [dispatch]);
 
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        invitationsActions.addEntity({ pathParams, bodyParams })
+        invitationsActions.addEntity({ pathParams, bodyParams }),
       );
       if (invitationsActions.addEntity.fulfilled.match(action)) {
         push(backTo);
       }
       return action;
     },
-    [backTo, dispatch, pathParams, push]
+    [backTo, dispatch, pathParams, push],
   );
 
   const { canCreate, ...otherState } = useStoreSelector(selector);

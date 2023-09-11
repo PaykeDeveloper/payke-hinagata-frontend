@@ -35,7 +35,7 @@ const Register: FC<RouteComponentProps> = (props) => {
       }
       return action;
     },
-    [dispatch, push]
+    [dispatch, push],
   );
 
   return <Component {...state} object={{ id, token }} onSubmit={onSubmit} />;

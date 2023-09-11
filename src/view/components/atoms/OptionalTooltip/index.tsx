@@ -14,7 +14,7 @@ const CustomizeTooltip = styled(
   ),
   {
     shouldForwardProp: (propName) => propName !== 'backgroundColor',
-  }
+  },
 )<{ backgroundColor?: CSSProperties['backgroundColor'] }>(
   ({ backgroundColor }) => ({
     whiteSpace: 'pre-wrap',
@@ -24,7 +24,7 @@ const CustomizeTooltip = styled(
     [`& .${tooltipClasses.tooltip}`]: backgroundColor && {
       backgroundColor,
     },
-  })
+  }),
 );
 
 const OptionalTooltip: FC<Props> = (props) => {

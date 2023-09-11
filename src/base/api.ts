@@ -22,7 +22,7 @@ api.interceptors.request.use((config) => {
 export default api;
 
 export const isAxiosError = <T = unknown>(
-  error: unknown
+  error: unknown,
 ): error is AxiosError<T> => !!error && (error as AxiosError<T>).isAxiosError;
 
 export const { CancelToken } = axios;

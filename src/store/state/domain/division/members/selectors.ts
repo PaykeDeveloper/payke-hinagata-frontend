@@ -34,7 +34,7 @@ export const canViewMembersSelector = createSelector(
   memberPermissionNamesSelector,
   (userPermissionNames, memberPermissionNames) =>
     memberPermission.canView(memberPermissionNames) ||
-    memberPermission.canViewAll(userPermissionNames)
+    memberPermission.canViewAll(userPermissionNames),
 );
 
 export const canCreateMemberSelector = createSelector(
@@ -42,7 +42,7 @@ export const canCreateMemberSelector = createSelector(
   memberPermissionNamesSelector,
   (userPermissionNames, memberPermissionNames) =>
     memberPermission.canCreate(memberPermissionNames) ||
-    memberPermission.canCreateAll(userPermissionNames)
+    memberPermission.canCreateAll(userPermissionNames),
 );
 
 export const checkUpdateMemberSelector = createSelector(
@@ -62,7 +62,7 @@ export const checkUpdateMemberSelector = createSelector(
         return true;
       }
       return memberPermission.canUpdateAll(userPermissionNames);
-    }
+    },
 );
 
 export const checkDeleteMemberSelector = createSelector(
@@ -82,12 +82,12 @@ export const checkDeleteMemberSelector = createSelector(
         return true;
       }
       return memberPermission.canDeleteAll(userPermissionNames);
-    }
+    },
 );
 
 export const checkEditMemberSelector = createSelector(
   checkUpdateMemberSelector,
   checkDeleteMemberSelector,
   (checkUpdate, checkDelete) => (memberId?: number | undefined) =>
-    checkUpdate(memberId) || checkDelete(memberId)
+    checkUpdate(memberId) || checkDelete(memberId),
 );

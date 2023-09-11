@@ -28,7 +28,7 @@ const selector = createSelector(
     status,
     error,
     checkEdit,
-  })
+  }),
 );
 
 const List: FC<RouteComponentProps> = (props) => {

@@ -40,7 +40,7 @@ const Login: FC<RouteComponentProps> = (props) => {
       }
       return action;
     },
-    [dispatch, onLoggedIn]
+    [dispatch, onLoggedIn],
   );
 
   return (

@@ -27,7 +27,7 @@ export class AllPermissionFactory<Model extends string> {
   }
 
   protected toPermissionType<Type extends PermissionType>(
-    type: Type
+    type: Type,
   ): ModelPermission<Model, Type> {
     return `${this.model}__${type}` as const;
   }
@@ -58,7 +58,7 @@ export class AllPermissionFactory<Model extends string> {
 }
 
 export class OwnPermissionFactory<
-  Model extends string
+  Model extends string,
 > extends AllPermissionFactory<Model> {
   readonly viewOwn: ModelPermission<Model, PermissionType.ViewOwn>;
   readonly createOwn: ModelPermission<Model, PermissionType.CreateOwn>;

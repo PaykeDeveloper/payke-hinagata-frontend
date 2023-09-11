@@ -8,7 +8,7 @@ import { WithChildren } from 'src/view/base/types';
 import baseTheme from './theme';
 
 const getLocale = (
-  lang: string | undefined
+  lang: string | undefined,
 ): [Localization | object, Localization | object] => {
   switch (lang) {
     case Language.Japanese: {
@@ -26,7 +26,7 @@ const ThemeProvider: FC<WithChildren> = (props) => {
   const [coreLocale, gridLocale] = getLocale(i18n.language);
   const theme = useMemo(
     () => createTheme(baseTheme, coreLocale, gridLocale),
-    [coreLocale, gridLocale]
+    [coreLocale, gridLocale],
   );
   return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
 };

@@ -12,7 +12,7 @@ export const joinString = (
 
 export const objectToInputs = <T extends object>(
   obj: T,
-  rules: { [K in keyof T]?: 'dateTime' }
+  rules: { [K in keyof T]?: 'dateTime' },
 ) => {
   const inputs = { ...obj };
   for (const [k, rule] of Object.entries(rules)) {
@@ -35,7 +35,7 @@ export const objectToInputs = <T extends object>(
 
 export const inputsToObject = <T extends object>(
   inputs: T,
-  rules: { [K in keyof T]?: 'dateTime' }
+  rules: { [K in keyof T]?: 'dateTime' },
 ) => {
   const obj = { ...inputs };
   for (const [k, rule] of Object.entries(rules)) {
@@ -58,7 +58,7 @@ export const inputsToObject = <T extends object>(
 
 export const convertListToObject = <K extends keyof any, T>(
   values: T[],
-  key: keyof T
+  key: keyof T,
 ) => {
   const result = {} as any;
   for (const value of values) {

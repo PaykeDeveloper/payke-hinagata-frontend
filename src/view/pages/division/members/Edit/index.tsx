@@ -43,7 +43,7 @@ const selector = createSelector(
     roles,
     division,
     checkUpdate,
-    checkDelete
+    checkDelete,
   ) => ({
     object,
     status,
@@ -53,7 +53,7 @@ const selector = createSelector(
     division,
     canUpdate: checkUpdate(object?.id),
     canDelete: checkDelete(object?.id),
-  })
+  }),
 );
 
 export type DivisionEditRouterState = BaseRouterState | undefined;
@@ -74,14 +74,14 @@ const Edit: FC<
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        membersActions.mergeEntity({ pathParams, bodyParams })
+        membersActions.mergeEntity({ pathParams, bodyParams }),
       );
       if (membersActions.mergeEntity.fulfilled.match(action)) {
         push(backTo);
       }
       return action;
     },
-    [backTo, dispatch, pathParams, push]
+    [backTo, dispatch, pathParams, push],
   );
 
   const onDelete: ChildProps['onDelete'] = useCallback(async () => {

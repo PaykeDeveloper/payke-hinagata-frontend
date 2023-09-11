@@ -11,7 +11,7 @@ const ScrollToTop: FC = () => {
           window.scrollTo(0, 0);
         }
       }),
-    [history]
+    [history],
   );
 
   return <></>;

@@ -21,7 +21,7 @@ const selector = createSelector(
     status,
     error,
     locales,
-  })
+  }),
 );
 
 const Container: FC<RouteComponentProps<UserPath>> = (props) => {
@@ -35,7 +35,7 @@ const Container: FC<RouteComponentProps<UserPath>> = (props) => {
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        userActions.mergeEntity({ pathParams, bodyParams })
+        userActions.mergeEntity({ pathParams, bodyParams }),
       );
       if (userActions.mergeEntity.fulfilled.match(action)) {
         userActions.fetchEntityIfNeeded({ pathParams: {} });
@@ -43,7 +43,7 @@ const Container: FC<RouteComponentProps<UserPath>> = (props) => {
       }
       return action;
     },
-    [dispatch, pathParams, push]
+    [dispatch, pathParams, push],
   );
 
   const state = useStoreSelector(selector);

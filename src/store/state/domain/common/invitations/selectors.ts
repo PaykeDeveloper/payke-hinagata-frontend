@@ -25,26 +25,26 @@ export const invitationErrorSelector = (state: StoreState) =>
 
 export const canViewInvitationsSelector = createSelector(
   userPermissionNamesSelector,
-  (permissionNames) => invitationPermission.canView(permissionNames)
+  (permissionNames) => invitationPermission.canView(permissionNames),
 );
 
 export const canCreateInvitationSelector = createSelector(
   userPermissionNamesSelector,
-  (permissionNames) => invitationPermission.canCreate(permissionNames)
+  (permissionNames) => invitationPermission.canCreate(permissionNames),
 );
 
 export const canUpdateInvitationSelector = createSelector(
   userPermissionNamesSelector,
-  (permissionNames) => invitationPermission.canUpdate(permissionNames)
+  (permissionNames) => invitationPermission.canUpdate(permissionNames),
 );
 
 export const canDeleteInvitationSelector = createSelector(
   userPermissionNamesSelector,
-  (permissionNames) => invitationPermission.canDelete(permissionNames)
+  (permissionNames) => invitationPermission.canDelete(permissionNames),
 );
 
 export const canEditInvitationSelector = createSelector(
   canUpdateInvitationSelector,
   canDeleteInvitationSelector,
-  (canUpdate, canDelete) => canUpdate || canDelete
+  (canUpdate, canDelete) => canUpdate || canDelete,
 );

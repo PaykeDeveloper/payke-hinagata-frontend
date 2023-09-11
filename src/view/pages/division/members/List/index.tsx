@@ -44,7 +44,7 @@ const selector = createSelector(
     division,
     canCreate,
     checkEdit,
-  })
+  }),
 );
 
 const List: FC<

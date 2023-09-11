@@ -34,7 +34,7 @@ const selector = createSelector(
       ...(userPermissionNames || []),
       ...(memberPermissionNames || []),
     ]),
-  })
+  }),
 );
 
 const ManufacturerSideMenu: FC<PrivateSideMenuProps> = ({

@@ -24,7 +24,7 @@ const VerifyEmail: FC<RouteComponentProps<VerifyEmailPath>> = (props) => {
   const signature = urlSearchParams.get('signature') || undefined;
   const searchParams = useMemo(
     () => ({ expires, signature }),
-    [expires, signature]
+    [expires, signature],
   );
 
   const dispatch = useStoreDispatch();

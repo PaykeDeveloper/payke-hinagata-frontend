@@ -32,7 +32,7 @@ const ResetPassword: FC<RouteComponentProps> = (props) => {
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (input) => {
       const action = await dispatch(
-        resetPassword({ pathParams: {}, bodyParams: { ...input, token } })
+        resetPassword({ pathParams: {}, bodyParams: { ...input, token } }),
       );
       if (resetPassword.fulfilled.match(action)) {
         enqueueSnackbar(action.payload.message, { variant: 'success' });
@@ -40,7 +40,7 @@ const ResetPassword: FC<RouteComponentProps> = (props) => {
       }
       return action;
     },
-    [dispatch, push, token, enqueueSnackbar]
+    [dispatch, push, token, enqueueSnackbar],
   );
 
   return <Component {...state} object={undefined} onSubmit={onSubmit} />;

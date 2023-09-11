@@ -23,7 +23,7 @@ const FileUploadButton: FC<FileUploadButtonProps> = (props) => {
       event.target.value = '';
       setLoading(false);
     },
-    [onChange]
+    [onChange],
   );
   return (
     <>

@@ -18,14 +18,14 @@ const ChangePassword: FC<RouteComponentProps> = (props) => {
   const onSubmit: ChildProps['onSubmit'] = useCallback(
     async (bodyParams) => {
       const action = await dispatch(
-        changePassword({ pathParams: {}, bodyParams })
+        changePassword({ pathParams: {}, bodyParams }),
       );
       if (changePassword.fulfilled.match(action)) {
         push(rootPath);
       }
       return action;
     },
-    [dispatch, push]
+    [dispatch, push],
   );
 
   return <Component object={undefined} onSubmit={onSubmit} />;
